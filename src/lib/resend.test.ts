@@ -1,4 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { sendContactEmail } from '@/lib/resend';
 import type { ContactFormValues } from '@/lib/validation';
 
@@ -44,6 +46,10 @@ describe('sendContactEmail', () => {
     process.env = originalEnv;
   });
 
+  it('mantém a logomarca do email disponível no repositório', () => {
+    expect(existsSync(path.join(process.cwd(), 'public', 'images', 'email-logo.png'))).toBe(true);
+  });
+
   it('envia para RESEND_TO_EMAIL, usa replyTo do cliente e attachment inline', async () => {
     sendMock.mockResolvedValue({ data: { id: 'email-id' }, error: null });
 
@@ -61,7 +67,8 @@ describe('sendContactEmail', () => {
       expect.objectContaining({
         filename: 'qualidade-e-vida-tech.png',
         contentType: 'image/png',
-        contentId: 'qualidade-e-vida-logo'
+        contentId: 'qualidade-e-vida-logo',
+        inlineContentId: 'qualidade-e-vida-logo'
       })
     ]);
     expect(payload.attachments[0].content).toBeInstanceOf(Buffer);
