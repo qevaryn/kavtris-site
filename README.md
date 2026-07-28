@@ -90,6 +90,21 @@ O favicon atual continua provisório porque ainda não existe uma versão quadra
 
 A imagem Open Graph final da fase de produção está em `src/app/opengraph-image.png` e a imagem de Twitter/X está em `src/app/twitter-image.png`, ambas com 1200 × 630 px.
 
+## Sistema visual responsivo
+
+A landing page usa uma hierarquia alternada de fundos para separar visualmente as secções sem alterar a identidade aprovada: hero e rodapé em navy, problemas e projetos em tons claros quentes, processo e fundador em azul muito claro, diferenciais em navy e formulário em fundo claro.
+
+Em mobile, alguns blocos têm comportamento dedicado para evitar cartões comprimidos ou scroll horizontal:
+
+- problemas e projetos usam carrossel nativo horizontal com scroll-snap;
+- serviços usam acordeões compactos;
+- o cartão de automação mantém Playwright + TypeScript e Robot Framework + Python com peso visual equivalente através de tabs;
+- o painel de qualidade mobile usa tabs para alternar entre evolução e aprovação;
+- o processo passa de fluxo horizontal para timeline vertical;
+- o formulário usa campos em uma coluna com altura e fonte adequadas para toque.
+
+As screenshots de auditoria visual são geradas pelos testes Playwright em `test-results/**/phase6-*.png`.
+
 ## Textos legais
 
 As páginas de Política de Privacidade e Política de Cookies são versões provisórias. Os textos legais devem ser revistos antes da publicação comercial.
