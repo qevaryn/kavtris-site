@@ -17,4 +17,5 @@ export const contactSchema = z.object({
   honeypot: z.string().max(0).optional().default('')
 });
 
-export type ContactFormValues = z.infer<typeof contactSchema>;
+export type ContactFormInput = z.input<typeof contactSchema>;
+export type ContactFormValues = z.output<typeof contactSchema>;

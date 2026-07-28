@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Send } from 'lucide-react';
-import { contactSchema, type ContactFormValues } from '@/lib/validation';
+import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/lib/validation';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
@@ -28,7 +28,7 @@ export function Contact() {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<ContactFormValues>({
+  } = useForm<ContactFormInput, unknown, ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: '',
