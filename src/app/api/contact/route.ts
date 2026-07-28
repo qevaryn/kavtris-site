@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { contactSchema } from '@/lib/validation';
 import { sendContactEmail } from '@/lib/resend';
 
+export const runtime = 'nodejs';
+
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 3;
 const submissions = new Map<string, { count: number; resetAt: number }>();
@@ -59,6 +61,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     if (error instanceof Error && error.message === 'CONTACT_EMAIL_NOT_CONFIGURED') {
+      return NextResponse.json(
+        { ok: false, message: 'O formulário não está configurado para envio neste ambiente.' },
+        { status: 503 }
+      );
+    }
+
+    if (error instanceof Error && error.message === 'CONTACT_EMAIL_ASSET_NOT_CONFIGURED') {
       return NextResponse.json(
         { ok: false, message: 'O formulário não está configurado para envio neste ambiente.' },
         { status: 503 }
