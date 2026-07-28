@@ -34,13 +34,14 @@ Depois abra `http://localhost:3000`.
 Crie um ficheiro `.env.local` com base no `.env.example`:
 
 ```bash
-RESEND_API_KEY=your_resend_api_key
-RESEND_FROM_EMAIL=Qualidade é Vida Tech <onboarding@resend.dev>
-RESEND_TO_EMAIL=contacto@qualidadeevidatech.pt
-NEXT_PUBLIC_SITE_URL=https://qualidadeevidatech.pt
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+RESEND_TO_EMAIL=
+NEXT_PUBLIC_SITE_URL=
+CONTACT_FORM_MOCK=false
 ```
 
-Sem `RESEND_API_KEY`, o route handler de contacto funciona em modo mock para desenvolvimento e testes locais.
+O formulário só pode usar mock em desenvolvimento/teste quando `CONTACT_FORM_MOCK=true`. Em produção, configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` e `NEXT_PUBLIC_SITE_URL`.
 
 ## Imagens
 
@@ -50,8 +51,15 @@ As imagens usadas pelo site estão em `public/images`:
 - `insurance-project.jpg`
 - `tax-services-project.jpg`
 - `gabriel.jpg`
+- `logo-qualidade-e-vida-tech.svg`
 
 Substitua estes ficheiros mantendo os mesmos nomes para trocar as imagens sem alterar os componentes.
+
+O logótipo SVG atual é provisório até existir um ficheiro final aprovado. A imagem `gabriel.jpg` existe no repositório, mas a secção do fundador usa o placeholder “GS” até ser fornecida uma fotografia aprovada.
+
+## Textos legais
+
+As páginas de Política de Privacidade e Política de Cookies são versões provisórias. Os textos legais devem ser revistos antes da publicação comercial.
 
 ## Scripts
 
