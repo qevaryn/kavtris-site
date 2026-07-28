@@ -58,13 +58,15 @@ As imagens usadas pelo site estão em `public/images`:
 - `travel-project.jpg`
 - `insurance-project.jpg`
 - `tax-services-project.jpg`
-- `gabriel.jpg`
-- `logo-qualidade-e-vida-tech.svg`
+- `gabriel.webp`
+- `logo-qualidade-e-vida-tech.png`
 - `email-logo.png`
 
 Substitua estes ficheiros mantendo os mesmos nomes para trocar as imagens sem alterar os componentes.
 
-O logótipo SVG atual é provisório até existir um ficheiro final aprovado. A imagem `gabriel.jpg` existe no repositório, mas a secção do fundador usa o placeholder “GS” até ser fornecida uma fotografia aprovada.
+O logótipo final aprovado está em `logo-qualidade-e-vida-tech.png` e a fotografia aprovada do fundador está em `gabriel.webp`. A imagem `email-logo.png` é uma versão PNG otimizada da mesma logomarca para incorporação inline no email por CID.
+
+O favicon atual continua provisório porque ainda não existe uma versão quadrada aprovada apenas com o símbolo da marca. A imagem de partilha Open Graph ainda é provisória.
 
 ## Textos legais
 
