@@ -44,7 +44,7 @@ export function Hero() {
       <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16 xl:py-20">
         <div className="flex flex-col justify-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">Qualidade é Vida Tech</p>
-          <h1 className="mt-5 max-w-3xl font-display text-5xl leading-[1.02] tracking-tight md:text-[3.7rem] xl:text-[4rem]">
+          <h1 className="mt-5 max-w-3xl font-display text-5xl leading-[1.02] tracking-tight md:text-[3.35rem] xl:text-[3.55rem]">
             Lance aplicações web <br className="hidden sm:block" />
             com <span className="text-gold-500">menos falhas</span> e <br className="hidden sm:block" />
             <span className="text-gold-500">mais confiança</span>.
