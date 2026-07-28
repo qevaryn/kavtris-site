@@ -32,6 +32,6 @@ test('permite navegação por teclado no header e menu mobile', async ({ page })
 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Space');
   await expect(page.getByRole('button', { name: 'Fechar menu' }).first()).toHaveAttribute('aria-expanded', 'true');
 });
