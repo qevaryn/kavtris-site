@@ -7,7 +7,7 @@ import { navigationLinks } from '@/lib/constants';
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-navy-950/95 text-white backdrop-blur supports-[backdrop-filter]:bg-navy-950/90">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div className="container-wide flex min-h-[68px] items-center justify-between gap-4 py-3 lg:min-h-[76px]">
         <Link href="#inicio" className="flex min-w-0 items-center" aria-label="Qualidade é Vida Tech - início">
           <Logo priority />
         </Link>

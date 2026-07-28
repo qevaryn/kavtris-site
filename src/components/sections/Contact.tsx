@@ -71,25 +71,26 @@ export function Contact() {
   };
 
   return (
-    <section id="contacto" className="bg-white py-16 sm:py-20">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:px-8">
+    <section id="contacto" className="bg-gradient-to-br from-white via-paper to-mist py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
         <div className="lg:sticky lg:top-28">
           <SectionHeading
+            eyebrow="Contacto"
             title="Vamos analisar o seu projeto?"
             subtitle="Preencha o formulário e entraremos em contacto."
           />
-          <div className="mt-8 rounded-[1.35rem] border border-borderline bg-paper p-5">
+          <div className="mt-8 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-navy-800">O que acontece depois?</p>
             <p className="mt-2 text-sm leading-7 text-slate-600">
               Analisamos o contexto, identificamos riscos principais e indicamos o caminho de QA mais adequado.
             </p>
-            <div className="mt-6 flex h-24 items-center justify-center text-gold-600">
+            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm md:p-7">
+        <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-card md:p-7 lg:p-8">
           <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
               <label htmlFor="name" className="text-sm font-medium text-navy-800">
@@ -98,7 +99,7 @@ export function Contact() {
               <input
                 id="name"
                 {...register('name')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.name ? 'true' : 'false'}
                 aria-describedby={errors.name ? 'name-error' : undefined}
               />
@@ -112,7 +113,7 @@ export function Contact() {
               <input
                 id="company"
                 {...register('company')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.company ? 'true' : 'false'}
                 aria-describedby={errors.company ? 'company-error' : undefined}
               />
@@ -127,7 +128,7 @@ export function Contact() {
                 id="email"
                 type="email"
                 {...register('email')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.email ? 'true' : 'false'}
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
@@ -141,7 +142,7 @@ export function Contact() {
               <select
                 id="timeline"
                 {...register('timeline')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.timeline ? 'true' : 'false'}
                 aria-describedby={errors.timeline ? 'timeline-error' : undefined}
               >
@@ -162,7 +163,7 @@ export function Contact() {
               <select
                 id="service"
                 {...register('service')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.service ? 'true' : 'false'}
                 aria-describedby={errors.service ? 'service-error' : undefined}
               >
@@ -184,7 +185,7 @@ export function Contact() {
                 id="message"
                 rows={5}
                 {...register('message')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-32 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.message ? 'true' : 'false'}
                 aria-describedby={errors.message ? 'message-error' : 'message-hint'}
               />

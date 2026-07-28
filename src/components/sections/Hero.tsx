@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Tag } from '@/components/ui/Tag';
 
@@ -17,6 +21,9 @@ const bugs = [
 const environments = ['Chrome', 'Firefox', 'Safari', 'Edge', 'Staging'];
 
 export function Hero() {
+  const [mobileTab, setMobileTab] = useState<'evolution' | 'approval'>('evolution');
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <section id="inicio" className="relative overflow-hidden bg-navy-950 text-white">
       <div className="absolute inset-0 bg-hero-grid bg-[size:72px_72px] opacity-30" />
@@ -41,26 +48,26 @@ export function Hero() {
         ))}
       </svg>
 
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16 xl:py-20">
+      <div className="container-wide relative grid gap-10 py-12 sm:py-16 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14 lg:py-20 xl:py-24">
         <div className="flex flex-col justify-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">Qualidade é Vida Tech</p>
-          <h1 className="mt-5 max-w-3xl font-display text-5xl leading-[1.02] tracking-tight md:text-[3.35rem] xl:text-[3.55rem]">
+          <h1 className="mt-5 max-w-3xl font-display text-[clamp(2.35rem,10vw,3.1rem)] leading-[1.01] tracking-tight md:text-[4rem] xl:text-[4.45rem]">
             Lance aplicações web <br className="hidden sm:block" />
             com <span className="text-gold-500">menos falhas</span> e <br className="hidden sm:block" />
             <span className="text-gold-500">mais confiança</span>.
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-white/75 md:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-8 text-white/76 md:text-lg">
             Ajudamos empresas de software, startups e agências de desenvolvimento através de QA manual, automação de testes e acompanhamento contínuo da qualidade.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="#contacto">Pedir uma análise</Button>
-            <Button href="#servicos" variant="secondary">
+          <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+            <Button href="#contacto" className="min-h-12 w-full sm:w-auto">Pedir uma análise</Button>
+            <Button href="#servicos" variant="secondary" className="min-h-12 w-full sm:w-auto">
               Conhecer os serviços
             </Button>
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3 lg:mt-10">
             {['Playwright', 'TypeScript', 'Robot Framework', 'Python', 'SeleniumLibrary'].map((tag) => (
               <Tag key={tag} tone="gold">
                 {tag}
@@ -69,8 +76,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative">
-          <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/6 p-5 shadow-2xl backdrop-blur-sm">
+        <div className="relative lg:self-center">
+          <div className="hidden overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/6 p-5 shadow-2xl backdrop-blur-sm lg:block">
             <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.24em] text-gold-500">Painel de Qualidade</p>
@@ -168,6 +175,96 @@ export function Hero() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="rounded-[1.35rem] border border-white/10 bg-white/6 p-4 shadow-2xl backdrop-blur-sm lg:hidden" data-testid="dashboard-mobile">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-500">Painel de Qualidade</p>
+                <p className="mt-1 text-sm text-white/65">Resumo ilustrativo</p>
+              </div>
+              <span className="rounded-full bg-gold-500/10 px-3 py-1 text-xs font-semibold text-gold-500">86,3%</span>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {metrics.map((metric) => (
+                <div key={metric.label} className="rounded-2xl border border-white/10 bg-navy-900/85 p-3">
+                  <p className="text-[0.72rem] uppercase tracking-[0.16em] text-white/50">{metric.label}</p>
+                  <p className="mt-2 text-xl font-semibold text-white">{metric.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 rounded-full border border-white/10 bg-navy-900/75 p-1" role="tablist" aria-label="Visualização do dashboard">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mobileTab === 'evolution'}
+                aria-controls="dashboard-evolution"
+                className={`min-h-10 rounded-full text-sm font-semibold transition ${mobileTab === 'evolution' ? 'bg-gold-600 text-white' : 'text-white/70'}`}
+                onClick={() => setMobileTab('evolution')}
+              >
+                Evolução
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mobileTab === 'approval'}
+                aria-controls="dashboard-approval"
+                className={`min-h-10 rounded-full text-sm font-semibold transition ${mobileTab === 'approval' ? 'bg-gold-600 text-white' : 'text-white/70'}`}
+                onClick={() => setMobileTab('approval')}
+              >
+                Aprovação
+              </button>
+            </div>
+
+            {mobileTab === 'evolution' ? (
+              <div id="dashboard-evolution" role="tabpanel" className="mt-4 rounded-2xl border border-white/10 bg-navy-900/85 p-3">
+                <svg viewBox="0 0 320 120" className="h-28 w-full" role="img" aria-label="Evolução dos testes">
+                  <path d="M10 84 C42 65, 68 75, 96 58 S148 34, 180 44 S238 70, 310 26" fill="none" stroke="#22c55e" strokeWidth="4" strokeLinecap="round" />
+                  <path d="M10 102 C42 92, 68 102, 96 88 S150 108, 184 92 S238 78, 310 86" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+              </div>
+            ) : (
+              <div id="dashboard-approval" role="tabpanel" className="mt-4 flex items-center justify-center rounded-2xl border border-white/10 bg-navy-900/85 p-4">
+                <div className="relative h-32 w-32">
+                  <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
+                    <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,0.1)" strokeWidth="12" fill="none" />
+                    <circle cx="60" cy="60" r="48" stroke="#F2B632" strokeWidth="12" fill="none" strokeLinecap="round" strokeDasharray="301.59" strokeDashoffset="41.1" />
+                  </svg>
+                  <div className="absolute inset-0 grid place-items-center text-center">
+                    <p className="text-2xl font-semibold text-white">86,3%</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="mt-4 flex min-h-11 w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white"
+              aria-expanded={showDetails}
+              aria-controls="dashboard-mobile-details"
+              onClick={() => setShowDetails((value) => !value)}
+            >
+              Ver bugs e ambientes
+              <ChevronDown className={`h-4 w-4 transition ${showDetails ? 'rotate-180' : ''}`} aria-hidden="true" />
+            </button>
+
+            {showDetails ? (
+              <div id="dashboard-mobile-details" className="mt-3 grid gap-4 rounded-2xl border border-white/10 bg-navy-900/85 p-4">
+                <div>
+                  <p className="text-sm font-medium text-white">Bugs recentes</p>
+                  <ul className="mt-2 grid gap-2 text-sm text-white/70">
+                    {bugs.map((bug) => <li key={bug}>{bug}</li>)}
+                  </ul>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {environments.map((environment) => (
+                    <span key={environment} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{environment}</span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

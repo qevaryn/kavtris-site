@@ -12,9 +12,10 @@ export function Founder() {
   const [imageFailed, setImageFailed] = useState(false);
 
   return (
-    <section id="sobre" className="bg-paper py-12 sm:py-16">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-[1.35rem] border border-borderline bg-white p-4 shadow-sm md:p-6">
+    <section id="sobre" className="soft-section-line bg-mist py-14 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-16">
+        <div className="relative overflow-hidden rounded-[1.35rem] border border-navy-900/20 bg-white p-4 shadow-card md:p-6">
+          <span className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-gold-600" aria-hidden="true" />
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="relative grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl border border-borderline bg-navy-950 text-white shadow-sm sm:h-24 sm:w-24" data-testid="founder-photo">
@@ -42,15 +43,15 @@ export function Founder() {
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Acompanha diretamente cada projeto para garantir proximidade, organização e clareza.
                 </p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible" tabIndex={0} aria-label="Tecnologias do fundador">
                   {tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
+                    <Tag key={tag} className="shrink-0">{tag}</Tag>
                   ))}
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 lg:justify-end">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap lg:justify-end">
               <Button href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2" aria-label="LinkedIn de Gabriel Dias de Souza">
                 LinkedIn
               </Button>
