@@ -19,7 +19,7 @@ const schema = {
   description:
     'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
   areaServed: 'PT',
-  sameAs: ['https://github.com/qualidade-e-vida-tech', 'https://www.linkedin.com/company/qualidade-e-vida-tech']
+  sameAs: ['https://github.com/gabrielsouza80', 'https://www.linkedin.com/in/gabrielsouza80/']
 };
 
 export default function HomePage() {
