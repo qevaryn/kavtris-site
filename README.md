@@ -79,12 +79,12 @@ As imagens usadas pelo site estão em `public/images`:
 - `insurance-project.jpg`
 - `tax-services-project.jpg`
 - `gabriel.webp`
-- `logo-qualidade-e-vida-tech.png`
+- `logo-qualidade-e-vida-tech-transparent.png`
 - `email-logo.png`
 
 Substitua estes ficheiros mantendo os mesmos nomes para trocar as imagens sem alterar os componentes.
 
-O logótipo final aprovado está em `logo-qualidade-e-vida-tech.png` e a fotografia aprovada do fundador está em `gabriel.webp`. A imagem `email-logo.png` é uma versão PNG otimizada da mesma logomarca para incorporação inline no email por CID.
+O logótipo final aprovado para o site está em `logo-qualidade-e-vida-tech-transparent.png`, com fundo transparente para uso direto sobre navy. A fotografia aprovada do fundador está em `gabriel.webp`. A imagem `email-logo.png` é uma versão PNG otimizada da mesma logomarca para incorporação inline no email por CID.
 
 O favicon atual continua provisório porque ainda não existe uma versão quadrada aprovada apenas com o símbolo da marca.
 
