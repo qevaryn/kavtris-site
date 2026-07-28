@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { Logo } from '@/components/layout/Logo';
 import { companyName, socialLinks } from '@/lib/constants';
 
 export function Footer() {
@@ -8,22 +9,16 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-8 border-b border-white/10 pb-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
           <div>
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-2xl border border-gold-600/35 bg-gold-600/10 text-sm font-semibold text-gold-500">QV</span>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/90">Qualidade é Vida</p>
-                <p className="text-xs tracking-[0.32em] text-gold-500">TECH</p>
-              </div>
-            </div>
+            <Logo />
           </div>
 
           <p className="text-sm leading-7 text-white/75 lg:text-center">Qualidade de software que impulsiona o seu negócio.</p>
 
           <div className="flex flex-wrap gap-3 lg:justify-end">
-            <Button href={socialLinks.linkedin} variant="secondary" target="_blank" rel="noreferrer">
+            <Button href={socialLinks.linkedin} variant="secondary" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Gabriel Dias de Souza">
               LinkedIn
             </Button>
-            <Button href={socialLinks.github} variant="secondary" target="_blank" rel="noreferrer">
+            <Button href={socialLinks.github} variant="secondary" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Gabriel Dias de Souza">
               GitHub
             </Button>
           </div>

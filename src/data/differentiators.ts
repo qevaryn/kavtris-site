@@ -3,7 +3,7 @@ import { BadgeCheck, Handshake, LineChart, ShieldCheck, Sparkles } from 'lucide-
 export const differentiators = [
   {
     title: 'Experiência real e automatizada',
-    description: 'Projetos internacionais e resultados comprovados.',
+    description: 'Experiência aplicada em contextos internacionais.',
     icon: BadgeCheck
   },
   {

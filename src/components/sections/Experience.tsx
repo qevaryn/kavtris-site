@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/Button';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { projects } from '@/data/projects';
+import { socialLinks } from '@/lib/constants';
 
 export function Experience() {
   return (
@@ -20,7 +21,7 @@ export function Experience() {
 
         <div className="mt-8 flex flex-col items-center gap-4 text-center">
           <p className="max-w-2xl text-sm leading-7 text-slate-600">Laboratório técnico e projetos de estudo disponíveis no GitHub</p>
-          <Button href="https://github.com/qualidade-e-vida-tech" target="_blank" rel="noreferrer">
+          <Button href={socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="Ver GitHub de Gabriel Dias de Souza">
             Ver GitHub
           </Button>
         </div>

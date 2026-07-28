@@ -15,7 +15,7 @@ const config: Config = {
           800: '#0A1B30'
         },
         gold: {
-          600: '#D99A16',
+          600: '#7A4E00',
           500: '#F2B632'
         },
         paper: '#F8F8F6',

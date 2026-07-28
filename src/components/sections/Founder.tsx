@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { Tag } from '@/components/ui/Tag';
 import { socialLinks } from '@/lib/constants';
@@ -9,28 +7,14 @@ import { socialLinks } from '@/lib/constants';
 const tags = ['Playwright', 'TypeScript', 'Robot Framework', 'Python', 'SeleniumLibrary'];
 
 export function Founder() {
-  const [imageFailed, setImageFailed] = useState(false);
-
   return (
     <section id="sobre" className="bg-paper py-14 sm:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm md:p-6">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-borderline bg-white shadow-sm">
-                {!imageFailed ? (
-                  <Image
-                    src="/images/gabriel.jpg?v=20260728"
-                    alt="Gabriel Dias de Souza"
-                    fill
-                    className="object-cover object-[50%_18%]"
-                    onError={() => setImageFailed(true)}
-                  />
-                ) : (
-                  <div className="grid h-full w-full place-items-center bg-navy-950 text-white">
-                    <span className="font-display text-3xl">GS</span>
-                  </div>
-                )}
+              <div className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-2xl border border-borderline bg-navy-950 text-white shadow-sm" aria-label="Placeholder do fundador Gabriel Dias de Souza">
+                <span className="font-display text-3xl">GS</span>
               </div>
 
               <div className="max-w-2xl">
@@ -52,10 +36,10 @@ export function Founder() {
             </div>
 
             <div className="flex flex-wrap gap-3 lg:justify-end">
-              <Button href={socialLinks.linkedin} target="_blank" rel="noreferrer" className="px-4 py-2">
+              <Button href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2" aria-label="LinkedIn de Gabriel Dias de Souza">
                 LinkedIn
               </Button>
-              <Button href={socialLinks.github} variant="ghost" target="_blank" rel="noreferrer" className="border border-borderline px-4 py-2">
+              <Button href={socialLinks.github} variant="ghost" target="_blank" rel="noopener noreferrer" className="border border-borderline px-4 py-2" aria-label="GitHub de Gabriel Dias de Souza">
                 GitHub
               </Button>
             </div>

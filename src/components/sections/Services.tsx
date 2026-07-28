@@ -21,16 +21,11 @@ export function Services() {
           <ServiceCard icon={automation.icon} title={automation.title} description={automation.description}>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {automation.approaches?.map((approach) => (
-                <div key={approach.title} className="rounded-2xl border border-borderline bg-paper p-3">
+                <div key={approach.title} className="rounded-2xl border border-borderline bg-paper p-4 text-center">
                   <p className="text-sm font-semibold text-navy-800">{approach.title}</p>
-                  <ul className="mt-2 space-y-1.5 text-xs leading-5 text-slate-600">
-                    {approach.points.slice(0, 3).map((point) => (
-                      <li key={point} className="flex items-start gap-2">
-                        <span className="mt-2 h-1 w-1 rounded-full bg-gold-600" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-2 text-xs leading-5 text-slate-600">
+                    {approach.title.includes('Playwright') ? 'E2E e fluxos críticos' : 'Keywords e BDD funcional'}
+                  </p>
                 </div>
               ))}
             </div>

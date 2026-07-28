@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Send } from 'lucide-react';
 import { contactSchema, type ContactFormValues } from '@/lib/validation';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -83,6 +83,9 @@ export function Contact() {
             <p className="mt-2 text-sm leading-7 text-slate-600">
               Analisamos o contexto, identificamos riscos principais e indicamos o caminho de QA mais adequado.
             </p>
+            <div className="mt-6 flex h-24 items-center justify-center text-gold-600">
+              <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
+            </div>
           </div>
         </div>
 
@@ -215,7 +218,7 @@ export function Contact() {
                   {message.text}
                 </p>
               ) : (
-                <p className="text-sm text-slate-500">Resposta habitual em até 1 dia útil.</p>
+                <p className="text-sm text-slate-500">Analisaremos o seu pedido e entraremos em contacto.</p>
               )}
 
               <Button type="submit" disabled={isPending} className="w-full sm:ml-auto sm:w-auto">

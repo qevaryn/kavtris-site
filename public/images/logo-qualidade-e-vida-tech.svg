@@ -1,0 +1,12 @@
+<svg width="360" height="96" viewBox="0 0 360 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Qualidade é Vida Tech</title>
+  <desc id="desc">Logótipo provisório da Qualidade é Vida Tech</desc>
+  <path d="M38 58L21 41L29 33L39 43L62 18L70 26L38 58Z" fill="#FFFFFF"/>
+  <path d="M16 70C4 50 9 25 29 13C49 1 75 8 87 29" stroke="#D99A16" stroke-width="6" stroke-linecap="round"/>
+  <path d="M83 27C95 47 89 72 69 84C49 96 24 89 12 70" stroke="#D99A16" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="70" cy="23" r="5" fill="#F2B632"/>
+  <text x="108" y="38" fill="#FFFFFF" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" letter-spacing="0.5">QUALIDADE É VIDA</text>
+  <path d="M108 53H198" stroke="#D99A16" stroke-width="2"/>
+  <path d="M236 53H326" stroke="#D99A16" stroke-width="2"/>
+  <text x="205" y="60" fill="#F2B632" font-family="Arial, sans-serif" font-size="18" font-weight="800" letter-spacing="2">TECH</text>
+</svg>

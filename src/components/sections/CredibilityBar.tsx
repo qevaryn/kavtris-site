@@ -10,7 +10,7 @@ export function CredibilityBar() {
           <p className="max-w-2xl text-sm font-medium uppercase tracking-[0.22em] text-gold-500 md:text-base">
             Experiência em projetos internacionais de viagens, seguros e serviços fiscais
           </p>
-          <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible">
+          <div className="flex gap-2 overflow-x-auto pb-1 focus-visible:outline-gold-500 lg:flex-wrap lg:overflow-visible" tabIndex={0} aria-label="Competências de QA">
             {credibilityItems.map((item) => (
               <Tag key={item} tone="gold" className="shrink-0">
                 {item}
