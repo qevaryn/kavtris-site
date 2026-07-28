@@ -7,6 +7,7 @@ import type { ContactFormValues } from '@/lib/validation';
 const requiredEnvKeys = ['RESEND_API_KEY', 'RESEND_FROM_EMAIL', 'RESEND_TO_EMAIL'] as const;
 const logoContentId = 'qualidade-e-vida-logo';
 const logoFilename = 'qualidade-e-vida-tech.png';
+type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
 
 async function readEmailLogo() {
   const logoPath = path.join(process.cwd(), 'public', 'images', 'email-logo.png');
@@ -46,7 +47,7 @@ export async function sendContactEmail(values: ContactFormValues) {
   });
 
   const resend = new Resend(apiKey);
-  const inlineLogoAttachment: Attachment & { contentId: string } = {
+  const inlineLogoAttachment: InlineLogoAttachment = {
     filename: logoFilename,
     content: logoContent,
     contentType: 'image/png',

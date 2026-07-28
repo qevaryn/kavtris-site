@@ -41,6 +41,8 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
 });
 
 test('formulário sem configuração de email não retorna falso sucesso', async ({ request }) => {
+  test.skip(Boolean(process.env.BASE_URL), 'Teste negativo de configuração só deve correr contra ambiente local controlado.');
+
   const response = await request.post('/api/contact', {
     data: validContactPayload,
     headers: {

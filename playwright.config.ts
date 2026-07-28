@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const baseURL = process.env.BASE_URL || 'http://127.0.0.1:3000';
+const shouldStartLocalServer = !process.env.BASE_URL;
+
 export default defineConfig({
   testDir: './tests',
   timeout: 60000,
@@ -10,15 +13,17 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['html'], ['list']] : [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL,
     trace: 'on-first-retry'
   },
-  webServer: {
-    command: process.env.CI ? 'npm run start' : 'npm run dev',
-    url: 'http://127.0.0.1:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000
-  },
+  webServer: shouldStartLocalServer
+    ? {
+        command: process.env.CI ? 'npm run start' : 'npm run dev',
+        url: baseURL,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120000
+      }
+    : undefined,
   projects: [
     {
       name: 'chromium',

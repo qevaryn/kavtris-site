@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Inter, Playfair_Display } from 'next/font/google';
-import { companyName, siteUrl } from '@/lib/constants';
+import { companyName, shouldIndexSite, siteUrl } from '@/lib/constants';
 import './globals.css';
 
 const display = Playfair_Display({ subsets: ['latin'], variable: '--font-display' });
@@ -25,11 +25,26 @@ export const metadata: Metadata = {
     siteName: companyName,
     title: 'Qualidade é Vida Tech | QA e Automação de Testes',
     description:
-      'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.'
+      'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Qualidade é Vida Tech - QA Manual e Automação de Testes'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Qualidade é Vida Tech | QA e Automação de Testes',
+    description:
+      'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+    images: ['/twitter-image.png']
   },
   robots: {
-    index: true,
-    follow: true
+    index: shouldIndexSite,
+    follow: shouldIndexSite
   }
 };
 
