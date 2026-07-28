@@ -14,14 +14,15 @@ type ServiceCardProps = {
 
 export function ServiceCard({ icon: Icon, title, description, tags, children, className }: ServiceCardProps) {
   return (
-    <article className={cn('rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-glow', className)}>
+    <article className={cn('relative overflow-hidden rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm hover-lift', className)}>
+      <span className="absolute inset-y-6 left-0 w-1 rounded-r-full bg-gold-600/75" aria-hidden="true" />
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gold-600/10 text-gold-600 ring-1 ring-gold-600/15">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-navy-900 text-gold-500 ring-1 ring-navy-800/10">
           <Icon className="h-8 w-8" aria-hidden="true" />
         </div>
         <div>
           <h3 className="text-lg font-semibold leading-snug text-navy-800">{title}</h3>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">{description}</p>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">{description}</p>
         </div>
       </div>
 
