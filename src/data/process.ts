@@ -1,34 +1,34 @@
-import { CheckCircle2, ClipboardCheck, Compass, FlaskConical, MessageSquareText, Wrench } from 'lucide-react';
+import { CheckCircle2, ClipboardCheck, Compass, Rocket, SearchCheck, Wrench } from 'lucide-react';
 
 export const processSteps = [
   {
-    title: 'Conhecer',
-    description: 'Compreendemos o produto, o contexto e os riscos.',
+    title: 'Entender o problema',
+    description: 'Compreendemos o negócio, o processo atual e a necessidade real.',
     icon: Compass
   },
   {
-    title: 'Planear',
-    description: 'Definimos prioridades, escopo e estratégia.',
+    title: 'Definir prioridades',
+    description: 'Separamos o essencial do desejável para reduzir risco e desperdício.',
     icon: ClipboardCheck
   },
   {
-    title: 'Preparar',
-    description: 'Criamos cenários, dados e estruturas de teste.',
+    title: 'Planear o MVP',
+    description: 'Desenhamos a primeira versão útil para validar valor rapidamente.',
     icon: Wrench
   },
   {
-    title: 'Testar',
-    description: 'Executamos testes e validamos resultados.',
-    icon: FlaskConical
+    title: 'Desenvolver e testar',
+    description: 'Construímos, validamos fluxos e tratamos qualidade desde o início.',
+    icon: SearchCheck
   },
   {
-    title: 'Comunicar',
-    description: 'Entregamos evidências e recomendações claras.',
-    icon: MessageSquareText
+    title: 'Publicar e acompanhar',
+    description: 'Colocamos a solução em uso e acompanhamos comportamento real.',
+    icon: Rocket
   },
   {
-    title: 'Melhorar',
-    description: 'Ajustamos e evoluímos continuamente.',
+    title: 'Melhorar continuamente',
+    description: 'Evoluímos funcionalidades, integrações, automações e qualidade.',
     icon: CheckCircle2
   }
 ];

@@ -6,7 +6,7 @@ export function Differentials() {
     <section className="relative overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
       <div className="absolute inset-0 bg-hero-grid bg-[size:80px_80px] opacity-20" aria-hidden="true" />
       <div className="container-section relative">
-        <SectionHeading eyebrow="Diferenciais" title="Por que trabalhar connosco" align="center" className="[&_h2]:text-white [&_p]:text-white/70" />
+        <SectionHeading eyebrow="Diferenciais" title="Por que trabalhar com a Qevaryn Systems" align="center" className="[&_h2]:text-white [&_p]:text-white/70" />
 
         <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-5 lg:gap-5">
           {differentiators.map((item, index) => (

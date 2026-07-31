@@ -9,15 +9,14 @@ import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 const serviceOptions = [
-  'QA Manual e Análise',
-  'Automação de Testes',
-  'Estruturação e Melhoria de QA',
-  'Análise de Requisitos e Experiência',
-  'QA Contínuo',
-  'Ainda não sei qual serviço preciso'
+  'Sistema ou aplicação web',
+  'Automação de processos',
+  'Integração entre sistemas',
+  'QA e testes',
+  'Manutenção ou melhoria',
+  'MVP ou protótipo digital',
+  'Ainda não sei'
 ];
-
-const timelineOptions = ['Imediato', '1 a 2 semanas', '2 a 4 semanas', 'Este trimestre', 'Ainda a definir'];
 
 export function Contact() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -34,8 +33,8 @@ export function Contact() {
       name: '',
       company: '',
       email: '',
+      phone: '',
       service: '',
-      timeline: '',
       message: '',
       privacyConsent: false,
       honeypot: ''
@@ -76,13 +75,13 @@ export function Contact() {
         <div className="lg:sticky lg:top-28">
           <SectionHeading
             eyebrow="Contacto"
-            title="Vamos analisar o seu projeto?"
-            subtitle="Preencha o formulário e entraremos em contacto."
+            title="Conte-nos o problema que pretende resolver"
+            subtitle="Não precisa ter a solução definida. Começamos por compreender o problema e avaliar o caminho mais adequado."
           />
           <div className="mt-8 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-navy-800">O que acontece depois?</p>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              Analisamos o contexto, identificamos riscos principais e indicamos o caminho de QA mais adequado.
+              Analisamos o contexto, identificamos prioridades e indicamos se faz sentido começar por MVP, automação, integração, QA ou melhoria de um sistema existente.
             </p>
             <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
@@ -136,29 +135,23 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="timeline" className="text-sm font-medium text-navy-800">
-                Prazo desejado
+              <label htmlFor="phone" className="text-sm font-medium text-navy-800">
+                Telefone <span className="font-normal text-slate-500">(opcional)</span>
               </label>
-              <select
-                id="timeline"
-                {...register('timeline')}
+              <input
+                id="phone"
+                type="tel"
+                {...register('phone')}
                 className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
-                aria-invalid={errors.timeline ? 'true' : 'false'}
-                aria-describedby={errors.timeline ? 'timeline-error' : undefined}
-              >
-                <option value="">Selecione uma opção</option>
-                {timelineOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.timeline ? <p id="timeline-error" className="mt-2 text-sm text-red-600" role="alert">{errors.timeline.message}</p> : null}
+                aria-invalid={errors.phone ? 'true' : 'false'}
+                aria-describedby={errors.phone ? 'phone-error' : undefined}
+              />
+              {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-600" role="alert">{errors.phone.message}</p> : null}
             </div>
 
             <div className="md:col-span-2">
               <label htmlFor="service" className="text-sm font-medium text-navy-800">
-                Serviço pretendido
+                Tipo de necessidade
               </label>
               <select
                 id="service"
@@ -179,7 +172,7 @@ export function Contact() {
 
             <div className="md:col-span-2">
               <label htmlFor="message" className="text-sm font-medium text-navy-800">
-                Descrição do projeto
+                Descrição do problema
               </label>
               <textarea
                 id="message"
@@ -191,7 +184,7 @@ export function Contact() {
               />
               <div className="mt-2 flex items-center justify-between gap-3 text-xs text-slate-500">
                 <span>{errors.message ? <span id="message-error" className="text-red-600" role="alert">{errors.message.message}</span> : <span id="message-hint">Máximo de 1200 caracteres.</span>}</span>
-                <span>Seja objetivo e prático.</span>
+                <span>Explique o contexto principal.</span>
               </div>
             </div>
 
@@ -229,7 +222,7 @@ export function Contact() {
                     A enviar...
                   </span>
                 ) : (
-                  'Enviar pedido de análise'
+                  'Enviar pedido'
                 )}
               </Button>
             </div>

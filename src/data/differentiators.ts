@@ -2,28 +2,28 @@ import { BadgeCheck, Handshake, LineChart, ShieldCheck, Sparkles } from 'lucide-
 
 export const differentiators = [
   {
-    title: 'Experiência real e automatizada',
-    description: 'Experiência aplicada em contextos internacionais.',
+    title: 'Software com qualidade desde o início',
+    description: 'Processos, testes e requisitos pensados juntamente com a solução.',
     icon: BadgeCheck
   },
   {
-    title: 'Foco no impacto',
-    description: 'Qualidade que reduz riscos e aumenta a confiança.',
+    title: 'Foco no problema real',
+    description: 'A solução começa pelo processo que precisa funcionar melhor.',
     icon: LineChart
   },
   {
     title: 'Transparência',
-    description: 'Comunicação clara e relatórios compreensíveis.',
+    description: 'Escopo, prioridades e próximos passos comunicados com clareza.',
     icon: ShieldCheck
   },
   {
-    title: 'Parceria',
-    description: 'Trabalhamos como extensão da equipa.',
+    title: 'Desenvolvimento por fases',
+    description: 'MVP, evolução e suporte sem obrigar a começar por sistemas enormes.',
     icon: Handshake
   },
   {
     title: 'Melhoria contínua',
-    description: 'Processos, métricas e evolução constante.',
+    description: 'Manutenção, QA, automação e evolução conforme o negócio aprende.',
     icon: Sparkles
   }
 ];

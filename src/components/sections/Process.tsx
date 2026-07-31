@@ -5,7 +5,12 @@ export function Process() {
   return (
     <section id="processo" className="soft-section-line bg-mist py-16 sm:py-20 lg:py-24">
       <div className="container-section">
-        <SectionHeading eyebrow="Método" title="Como trabalhamos" align="center" />
+        <SectionHeading
+          eyebrow="Como trabalhamos"
+          title="Começamos pelo que precisa ser validado primeiro"
+          subtitle="Começamos pela solução necessária para validar o resultado, sem obrigar o cliente a investir imediatamente num sistema enorme."
+          align="center"
+        />
 
         <div className="relative mt-12">
           <div className="absolute left-[8.333%] right-[8.333%] top-8 hidden h-px bg-gold-600/45 lg:block" />
@@ -27,6 +32,10 @@ export function Process() {
             ))}
           </div>
         </div>
+
+        <p className="mx-auto mt-10 max-w-3xl text-center text-sm leading-7 text-muted">
+          Cada projeto pode ser estruturado por escopo fechado, fases, acompanhamento mensal ou suporte contínuo, conforme o diagnóstico e a maturidade da solução.
+        </p>
       </div>
     </section>
   );

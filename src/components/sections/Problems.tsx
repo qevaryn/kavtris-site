@@ -6,9 +6,14 @@ export function Problems() {
   return (
     <section className="soft-section-line bg-paper py-16 sm:py-20 lg:py-24">
       <div className="container-section">
-        <SectionHeading eyebrow="Desafios" title="A sua equipa enfrenta algum destes problemas?" align="center" />
+        <SectionHeading
+          eyebrow="Problemas que resolvemos"
+          title="Quando as ferramentas atuais deixam de acompanhar o negócio"
+          subtitle="Processos manuais, dados dispersos e sistemas desconectados tornam o crescimento mais difícil do que deveria."
+          align="center"
+        />
 
-        <div className="mt-10 hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-10 hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
           {problems.map((problem) => (
             <IconCard key={problem.title} icon={problem.icon} title={problem.title} description={problem.description} />
           ))}
@@ -28,7 +33,7 @@ export function Problems() {
         </div>
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-7 text-muted">
-          A Qualidade é Vida Tech transforma esses problemas num processo de qualidade mais claro, confiável e previsível.
+          A Qevaryn Systems transforma estes sinais em soluções digitais graduais, com foco em organização, controlo e eficiência.
         </p>
       </div>
     </section>

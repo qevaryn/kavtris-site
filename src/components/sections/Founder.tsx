@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Tag } from '@/components/ui/Tag';
 import { socialLinks } from '@/lib/constants';
 
-const tags = ['Playwright', 'TypeScript', 'Robot Framework', 'Python', 'SeleniumLibrary'];
+const tags = ['Produto', 'Processos', 'QA', 'Automação', 'Sistemas web'];
 
 export function Founder() {
   const [imageFailed, setImageFailed] = useState(false);
@@ -24,7 +24,7 @@ export function Founder() {
                 ) : (
                   <Image
                     src="/images/gabriel.webp"
-                    alt="Gabriel Dias de Souza, QA Engineer e fundador da Qualidade é Vida Tech"
+                    alt="Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems"
                     fill
                     sizes="(max-width: 640px) 80px, 96px"
                     className="object-cover object-[50%_28%]"
@@ -34,14 +34,14 @@ export function Founder() {
               </div>
 
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-600">Sobre o fundador</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold-600">Sobre a Qevaryn Systems</p>
                 <h2 className="mt-2 text-2xl font-semibold text-navy-800">Gabriel Dias de Souza</h2>
-                <p className="mt-1 text-sm font-medium text-slate-500">QA Engineer | Fundador</p>
+                <p className="mt-1 text-sm font-medium text-slate-500">Fundador | QA Engineer | Produto, processos, qualidade e estratégia</p>
                 <p className="mt-3 text-sm leading-6 text-slate-600">
-                  QA Engineer com experiência em projetos internacionais de aplicações web, QA Manual, automação de testes e melhoria contínua.
+                  Gabriel Dias de Souza possui experiência em QA manual, automação de testes, análise de requisitos e projetos internacionais de software.
                 </p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Acompanha diretamente cada projeto para garantir proximidade, organização e clareza.
+                  A Qevaryn Systems nasce para aplicar essa experiência em sistemas, automação, processos e qualidade.
                 </p>
                 <div className="mt-3 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible" tabIndex={0} aria-label="Tecnologias do fundador">
                   {tags.map((tag) => (

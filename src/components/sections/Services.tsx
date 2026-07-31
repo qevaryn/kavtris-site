@@ -8,49 +8,48 @@ import { ServiceCard } from '@/components/ui/ServiceCard';
 import { Tag } from '@/components/ui/Tag';
 
 export function Services() {
-  const [manual, automation, structure, analysis, continuous] = services;
+  const mainServices = services.slice(0, 6);
+  const supportService = services[6];
   const [openService, setOpenService] = useState('');
-  const [automationTab, setAutomationTab] = useState<'playwright' | 'robot'>('playwright');
+  const [automationTab, setAutomationTab] = useState<'process' | 'quality'>('process');
 
   return (
-    <section id="servicos" className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+    <section id="solucoes" className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
       <div className="absolute right-[-8rem] top-16 hidden h-72 w-72 rounded-full border border-navy-900/5 lg:block" aria-hidden="true" />
       <div className="absolute left-[-10rem] bottom-20 hidden h-80 w-80 rounded-full border border-gold-600/10 lg:block" aria-hidden="true" />
       <div className="container-section relative">
         <SectionHeading
           eyebrow="Soluções"
-          title="Serviços"
-          subtitle="Qualidade adaptada ao contexto, aos riscos e aos objetivos de cada projeto."
+          title="Soluções digitais adaptadas ao funcionamento da sua empresa"
+          subtitle="Sistemas, automações, integrações e qualidade de software desenhados a partir do processo real do negócio."
           align="center"
         />
 
         <div className="mt-10 hidden gap-6 md:grid lg:grid-cols-3">
-          <ServiceCard icon={manual.icon} title={manual.title} description={manual.description} tags={manual.tags} />
-
-          <ServiceCard icon={automation.icon} title={automation.title} description={automation.description} className="border-gold-600/35 shadow-card">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {automation.approaches?.map((approach) => (
-                <div key={approach.title} className="rounded-2xl border border-borderline bg-mist p-4 text-center">
-                  <p className="text-sm font-semibold text-navy-800">{approach.title}</p>
-                  <p className="mt-2 text-xs leading-5 text-muted">
-                    {approach.title.includes('Playwright') ? 'E2E e fluxos críticos' : 'Keywords e BDD funcional'}
-                  </p>
+          {mainServices.map((service) => (
+            <ServiceCard key={service.title} icon={service.icon} title={service.title} description={service.description} tags={service.tags}>
+              {service.approaches ? (
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  {service.approaches.map((approach) => (
+                    <div key={approach.title} className="rounded-2xl border border-borderline bg-mist p-4">
+                      <p className="text-sm font-semibold text-navy-800">{approach.title}</p>
+                      <p className="mt-2 text-xs leading-5 text-muted">{approach.points.slice(0, 3).join(' • ')}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {automation.tags?.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
-              ))}
-            </div>
-          </ServiceCard>
-
-          <ServiceCard icon={structure.icon} title={structure.title} description={structure.description} tags={structure.tags} />
+              ) : null}
+            </ServiceCard>
+          ))}
         </div>
 
-        <div className="mx-auto mt-6 hidden max-w-5xl gap-6 md:grid lg:grid-cols-2">
-          <ServiceCard icon={analysis.icon} title={analysis.title} description={analysis.description} tags={analysis.tags} />
-          <ServiceCard icon={continuous.icon} title={continuous.title} description={continuous.description} tags={continuous.tags} />
+        <div className="mx-auto mt-8 hidden max-w-4xl rounded-[1.35rem] border border-borderline bg-paper p-5 shadow-sm md:flex md:items-center md:justify-between md:gap-6">
+          <div>
+            <h3 className="text-lg font-semibold text-navy-900">{supportService.title}</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-muted">{supportService.description}</p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            {supportService.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
         </div>
 
         <div className="mt-10 grid gap-4 md:hidden">
@@ -77,7 +76,7 @@ export function Services() {
                   type="button"
                   className="mt-4 flex min-h-11 w-full items-center justify-between rounded-2xl border border-borderline bg-mist px-4 text-sm font-semibold text-navy-800"
                   aria-expanded={isOpen}
-                  aria-controls={`service-details-${service.title.replace(/\W+/g, '-').toLowerCase()}`}
+                  aria-controls={`solution-details-${service.title.replace(/\W+/g, '-').toLowerCase()}`}
                   onClick={() => setOpenService(isOpen ? '' : service.title)}
                 >
                   Ver detalhes
@@ -85,31 +84,33 @@ export function Services() {
                 </button>
 
                 {isOpen ? (
-                  <div id={`service-details-${service.title.replace(/\W+/g, '-').toLowerCase()}`} className="mt-4 rounded-2xl border border-borderline bg-paper p-4">
+                  <div id={`solution-details-${service.title.replace(/\W+/g, '-').toLowerCase()}`} className="mt-4 rounded-2xl border border-borderline bg-paper p-4">
                     {service.approaches?.length ? (
                       <>
-                        <div className="grid grid-cols-2 rounded-full bg-white p-1" role="tablist" aria-label="Abordagens de automação">
+                        <div className="grid grid-cols-2 rounded-full bg-white p-1" role="tablist" aria-label="Tipos de automação">
                           <button
                             type="button"
                             role="tab"
-                            aria-selected={automationTab === 'playwright'}
-                            className={`min-h-10 rounded-full text-xs font-semibold ${automationTab === 'playwright' ? 'bg-navy-900 text-white' : 'text-navy-800'}`}
-                            onClick={() => setAutomationTab('playwright')}
+                            aria-selected={automationTab === 'process'}
+                            className={`min-h-10 rounded-full text-xs font-semibold ${automationTab === 'process' ? 'bg-navy-900 text-white' : 'text-navy-800'}`}
+                            onClick={() => setAutomationTab('process')}
                           >
-                            Playwright
+                            Processos
                           </button>
                           <button
                             type="button"
                             role="tab"
-                            aria-selected={automationTab === 'robot'}
-                            className={`min-h-10 rounded-full text-xs font-semibold ${automationTab === 'robot' ? 'bg-navy-900 text-white' : 'text-navy-800'}`}
-                            onClick={() => setAutomationTab('robot')}
+                            aria-selected={automationTab === 'quality'}
+                            className={`min-h-10 rounded-full text-xs font-semibold ${automationTab === 'quality' ? 'bg-navy-900 text-white' : 'text-navy-800'}`}
+                            onClick={() => setAutomationTab('quality')}
                           >
-                            Robot
+                            Qualidade
                           </button>
                         </div>
                         <div className="mt-4 text-sm leading-6 text-muted" role="tabpanel">
-                          {automationTab === 'playwright' ? 'Playwright + TypeScript para fluxos end-to-end, múltiplos navegadores e CI/CD.' : 'Robot Framework + Python para automação funcional, keywords reutilizáveis e Data-Driven Testing.'}
+                          {automationTab === 'process'
+                            ? 'Automação de rotinas, notificações, relatórios e movimentação de dados entre sistemas.'
+                            : 'Automação de testes com competências como Playwright, Robot Framework, API e regressão.'}
                         </div>
                       </>
                     ) : (

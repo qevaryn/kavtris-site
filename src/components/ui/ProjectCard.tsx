@@ -14,7 +14,7 @@ export function ProjectCard({ title, flag, type, image, summary, technologies }:
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-borderline bg-white shadow-card hover-lift">
       <div className="relative aspect-[16/10] bg-navy-900">
-        <Image src={image} alt={title} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
+        <Image src={image} alt={title} fill loading="eager" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/40 via-transparent to-transparent" />
       </div>
       <div className="flex flex-1 flex-col p-5">

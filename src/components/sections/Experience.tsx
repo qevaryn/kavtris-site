@@ -11,8 +11,8 @@ export function Experience() {
         <div className="rounded-[1.6rem] bg-paper p-5 sm:p-8 lg:p-10">
           <SectionHeading
             eyebrow="Projetos"
-            title="Experiência aplicada em projetos"
-            subtitle="Os nomes dos clientes e detalhes internos são preservados por motivos de confidencialidade."
+            title="Experiência que sustenta a nossa forma de trabalhar"
+            subtitle="A experiência comprovada apresentada aqui está relacionada com qualidade de software, testes, automação, análise, processos e projetos internacionais. Os nomes dos clientes e detalhes internos são preservados por confidencialidade."
           />
 
           <div className="mt-10 hidden gap-6 md:grid lg:grid-cols-3">
@@ -37,7 +37,9 @@ export function Experience() {
           </div>
 
           <div className="mt-8 flex flex-col items-center gap-4 text-center">
-            <p className="max-w-2xl text-sm leading-7 text-muted">Laboratório técnico e projetos de estudo disponíveis no GitHub</p>
+            <p className="max-w-2xl text-sm leading-7 text-muted">
+              Esta experiência sustenta a abordagem da Qevaryn Systems, enquanto as novas soluções digitais são oferecidas de forma gradual e ajustada a cada diagnóstico.
+            </p>
             <Button href={socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="Ver GitHub de Gabriel Dias de Souza">
               Ver GitHub
             </Button>

@@ -1,49 +1,63 @@
-import { Bot, FileSearch, Gauge, Layers3, PlaySquare } from 'lucide-react';
+import { Bot, Code2, Gauge, GitBranch, LayoutDashboard, PlugZap, ShieldCheck } from 'lucide-react';
 
 export const services = [
   {
-    title: 'QA Manual e Análise',
+    title: 'Sistemas e aplicações web',
     description:
-      'Testes funcionais, exploratórios e de regressão para identificar falhas, riscos e problemas na experiência do utilizador.',
-    tags: ['Funcional', 'Exploratório', 'Regressão', 'Evidências'],
-    icon: FileSearch
+      'Sistemas personalizados para gerir clientes, equipas, serviços, operações, reservas, pedidos e informação empresarial.',
+    tags: ['Portais', 'Backoffice', 'Aplicações', 'Operações'],
+    icon: Code2
   },
   {
-    title: 'Automação de Testes Web, Mobile e API',
+    title: 'Automação de processos',
     description:
-      'Automação dos principais fluxos para reduzir tarefas repetitivas e aumentar a confiança nas entregas.',
-    tags: ['Web', 'API', 'Mobile'],
-    icon: PlaySquare,
+      'Automação de tarefas repetitivas, notificações, relatórios, fluxos de aprovação e movimentação de dados.',
+    tags: ['Fluxos', 'Relatórios', 'Alertas', 'Aprovações'],
+    icon: Bot,
     approaches: [
       {
-        title: 'Playwright + TypeScript',
-        points: ['End-to-end', 'Múltiplos navegadores', 'Page Object Model', 'CI/CD']
+        title: 'Processos internos',
+        points: ['Tarefas repetitivas', 'Aprovações', 'Notificações', 'Relatórios']
       },
       {
-        title: 'Robot Framework + Python',
-        points: ['Automação funcional', 'Keywords reutilizáveis', 'SeleniumLibrary', 'Data-Driven Testing']
+        title: 'Qualidade e testes',
+        points: ['Playwright', 'Robot Framework', 'API', 'Regressão']
       }
     ]
   },
   {
-    title: 'Estruturação e Melhoria de QA',
+    title: 'Ferramentas internas e painéis',
     description:
-      'Organização do processo de qualidade, testes, documentação, prioridades e estratégia de regressão.',
-    tags: ['Processos', 'Estratégia', 'Métricas', 'Documentação'],
-    icon: Layers3
+      'Dashboards, backoffices, portais administrativos e sistemas de acompanhamento em tempo real.',
+    tags: ['Dashboards', 'Admin', 'Controlo', 'Indicadores'],
+    icon: LayoutDashboard
   },
   {
-    title: 'Análise de Requisitos e Experiência do Utilizador',
+    title: 'Integrações e APIs',
     description:
-      'Revisão de requisitos, fluxos e interfaces para prevenir ambiguidades, retrabalho e dificuldades de utilização.',
-    tags: ['Requisitos', 'User Stories', 'Critérios de Aceitação', 'UX Funcional'],
-    icon: Bot
+      'Ligação entre plataformas, sistemas externos, serviços de pagamento, bases de dados e ferramentas empresariais.',
+    tags: ['APIs', 'Dados', 'Pagamentos', 'Sistemas'],
+    icon: PlugZap
   },
   {
-    title: 'QA Contínuo',
+    title: 'QA e qualidade de software',
     description:
-      'Acompanhamento recorrente da qualidade durante novas funcionalidades, releases e regressões.',
-    tags: ['Releases', 'Regressão', 'Manutenção', 'Feedback'],
+      'Testes manuais, exploratórios, automação, testes de API, regressão, análise de requisitos e prevenção de falhas.',
+    tags: ['QA Manual', 'Automação', 'API', 'Requisitos'],
+    icon: ShieldCheck
+  },
+  {
+    title: 'MVPs e protótipos digitais',
+    description:
+      'Criação de versões iniciais de produtos para validar uma ideia antes de realizar um investimento maior.',
+    tags: ['MVP', 'Protótipo', 'Validação', 'Produto'],
+    icon: GitBranch
+  },
+  {
+    title: 'Manutenção e melhoria contínua',
+    description:
+      'Suporte, evolução e melhoria de sistemas existentes com foco em estabilidade, organização e crescimento gradual.',
+    tags: ['Suporte', 'Evolução', 'Correções', 'Melhorias'],
     icon: Gauge
   }
 ];
