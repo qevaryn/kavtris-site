@@ -1,6 +1,8 @@
-# Qualidade é Vida Tech
+# Qevaryn Systems
 
-Site institucional da Qualidade é Vida Tech, especializada em QA Manual, automação de testes, análise de requisitos e melhoria contínua da qualidade de software.
+Site comercial da Qevaryn Systems, empresa de tecnologia focada em sistemas web, automação de processos, integrações, ferramentas internas, MVPs digitais e qualidade de software.
+
+A Qevaryn Systems atua como operadora independente e integra a Rede Qualidade é Vida como identidade institucional secundária.
 
 ## Stack
 
@@ -12,8 +14,29 @@ Site institucional da Qualidade é Vida Tech, especializada em QA Manual, automa
 - Route Handler do Next.js
 - Resend
 - Playwright
+- Vitest
 - ESLint
 - GitHub Actions
+
+## Serviços atuais
+
+- Sistemas e aplicações web
+- Automação de processos
+- Ferramentas internas e painéis
+- Integrações e APIs
+- QA e qualidade de software
+- MVPs e protótipos digitais
+- Manutenção, suporte e melhoria contínua
+
+O site não apresenta hardware, robótica, automação industrial, máquinas físicas ou produtos ainda não construídos.
+
+## Relação institucional
+
+A Qevaryn Systems é apresentada como marca principal e operadora comercial.
+
+A Rede Qualidade é Vida aparece apenas como identificação institucional secundária. A página `/rede-qualidade-e-vida` explica que a rede não é uma única empresa operacional, que cada participante deverá manter responsabilidades próprias e que projetos conjuntos dependerão de contratos específicos.
+
+Os textos institucionais e legais são provisórios. A estrutura jurídica e contratual da rede deve ser validada por profissionais especializados em Portugal antes de qualquer publicação comercial definitiva.
 
 ## Instalação
 
@@ -51,55 +74,52 @@ RESEND_TO_EMAIL=destinatario@example.com
 
 O email interno usa `public/images/email-logo.png` como logomarca inline por CID. O envio real mantém o email do cliente apenas em `replyTo`, para que a resposta no cliente de email seja direcionada ao potencial cliente.
 
-## Modos de publicação
-
-### Demonstração
-
-Use a URL `vercel.app` gerada pela Vercel para validação com pessoas autorizadas. Quando `NEXT_PUBLIC_SITE_URL` aponta para `localhost` ou para uma URL `vercel.app`, o site gera metadata `noindex` e o `robots.txt` bloqueia indexação para evitar publicação prematura.
-
-O formulário não apresenta sucesso falso: sem `RESEND_API_KEY`, `RESEND_FROM_EMAIL` e `RESEND_TO_EMAIL`, a API retorna erro seguro. Use `CONTACT_FORM_MOCK=true` apenas em desenvolvimento/testes locais.
-
-### Produção comercial
-
-Antes de publicar comercialmente:
-
-- configure um domínio definitivo na Vercel;
-- defina `NEXT_PUBLIC_SITE_URL` com a URL canónica final;
-- configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` e `CONTACT_FORM_MOCK=false`;
-- confirme que o domínio/remetente do Resend está verificado;
-- reveja os textos legais de Privacidade e Cookies.
-
-Com uma URL canónica que não seja `localhost` nem `vercel.app`, a metadata passa a permitir indexação.
-
-## Imagens
+## Ativos de marca
 
 As imagens usadas pelo site estão em `public/images`:
 
+- `qevaryn-systems-logo.png`
+- `qualidade-e-vida-systems-logo.png`
+- `qualidade-e-vida-seal.png`
+- `email-logo.png`
 - `travel-project.jpg`
 - `insurance-project.jpg`
 - `tax-services-project.jpg`
 - `gabriel.webp`
-- `logo-qualidade-e-vida-tech-transparent.png`
-- `email-logo.png`
 
-Substitua estes ficheiros mantendo os mesmos nomes para trocar as imagens sem alterar os componentes.
+`qevaryn-systems-logo.png` é a marca principal do site. `qualidade-e-vida-systems-logo.png` é usada de forma secundária na secção institucional da rede. `email-logo.png` usa a marca Qevaryn Systems para o email comercial.
 
-O logótipo final aprovado para o site está em `logo-qualidade-e-vida-tech-transparent.png`, com fundo transparente para uso direto sobre navy. A fotografia aprovada do fundador está em `gabriel.webp`. A imagem `email-logo.png` é uma versão PNG otimizada da mesma logomarca para incorporação inline no email por CID.
+A imagem Open Graph está em `src/app/opengraph-image.png` e a imagem de Twitter/X está em `src/app/twitter-image.png`, ambas com 1200 × 630 px.
 
-O favicon atual continua provisório porque ainda não existe uma versão quadrada aprovada apenas com o símbolo da marca.
+O favicon atual pode continuar provisório se não existir uma versão quadrada aprovada apenas com o símbolo Qevaryn.
 
-A imagem Open Graph final da fase de produção está em `src/app/opengraph-image.png` e a imagem de Twitter/X está em `src/app/twitter-image.png`, ambas com 1200 × 630 px.
+## Estrutura
+
+```text
+src/
+  app/
+  components/
+    layout/
+    sections/
+    ui/
+  data/
+  emails/
+  lib/
+tests/
+public/images/
+```
+
+As secções principais da homepage são: Header, Hero, faixa de competências, problemas, soluções, sectores, processo, experiência, modelos de trabalho, Rede Qualidade é Vida, sobre e contacto.
 
 ## Sistema visual responsivo
 
-A landing page usa uma hierarquia alternada de fundos para separar visualmente as secções sem alterar a identidade aprovada: hero e rodapé em navy, problemas e projetos em tons claros quentes, processo e fundador em azul muito claro, diferenciais em navy e formulário em fundo claro.
+A landing page usa navy, dourado, branco e fundos claros alternados para separar visualmente as secções.
 
-Em mobile, alguns blocos têm comportamento dedicado para evitar cartões comprimidos ou scroll horizontal:
+Em mobile:
 
 - problemas e projetos usam carrossel nativo horizontal com scroll-snap;
-- serviços usam acordeões compactos;
-- o cartão de automação mantém Playwright + TypeScript e Robot Framework + Python com peso visual equivalente através de tabs;
-- o painel de qualidade mobile usa tabs para alternar entre evolução e aprovação;
+- soluções usam acordeões compactos;
+- o painel operacional usa tabs;
 - o processo passa de fluxo horizontal para timeline vertical;
 - o formulário usa campos em uma coluna com altura e fonte adequadas para toque.
 
@@ -139,8 +159,6 @@ O projeto define headers HTTP em `next.config.mjs`:
 
 A CSP de produção não utiliza `unsafe-eval`. Em desenvolvimento, `unsafe-eval` é permitido apenas para compatibilidade com o servidor local do Next.js.
 
-As dependências de produção foram atualizadas para remover vulnerabilidades conhecidas. O `npm audit --omit=dev` deve retornar 0 vulnerabilidades. O `npm audit` completo ainda pode reportar vulnerabilidades high em dependências transitivas de ferramentas de desenvolvimento do `eslint-config-next`; a correção automática sugerida pelo npm exige mudanças destrutivas ou incompatíveis e deve ser revista quando o ecossistema publicar versões compatíveis.
-
 ## Deploy
 
 O projeto está preparado para Vercel. Configure as variáveis de ambiente na Vercel antes de publicar, especialmente `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` e `NEXT_PUBLIC_SITE_URL`.
@@ -168,7 +186,7 @@ Após o deploy:
 1. Abra a página publicada.
 2. Preencha o formulário com dados de teste.
 3. Confirme no painel do Resend que o envio foi aceite.
-4. Confirme no Outlook que o email chegou com a logomarca no topo.
+4. Confirme no cliente de email que o email chegou com a logomarca Qevaryn Systems no topo.
 5. Clique em responder e confirme que o destinatário da resposta é o email informado no formulário.
 
 Os testes automatizados não enviam emails reais: os testes unitários usam mock do Resend e os testes Playwright interceptam a rota quando validam sucesso.
