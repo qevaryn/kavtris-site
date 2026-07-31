@@ -4,20 +4,42 @@ import { cn } from '@/components/ui/cn';
 type LogoProps = {
   className?: string;
   priority?: boolean;
+  variant?: 'qevaryn' | 'network';
 };
 
-export function Logo({ className, priority = false }: LogoProps) {
+const logos = {
+  qevaryn: {
+    src: '/images/qevaryn-systems-logo.png',
+    alt: 'Qevaryn Systems',
+    width: 900,
+    height: 282,
+    sizes: '(max-width: 430px) 145px, (max-width: 640px) 170px, (max-width: 1024px) 220px, 260px',
+    className: 'h-auto w-[145px] shrink-0 object-contain min-[430px]:w-[170px] sm:w-[220px] xl:w-[260px]'
+  },
+  network: {
+    src: '/images/qualidade-e-vida-systems-logo.png',
+    alt: 'Rede Qualidade é Vida',
+    width: 680,
+    height: 155,
+    sizes: '(max-width: 640px) 160px, 190px',
+    className: 'h-auto w-[160px] shrink-0 object-contain sm:w-[190px]'
+  }
+};
+
+export function Logo({ className, priority = false, variant = 'qevaryn' }: LogoProps) {
+  const logo = logos[variant];
+
   return (
     <span className={cn('inline-flex items-center', className)} data-testid="brand-logo">
       <Image
-        src="/images/logo-qualidade-e-vida-tech-transparent.png"
-        alt="Qualidade é Vida Tech"
-        width={650}
-        height={162}
+        src={logo.src}
+        alt={logo.alt}
+        width={logo.width}
+        height={logo.height}
         priority={priority}
         loading={priority ? undefined : 'eager'}
-        sizes="(max-width: 430px) 156px, (max-width: 640px) 168px, (max-width: 1024px) 214px, 236px"
-        className="h-auto w-[156px] shrink-0 object-contain min-[430px]:w-[168px] sm:w-[214px] lg:w-[236px]"
+        sizes={logo.sizes}
+        className={logo.className}
       />
     </span>
   );

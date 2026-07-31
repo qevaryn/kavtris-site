@@ -17,7 +17,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <Button
         type="button"
         variant="ghost"
@@ -48,7 +48,7 @@ export function MobileMenu() {
         </nav>
         <div className="mt-4 border-t border-white/10 pt-4">
           <Button href="#contacto" className="w-full justify-center" onClick={() => setOpen(false)}>
-            Pedir uma análise
+            Falar sobre um projeto
           </Button>
         </div>
       </div>

@@ -10,11 +10,11 @@ const sans = Inter({ subsets: ['latin'], variable: '--font-sans' });
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Qualidade é Vida Tech | QA e Automação de Testes',
-    template: '%s | Qualidade é Vida Tech'
+    default: 'Qevaryn Systems | Sistemas Web, Automação e Qualidade de Software',
+    template: '%s | Qevaryn Systems'
   },
   description:
-    'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+    'Desenvolvimento de sistemas web, automação de processos, integrações, aplicações empresariais e qualidade de software para empresas em Portugal.',
   alternates: {
     canonical: '/'
   },
@@ -23,23 +23,23 @@ export const metadata: Metadata = {
     locale: 'pt_PT',
     url: siteUrl,
     siteName: companyName,
-    title: 'Qualidade é Vida Tech | QA e Automação de Testes',
+    title: 'Qevaryn Systems | Sistemas Web, Automação e Qualidade de Software',
     description:
-      'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+      'Desenvolvimento de sistemas web, automação de processos, integrações, aplicações empresariais e qualidade de software para empresas em Portugal.',
     images: [
       {
         url: '/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'Qualidade é Vida Tech - QA Manual e Automação de Testes'
+        alt: 'Qevaryn Systems - Sistemas Web, Automação e Qualidade de Software'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Qualidade é Vida Tech | QA e Automação de Testes',
+    title: 'Qevaryn Systems | Sistemas Web, Automação e Qualidade de Software',
     description:
-      'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+      'Desenvolvimento de sistemas web, automação de processos, integrações, aplicações empresariais e qualidade de software para empresas em Portugal.',
     images: ['/twitter-image.png']
   },
   robots: {
