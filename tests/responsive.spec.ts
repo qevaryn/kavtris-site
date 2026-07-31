@@ -37,7 +37,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
     await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('hidden');
 
-    await page.getByRole('navigation', { name: 'Menu móvel' }).getByRole('link', { name: 'Serviços', exact: true }).click();
+    await page.getByRole('navigation', { name: 'Menu móvel' }).getByRole('link', { name: 'Soluções', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Abrir menu' })).toHaveAttribute('aria-expanded', 'false');
     await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('');
   });
@@ -76,9 +76,10 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.goto('/');
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-desktop.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
-    await page.locator('#servicos').screenshot({ path: testInfo.outputPath('phase6-services-desktop.png') });
+    await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-desktop.png') });
+    await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-desktop.png') });
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-desktop.png') });
-    await page.getByRole('heading', { name: 'Por que trabalhar connosco' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-differentials-desktop.png') });
+    await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-desktop.png') });
     await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-desktop.png') });
 
     await page.setViewportSize({ width: 390, height: 844 });
@@ -86,11 +87,12 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
     await page.getByTestId('dashboard-mobile').screenshot({ path: testInfo.outputPath('phase6-dashboard-mobile.png') });
-    await page.getByRole('heading', { name: 'A sua equipa enfrenta algum destes problemas?' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
-    await page.locator('#servicos').screenshot({ path: testInfo.outputPath('phase6-services-mobile.png') });
+    await page.getByRole('heading', { name: 'Quando as ferramentas atuais deixam de acompanhar o negócio' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
+    await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-mobile.png') });
+    await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-mobile.png') });
     await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-mobile.png') });
-    await page.getByRole('heading', { name: 'Por que trabalhar connosco' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-differentials-mobile.png') });
+    await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-mobile.png') });
     await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-founder-mobile.png') });
     await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-mobile.png') });
     await page.getByRole('contentinfo').screenshot({ path: testInfo.outputPath('phase6-footer-mobile.png') });
@@ -106,22 +108,23 @@ test.describe('responsividade e acessibilidade básica', () => {
     await expect.poll(async () => problemsCarousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
     await expect.poll(async () => projectsCarousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
 
-    const serviceDetailsButton = page.locator('#servicos').getByRole('button', { name: 'Ver detalhes' }).first();
+    const serviceDetailsButton = page.locator('#solucoes').getByRole('button', { name: 'Ver detalhes' }).first();
     await expect(serviceDetailsButton).toHaveAttribute('aria-expanded', 'false');
     await serviceDetailsButton.click();
     await expect(serviceDetailsButton).toHaveAttribute('aria-expanded', 'true');
 
-    const automationCard = page.locator('#servicos article').filter({ has: page.getByRole('heading', { name: 'Automação de Testes Web, Mobile e API' }) });
+    const automationCard = page.locator('#solucoes article').filter({ has: page.getByRole('heading', { name: 'Automação de processos' }) });
     const automationDetailsButton = automationCard.getByRole('button', { name: 'Ver detalhes' });
     await automationDetailsButton.click();
     await expect(automationDetailsButton).toHaveAttribute('aria-expanded', 'true');
-    await automationCard.getByRole('tab', { name: 'Robot' }).click();
-    await expect(automationCard.getByRole('tab', { name: 'Robot' })).toHaveAttribute('aria-selected', 'true');
+    await automationCard.getByRole('tab', { name: 'Qualidade' }).click();
+    await expect(automationCard.getByRole('tab', { name: 'Qualidade' })).toHaveAttribute('aria-selected', 'true');
 
-    await page.getByRole('tab', { name: 'Aprovação' }).click();
-    await expect(page.getByRole('tab', { name: 'Aprovação' })).toHaveAttribute('aria-selected', 'true');
-    await page.getByRole('button', { name: 'Ver bugs e ambientes' }).click();
-    await expect(page.getByRole('button', { name: 'Ver bugs e ambientes' })).toHaveAttribute('aria-expanded', 'true');
+    const dashboard = page.getByTestId('dashboard-mobile');
+    await dashboard.getByRole('tab', { name: 'Qualidade' }).click();
+    await expect(dashboard.getByRole('tab', { name: 'Qualidade' })).toHaveAttribute('aria-selected', 'true');
+    await page.getByRole('button', { name: 'Ver atividade ilustrativa' }).click();
+    await expect(page.getByRole('button', { name: 'Ver atividade ilustrativa' })).toHaveAttribute('aria-expanded', 'true');
   });
 
   test('campos, botões e âncoras mantêm medidas acessíveis', async ({ page }) => {
@@ -138,11 +141,11 @@ test.describe('responsividade e acessibilidade básica', () => {
       expect(metrics.fontSize).toBeGreaterThanOrEqual(16);
     }
 
-    const submit = page.getByRole('button', { name: 'Enviar pedido de análise' });
+    const submit = page.getByRole('button', { name: 'Enviar pedido' });
     const submitBox = await submit.boundingBox();
     expect(submitBox?.height).toBeGreaterThanOrEqual(44);
 
-    for (const href of ['#servicos', '#processo', '#experiencia', '#sobre', '#contacto']) {
+    for (const href of ['#solucoes', '#sectores', '#processo', '#experiencia', '#rede', '#sobre', '#contacto']) {
       await page.goto(`/${href}`);
       const top = await page.locator(href).boundingBox();
       expect(top?.y).toBeGreaterThanOrEqual(68);

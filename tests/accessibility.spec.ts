@@ -25,10 +25,10 @@ test('permite navegação por teclado no header e menu mobile', async ({ page })
   await page.goto('/');
 
   await page.keyboard.press('Tab');
-  await expect(page.getByLabel('Qualidade é Vida Tech - início')).toBeFocused();
+  await expect(page.getByLabel('Qevaryn Systems - início')).toBeFocused();
 
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('banner').getByLabel('Pedir uma análise')).toBeFocused();
+  await expect(page.getByRole('banner').getByLabel('Falar sobre um projeto')).toBeFocused();
 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();

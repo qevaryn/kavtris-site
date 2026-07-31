@@ -4,9 +4,9 @@ const validContactPayload = {
   name: 'Ana',
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
-  service: 'QA Manual e Análise',
-  timeline: 'Imediato',
-  message: 'Quero melhorar a qualidade do meu produto com um processo claro e sustentável.',
+  phone: '',
+  service: 'Automação de processos',
+  message: 'Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.',
   privacyConsent: true,
   honeypot: ''
 };
@@ -14,17 +14,17 @@ const validContactPayload = {
 test('valida formulário vazio, email inválido e envio com sucesso interceptado', async ({ page }) => {
   await page.goto('/');
 
-  await page.getByRole('button', { name: 'Enviar pedido de análise' }).click();
+  await page.getByRole('button', { name: 'Enviar pedido' }).click();
   await expect(page.getByText('Indique o seu nome.')).toBeVisible();
 
   await page.getByLabel('Nome').fill('Ana');
   await page.getByLabel('Empresa').fill('Empresa Exemplo');
   await page.getByLabel('Email').fill('email-invalido');
-  await page.getByLabel('Prazo desejado').selectOption({ label: 'Imediato' });
-  await page.getByLabel('Serviço pretendido').selectOption({ label: 'QA Manual e Análise' });
-  await page.getByLabel('Descrição do projeto').fill('Quero melhorar a qualidade do meu produto com um processo claro e sustentável.');
+  await page.getByLabel('Telefone').fill('+351 900 000 000');
+  await page.getByLabel('Tipo de necessidade').selectOption({ label: 'Automação de processos' });
+  await page.getByLabel('Descrição do problema').fill('Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.');
   await page.getByLabel('Li e aceito a Política de Privacidade.').check();
-  await page.getByRole('button', { name: 'Enviar pedido de análise' }).click();
+  await page.getByRole('button', { name: 'Enviar pedido' }).click();
   await expect(page.getByText('Indique um email válido.')).toBeVisible();
 
   await page.route('**/api/contact', async (route) => {
@@ -36,7 +36,7 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
   });
 
   await page.getByLabel('Email').fill('ana@example.com');
-  await page.getByRole('button', { name: 'Enviar pedido de análise' }).click();
+  await page.getByRole('button', { name: 'Enviar pedido' }).click();
   await expect(page.getByRole('status')).toHaveText(/Pedido enviado com sucesso/i);
 });
 
