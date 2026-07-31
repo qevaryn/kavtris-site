@@ -1,7 +1,7 @@
 import type { ContactFormValues } from '@/lib/validation';
-import { companyName, siteUrl, socialLinks } from '@/lib/constants';
+import { brandTagline, companyName, siteUrl, socialLinks } from '@/lib/constants';
 
-const emailSubjectPrefix = 'Re: Pedido de análise — Qualidade é Vida Tech';
+const emailSubjectPrefix = 'Re: Pedido — Qevaryn Systems';
 
 export type ContactNotificationInput = ContactFormValues & {
   submittedAt?: Date;
@@ -52,8 +52,8 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     name: escapeHtml(input.name),
     company: escapeHtml(company),
     email: escapeHtml(input.email),
+    phone: escapeHtml(formatDisplayValue(input.phone)),
     service: escapeHtml(input.service),
-    timeline: escapeHtml(input.timeline),
     message: escapeHtml(input.message).replace(/\n/g, '<br />'),
     submittedAt: escapeHtml(submittedAt),
     origin: escapeHtml(origin),
@@ -71,28 +71,21 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
           <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;">
             <tr>
               <td style="background:#031426;padding:28px 32px 22px 32px;border-radius:18px 18px 0 0;">
-                <img src="cid:qualidade-e-vida-logo" width="260" alt="Qualidade é Vida Tech" style="display:block;width:260px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
+                <img src="cid:qualidade-e-vida-logo" width="280" alt="Qevaryn Systems" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
                 <div style="height:2px;width:96px;background:#D99A16;margin:20px 0 14px 0;"></div>
                 <p style="margin:0;color:#F2B632;font-size:12px;line-height:18px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;">Novo contacto através do site</p>
               </td>
             </tr>
             <tr>
               <td style="background:#FFFFFF;padding:32px;border-left:1px solid #E6E7E8;border-right:1px solid #E6E7E8;">
-                <h1 style="margin:0 0 10px 0;color:#0A1B30;font-size:26px;line-height:34px;font-family:Georgia,'Times New Roman',serif;">Novo pedido de análise</h1>
-                <p style="margin:0 0 24px 0;color:#4B5563;font-size:15px;line-height:24px;">Um potencial cliente enviou um pedido através do formulário da Qualidade é Vida Tech.</p>
+                <h1 style="margin:0 0 10px 0;color:#0A1B30;font-size:26px;line-height:34px;font-family:Georgia,'Times New Roman',serif;">Novo pedido comercial</h1>
+                <p style="margin:0 0 24px 0;color:#4B5563;font-size:15px;line-height:24px;">Um potencial cliente enviou um pedido através do formulário da Qevaryn Systems.</p>
 
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:0 0 28px 0;">
                   <tr>
                     <td style="padding:12px;background:#FBF7ED;border:1px solid #EAD7AE;border-radius:12px;">
-                      <p style="margin:0 0 4px 0;color:#7A4E00;font-size:12px;font-weight:700;text-transform:uppercase;">Serviço pretendido</p>
+                      <p style="margin:0 0 4px 0;color:#7A4E00;font-size:12px;font-weight:700;text-transform:uppercase;">Tipo de necessidade</p>
                       <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;font-weight:700;">${safe.service}</p>
-                    </td>
-                  </tr>
-                  <tr><td style="height:10px;"></td></tr>
-                  <tr>
-                    <td style="padding:12px;background:#F8F8F6;border:1px solid #E6E7E8;border-radius:12px;">
-                      <p style="margin:0 0 4px 0;color:#4B5563;font-size:12px;font-weight:700;text-transform:uppercase;">Prazo desejado</p>
-                      <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;">${safe.timeline}</p>
                     </td>
                   </tr>
                   <tr><td style="height:10px;"></td></tr>
@@ -118,9 +111,13 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                     <td style="padding:10px 0;color:#4B5563;font-size:14px;">Email:</td>
                     <td style="padding:10px 0;color:#0A1B30;font-size:14px;"><a href="mailto:${safe.email}" style="color:#7A4E00;text-decoration:underline;">${safe.email}</a></td>
                   </tr>
+                  <tr>
+                    <td style="padding:10px 0;color:#4B5563;font-size:14px;">Telefone:</td>
+                    <td style="padding:10px 0;color:#0A1B30;font-size:14px;">${safe.phone}</td>
+                  </tr>
                 </table>
 
-                <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">Descrição do projeto</h2>
+                <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">Descrição do problema</h2>
                 <div style="background:#F8F8F6;border-left:4px solid #D99A16;padding:18px 18px;margin-bottom:28px;color:#0A1B30;font-size:15px;line-height:24px;">
                   ${safe.message}
                 </div>
@@ -138,15 +135,14 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;background:#F8F8F6;border:1px solid #E6E7E8;">
                   <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Data e hora:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.submittedAt} (Europe/Lisbon)</td></tr>
                   <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Página de origem:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.origin}</td></tr>
-                  <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Serviço:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.service}</td></tr>
-                  <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Prazo:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.timeline}</td></tr>
+                  <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Tipo de necessidade:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.service}</td></tr>
                 </table>
               </td>
             </tr>
             <tr>
               <td style="background:#031426;padding:24px 32px;border-radius:0 0 18px 18px;color:#FFFFFF;">
                 <p style="margin:0 0 6px 0;font-size:16px;line-height:24px;font-weight:700;">${companyName}</p>
-                <p style="margin:0 0 14px 0;color:#D1D5DB;font-size:13px;line-height:20px;">Qualidade de software que impulsiona o seu negócio.</p>
+                <p style="margin:0 0 14px 0;color:#D1D5DB;font-size:13px;line-height:20px;">${brandTagline}</p>
                 <p style="margin:0 0 12px 0;color:#9CA3AF;font-size:12px;line-height:18px;">Esta mensagem foi gerada automaticamente através do formulário de contacto do site.</p>
                 <p style="margin:0;color:#D1D5DB;font-size:12px;line-height:18px;">
                   LinkedIn: <a href="${safe.linkedin}" style="color:#F2B632;text-decoration:none;">${safe.linkedin}</a><br />
@@ -162,15 +158,15 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
 </html>`;
 
   const text = [
-    'Novo pedido de análise',
+    'Novo pedido comercial',
     '',
-    'Um potencial cliente enviou um pedido através do formulário da Qualidade é Vida Tech.',
+    'Um potencial cliente enviou um pedido através do formulário da Qevaryn Systems.',
     '',
     `Nome: ${input.name}`,
     `Empresa: ${company}`,
     `Email: ${input.email}`,
-    `Serviço: ${input.service}`,
-    `Prazo: ${input.timeline}`,
+    `Telefone: ${formatDisplayValue(input.phone)}`,
+    `Tipo de necessidade: ${input.service}`,
     '',
     'Descrição:',
     input.message,

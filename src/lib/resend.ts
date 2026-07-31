@@ -6,7 +6,7 @@ import type { ContactFormValues } from '@/lib/validation';
 
 const requiredEnvKeys = ['RESEND_API_KEY', 'RESEND_FROM_EMAIL', 'RESEND_TO_EMAIL'] as const;
 const logoContentId = 'qualidade-e-vida-logo';
-const logoFilename = 'qualidade-e-vida-tech.png';
+const logoFilename = 'qevaryn-systems.png';
 type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
 
 async function readEmailLogo() {
