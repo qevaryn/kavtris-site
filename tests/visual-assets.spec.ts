@@ -71,15 +71,17 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   const logoResponse = await request.get('/images/qevaryn-systems-logo.png');
 
   await expect(headerLogo).toBeVisible();
-  await expect(footerLogo).toBeVisible();
   expect(logoResponse.status()).toBe(200);
   await expect(headerLogo).toHaveAttribute('src', logoSourcePattern);
-  await expect(footerLogo).toHaveAttribute('src', logoSourcePattern);
   await expect(headerLogo).toHaveAttribute('alt', logoAlt);
-  await expect(footerLogo).toHaveAttribute('alt', logoAlt);
   await expect(page.getByText('QV', { exact: true })).toHaveCount(0);
+  if (isMobileViewport) {
+    await expect(page.getByTestId('header-network-signature')).toBeHidden();
+  } else {
+    await expect(page.getByTestId('header-network-signature')).toBeVisible();
+  }
 
-  for (const logo of [headerLogo, footerLogo]) {
+  for (const logo of [headerLogo]) {
     const metrics = await readRenderedImageMetrics(logo);
     expect(metrics.source).toContain('qevaryn-systems-logo');
     expect(metrics.naturalWidth).toBeGreaterThan(0);
@@ -122,6 +124,18 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   expect(headerMetrics.left).toBeGreaterThanOrEqual(0);
   expect(headerMetrics.right).toBeLessThanOrEqual(viewport?.width || 1440);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport?.width || 1440);
+
+  await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
+  await expect(footerLogo).toBeVisible();
+  await expect(footerLogo).toHaveAttribute('src', logoSourcePattern);
+  await expect(footerLogo).toHaveAttribute('alt', logoAlt);
+  await expect(page.getByRole('contentinfo').getByText('Integrante da Rede Qualidade é Vida')).toBeVisible();
+  await expect(page.getByRole('contentinfo').getByAltText('Rede Qualidade é Vida')).toBeVisible();
+
+  const footerMetrics = await readRenderedImageMetrics(footerLogo);
+  expect(footerMetrics.source).toContain('qevaryn-systems-logo');
+  expect(Math.abs(footerMetrics.naturalRatio - footerMetrics.renderedRatio)).toBeLessThan(0.03);
+  expect(footerMetrics.objectFit).toBe('contain');
 });
 
 test('fotografia aprovada do fundador aparece sem fallback e mantém cartão compacto', async ({ page }) => {
@@ -197,6 +211,8 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
+  await expect(page.getByTestId('mobile-network-signature')).toBeVisible();
+  await expect(page.getByRole('banner').getByAltText('Rede Qualidade é Vida')).toHaveCount(0);
   const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
 
   expect(openMenuMetrics.source).toContain('qevaryn-systems-logo');
@@ -223,28 +239,26 @@ test('nenhuma imagem carregada retorna dimensões zero ou erro', async ({ page, 
   });
 
   await page.goto('/');
-  await page.evaluate(async () => {
-    const step = Math.max(window.innerHeight * 0.75, 300);
-    for (let y = 0; y <= document.documentElement.scrollHeight; y += step) {
-      window.scrollTo(0, y);
-      await new Promise((resolve) => window.setTimeout(resolve, 80));
-    }
-    window.scrollTo(0, 0);
-    await Promise.all(
-      Array.from(document.images)
-        .filter((image) => image.getBoundingClientRect().width > 0 && image.getBoundingClientRect().height > 0)
-        .map((image) => {
-          if (image.complete && image.naturalWidth > 0) {
-            return Promise.resolve();
-          }
+  const images = page.locator('img');
+  const imageCount = await images.count();
 
-          return Promise.race([
-            image.decode().catch(() => undefined),
-            new Promise((resolve) => window.setTimeout(resolve, 1500))
-          ]);
-        })
-    );
-  });
+  for (let index = 0; index < imageCount; index += 1) {
+    const image = images.nth(index);
+    const isRendered = await image.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+    });
+
+    if (!isRendered) {
+      continue;
+    }
+
+    await image.scrollIntoViewIfNeeded();
+    await expect.poll(async () => image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await image.evaluate((element) => (element as HTMLImageElement).decode().catch(() => undefined));
+  }
 
   const imageSources = await page.evaluate(() =>
     Array.from(new Set(Array.from(document.images).map((image) => image.currentSrc || image.src).filter(Boolean)))
