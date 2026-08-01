@@ -121,7 +121,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.goto('/');
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
-    await page.getByTestId('dashboard-mobile').screenshot({ path: testInfo.outputPath('phase6-dashboard-mobile.png') });
+    await page.getByTestId('hero-brand-visual').screenshot({ path: testInfo.outputPath('phase6-hero-brand-mobile.png') });
     await page.getByRole('heading', { name: 'Quando as ferramentas atuais deixam de acompanhar o negócio' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
     await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-mobile.png') });
     await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-mobile.png') });
@@ -134,7 +134,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.getByRole('contentinfo').screenshot({ path: testInfo.outputPath('phase6-footer-mobile.png') });
   });
 
-  test('layout mobile usa carrosséis, acordeões e tabs compactos', async ({ page }) => {
+  test('layout mobile usa carrosséis, acordeões e faixas compactas', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
@@ -156,11 +156,8 @@ test.describe('responsividade e acessibilidade básica', () => {
     await automationCard.getByRole('tab', { name: 'Qualidade' }).click();
     await expect(automationCard.getByRole('tab', { name: 'Qualidade' })).toHaveAttribute('aria-selected', 'true');
 
-    const dashboard = page.getByTestId('dashboard-mobile');
-    await dashboard.getByRole('tab', { name: 'Qualidade' }).click();
-    await expect(dashboard.getByRole('tab', { name: 'Qualidade' })).toHaveAttribute('aria-selected', 'true');
-    await page.getByRole('button', { name: 'Ver atividade ilustrativa' }).click();
-    await expect(page.getByRole('button', { name: 'Ver atividade ilustrativa' })).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.getByLabel('Serviços principais').getByText('Automação inteligente')).toBeVisible();
+    await expect(page.getByLabel('Serviços principais').getByText('Suporte e evolução')).toBeVisible();
   });
 
   test('campos, botões e âncoras mantêm medidas acessíveis', async ({ page }) => {

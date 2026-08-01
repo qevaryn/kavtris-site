@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const logoAlt = 'Qevaryn Systems';
 const logoSourcePattern = /qevaryn-systems-logo/;
+const symbolSourcePattern = /qevaryn-symbol/;
 const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
@@ -75,7 +76,7 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   await expect(headerLogo).toHaveAttribute('src', logoSourcePattern);
   await expect(headerLogo).toHaveAttribute('alt', logoAlt);
   await expect(page.getByText('QV', { exact: true })).toHaveCount(0);
-  if (isMobileViewport) {
+  if (!viewport || viewport.width < 1360) {
     await expect(page.getByTestId('header-network-signature')).toBeHidden();
   } else {
     await expect(page.getByTestId('header-network-signature')).toBeVisible();
@@ -136,6 +137,31 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   expect(footerMetrics.source).toContain('qevaryn-systems-logo');
   expect(Math.abs(footerMetrics.naturalRatio - footerMetrics.renderedRatio)).toBeLessThan(0.03);
   expect(footerMetrics.objectFit).toBe('contain');
+});
+
+test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional', async ({ page, request }) => {
+  await page.goto('/');
+
+  const symbolFile = readFileSync('public/images/qevaryn-symbol.png');
+  const symbolFileSize = readPngSize(symbolFile);
+  const symbolResponse = await request.get('/images/qevaryn-symbol.png');
+  const heroVisual = page.getByTestId('hero-brand-visual');
+  const symbol = heroVisual.getByAltText('Símbolo Qevaryn Systems');
+
+  expect(symbolFile.subarray(1, 4).toString()).toBe('PNG');
+  expect(symbolFileSize.width).toBe(282);
+  expect(symbolFileSize.height).toBe(282);
+  expect(symbolResponse.status()).toBe(200);
+  await expect(page.locator('#inicio').getByText('Painel Operacional')).toHaveCount(0);
+  await expect(page.locator('#inicio').getByText('MVP', { exact: true })).toHaveCount(0);
+  await expect(page.locator('#inicio').getByText('Fluxos', { exact: true })).toHaveCount(0);
+  await expect(symbol).toBeVisible();
+  await expect(symbol).toHaveAttribute('src', symbolSourcePattern);
+
+  const metrics = await readRenderedImageMetrics(symbol);
+  expect(metrics.renderedWidth).toBeGreaterThan(240);
+  expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
+  expect(metrics.objectFit).toBe('contain');
 });
 
 test('fotografia aprovada do fundador aparece sem fallback e mantém cartão compacto', async ({ page }) => {
