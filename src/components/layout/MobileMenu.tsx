@@ -17,7 +17,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="xl:hidden">
+    <div className="min-[1180px]:hidden">
       <Button
         type="button"
         variant="ghost"
@@ -51,7 +51,7 @@ export function MobileMenu() {
             Integrante da Rede Qualidade é Vida
           </p>
           <Button href="#contacto" className="w-full justify-center" onClick={() => setOpen(false)}>
-            Falar sobre um projeto
+            Fale sobre um projeto
           </Button>
         </div>
       </div>

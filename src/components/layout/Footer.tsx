@@ -9,7 +9,7 @@ export function Footer() {
       <div className="container-section py-9">
         <div className="grid gap-8 border-b border-white/10 pb-8 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
-            <Logo />
+            <Logo variant="qevarynWhite" />
             <p className="text-sm text-white/72">{brandTagline}</p>
             <p className="max-w-md text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
             <div className="flex flex-wrap gap-3">
