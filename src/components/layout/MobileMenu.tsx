@@ -17,7 +17,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="xl:hidden">
+    <div className="min-[1180px]:hidden">
       <Button
         type="button"
         variant="ghost"
