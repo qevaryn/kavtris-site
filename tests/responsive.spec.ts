@@ -1,5 +1,37 @@
 import { test, expect } from '@playwright/test';
 
+async function waitForExperienceImages(page: import('@playwright/test').Page) {
+  const experience = page.locator('#experiencia');
+
+  await experience.scrollIntoViewIfNeeded();
+  await expect.poll(async () => experience.evaluate((section) => {
+    const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
+      const rect = image.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+
+    return renderedImages.length;
+  })).toBe(3);
+
+  await expect.poll(async () => experience.evaluate((section) => {
+    const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
+      const rect = image.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+
+    return renderedImages.every((image) => image.complete && image.naturalWidth > 0 && image.naturalHeight > 0);
+  })).toBe(true);
+
+  await experience.evaluate(async (section) => {
+    const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
+      const rect = image.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    });
+
+    await Promise.all(renderedImages.map((image) => image.decode().catch(() => undefined)));
+  });
+}
+
 test.describe('responsividade e acessibilidade básica', () => {
   for (const viewport of [
     { name: 'mobile-360', width: 360, height: 800 },
@@ -64,6 +96,8 @@ test.describe('responsividade e acessibilidade básica', () => {
     ]) {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto('/');
+      await waitForExperienceImages(page);
+      await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
         path: testInfo.outputPath(`phase6-full-${viewport.name}.png`),
         fullPage: true
@@ -78,6 +112,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
     await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-desktop.png') });
     await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-desktop.png') });
+    await waitForExperienceImages(page);
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-desktop.png') });
     await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-desktop.png') });
     await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-desktop.png') });
@@ -91,6 +126,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-mobile.png') });
     await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-mobile.png') });
     await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
+    await waitForExperienceImages(page);
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-mobile.png') });
     await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-mobile.png') });
     await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-founder-mobile.png') });

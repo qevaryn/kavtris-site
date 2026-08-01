@@ -1,12 +1,42 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { networkPrinciples } from '@/data/network';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { siteUrl } from '@/lib/constants';
 
-export const metadata = {
+const title = 'Rede Qualidade é Vida';
+const description = 'Visão institucional da Rede Qualidade é Vida e relação independente da Qevaryn Systems como operadora tecnológica.';
+const canonicalPath = '/rede-qualidade-e-vida';
+
+export const metadata: Metadata = {
   title: 'Rede Qualidade é Vida',
-  description:
-    'Visão institucional da Rede Qualidade é Vida e relação independente da Qevaryn Systems como operadora tecnológica.'
+  description,
+  alternates: {
+    canonical: canonicalPath
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_PT',
+    url: `${siteUrl}${canonicalPath}`,
+    siteName: 'Qevaryn Systems',
+    title,
+    description,
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Rede Qualidade é Vida - ligação institucional da Qevaryn Systems'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/twitter-image.png']
+  }
 };
 
 export default function NetworkPage() {
