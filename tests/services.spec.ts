@@ -35,7 +35,10 @@ test('valida soluções, sectores, rede e projetos profissionais', async ({ page
   await expect(page.getByRole('heading', { name: 'Publicar e acompanhar' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Melhorar continuamente' })).toBeVisible();
 
-  await expect(page.getByRole('heading', { name: 'Tecnologia independente, ligada a um padrão comum de qualidade' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Duas marcas. Um propósito.' })).toBeVisible();
+  await expect(page.getByText('Marca institucional')).toBeVisible();
+  await expect(page.getByText('Empresa operadora de tecnologia')).toBeVisible();
+  await expect(page.getByText(/A Qevaryn Systems mantém gestão, contratos e responsabilidades próprios/i)).toBeVisible();
   await expect(page.getByRole('link', { name: 'Conhecer a Rede Qualidade é Vida' })).toHaveAttribute('href', '/rede-qualidade-e-vida');
 
   const insuranceCard = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Seguradora multinacional' }) });

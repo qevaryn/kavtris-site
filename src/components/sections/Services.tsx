@@ -52,6 +52,10 @@ export function Services() {
           </div>
         </div>
 
+        <p className="mx-auto mt-8 max-w-3xl text-center text-sm font-medium text-muted">
+          Soluções desenvolvidas pela Qevaryn Systems com os padrões institucionais da Rede Qualidade é Vida.
+        </p>
+
         <div className="mt-10 grid gap-4 md:hidden">
           {services.map((service) => {
             const isOpen = openService === service.title;

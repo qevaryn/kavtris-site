@@ -1,24 +1,24 @@
-import { Handshake, Landmark, Scale, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, Handshake, Landmark, ShieldCheck } from 'lucide-react';
 
 export const networkPrinciples = [
   {
-    title: 'Independência jurídica',
-    description: 'Cada operação deve manter administração e responsabilidades próprias.',
+    title: 'Independência',
+    description: 'Cada empresa mantém gestão e responsabilidades próprias.',
     icon: Landmark
   },
   {
-    title: 'Separação financeira',
-    description: 'A ligação institucional não implica mistura automática de patrimónios.',
-    icon: Scale
+    title: 'Qualidade',
+    description: 'Existem valores e padrões comuns.',
+    icon: BadgeCheck
   },
   {
-    title: 'Cooperação voluntária',
-    description: 'Projetos conjuntos dependem de alinhamento e contratos próprios.',
+    title: 'Cooperação',
+    description: 'Projetos conjuntos são voluntários e contratualmente definidos.',
     icon: Handshake
   },
   {
-    title: 'Padrões comuns de qualidade',
-    description: 'A rede existe para reforçar valores, organização e qualidade no trabalho.',
+    title: 'Confiança',
+    description: 'A utilização da marca exige responsabilidade e transparência.',
     icon: ShieldCheck
   }
 ];

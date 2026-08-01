@@ -8,8 +8,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-navy-950/95 text-white backdrop-blur supports-[backdrop-filter]:bg-navy-950/90">
       <div className="container-wide flex min-h-[68px] items-center justify-between gap-4 py-3 xl:min-h-[76px]">
-        <Link href="#inicio" className="flex min-w-0 items-center" aria-label="Qevaryn Systems - início">
+        <Link href="#inicio" className="flex min-w-0 items-center gap-4" aria-label="Qevaryn Systems - início">
           <Logo priority />
+          <span data-testid="header-network-signature" className="hidden items-center gap-3 border-l border-gold-500/45 pl-4 text-xs font-medium uppercase tracking-[0.18em] text-white/55 min-[1180px]:inline-flex">
+            <span className="h-2 w-2 rounded-full bg-gold-500" aria-hidden="true" />
+            Integrante da Rede Qualidade é Vida
+          </span>
         </Link>
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-5 xl:flex 2xl:gap-6">

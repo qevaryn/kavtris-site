@@ -14,6 +14,9 @@ const validContactPayload = {
 test('valida formulário vazio, email inválido e envio com sucesso interceptado', async ({ page }) => {
   await page.goto('/');
 
+  await expect(page.getByRole('heading', { name: 'Fale com a Qevaryn Systems' })).toBeVisible();
+  await expect(page.locator('#contacto').getByText('Integrante da Rede Qualidade é Vida')).toBeVisible();
+
   await page.getByRole('button', { name: 'Enviar pedido' }).click();
   await expect(page.getByText('Indique o seu nome.')).toBeVisible();
 

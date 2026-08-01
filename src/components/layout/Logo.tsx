@@ -4,7 +4,7 @@ import { cn } from '@/components/ui/cn';
 type LogoProps = {
   className?: string;
   priority?: boolean;
-  variant?: 'qevaryn' | 'network';
+  variant?: 'qevaryn' | 'network' | 'seal';
 };
 
 const logos = {
@@ -23,6 +23,14 @@ const logos = {
     height: 155,
     sizes: '(max-width: 640px) 160px, 190px',
     className: 'h-auto w-[160px] shrink-0 object-contain sm:w-[190px]'
+  },
+  seal: {
+    src: '/images/qualidade-e-vida-seal.png',
+    alt: 'Rede Qualidade é Vida',
+    width: 512,
+    height: 512,
+    sizes: '44px',
+    className: 'h-11 w-11 shrink-0 object-contain'
   }
 };
 
@@ -37,7 +45,6 @@ export function Logo({ className, priority = false, variant = 'qevaryn' }: LogoP
         width={logo.width}
         height={logo.height}
         priority={priority}
-        loading={priority ? undefined : 'eager'}
         sizes={logo.sizes}
         className={logo.className}
       />
