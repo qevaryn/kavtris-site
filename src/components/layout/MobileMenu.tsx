@@ -51,7 +51,7 @@ export function MobileMenu() {
             Integrante da Rede Qualidade é Vida
           </p>
           <Button href="#contacto" className="w-full justify-center" onClick={() => setOpen(false)}>
-            Falar sobre um projeto
+            Fale sobre um projeto
           </Button>
         </div>
       </div>
