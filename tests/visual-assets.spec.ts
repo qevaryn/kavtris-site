@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
 const logoAlt = 'Qevaryn Systems';
-const logoSourcePattern = /qevaryn-systems-logo/;
+const logoSourcePattern = /qevaryn-systems-white/;
 const symbolSourcePattern = /qevaryn-symbol/;
 const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
 
@@ -57,19 +57,19 @@ function readPngSize(buffer: Buffer) {
 test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrado QV', async ({ page, request }) => {
   await page.goto('/');
 
-  const logoFile = readFileSync('public/images/qevaryn-systems-logo.png');
+  const logoFile = readFileSync('public/images/qevaryn-systems-white.png');
   const logoFileSize = readPngSize(logoFile);
   const viewport = page.viewportSize();
   const isMobileViewport = Boolean(viewport && viewport.width < 640);
 
   expect(logoFile.subarray(1, 4).toString()).toBe('PNG');
-  expect(logoFileSize.width).toBe(900);
-  expect(logoFileSize.height).toBe(282);
+  expect(logoFileSize.width).toBe(760);
+  expect(logoFileSize.height).toBe(245);
   expect([3, 6]).toContain(logoFileSize.colorType);
 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const footerLogo = page.getByRole('contentinfo').getByAltText(logoAlt);
-  const logoResponse = await request.get('/images/qevaryn-systems-logo.png');
+  const logoResponse = await request.get('/images/qevaryn-systems-white.png');
 
   await expect(headerLogo).toBeVisible();
   expect(logoResponse.status()).toBe(200);
@@ -84,13 +84,13 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
 
   for (const logo of [headerLogo]) {
     const metrics = await readRenderedImageMetrics(logo);
-    expect(metrics.source).toContain('qevaryn-systems-logo');
+    expect(metrics.source).toContain('qevaryn-systems-white');
     expect(metrics.naturalWidth).toBeGreaterThan(0);
     expect(metrics.naturalHeight).toBeGreaterThan(0);
-    expect(metrics.renderedWidth).toBeGreaterThanOrEqual(isMobileViewport ? 135 : 220);
+    expect(metrics.renderedWidth).toBeGreaterThanOrEqual(isMobileViewport ? 135 : 185);
     expect(metrics.renderedHeight).toBeGreaterThanOrEqual(isMobileViewport ? 38 : 58);
-    expect(metrics.renderedWidth).toBeLessThanOrEqual(isMobileViewport ? 185 : 285);
-    expect(metrics.renderedHeight).toBeLessThanOrEqual(isMobileViewport ? 70 : 92);
+    expect(metrics.renderedWidth).toBeLessThanOrEqual(isMobileViewport ? 185 : 230);
+    expect(metrics.renderedHeight).toBeLessThanOrEqual(isMobileViewport ? 70 : 82);
     expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
     expect(metrics.objectFit).toBe('contain');
 
@@ -115,8 +115,8 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
-    ? await page.getByRole('banner').locator('a[aria-label="Falar sobre um projeto"]').boundingBox()
-    : await page.getByRole('banner').getByRole('link', { name: 'Falar sobre um projeto' }).boundingBox();
+    ? await page.getByRole('banner').locator('a[aria-label="Fale sobre um projeto"]').boundingBox()
+    : await page.getByRole('banner').getByRole('link', { name: 'Fale sobre um projeto' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
     expectNoOverlap(headerMetrics, toEdges(navBox));
@@ -134,7 +134,7 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   await expect(page.getByRole('contentinfo').getByAltText('Rede Qualidade é Vida')).toBeVisible();
 
   const footerMetrics = await readRenderedImageMetrics(footerLogo);
-  expect(footerMetrics.source).toContain('qevaryn-systems-logo');
+  expect(footerMetrics.source).toContain('qevaryn-systems-white');
   expect(Math.abs(footerMetrics.naturalRatio - footerMetrics.renderedRatio)).toBeLessThan(0.03);
   expect(footerMetrics.objectFit).toBe('contain');
 });
@@ -221,7 +221,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
-  const analysisButtonBox = await banner.locator('a[aria-label="Falar sobre um projeto"]').boundingBox();
+  const analysisButtonBox = await banner.locator('a[aria-label="Fale sobre um projeto"]').boundingBox();
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
   expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);
@@ -241,7 +241,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   await expect(page.getByRole('banner').getByAltText('Rede Qualidade é Vida')).toHaveCount(0);
   const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
 
-  expect(openMenuMetrics.source).toContain('qevaryn-systems-logo');
+  expect(openMenuMetrics.source).toContain('qevaryn-systems-white');
   expect(Math.abs(openMenuMetrics.renderedRatio - initialMetrics.renderedRatio)).toBeLessThan(0.01);
   expect(Math.abs(openMenuMetrics.renderedWidth - initialMetrics.renderedWidth)).toBeLessThan(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
