@@ -53,10 +53,10 @@ export function Hero() {
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-sm font-medium text-white/68">Software • Automation • Quality • Innovation</p>
           <h1 className="mt-5 max-w-3xl font-display text-[clamp(2.25rem,9vw,3rem)] leading-[1.03] tracking-tight md:text-[3.8rem] xl:text-[4.25rem]">
-            Sistemas e software que organizam processos, <span className="text-gold-500">reduzem falhas</span> e ajudam empresas a <span className="text-gold-500">crescer</span>.
+            Tecnologia que conecta processos, pessoas e <span className="text-gold-500">resultados</span>.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-white/76 md:text-lg">
-            Desenvolvemos aplicações web, ferramentas internas, automações, integrações e soluções de qualidade de software para empresas que precisam trabalhar com mais organização, controlo e eficiência.
+            Desenvolvemos aplicações web, ferramentas internas, automações, integrações, APIs e soluções de qualidade de software para empresas que precisam trabalhar com mais organização, controlo e eficiência.
           </p>
 
           <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">

@@ -7,6 +7,7 @@ import { Loader2, Send } from 'lucide-react';
 import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/lib/validation';
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Logo } from '@/components/layout/Logo';
 
 const serviceOptions = [
   'Sistema ou aplicação web',
@@ -75,8 +76,8 @@ export function Contact() {
         <div className="lg:sticky lg:top-28">
           <SectionHeading
             eyebrow="Contacto"
-            title="Conte-nos o problema que pretende resolver"
-            subtitle="Não precisa ter a solução definida. Começamos por compreender o problema e avaliar o caminho mais adequado."
+            title="Fale com a Qevaryn Systems"
+            subtitle="Conte-nos o problema que pretende resolver. Começamos por compreender a necessidade e avaliar o caminho mais adequado."
           />
           <div className="mt-8 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-navy-800">O que acontece depois?</p>
@@ -85,6 +86,13 @@ export function Contact() {
             </p>
             <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
+            </div>
+          </div>
+          <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-gold-600/20 bg-white p-4 shadow-sm">
+            <Logo variant="seal" />
+            <div>
+              <p className="text-sm font-semibold text-navy-900">Integrante da Rede Qualidade é Vida</p>
+              <p className="mt-1 text-sm leading-6 text-muted">Compromisso com responsabilidade, clareza e qualidade.</p>
             </div>
           </div>
         </div>

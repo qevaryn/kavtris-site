@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowDown } from 'lucide-react';
 import { networkPrinciples } from '@/data/network';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Logo } from '@/components/layout/Logo';
 import { siteUrl } from '@/lib/constants';
 
 const title = 'Rede Qualidade é Vida';
@@ -60,11 +62,36 @@ export default function NetworkPage() {
           <p className="mt-6 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
             A rede foi pensada para aproximar iniciativas empresariais juridicamente e financeiramente independentes, com oportunidades voluntárias de cooperação e uma cultura comum de organização, confiança e melhoria contínua.
           </p>
+          <p className="mt-6 max-w-3xl rounded-2xl border border-gold-500/20 bg-white/5 p-4 text-sm leading-7 text-white/72">
+            A Qevaryn Systems é a empresa operadora de tecnologia integrante da Rede Qualidade é Vida.
+          </p>
         </div>
       </section>
 
       <section className="py-16 sm:py-20">
         <div className="container-section">
+          <div className="mb-14 rounded-[1.5rem] border border-borderline bg-white p-6 shadow-sm">
+            <div className="grid gap-5 md:grid-cols-[1fr_auto_1fr] md:items-center">
+              <div className="rounded-[1.35rem] bg-paper p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-600">Marca institucional</p>
+                <div className="mt-4">
+                  <Logo variant="network" />
+                </div>
+                <p className="mt-4 text-sm leading-7 text-muted">Padrões, propósito e reputação.</p>
+              </div>
+              <div className="flex justify-center">
+                <ArrowDown className="h-7 w-7 text-gold-600 md:-rotate-90" aria-hidden="true" />
+              </div>
+              <div className="rounded-[1.35rem] bg-navy-950 p-5 text-white">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-500">Empresa operadora</p>
+                <div className="mt-4">
+                  <Logo />
+                </div>
+                <p className="mt-4 text-sm leading-7 text-white/68">Sistemas, serviços e relacionamento comercial.</p>
+              </div>
+            </div>
+          </div>
+
           <SectionHeading
             title="Como a rede deve ser entendida"
             subtitle="A marca institucional não substitui contratos, responsabilidades ou gestão das empresas operadoras."
