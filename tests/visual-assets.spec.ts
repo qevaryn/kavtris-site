@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
-const logoAlt = 'Qualidade é Vida Tech';
-const logoSourcePattern = /logo-qualidade-e-vida-tech-transparent/;
-const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qualidade é Vida Tech';
+const logoAlt = 'Qevaryn Systems';
+const logoSourcePattern = /qevaryn-systems-logo/;
+const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
   await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
@@ -53,22 +53,22 @@ function readPngSize(buffer: Buffer) {
   };
 }
 
-test('logomarca transparente aparece no header e no footer sem caixa clara ou quadrado QV', async ({ page, request }) => {
+test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrado QV', async ({ page, request }) => {
   await page.goto('/');
 
-  const logoFile = readFileSync('public/images/logo-qualidade-e-vida-tech-transparent.png');
+  const logoFile = readFileSync('public/images/qevaryn-systems-logo.png');
   const logoFileSize = readPngSize(logoFile);
   const viewport = page.viewportSize();
   const isMobileViewport = Boolean(viewport && viewport.width < 640);
 
   expect(logoFile.subarray(1, 4).toString()).toBe('PNG');
-  expect(logoFileSize.width).toBe(650);
-  expect(logoFileSize.height).toBe(162);
-  expect(logoFileSize.colorType).toBe(6);
+  expect(logoFileSize.width).toBe(900);
+  expect(logoFileSize.height).toBe(282);
+  expect([3, 6]).toContain(logoFileSize.colorType);
 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const footerLogo = page.getByRole('contentinfo').getByAltText(logoAlt);
-  const logoResponse = await request.get('/images/logo-qualidade-e-vida-tech-transparent.png');
+  const logoResponse = await request.get('/images/qevaryn-systems-logo.png');
 
   await expect(headerLogo).toBeVisible();
   await expect(footerLogo).toBeVisible();
@@ -81,13 +81,13 @@ test('logomarca transparente aparece no header e no footer sem caixa clara ou qu
 
   for (const logo of [headerLogo, footerLogo]) {
     const metrics = await readRenderedImageMetrics(logo);
-    expect(metrics.source).toContain('logo-qualidade-e-vida-tech-transparent');
+    expect(metrics.source).toContain('qevaryn-systems-logo');
     expect(metrics.naturalWidth).toBeGreaterThan(0);
     expect(metrics.naturalHeight).toBeGreaterThan(0);
-    expect(metrics.renderedWidth).toBeGreaterThanOrEqual(isMobileViewport ? 135 : 200);
-    expect(metrics.renderedHeight).toBeGreaterThanOrEqual(isMobileViewport ? 32 : 46);
-    expect(metrics.renderedWidth).toBeLessThanOrEqual(isMobileViewport ? 175 : 270);
-    expect(metrics.renderedHeight).toBeLessThanOrEqual(isMobileViewport ? 45 : 70);
+    expect(metrics.renderedWidth).toBeGreaterThanOrEqual(isMobileViewport ? 135 : 220);
+    expect(metrics.renderedHeight).toBeGreaterThanOrEqual(isMobileViewport ? 38 : 58);
+    expect(metrics.renderedWidth).toBeLessThanOrEqual(isMobileViewport ? 185 : 285);
+    expect(metrics.renderedHeight).toBeLessThanOrEqual(isMobileViewport ? 70 : 92);
     expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
     expect(metrics.objectFit).toBe('contain');
 
@@ -112,8 +112,8 @@ test('logomarca transparente aparece no header e no footer sem caixa clara ou qu
   const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
-    ? await page.getByRole('banner').locator('a[aria-label="Pedir uma análise"]').boundingBox()
-    : await page.getByRole('banner').getByRole('link', { name: 'Pedir uma análise' }).boundingBox();
+    ? await page.getByRole('banner').locator('a[aria-label="Falar sobre um projeto"]').boundingBox()
+    : await page.getByRole('banner').getByRole('link', { name: 'Falar sobre um projeto' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
     expectNoOverlap(headerMetrics, toEdges(navBox));
@@ -156,7 +156,7 @@ test('fotografia aprovada do fundador aparece sem fallback e mantém cartão com
 
   const cardHeight = await page.locator('#sobre > div > div').boundingBox();
   const viewport = page.viewportSize();
-  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 520 : 300);
+  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 340);
 });
 
 test('header e cartão do fundador continuam responsivos no mobile', async ({ page }) => {
@@ -171,7 +171,7 @@ test('header e cartão do fundador continuam responsivos no mobile', async ({ pa
   await expect(page.locator('#sobre').getByText('GS', { exact: true })).toHaveCount(0);
 
   const founderBox = await page.locator('#sobre > div > div').boundingBox();
-  expect(founderBox?.height).toBeLessThanOrEqual(520);
+  expect(founderBox?.height).toBeLessThanOrEqual(540);
 });
 
 test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao menu aberto', async ({ page }) => {
@@ -181,13 +181,13 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
-  const analysisButtonBox = await banner.locator('a[aria-label="Pedir uma análise"]').boundingBox();
+  const analysisButtonBox = await banner.locator('a[aria-label="Falar sobre um projeto"]').boundingBox();
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
   expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);
-  expect(initialMetrics.renderedWidth).toBeLessThanOrEqual(175);
-  expect(initialMetrics.renderedHeight).toBeGreaterThanOrEqual(32);
-  expect(initialMetrics.renderedHeight).toBeLessThanOrEqual(45);
+  expect(initialMetrics.renderedWidth).toBeLessThanOrEqual(185);
+  expect(initialMetrics.renderedHeight).toBeGreaterThanOrEqual(38);
+  expect(initialMetrics.renderedHeight).toBeLessThanOrEqual(70);
   expect(Math.abs(initialMetrics.naturalRatio - initialMetrics.renderedRatio)).toBeLessThan(0.03);
   expect(initialMetrics.right).toBeLessThanOrEqual(390);
   expect(analysisButtonBox).not.toBeNull();
@@ -199,7 +199,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
   const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
 
-  expect(openMenuMetrics.source).toContain('logo-qualidade-e-vida-tech-transparent');
+  expect(openMenuMetrics.source).toContain('qevaryn-systems-logo');
   expect(Math.abs(openMenuMetrics.renderedRatio - initialMetrics.renderedRatio)).toBeLessThan(0.01);
   expect(Math.abs(openMenuMetrics.renderedWidth - initialMetrics.renderedWidth)).toBeLessThan(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
@@ -208,7 +208,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
 test('link da logomarca leva ao início da página', async ({ page }) => {
   await page.goto('/');
   await page.locator('#contacto').scrollIntoViewIfNeeded();
-  await page.getByLabel('Qualidade é Vida Tech - início').click();
+  await page.getByLabel('Qevaryn Systems - início').click();
 
   await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#inicio');
 });

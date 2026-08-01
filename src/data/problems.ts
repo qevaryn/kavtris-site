@@ -1,29 +1,44 @@
-import { AlertTriangle, Clock3, Layers3, Puzzle, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, BarChart3, Clock3, Files, Link2Off, MessageSquareWarning, Repeat2, Table2 } from 'lucide-react';
 
 export const problems = [
   {
-    title: 'Falhas descobertas em produção',
-    description: 'Os problemas aparecem apenas depois de a aplicação chegar aos clientes.',
+    title: 'Tarefas repetitivas',
+    description: 'Tempo gasto em rotinas manuais que poderiam ser automatizadas.',
+    icon: Repeat2
+  },
+  {
+    title: 'Dados espalhados',
+    description: 'Informação crítica presa em folhas de cálculo e ficheiros soltos.',
+    icon: Table2
+  },
+  {
+    title: 'Sistemas isolados',
+    description: 'Ferramentas que não comunicam entre si e obrigam a duplicar trabalho.',
+    icon: Link2Off
+  },
+  {
+    title: 'Erros frequentes',
+    description: 'Falhas operacionais causadas por processos pouco controlados.',
     icon: AlertTriangle
   },
   {
-    title: 'Testes sem organização',
-    description: 'Faltam cenários, casos de teste, evidências e prioridades bem definidas.',
-    icon: Layers3
+    title: 'Pouca visibilidade',
+    description: 'Dificuldade para acompanhar tarefas, equipas e serviços em tempo real.',
+    icon: BarChart3
   },
   {
-    title: 'Regressões frequentes',
-    description: 'Novas alterações quebram funcionalidades que já funcionavam.',
-    icon: ShieldAlert
+    title: 'Comunicação dispersa',
+    description: 'Processos dependentes de telefonemas, mensagens e confirmações manuais.',
+    icon: MessageSquareWarning
   },
   {
-    title: 'Falta de tempo para testar',
-    description: 'A equipa precisa desenvolver e testar tudo ao mesmo tempo.',
+    title: 'Software desatualizado',
+    description: 'Sistemas existentes que já não acompanham as necessidades do negócio.',
+    icon: Files
+  },
+  {
+    title: 'Tempo sem controlo',
+    description: 'Decisões atrasadas por falta de informação organizada e acionável.',
     icon: Clock3
-  },
-  {
-    title: 'Automação difícil de manter',
-    description: 'Os testes são instáveis, repetitivos ou não possuem uma estrutura clara.',
-    icon: Puzzle
   }
 ];

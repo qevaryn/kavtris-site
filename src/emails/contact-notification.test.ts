@@ -9,9 +9,9 @@ const baseValues: ContactFormValues = {
   name: 'Ana Silva',
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
-  service: 'Automação de Testes',
-  timeline: '2 a 4 semanas',
-  message: 'Precisamos validar fluxos críticos.\nHá regressões frequentes.',
+  phone: '+351 900 000 000',
+  service: 'Automação de processos',
+  message: 'Precisamos automatizar fluxos críticos.\nHá tarefas repetitivas todos os dias.',
   privacyConsent: true,
   honeypot: ''
 };
@@ -25,11 +25,11 @@ describe('contact notification email template', () => {
     });
 
     expect(email.html).toContain('src="cid:qualidade-e-vida-logo"');
-    expect(email.html).toContain('Novo pedido de análise');
+    expect(email.html).toContain('Novo pedido comercial');
     expect(email.html).toContain('Ana Silva');
-    expect(email.html).toContain('Automação de Testes');
-    expect(email.html).toContain('2 a 4 semanas');
-    expect(email.html).toContain('Precisamos validar fluxos críticos.<br />Há regressões frequentes.');
+    expect(email.html).toContain('Automação de processos');
+    expect(email.html).toContain('+351 900 000 000');
+    expect(email.html).toContain('Precisamos automatizar fluxos críticos.<br />Há tarefas repetitivas todos os dias.');
     expect(email.html).toContain('https://example.com/contacto');
   });
 
@@ -50,7 +50,7 @@ describe('contact notification email template', () => {
   it('gera versão text/plain', () => {
     const email = buildContactNotificationEmail(baseValues);
 
-    expect(email.text).toContain('Novo pedido de análise');
+    expect(email.text).toContain('Novo pedido comercial');
     expect(email.text).toContain('Nome: Ana Silva');
     expect(email.text).toContain('Empresa: Empresa Exemplo');
     expect(email.text).toContain('Email: ana@example.com');
@@ -58,10 +58,10 @@ describe('contact notification email template', () => {
   });
 
   it('gera assunto com serviço e empresa', () => {
-    expect(buildContactEmailSubject(baseValues)).toBe('[Novo contacto] Automação de Testes — Empresa Exemplo');
+    expect(buildContactEmailSubject(baseValues)).toBe('[Novo contacto] Automação de processos — Empresa Exemplo');
   });
 
   it('gera assunto com nome quando empresa está vazia', () => {
-    expect(buildContactEmailSubject({ ...baseValues, company: '' })).toBe('[Novo contacto] Automação de Testes — Ana Silva');
+    expect(buildContactEmailSubject({ ...baseValues, company: '' })).toBe('[Novo contacto] Automação de processos — Ana Silva');
   });
 });

@@ -4,12 +4,14 @@ import { Hero } from '@/components/sections/Hero';
 import { CredibilityBar } from '@/components/sections/CredibilityBar';
 import { Problems } from '@/components/sections/Problems';
 import { Services } from '@/components/sections/Services';
+import { Industries } from '@/components/sections/Industries';
 import { Process } from '@/components/sections/Process';
 import { Experience } from '@/components/sections/Experience';
-import { Differentials } from '@/components/sections/Differentials';
+import { EngagementModels } from '@/components/sections/EngagementModels';
+import { Network } from '@/components/sections/Network';
 import { Founder } from '@/components/sections/Founder';
 import { Contact } from '@/components/sections/Contact';
-import { companyName, siteUrl } from '@/lib/constants';
+import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -17,7 +19,8 @@ const schema = {
   name: companyName,
   url: siteUrl,
   description:
-    'Serviços de QA Manual, automação de testes, melhoria de processos e qualidade de software para empresas e equipas de desenvolvimento.',
+    'Desenvolvimento de sistemas web, automação de processos, integrações, aplicações empresariais e qualidade de software para empresas em Portugal.',
+  slogan: brandTagline,
   areaServed: 'PT',
   sameAs: ['https://github.com/gabrielsouza80', 'https://www.linkedin.com/in/gabrielsouza80/']
 };
@@ -31,9 +34,11 @@ export default function HomePage() {
         <CredibilityBar />
         <Problems />
         <Services />
+        <Industries />
         <Process />
         <Experience />
-        <Differentials />
+        <EngagementModels />
+        <Network />
         <Founder />
         <Contact />
       </main>

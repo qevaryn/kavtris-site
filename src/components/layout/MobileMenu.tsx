@@ -17,7 +17,7 @@ export function MobileMenu() {
   }, [open]);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <Button
         type="button"
         variant="ghost"
@@ -32,23 +32,23 @@ export function MobileMenu() {
 
       <div
         id="mobile-menu-panel"
-        className={`fixed inset-x-4 top-20 z-50 rounded-3xl border border-borderline bg-white p-4 shadow-2xl transition duration-200 ${open ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'}`}
+        className={`fixed inset-x-5 top-20 z-50 rounded-3xl border border-white/10 bg-navy-900 p-4 text-white shadow-2xl transition duration-200 ${open ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'}`}
       >
         <nav aria-label="Menu móvel" className="grid gap-2">
           {navigationLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-2xl px-4 py-3 text-sm font-medium text-navy-800 hover:bg-navy-950/5"
+              className="rounded-2xl px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/10"
               onClick={() => setOpen(false)}
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <div className="mt-4 border-t border-borderline pt-4">
+        <div className="mt-4 border-t border-white/10 pt-4">
           <Button href="#contacto" className="w-full justify-center" onClick={() => setOpen(false)}>
-            Pedir uma análise
+            Falar sobre um projeto
           </Button>
         </div>
       </div>

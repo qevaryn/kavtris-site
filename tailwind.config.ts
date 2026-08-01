@@ -12,17 +12,22 @@ const config: Config = {
         navy: {
           950: '#031426',
           900: '#071F35',
-          800: '#0A1B30'
+          800: '#0A1B30',
+          700: '#102A43'
         },
         gold: {
-          600: '#7A4E00',
+          600: '#8A5A00',
           500: '#F2B632'
         },
-        paper: '#F8F8F6',
-        borderline: '#E6E7E8'
+        paper: '#F8F6F1',
+        mist: '#F1F5F8',
+        stone: '#F5F5F3',
+        muted: '#526173',
+        borderline: '#DFE4E8'
       },
       boxShadow: {
-        glow: '0 18px 45px rgba(3, 20, 38, 0.12)'
+        glow: '0 18px 45px rgba(3, 20, 38, 0.12)',
+        card: '0 18px 55px rgba(3, 20, 38, 0.1)'
       },
       backgroundImage: {
         'hero-grid':

@@ -9,15 +9,14 @@ import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 const serviceOptions = [
-  'QA Manual e Análise',
-  'Automação de Testes',
-  'Estruturação e Melhoria de QA',
-  'Análise de Requisitos e Experiência',
-  'QA Contínuo',
-  'Ainda não sei qual serviço preciso'
+  'Sistema ou aplicação web',
+  'Automação de processos',
+  'Integração entre sistemas',
+  'QA e testes',
+  'Manutenção ou melhoria',
+  'MVP ou protótipo digital',
+  'Ainda não sei'
 ];
-
-const timelineOptions = ['Imediato', '1 a 2 semanas', '2 a 4 semanas', 'Este trimestre', 'Ainda a definir'];
 
 export function Contact() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -34,8 +33,8 @@ export function Contact() {
       name: '',
       company: '',
       email: '',
+      phone: '',
       service: '',
-      timeline: '',
       message: '',
       privacyConsent: false,
       honeypot: ''
@@ -71,25 +70,26 @@ export function Contact() {
   };
 
   return (
-    <section id="contacto" className="bg-white py-16 sm:py-20">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:px-8">
+    <section id="contacto" className="bg-gradient-to-br from-white via-paper to-mist py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
         <div className="lg:sticky lg:top-28">
           <SectionHeading
-            title="Vamos analisar o seu projeto?"
-            subtitle="Preencha o formulário e entraremos em contacto."
+            eyebrow="Contacto"
+            title="Conte-nos o problema que pretende resolver"
+            subtitle="Não precisa ter a solução definida. Começamos por compreender o problema e avaliar o caminho mais adequado."
           />
-          <div className="mt-8 rounded-[1.35rem] border border-borderline bg-paper p-5">
+          <div className="mt-8 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-navy-800">O que acontece depois?</p>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              Analisamos o contexto, identificamos riscos principais e indicamos o caminho de QA mais adequado.
+              Analisamos o contexto, identificamos prioridades e indicamos se faz sentido começar por MVP, automação, integração, QA ou melhoria de um sistema existente.
             </p>
-            <div className="mt-6 flex h-24 items-center justify-center text-gold-600">
+            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm md:p-7">
+        <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-card md:p-7 lg:p-8">
           <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
               <label htmlFor="name" className="text-sm font-medium text-navy-800">
@@ -98,7 +98,7 @@ export function Contact() {
               <input
                 id="name"
                 {...register('name')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.name ? 'true' : 'false'}
                 aria-describedby={errors.name ? 'name-error' : undefined}
               />
@@ -112,7 +112,7 @@ export function Contact() {
               <input
                 id="company"
                 {...register('company')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.company ? 'true' : 'false'}
                 aria-describedby={errors.company ? 'company-error' : undefined}
               />
@@ -127,7 +127,7 @@ export function Contact() {
                 id="email"
                 type="email"
                 {...register('email')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.email ? 'true' : 'false'}
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
@@ -135,34 +135,28 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="timeline" className="text-sm font-medium text-navy-800">
-                Prazo desejado
+              <label htmlFor="phone" className="text-sm font-medium text-navy-800">
+                Telefone <span className="font-normal text-slate-500">(opcional)</span>
               </label>
-              <select
-                id="timeline"
-                {...register('timeline')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
-                aria-invalid={errors.timeline ? 'true' : 'false'}
-                aria-describedby={errors.timeline ? 'timeline-error' : undefined}
-              >
-                <option value="">Selecione uma opção</option>
-                {timelineOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {errors.timeline ? <p id="timeline-error" className="mt-2 text-sm text-red-600" role="alert">{errors.timeline.message}</p> : null}
+              <input
+                id="phone"
+                type="tel"
+                {...register('phone')}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.phone ? 'true' : 'false'}
+                aria-describedby={errors.phone ? 'phone-error' : undefined}
+              />
+              {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-600" role="alert">{errors.phone.message}</p> : null}
             </div>
 
             <div className="md:col-span-2">
               <label htmlFor="service" className="text-sm font-medium text-navy-800">
-                Serviço pretendido
+                Tipo de necessidade
               </label>
               <select
                 id="service"
                 {...register('service')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.service ? 'true' : 'false'}
                 aria-describedby={errors.service ? 'service-error' : undefined}
               >
@@ -178,19 +172,19 @@ export function Contact() {
 
             <div className="md:col-span-2">
               <label htmlFor="message" className="text-sm font-medium text-navy-800">
-                Descrição do projeto
+                Descrição do problema
               </label>
               <textarea
                 id="message"
                 rows={5}
                 {...register('message')}
-                className="mt-2 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-sm text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15"
+                className="mt-2 min-h-32 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
                 aria-invalid={errors.message ? 'true' : 'false'}
                 aria-describedby={errors.message ? 'message-error' : 'message-hint'}
               />
               <div className="mt-2 flex items-center justify-between gap-3 text-xs text-slate-500">
                 <span>{errors.message ? <span id="message-error" className="text-red-600" role="alert">{errors.message.message}</span> : <span id="message-hint">Máximo de 1200 caracteres.</span>}</span>
-                <span>Seja objetivo e prático.</span>
+                <span>Explique o contexto principal.</span>
               </div>
             </div>
 
@@ -228,7 +222,7 @@ export function Contact() {
                     A enviar...
                   </span>
                 ) : (
-                  'Enviar pedido de análise'
+                  'Enviar pedido'
                 )}
               </Button>
             </div>

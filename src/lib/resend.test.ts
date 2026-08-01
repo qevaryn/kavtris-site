@@ -20,8 +20,8 @@ const validValues: ContactFormValues = {
   name: 'Ana Silva',
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
-  service: 'Automação de Testes',
-  timeline: 'Imediato',
+  phone: '',
+  service: 'Automação de processos',
   message: 'Mensagem suficientemente longa para validar o envio do formulário.',
   privacyConsent: true,
   honeypot: ''
@@ -36,7 +36,7 @@ describe('sendContactEmail', () => {
       ...originalEnv,
       NODE_ENV: 'test',
       RESEND_API_KEY: 'test-api-key',
-      RESEND_FROM_EMAIL: 'Qualidade é Vida Tech <from@example.com>',
+      RESEND_FROM_EMAIL: 'Qevaryn Systems <from@example.com>',
       RESEND_TO_EMAIL: 'destinatario@example.com',
       CONTACT_FORM_MOCK: 'false'
     };
@@ -60,12 +60,12 @@ describe('sendContactEmail', () => {
 
     expect(payload.to).toBe('destinatario@example.com');
     expect(payload.replyTo).toBe('ana@example.com');
-    expect(payload.subject).toBe('[Novo contacto] Automação de Testes — Empresa Exemplo');
+    expect(payload.subject).toBe('[Novo contacto] Automação de processos — Empresa Exemplo');
     expect(payload.html).toContain('cid:qualidade-e-vida-logo');
     expect(payload.text).toContain('Responder diretamente ao email do cliente');
     expect(payload.attachments).toEqual([
       expect.objectContaining({
-        filename: 'qualidade-e-vida-tech.png',
+        filename: 'qevaryn-systems.png',
         contentType: 'image/png',
         contentId: 'qualidade-e-vida-logo',
         inlineContentId: 'qualidade-e-vida-logo'
