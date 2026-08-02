@@ -8,32 +8,32 @@ export function Hero() {
       <div className="absolute inset-y-0 right-0 w-3/5 bg-[radial-gradient(circle_at_65%_46%,rgba(242,182,50,0.2),transparent_42%)]" aria-hidden="true" />
       <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(3,24,43,0.98),rgba(3,24,43,0))]" aria-hidden="true" />
 
-      <div className="relative mx-auto grid min-h-[500px] max-w-[1280px] items-center gap-8 px-5 py-10 sm:px-8 md:min-h-[540px] lg:grid-cols-[0.49fr_0.51fr] lg:gap-12 lg:py-12 xl:gap-14">
+      <div className="relative mx-auto grid min-h-[430px] max-w-[1180px] items-center gap-8 px-5 py-9 sm:px-8 md:min-h-[470px] lg:min-h-[390px] lg:grid-cols-[0.49fr_0.51fr] lg:items-start lg:gap-10 lg:py-6 xl:gap-12">
         <div className="max-w-[39rem]">
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
-          <h1 className="mt-7 max-w-[39rem] font-sans text-[clamp(2.35rem,10vw,2.85rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.25rem] lg:text-[2.35rem] xl:text-[2.42rem] 2xl:text-[2.72rem]">
+          <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(2.3rem,9.5vw,2.75rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.05rem] lg:text-[2.12rem] xl:text-[2.24rem] 2xl:text-[2.34rem]">
             <span className="block lg:whitespace-nowrap">Tecnologia que conecta</span>
             <span className="block lg:whitespace-nowrap">Processos. Pessoas.</span>
             <span className="block text-gold-500">Resultados.</span>
           </h1>
 
-          <p className="mt-6 max-w-md text-sm leading-7 text-white/74 sm:text-base">
+          <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
             Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação.
           </p>
 
-          <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
-            <Button href="#solucoes" className="min-h-12 w-full px-7 text-navy-950 sm:w-auto">
+          <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
+            <Button href="#solucoes" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
               Nossas soluções
             </Button>
-            <Button href="#contacto" variant="secondary" className="min-h-12 w-full border border-white/25 bg-transparent px-7 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
+            <Button href="#contacto" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
               Fale com um especialista
             </Button>
           </div>
         </div>
 
-        <div className="relative min-h-[270px] md:min-h-[330px] lg:min-h-[430px]" data-testid="hero-brand-visual">
+        <div className="relative min-h-[250px] md:min-h-[310px] lg:min-h-[370px]" data-testid="hero-brand-visual">
           <div className="absolute left-[58%] top-[36%] h-[min(72vw,25rem)] w-[min(72vw,25rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/14 blur-3xl md:top-1/2" aria-hidden="true" />
           <svg className="absolute inset-y-0 right-0 h-full w-full text-gold-500/68" viewBox="0 0 720 460" fill="none" aria-hidden="true">
             <path d="M24 118H188L232 162H336" stroke="currentColor" strokeWidth="1.35" />
@@ -57,8 +57,8 @@ export function Hero() {
             width={760}
             height={760}
             priority
-            sizes="(max-width: 768px) 192px, (max-width: 1280px) 408px, 432px"
-            className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[21rem] lg:w-[25.5rem] xl:w-[27rem]"
+            sizes="(max-width: 768px) 192px, (max-width: 1280px) 376px, 400px"
+            className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[20rem] lg:w-[23.5rem] xl:w-[25rem]"
           />
           <div className="absolute right-8 top-14 h-2 w-2 rounded-full bg-gold-500 shadow-[0_0_24px_rgba(242,182,50,0.9)]" aria-hidden="true" />
           <div className="absolute bottom-20 left-8 h-1.5 w-1.5 rounded-full bg-gold-500 shadow-[0_0_20px_rgba(242,182,50,0.85)]" aria-hidden="true" />
