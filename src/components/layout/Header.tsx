@@ -13,7 +13,7 @@ export function Header() {
           <span data-testid="header-network-signature" className="hidden items-center gap-3 border-l border-gold-500/55 pl-4 text-[0.62rem] font-bold uppercase leading-4 tracking-[0.17em] text-white/58 min-[1320px]:inline-flex">
             <span>
               Operadora da
-              <span className="block text-white/72">Qualidade é Vida Systems</span>
+              <span className="block text-white/72">Qualidade é Vida</span>
             </span>
           </span>
         </Link>

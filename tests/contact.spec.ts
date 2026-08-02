@@ -19,7 +19,7 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Não precisa chegar com uma solução pronta.' })).toBeVisible();
-  await expect(page.locator('#contacto').getByText('Operadora da Qualidade é Vida Systems')).toBeVisible();
+  await expect(page.locator('#contacto').getByText('Operadora da Qualidade é Vida')).toBeVisible();
 
   await page.getByRole('button', { name: 'Enviar explicação' }).click();
   await expect(page.getByText('Indique o seu nome.')).toBeVisible();

@@ -85,7 +85,7 @@ O email interno usa `public/images/email-logo.png` como logomarca inline por CID
 As imagens usadas pelo site estão em `public/images`:
 
 - `qevaryn-systems-logo.png`
-- `qualidade-e-vida-systems-logo.png`
+- `qualidade-e-vida-logo.png`
 - `qualidade-e-vida-seal.png`
 - `email-logo.png`
 - `travel-project.jpg`
@@ -93,7 +93,7 @@ As imagens usadas pelo site estão em `public/images`:
 - `tax-services-project.jpg`
 - `gabriel.webp`
 
-`qevaryn-systems-logo.png` é a marca principal do site. `qualidade-e-vida-systems-logo.png` é usada de forma secundária na secção institucional da rede. `email-logo.png` usa a marca Qevaryn Systems para o email comercial.
+`qevaryn-systems-logo.png` é a marca principal do site. `qualidade-e-vida-logo.png` é usada de forma secundária na secção institucional da rede, sem o sufixo TECH/SYSTEMS. `email-logo.png` usa a marca Qevaryn Systems para o email comercial.
 
 A imagem Open Graph está em `src/app/opengraph-image.png` e a imagem de Twitter/X está em `src/app/twitter-image.png`, ambas com 1200 × 630 px.
 

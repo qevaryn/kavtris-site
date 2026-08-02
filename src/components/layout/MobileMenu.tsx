@@ -48,7 +48,7 @@ export function MobileMenu() {
         </nav>
         <div className="mt-4 border-t border-white/10 pt-4">
           <p data-testid="mobile-network-signature" className="mb-3 rounded-2xl border border-gold-500/20 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/62">
-            Operadora da Qualidade é Vida Systems
+            Operadora da Qualidade é Vida
           </p>
           <Button href="#contacto" className="w-full justify-center" onClick={() => setOpen(false)}>
             Explique o seu problema

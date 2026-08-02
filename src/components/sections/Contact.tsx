@@ -99,7 +99,7 @@ export function Contact() {
           <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-gold-600/20 bg-white p-4 shadow-sm">
             <Logo variant="seal" />
             <div>
-              <p className="text-sm font-semibold text-navy-900">Operadora da Qualidade é Vida Systems</p>
+              <p className="text-sm font-semibold text-navy-900">Operadora da Qualidade é Vida</p>
               <p className="mt-1 text-sm leading-6 text-muted">Compromisso com responsabilidade, clareza e qualidade.</p>
             </div>
           </div>

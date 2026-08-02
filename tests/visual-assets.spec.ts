@@ -139,7 +139,7 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   expect(footerMetrics.objectFit).toBe('contain');
 });
 
-test('hero usa exemplo visual simples e não mostra dashboard operacional', async ({ page, request }) => {
+test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional', async ({ page, request }) => {
   await page.goto('/');
 
   const symbolFile = readFileSync('public/images/qevaryn-symbol.png');
@@ -155,13 +155,13 @@ test('hero usa exemplo visual simples e não mostra dashboard operacional', asyn
   await expect(page.locator('#inicio').getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.locator('#inicio').getByText('MVP', { exact: true })).toHaveCount(0);
   await expect(page.locator('#inicio').getByText('Fluxos', { exact: true })).toHaveCount(0);
-  await expect(heroVisual.getByText('Pedido recebido')).toBeVisible();
-  await expect(heroVisual.getByText('Relatório atualizado')).toBeVisible();
+  await expect(heroVisual.getByText('Pedido recebido')).toHaveCount(0);
+  await expect(heroVisual.getByText('Relatório atualizado')).toHaveCount(0);
   await expect(symbol).toBeVisible();
   await expect(symbol).toHaveAttribute('src', symbolSourcePattern);
 
   const metrics = await readRenderedImageMetrics(symbol);
-  const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 56 : 56;
+  const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 180 : 340;
   expect(metrics.renderedWidth).toBeGreaterThanOrEqual(minSymbolWidth);
   expect(metrics.renderedWidth).toBeLessThanOrEqual(symbolFileSize.width);
   expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
