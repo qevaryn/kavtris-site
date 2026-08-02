@@ -13,14 +13,16 @@ export function Hero() {
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
-          <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(2.3rem,9.5vw,2.75rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.05rem] lg:text-[2.12rem] xl:text-[2.24rem] 2xl:text-[2.34rem]">
-            <span className="block lg:whitespace-nowrap">Tecnologia que conecta</span>
-            <span className="block lg:whitespace-nowrap">Processos. Pessoas.</span>
-            <span className="block text-gold-500">Resultados.</span>
+          <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(2.2rem,9vw,2.75rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3rem] lg:text-[2.05rem] xl:text-[2.22rem] 2xl:text-[2.34rem]">
+            <span className="block lg:whitespace-nowrap">Tecnologia simples para negócios reais</span>
+            <span className="mt-2 block text-gold-500">sistemas simples de utilizar.</span>
           </h1>
 
           <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
-            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação.
+            Transformamos tarefas complicadas em sistemas simples de utilizar. Criamos soluções web e mobile para organizar processos, poupar tempo e ajudar empresas a trabalhar melhor.
+          </p>
+          <p className="mt-4 max-w-md rounded-2xl border border-gold-500/25 bg-gold-500/10 px-4 py-3 text-sm font-semibold leading-6 text-white">
+            Não precisa perceber de tecnologia. Conte-nos como a sua empresa funciona e onde estão as dificuldades.
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
