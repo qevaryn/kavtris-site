@@ -29,8 +29,8 @@ const logos = {
     alt: 'Rede Qualidade é Vida',
     width: 680,
     height: 155,
-    sizes: '(max-width: 640px) 160px, 190px',
-    className: 'h-auto w-[160px] shrink-0 object-contain sm:w-[190px]'
+    sizes: '(max-width: 640px) 190px, (max-width: 1024px) 230px, 255px',
+    className: 'h-auto w-[190px] shrink-0 object-contain sm:w-[230px] lg:w-[255px]'
   },
   seal: {
     src: '/images/qualidade-e-vida-seal.png',

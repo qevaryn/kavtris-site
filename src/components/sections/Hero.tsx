@@ -54,10 +54,10 @@ export function Hero() {
           <Image
             src="/images/qevaryn-symbol.png"
             alt="Símbolo Qevaryn Systems"
-            width={282}
-            height={282}
+            width={760}
+            height={760}
             priority
-            sizes="(max-width: 768px) 250px, 420px"
+            sizes="(max-width: 768px) 192px, (max-width: 1280px) 408px, 432px"
             className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[21rem] lg:w-[25.5rem] xl:w-[27rem]"
           />
           <div className="absolute right-8 top-14 h-2 w-2 rounded-full bg-gold-500 shadow-[0_0_24px_rgba(242,182,50,0.9)]" aria-hidden="true" />

@@ -149,8 +149,8 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   const symbol = heroVisual.getByAltText('Símbolo Qevaryn Systems');
 
   expect(symbolFile.subarray(1, 4).toString()).toBe('PNG');
-  expect(symbolFileSize.width).toBe(282);
-  expect(symbolFileSize.height).toBe(282);
+  expect(symbolFileSize.width).toBe(760);
+  expect(symbolFileSize.height).toBe(760);
   expect(symbolResponse.status()).toBe(200);
   await expect(page.locator('#inicio').getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.locator('#inicio').getByText('MVP', { exact: true })).toHaveCount(0);
@@ -161,6 +161,7 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   const metrics = await readRenderedImageMetrics(symbol);
   const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 170 : 260;
   expect(metrics.renderedWidth).toBeGreaterThan(minSymbolWidth);
+  expect(metrics.renderedWidth).toBeLessThanOrEqual(symbolFileSize.width);
   expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
   expect(metrics.objectFit).toBe('contain');
 });
