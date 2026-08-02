@@ -47,7 +47,7 @@ export default function NetworkPage() {
       <section className="bg-navy-950 py-16 text-white sm:py-20">
         <div className="container-section">
           <Image
-            src="/images/qualidade-e-vida-logo.png"
+            src="/images/qualidade-e-vida-systems-logo.png"
             alt="Rede Qualidade é Vida"
             width={680}
             height={155}

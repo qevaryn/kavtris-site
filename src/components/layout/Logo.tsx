@@ -25,7 +25,7 @@ const logos = {
     className: 'h-auto w-[145px] shrink-0 object-contain min-[430px]:w-[160px] min-[1180px]:w-[190px] 2xl:w-[205px]'
   },
   network: {
-    src: '/images/qualidade-e-vida-logo.png',
+    src: '/images/qualidade-e-vida-systems-logo.png',
     alt: 'Rede Qualidade é Vida',
     width: 680,
     height: 155,
