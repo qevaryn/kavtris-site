@@ -51,12 +51,9 @@ export function Founder() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap lg:justify-end">
+            <div className="grid gap-3 sm:flex sm:flex-wrap lg:justify-end">
               <Button href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2" aria-label="LinkedIn de Gabriel Dias de Souza">
                 LinkedIn
-              </Button>
-              <Button href={socialLinks.github} variant="ghost" target="_blank" rel="noopener noreferrer" className="border border-borderline px-4 py-2" aria-label="GitHub de Gabriel Dias de Souza">
-                GitHub
               </Button>
             </div>
           </div>

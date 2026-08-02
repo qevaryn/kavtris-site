@@ -78,7 +78,8 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.goto('/');
 
     await expect(page.getByRole('contentinfo').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/gabrielsouza80/');
-    await expect(page.locator('#sobre').getByRole('link', { name: /GitHub/ })).toHaveAttribute('href', 'https://github.com/gabrielsouza80');
+    await expect(page.locator('#sobre').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/gabrielsouza80/');
+    await expect(page.locator('#sobre').getByRole('link', { name: /GitHub/ })).toHaveCount(0);
   });
 
   test('gera screenshots full-page de auditoria visual', async ({ page }, testInfo) => {

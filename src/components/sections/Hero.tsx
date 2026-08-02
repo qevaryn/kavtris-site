@@ -13,7 +13,7 @@ export function Hero() {
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
-          <h1 className="mt-7 max-w-[39rem] font-sans text-[clamp(2.35rem,10vw,2.85rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.25rem] lg:text-[2.15rem] xl:text-[2.18rem] 2xl:text-[2.5rem]">
+          <h1 className="mt-7 max-w-[39rem] font-sans text-[clamp(2.35rem,10vw,2.85rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.25rem] lg:text-[2.35rem] xl:text-[2.42rem] 2xl:text-[2.72rem]">
             <span className="block lg:whitespace-nowrap">Tecnologia que conecta</span>
             <span className="block lg:whitespace-nowrap">Processos. Pessoas.</span>
             <span className="block text-gold-500">Resultados.</span>
@@ -58,7 +58,7 @@ export function Hero() {
             height={282}
             priority
             sizes="(max-width: 768px) 250px, 420px"
-            className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[21rem] lg:w-[27.5rem] xl:w-[29rem]"
+            className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[21rem] lg:w-[25.5rem] xl:w-[27rem]"
           />
           <div className="absolute right-8 top-14 h-2 w-2 rounded-full bg-gold-500 shadow-[0_0_24px_rgba(242,182,50,0.9)]" aria-hidden="true" />
           <div className="absolute bottom-20 left-8 h-1.5 w-1.5 rounded-full bg-gold-500 shadow-[0_0_20px_rgba(242,182,50,0.85)]" aria-hidden="true" />

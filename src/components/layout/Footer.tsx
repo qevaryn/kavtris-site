@@ -16,9 +16,6 @@ export function Footer() {
               <Button href={socialLinks.linkedin} variant="secondary" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Gabriel Dias de Souza">
                 LinkedIn
               </Button>
-              <Button href={socialLinks.github} variant="secondary" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Gabriel Dias de Souza">
-                GitHub
-              </Button>
             </div>
           </div>
 

@@ -1,8 +1,6 @@
-import { Button } from '@/components/ui/Button';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { projects } from '@/data/projects';
-import { socialLinks } from '@/lib/constants';
 
 export function Experience() {
   return (
@@ -36,13 +34,10 @@ export function Experience() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col items-center gap-4 text-center">
+          <div className="mt-8 flex justify-center text-center">
             <p className="max-w-2xl text-sm leading-7 text-muted">
               Esta experiência sustenta a abordagem da Qevaryn Systems, enquanto as novas soluções digitais são oferecidas de forma gradual e ajustada a cada diagnóstico.
             </p>
-            <Button href={socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="Ver GitHub de Gabriel Dias de Souza">
-              Ver GitHub
-            </Button>
           </div>
         </div>
       </div>
