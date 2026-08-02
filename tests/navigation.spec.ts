@@ -4,11 +4,11 @@ test('menu desktop navega por âncoras', async ({ page }) => {
   await page.goto('/');
   await page.setViewportSize({ width: 1440, height: 900 });
 
-  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Soluções', exact: true }).click();
-  await expect(page.locator('#solucoes')).toBeInViewport();
+  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'O que resolvemos', exact: true }).click();
+  await expect(page.locator('#problemas')).toBeInViewport();
 
-  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Experiência', exact: true }).click();
-  await expect(page.locator('#experiencia')).toBeInViewport();
+  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Descobrir solução', exact: true }).click();
+  await expect(page.locator('#simulador')).toBeInViewport();
 });
 
 test('páginas legais e página da rede abrem corretamente', async ({ page }) => {

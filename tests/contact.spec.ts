@@ -5,7 +5,11 @@ const validContactPayload = {
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
   phone: '',
+  sector: 'Serviços',
   service: 'Automação de processos',
+  currentProcess: 'Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.',
+  affectedPeople: 'Funcionários',
+  contactPreference: 'Email',
   message: 'Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.',
   privacyConsent: true,
   honeypot: ''
@@ -14,20 +18,24 @@ const validContactPayload = {
 test('valida formulário vazio, email inválido e envio com sucesso interceptado', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { name: 'Fale com a Qevaryn Systems' })).toBeVisible();
-  await expect(page.locator('#contacto').getByText('Integrante da Rede Qualidade é Vida')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Não precisa chegar com uma solução pronta.' })).toBeVisible();
+  await expect(page.locator('#contacto').getByText('Operadora da Qualidade é Vida Systems')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Enviar pedido' }).click();
+  await page.getByRole('button', { name: 'Enviar explicação' }).click();
   await expect(page.getByText('Indique o seu nome.')).toBeVisible();
 
-  await page.getByLabel('Nome').fill('Ana');
-  await page.getByLabel('Empresa').fill('Empresa Exemplo');
-  await page.getByLabel('Email').fill('email-invalido');
-  await page.getByLabel('Telefone').fill('+351 900 000 000');
-  await page.getByLabel('Tipo de necessidade').selectOption({ label: 'Automação de processos' });
-  await page.getByLabel('Descrição do problema').fill('Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.');
+  await page.getByRole('textbox', { name: 'Nome' }).fill('Ana');
+  await page.getByRole('textbox', { name: 'Empresa' }).fill('Empresa Exemplo');
+  await page.getByRole('textbox', { name: 'Email' }).fill('email-invalido');
+  await page.getByRole('textbox', { name: /Telefone/ }).fill('+351 900 000 000');
+  await page.getByRole('textbox', { name: 'Setor' }).fill('Serviços');
+  await page.getByLabel('Principal dificuldade').selectOption({ label: 'Tarefas repetitivas' });
+  await page.getByLabel('Quem é afetado?').selectOption({ label: 'Funcionários' });
+  await page.getByLabel('Melhor forma de contacto').selectOption({ label: 'Email' });
+  await page.getByLabel('Como funciona atualmente?').fill('Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.');
+  await page.locator('textarea#message').fill('Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.');
   await page.getByLabel('Li e aceito a Política de Privacidade.').check();
-  await page.getByRole('button', { name: 'Enviar pedido' }).click();
+  await page.getByRole('button', { name: 'Enviar explicação' }).click();
   await expect(page.getByText('Indique um email válido.')).toBeVisible();
 
   await page.route('**/api/contact', async (route) => {
@@ -39,7 +47,7 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
   });
 
   await page.getByLabel('Email').fill('ana@example.com');
-  await page.getByRole('button', { name: 'Enviar pedido' }).click();
+  await page.getByRole('button', { name: 'Enviar explicação' }).click();
   await expect(page.getByRole('status')).toHaveText(/Pedido enviado com sucesso/i);
 });
 

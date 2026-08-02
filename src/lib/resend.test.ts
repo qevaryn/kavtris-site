@@ -21,7 +21,11 @@ const validValues: ContactFormValues = {
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
   phone: '',
+  sector: 'Serviços',
   service: 'Automação de processos',
+  currentProcess: 'Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.',
+  affectedPeople: 'Funcionários',
+  contactPreference: 'Email',
   message: 'Mensagem suficientemente longa para validar o envio do formulário.',
   privacyConsent: true,
   honeypot: ''

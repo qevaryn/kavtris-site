@@ -12,8 +12,8 @@ export function Header() {
           <Logo variant="qevarynWhite" priority />
           <span data-testid="header-network-signature" className="hidden items-center gap-3 border-l border-gold-500/55 pl-4 text-[0.62rem] font-bold uppercase leading-4 tracking-[0.17em] text-white/58 min-[1320px]:inline-flex">
             <span>
-              Integrante da Rede
-              <span className="block text-white/72">Qualidade é Vida</span>
+              Operadora da
+              <span className="block text-white/72">Qualidade é Vida Systems</span>
             </span>
           </span>
         </Link>
@@ -27,11 +27,11 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button href="#contacto" className="px-4 py-2 text-navy-950 min-[1180px]:hidden" aria-label="Fale sobre um projeto">
-            Projeto
+          <Button href="#contacto" className="px-4 py-2 text-navy-950 min-[1180px]:hidden" aria-label="Explique o seu problema">
+            Explicar
           </Button>
           <Button href="#contacto" className="hidden px-5 py-2.5 text-navy-950 min-[1180px]:inline-flex">
-            Fale sobre um projeto
+            Explique o seu problema
           </Button>
           <MobileMenu />
         </div>

@@ -1,45 +1,48 @@
 import { test, expect } from '@playwright/test';
 
-test('valida soluções, sectores, rede e projetos profissionais', async ({ page }) => {
+test('valida camada simples, exemplos técnicos opcionais e experiência preservada', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByTestId('brand-logo').first()).toBeVisible();
   await expect(page.getByAltText('Qevaryn Systems').first()).toBeVisible();
   await expect(page.getByText('Qualidade é Vida Tech')).toHaveCount(0);
 
-  await expect(page.getByRole('heading', { name: 'Quando as ferramentas atuais deixam de acompanhar o negócio' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Tarefas repetitivas/ })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Dados espalhados/ })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Sistemas isolados/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'O que está a dificultar o seu negócio?' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Não sei exatamente do que preciso' })).toBeVisible();
+  await page.getByRole('button', { name: 'Não sei exatamente do que preciso' }).click();
+  await expect(page.getByRole('heading', { name: 'Descobrir a solução certa' })).toBeVisible();
+  await expect(page.getByText('Não há problema. Primeiro entendemos como a sua empresa trabalha')).toBeVisible();
 
-  await expect(page.getByRole('heading', { name: 'Sistemas e aplicações web' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Automação de processos' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Ferramentas internas e painéis' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Integrações e APIs' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'QA e qualidade de software' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'MVPs e protótipos digitais' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Primeiro o resultado. Depois os detalhes.' })).toBeVisible();
+  const pedidosCard = page.locator('#exemplos article').filter({ has: page.getByRole('heading', { name: 'Gestão de pedidos' }) });
+  const firstTechnicalButton = pedidosCard.getByRole('button');
+  await expect(firstTechnicalButton).toHaveAttribute('aria-expanded', 'false');
+  await firstTechnicalButton.click();
+  await expect(firstTechnicalButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(pedidosCard.getByText('Perfis e permissões')).toBeVisible();
 
-  await expect(page.getByRole('heading', { name: 'Restaurantes e comércio local' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Empresas de serviços' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Startups e empresas de software' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Pequenas e médias empresas' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Veja um exemplo sem precisar entender termos técnicos.' })).toBeVisible();
+  await page.getByLabel('Tipos de demonstração').getByRole('button', { name: 'Reservas e marcações' }).click();
+  await expect(page.locator('#demonstracao h3').filter({ hasText: 'Agenda simples para clientes e equipa' })).toBeVisible();
+  await page.getByRole('tab', { name: 'Ver no telemóvel' }).click();
+  await expect(page.getByRole('tab', { name: 'Ver no telemóvel' })).toHaveAttribute('aria-selected', 'true');
+
+  await expect(page.getByRole('heading', { name: 'Responda sobre o negócio. Nós traduzimos para tecnologia.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Ainda não sei' }).click();
+  await expect(page.getByRole('heading', { name: 'Descoberta e protótipo inicial' })).toBeVisible();
+
+  await expect(page.getByRole('heading', { name: 'Construção por etapas, com linguagem clara.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Protótipo/i })).toBeVisible();
+
+  await expect(page.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
+  await page.locator('#empresas details').filter({ hasText: 'Segurança e proteção de dados' }).locator('summary').click();
+  await expect(page.getByText('Gestão de acessos')).toBeVisible();
+
+  await expect(page.getByRole('heading', { name: 'CareFlow' })).toBeVisible();
+  await expect(page.getByText('Conceito de solução que pode ser adaptado ao negócio.').first()).toBeVisible();
 
   await expect(page.getByRole('heading', { name: 'Plataforma internacional de viagens' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Seguradora multinacional' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Plataforma de Tax Services' })).toBeVisible();
-
-  await expect(page.getByRole('heading', { name: 'Entender o problema' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Definir prioridades' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Planear o MVP' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Desenvolver e testar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Publicar e acompanhar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Melhorar continuamente' })).toBeVisible();
-
-  await expect(page.getByRole('heading', { name: 'Duas marcas. Um propósito.' })).toBeVisible();
-  await expect(page.getByText('Marca institucional')).toBeVisible();
-  await expect(page.getByText('Empresa operadora de tecnologia')).toBeVisible();
-  await expect(page.getByText(/A Qevaryn Systems mantém gestão, contratos e responsabilidades próprios/i)).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Conhecer a Rede Qualidade é Vida' })).toHaveAttribute('href', '/rede-qualidade-e-vida');
 
   const insuranceCard = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Seguradora multinacional' }) });
   const taxCard = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Plataforma de Tax Services' }) });

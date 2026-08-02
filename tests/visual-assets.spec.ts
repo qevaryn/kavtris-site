@@ -115,8 +115,8 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
-    ? await page.getByRole('banner').locator('a[aria-label="Fale sobre um projeto"]').boundingBox()
-    : await page.getByRole('banner').getByRole('link', { name: 'Fale sobre um projeto' }).boundingBox();
+    ? await page.getByRole('banner').locator('a[aria-label="Explique o seu problema"]').boundingBox()
+    : await page.getByRole('banner').getByRole('link', { name: 'Explique o seu problema' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
     expectNoOverlap(headerMetrics, toEdges(navBox));
@@ -139,7 +139,7 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   expect(footerMetrics.objectFit).toBe('contain');
 });
 
-test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional', async ({ page, request }) => {
+test('hero usa exemplo visual simples e não mostra dashboard operacional', async ({ page, request }) => {
   await page.goto('/');
 
   const symbolFile = readFileSync('public/images/qevaryn-symbol.png');
@@ -155,12 +155,14 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   await expect(page.locator('#inicio').getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.locator('#inicio').getByText('MVP', { exact: true })).toHaveCount(0);
   await expect(page.locator('#inicio').getByText('Fluxos', { exact: true })).toHaveCount(0);
+  await expect(heroVisual.getByText('Pedido recebido')).toBeVisible();
+  await expect(heroVisual.getByText('Relatório atualizado')).toBeVisible();
   await expect(symbol).toBeVisible();
   await expect(symbol).toHaveAttribute('src', symbolSourcePattern);
 
   const metrics = await readRenderedImageMetrics(symbol);
-  const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 170 : 260;
-  expect(metrics.renderedWidth).toBeGreaterThan(minSymbolWidth);
+  const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 56 : 56;
+  expect(metrics.renderedWidth).toBeGreaterThanOrEqual(minSymbolWidth);
   expect(metrics.renderedWidth).toBeLessThanOrEqual(symbolFileSize.width);
   expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
   expect(metrics.objectFit).toBe('contain');
@@ -223,7 +225,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
-  const analysisButtonBox = await banner.locator('a[aria-label="Fale sobre um projeto"]').boundingBox();
+  const analysisButtonBox = await banner.locator('a[aria-label="Explique o seu problema"]').boundingBox();
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
   expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);

@@ -53,7 +53,11 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     company: escapeHtml(company),
     email: escapeHtml(input.email),
     phone: escapeHtml(formatDisplayValue(input.phone)),
+    sector: escapeHtml(input.sector),
     service: escapeHtml(input.service),
+    currentProcess: escapeHtml(input.currentProcess).replace(/\n/g, '<br />'),
+    affectedPeople: escapeHtml(input.affectedPeople),
+    contactPreference: escapeHtml(input.contactPreference),
     message: escapeHtml(input.message).replace(/\n/g, '<br />'),
     submittedAt: escapeHtml(submittedAt),
     origin: escapeHtml(origin),
@@ -95,6 +99,13 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                       <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;">${safe.company}</p>
                     </td>
                   </tr>
+                  <tr><td style="height:10px;"></td></tr>
+                  <tr>
+                    <td style="padding:12px;background:#F8F8F6;border:1px solid #E6E7E8;border-radius:12px;">
+                      <p style="margin:0 0 4px 0;color:#4B5563;font-size:12px;font-weight:700;text-transform:uppercase;">Setor</p>
+                      <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;">${safe.sector}</p>
+                    </td>
+                  </tr>
                 </table>
 
                 <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">Dados do contacto</h2>
@@ -115,9 +126,18 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                     <td style="padding:10px 0;color:#4B5563;font-size:14px;">Telefone:</td>
                     <td style="padding:10px 0;color:#0A1B30;font-size:14px;">${safe.phone}</td>
                   </tr>
+                  <tr>
+                    <td style="padding:10px 0;color:#4B5563;font-size:14px;">Preferência:</td>
+                    <td style="padding:10px 0;color:#0A1B30;font-size:14px;">${safe.contactPreference}</td>
+                  </tr>
                 </table>
 
-                <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">Descrição do problema</h2>
+                <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">Como funciona atualmente</h2>
+                <div style="background:#F8F8F6;border-left:4px solid #D99A16;padding:18px 18px;margin-bottom:22px;color:#0A1B30;font-size:15px;line-height:24px;">
+                  ${safe.currentProcess}
+                </div>
+
+                <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:18px;line-height:26px;">O que está difícil</h2>
                 <div style="background:#F8F8F6;border-left:4px solid #D99A16;padding:18px 18px;margin-bottom:28px;color:#0A1B30;font-size:15px;line-height:24px;">
                   ${safe.message}
                 </div>
@@ -136,6 +156,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                   <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Data e hora:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.submittedAt} (Europe/Lisbon)</td></tr>
                   <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Página de origem:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.origin}</td></tr>
                   <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Tipo de necessidade:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.service}</td></tr>
+                  <tr><td style="padding:10px 14px;color:#4B5563;font-size:13px;">Quem é afetado:</td><td style="padding:10px 14px;color:#0A1B30;font-size:13px;">${safe.affectedPeople}</td></tr>
                 </table>
               </td>
             </tr>
@@ -166,9 +187,15 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     `Empresa: ${company}`,
     `Email: ${input.email}`,
     `Telefone: ${formatDisplayValue(input.phone)}`,
+    `Setor: ${input.sector}`,
     `Tipo de necessidade: ${input.service}`,
+    `Quem é afetado: ${input.affectedPeople}`,
+    `Melhor forma de contacto: ${input.contactPreference}`,
     '',
-    'Descrição:',
+    'Como funciona atualmente:',
+    input.currentProcess,
+    '',
+    'O que está difícil:',
     input.message,
     '',
     `Data do pedido: ${submittedAt} (Europe/Lisbon)`,

@@ -28,7 +28,7 @@ test('permite navegação por teclado no header e menu mobile', async ({ page })
   await expect(page.getByLabel('Qevaryn Systems - início')).toBeFocused();
 
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('banner').getByLabel('Fale sobre um projeto')).toBeFocused();
+  await expect(page.getByRole('banner').getByLabel('Explique o seu problema')).toBeFocused();
 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();

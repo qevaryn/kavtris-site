@@ -10,14 +10,18 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
 
 const serviceOptions = [
-  'Sistema ou aplicação web',
-  'Automação de processos',
-  'Integração entre sistemas',
-  'QA e testes',
-  'Manutenção ou melhoria',
-  'MVP ou protótipo digital',
+  'Organização da equipa',
+  'Atendimento ao cliente',
+  'Gestão de pedidos',
+  'Reservas e marcações',
+  'Vendas',
+  'Comunicação entre setores',
+  'Tarefas repetitivas',
   'Ainda não sei'
 ];
+
+const affectedOptions = ['Gestão', 'Funcionários', 'Clientes', 'Parceiros', 'Todos'];
+const contactPreferenceOptions = ['Email', 'Telefone', 'LinkedIn', 'Ainda não sei'];
 
 export function Contact() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -36,6 +40,10 @@ export function Contact() {
       email: '',
       phone: '',
       service: '',
+      sector: '',
+      currentProcess: '',
+      affectedPeople: '',
+      contactPreference: '',
       message: '',
       privacyConsent: false,
       honeypot: ''
@@ -76,13 +84,13 @@ export function Contact() {
         <div className="lg:sticky lg:top-28">
           <SectionHeading
             eyebrow="Contacto"
-            title="Fale com a Qevaryn Systems"
-            subtitle="Conte-nos o problema que pretende resolver. Começamos por compreender a necessidade e avaliar o caminho mais adequado."
+            title="Não precisa chegar com uma solução pronta."
+            subtitle="Explique o que está a dificultar o trabalho. Nós ajudamos a organizar a ideia e identificar o primeiro passo."
           />
           <div className="mt-8 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-navy-800">O que acontece depois?</p>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              Analisamos o contexto, identificamos prioridades e indicamos se faz sentido começar por MVP, automação, integração, QA ou melhoria de um sistema existente.
+              Lemos a explicação, fazemos perguntas simples e ajudamos a transformar o problema num primeiro passo viável.
             </p>
             <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
@@ -91,7 +99,7 @@ export function Contact() {
           <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-gold-600/20 bg-white p-4 shadow-sm">
             <Logo variant="seal" />
             <div>
-              <p className="text-sm font-semibold text-navy-900">Integrante da Rede Qualidade é Vida</p>
+              <p className="text-sm font-semibold text-navy-900">Operadora da Qualidade é Vida Systems</p>
               <p className="mt-1 text-sm leading-6 text-muted">Compromisso com responsabilidade, clareza e qualidade.</p>
             </div>
           </div>
@@ -144,7 +152,7 @@ export function Contact() {
 
             <div>
               <label htmlFor="phone" className="text-sm font-medium text-navy-800">
-                Telefone <span className="font-normal text-slate-500">(opcional)</span>
+                Telefone ou contacto <span className="font-normal text-slate-500">(opcional)</span>
               </label>
               <input
                 id="phone"
@@ -157,9 +165,24 @@ export function Contact() {
               {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-600" role="alert">{errors.phone.message}</p> : null}
             </div>
 
-            <div className="md:col-span-2">
+            <div>
+              <label htmlFor="sector" className="text-sm font-medium text-navy-800">
+                Setor
+              </label>
+              <input
+                id="sector"
+                {...register('sector')}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.sector ? 'true' : 'false'}
+                aria-describedby={errors.sector ? 'sector-error' : undefined}
+                placeholder="Ex.: restauração, serviços, comércio"
+              />
+              {errors.sector ? <p id="sector-error" className="mt-2 text-sm text-red-600" role="alert">{errors.sector.message}</p> : null}
+            </div>
+
+            <div>
               <label htmlFor="service" className="text-sm font-medium text-navy-800">
-                Tipo de necessidade
+                Principal dificuldade
               </label>
               <select
                 id="service"
@@ -178,9 +201,63 @@ export function Contact() {
               {errors.service ? <p id="service-error" className="mt-2 text-sm text-red-600" role="alert">{errors.service.message}</p> : null}
             </div>
 
+            <div>
+              <label htmlFor="affectedPeople" className="text-sm font-medium text-navy-800">
+                Quem é afetado?
+              </label>
+              <select
+                id="affectedPeople"
+                {...register('affectedPeople')}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.affectedPeople ? 'true' : 'false'}
+                aria-describedby={errors.affectedPeople ? 'affectedPeople-error' : undefined}
+              >
+                <option value="">Selecione uma opção</option>
+                {affectedOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              {errors.affectedPeople ? <p id="affectedPeople-error" className="mt-2 text-sm text-red-600" role="alert">{errors.affectedPeople.message}</p> : null}
+            </div>
+
+            <div>
+              <label htmlFor="contactPreference" className="text-sm font-medium text-navy-800">
+                Melhor forma de contacto
+              </label>
+              <select
+                id="contactPreference"
+                {...register('contactPreference')}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.contactPreference ? 'true' : 'false'}
+                aria-describedby={errors.contactPreference ? 'contactPreference-error' : undefined}
+              >
+                <option value="">Selecione uma opção</option>
+                {contactPreferenceOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              {errors.contactPreference ? <p id="contactPreference-error" className="mt-2 text-sm text-red-600" role="alert">{errors.contactPreference.message}</p> : null}
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="currentProcess" className="text-sm font-medium text-navy-800">
+                Como funciona atualmente?
+              </label>
+              <textarea
+                id="currentProcess"
+                rows={3}
+                {...register('currentProcess')}
+                className="mt-2 min-h-24 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.currentProcess ? 'true' : 'false'}
+                aria-describedby={errors.currentProcess ? 'currentProcess-error' : undefined}
+                placeholder="Ex.: os pedidos chegam por WhatsApp e depois alguém passa para uma folha..."
+              />
+              {errors.currentProcess ? <p id="currentProcess-error" className="mt-2 text-sm text-red-600" role="alert">{errors.currentProcess.message}</p> : null}
+            </div>
+
             <div className="md:col-span-2">
               <label htmlFor="message" className="text-sm font-medium text-navy-800">
-                Descrição do problema
+                O que está difícil?
               </label>
               <textarea
                 id="message"
@@ -192,7 +269,7 @@ export function Contact() {
               />
               <div className="mt-2 flex items-center justify-between gap-3 text-xs text-slate-500">
                 <span>{errors.message ? <span id="message-error" className="text-red-600" role="alert">{errors.message.message}</span> : <span id="message-hint">Máximo de 1200 caracteres.</span>}</span>
-                <span>Explique o contexto principal.</span>
+                <span>Não precisa usar termos técnicos.</span>
               </div>
             </div>
 
@@ -220,7 +297,7 @@ export function Contact() {
                   {message.text}
                 </p>
               ) : (
-                <p className="text-sm text-slate-500">Analisaremos o seu pedido e entraremos em contacto.</p>
+                <p className="text-sm text-slate-500">Analisaremos a explicação e entraremos em contacto.</p>
               )}
 
               <Button type="submit" disabled={isPending} className="w-full sm:ml-auto sm:w-auto">
@@ -230,7 +307,7 @@ export function Contact() {
                     A enviar...
                   </span>
                 ) : (
-                  'Enviar pedido'
+                  'Enviar explicação'
                 )}
               </Button>
             </div>

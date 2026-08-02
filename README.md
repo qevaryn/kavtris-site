@@ -4,6 +4,12 @@ Site comercial da Qevaryn Systems, empresa de tecnologia focada em sistemas web,
 
 A Qevaryn Systems atua como operadora independente e integra a Rede Qualidade é Vida como identidade institucional secundária.
 
+Mensagem principal da experiência atual:
+
+> Tecnologia forte por trás. Simplicidade na frente.
+
+O site foi reposicionado para comunicar em duas camadas: primeiro explica problemas e soluções em linguagem simples para empresários e gestores não técnicos; depois revela detalhes técnicos em componentes opcionais para equipas maiores.
+
 ## Stack
 
 - Next.js com App Router
@@ -109,7 +115,7 @@ tests/
 public/images/
 ```
 
-As secções principais da homepage são: Header, Hero, faixa de competências, problemas, soluções, sectores, processo, experiência, modelos de trabalho, Rede Qualidade é Vida, sobre e contacto.
+As secções principais da homepage são: Header, Hero, faixa de competências, problemas interativos, exemplos de soluções, demonstração interativa, simulador de solução, processo, detalhes para empresas, produtos-conceito, experiência, Rede Qualidade é Vida, sobre e contacto.
 
 ## Sistema visual responsivo
 
@@ -117,10 +123,12 @@ A landing page usa navy, dourado, branco e fundos claros alternados para separar
 
 Em mobile:
 
-- problemas e projetos usam carrossel nativo horizontal com scroll-snap;
-- soluções usam acordeões compactos;
-- o painel operacional usa tabs;
-- o processo passa de fluxo horizontal para timeline vertical;
+- problemas usam cartões clicáveis em grelha responsiva;
+- exemplos de soluções usam detalhes técnicos opcionais;
+- a demonstração alterna entre computador e telemóvel;
+- o simulador usa perguntas de negócio antes de traduzir para tecnologia;
+- o processo usa etapas clicáveis com detalhes progressivos;
+- projetos usam carrossel nativo horizontal com scroll-snap;
 - o formulário usa campos em uma coluna com altura e fonte adequadas para toque.
 
 As screenshots de auditoria visual são geradas pelos testes Playwright em `test-results/**/phase6-*.png`.

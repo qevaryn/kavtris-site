@@ -69,7 +69,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
     await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('hidden');
 
-    await page.getByRole('navigation', { name: 'Menu móvel' }).getByRole('link', { name: 'Soluções', exact: true }).click();
+    await page.getByRole('navigation', { name: 'Menu móvel' }).getByRole('link', { name: 'Exemplos', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Abrir menu' })).toHaveAttribute('aria-expanded', 'false');
     await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('');
   });
@@ -111,8 +111,9 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.goto('/');
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-desktop.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
-    await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-desktop.png') });
-    await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-desktop.png') });
+    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-problems-desktop.png') });
+    await page.locator('#exemplos').screenshot({ path: testInfo.outputPath('phase6-examples-desktop.png') });
+    await page.locator('#simulador').screenshot({ path: testInfo.outputPath('phase6-wizard-desktop.png') });
     await waitForExperienceImages(page);
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-desktop.png') });
     await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-desktop.png') });
@@ -123,9 +124,9 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
     await page.getByTestId('hero-brand-visual').screenshot({ path: testInfo.outputPath('phase6-hero-brand-mobile.png') });
-    await page.getByRole('heading', { name: 'Quando as ferramentas atuais deixam de acompanhar o negócio' }).locator('..').locator('..').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
-    await page.locator('#solucoes').screenshot({ path: testInfo.outputPath('phase6-solutions-mobile.png') });
-    await page.locator('#sectores').screenshot({ path: testInfo.outputPath('phase6-industries-mobile.png') });
+    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
+    await page.locator('#exemplos').screenshot({ path: testInfo.outputPath('phase6-examples-mobile.png') });
+    await page.locator('#simulador').screenshot({ path: testInfo.outputPath('phase6-wizard-mobile.png') });
     await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
     await waitForExperienceImages(page);
     await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-mobile.png') });
@@ -135,27 +136,25 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.getByRole('contentinfo').screenshot({ path: testInfo.outputPath('phase6-footer-mobile.png') });
   });
 
-  test('layout mobile usa carrosséis, acordeões e faixas compactas', async ({ page }) => {
+  test('layout mobile usa interações compactas e faixas responsivas', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const problemsCarousel = page.getByTestId('problems-carousel');
     const projectsCarousel = page.getByTestId('projects-carousel');
 
-    await expect.poll(async () => problemsCarousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
     await expect.poll(async () => projectsCarousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
 
-    const serviceDetailsButton = page.locator('#solucoes').getByRole('button', { name: 'Ver detalhes' }).first();
-    await expect(serviceDetailsButton).toHaveAttribute('aria-expanded', 'false');
-    await serviceDetailsButton.click();
-    await expect(serviceDetailsButton).toHaveAttribute('aria-expanded', 'true');
+    await page.getByRole('button', { name: 'Não sei exatamente do que preciso' }).click();
+    await expect(page.getByRole('heading', { name: 'Descobrir a solução certa' })).toBeVisible();
 
-    const automationCard = page.locator('#solucoes article').filter({ has: page.getByRole('heading', { name: 'Automação de processos' }) });
-    const automationDetailsButton = automationCard.getByRole('button', { name: 'Ver detalhes' });
-    await automationDetailsButton.click();
-    await expect(automationDetailsButton).toHaveAttribute('aria-expanded', 'true');
-    await automationCard.getByRole('tab', { name: 'Qualidade' }).click();
-    await expect(automationCard.getByRole('tab', { name: 'Qualidade' })).toHaveAttribute('aria-selected', 'true');
+    const pedidosCard = page.locator('#exemplos article').filter({ has: page.getByRole('heading', { name: 'Gestão de pedidos' }) });
+    const technicalButton = pedidosCard.getByRole('button');
+    await expect(technicalButton).toHaveAttribute('aria-expanded', 'false');
+    await technicalButton.click();
+    await expect(technicalButton).toHaveAttribute('aria-expanded', 'true');
+
+    await page.locator('#demonstracao').getByRole('button', { name: 'Equipa externa' }).click();
+    await expect(page.locator('#demonstracao h3').filter({ hasText: 'Operação acompanhada fora da empresa' })).toBeVisible();
 
     await expect(page.getByLabel('Serviços principais').getByText('Automação inteligente')).toBeVisible();
     await expect(page.getByLabel('Serviços principais').getByText('Suporte e evolução')).toBeVisible();
@@ -175,11 +174,11 @@ test.describe('responsividade e acessibilidade básica', () => {
       expect(metrics.fontSize).toBeGreaterThanOrEqual(16);
     }
 
-    const submit = page.getByRole('button', { name: 'Enviar pedido' });
+    const submit = page.getByRole('button', { name: 'Enviar explicação' });
     const submitBox = await submit.boundingBox();
     expect(submitBox?.height).toBeGreaterThanOrEqual(44);
 
-    for (const href of ['#solucoes', '#sectores', '#processo', '#experiencia', '#rede', '#sobre', '#contacto']) {
+    for (const href of ['#problemas', '#exemplos', '#processo', '#experiencia', '#rede', '#sobre', '#contacto']) {
       await page.goto(`/${href}`);
       const top = await page.locator(href).boundingBox();
       expect(top?.y).toBeGreaterThanOrEqual(68);
