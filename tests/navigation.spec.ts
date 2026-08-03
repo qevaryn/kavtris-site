@@ -25,9 +25,11 @@ test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => 
   await expect(page.getByText(/estrutura jurídica e contratual da rede encontra-se em desenvolvimento/i)).toBeVisible();
 
   await page.goto('/empresas');
-  await expect(page.getByRole('heading', { name: /Soluções simples de utilizar/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Da ferramenta simples à plataforma completa/i })).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/empresas$/);
+  await expect(page.getByText(/empresas de diferentes dimensões e sectores/i)).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Segurança e proteção de dados' })).toBeVisible();
   await expect(page.getByText('Propriedade do código', { exact: true })).toBeVisible();
+  await expect(page.getByText(/empresa unipessoal, uma loja, um restaurante, um hotel/i)).toBeVisible();
   await expect(page.getByText(/não está posicionada como fabricante de máquinas industriais/i)).toBeVisible();
 });

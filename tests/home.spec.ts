@@ -5,6 +5,7 @@ test('carrega a homepage', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: /Transformamos tarefas\s*complicadas em\s*sistemas simples de utilizar\./i })).toBeVisible();
   await expect(page.getByText(/Não precisa perceber de tecnologia\. Conte-nos como a sua empresa funciona/i)).toBeVisible();
+  await expect(page.getByText(/desde uma ferramenta simples até uma plataforma completa/i)).toBeVisible();
   await expect(page.getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo Qevaryn Systems')).toBeVisible();
   await expect(page.getByLabel('Serviços principais').getByText('Reduzir tarefas manuais')).toBeVisible();

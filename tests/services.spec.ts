@@ -26,6 +26,12 @@ test('valida camada simples, exemplos técnicos opcionais e experiência preserv
   await page.getByRole('tab', { name: 'Ver no telemóvel' }).click();
   await expect(page.getByRole('tab', { name: 'Ver no telemóvel' })).toHaveAttribute('aria-selected', 'true');
 
+  await expect(page.getByRole('heading', { name: 'Tecnologia aplicada a problemas reais' })).toBeVisible();
+  await expect(page.getByText(/A dimensão do cliente não é o ponto principal/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hotelaria, alojamento e restauração' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lojas, mercados e comércio' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Empresas maiores e equipas técnicas' })).toBeVisible();
+
   await expect(page.getByRole('heading', { name: 'Responda sobre o negócio. Nós traduzimos para tecnologia.' })).toBeVisible();
   await page.getByRole('button', { name: 'Ainda não sei' }).click();
   await expect(page.getByRole('heading', { name: 'Descoberta e protótipo inicial' })).toBeVisible();

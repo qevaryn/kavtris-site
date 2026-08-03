@@ -7,9 +7,9 @@ export function EnterpriseDetails() {
     <section id="empresas" className="soft-section-line bg-mist py-16 sm:py-20 lg:py-24">
       <div className="container-section">
         <SectionHeading
-          eyebrow="Para equipas técnicas e empresas"
+          eyebrow="Para diferentes níveis de operação"
           title="Interface simples, processo técnico por trás."
-          subtitle="A camada inicial é simples, mas empresas técnicas encontram informação sobre segurança, desenvolvimento, qualidade e suporte."
+          subtitle="A solução pode começar como uma ferramenta operacional e evoluir para integrações, permissões, documentação, qualidade e suporte quando o negócio precisar."
           align="center"
         />
 

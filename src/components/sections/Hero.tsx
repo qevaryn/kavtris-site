@@ -24,6 +24,9 @@ export function Hero() {
           <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
             Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação. Não precisa perceber de tecnologia. Conte-nos como a sua empresa funciona e onde estão as dificuldades.
           </p>
+          <p className="mt-3 max-w-md text-sm font-semibold leading-6 text-white/84">
+            Soluções adaptadas à realidade de cada empresa, desde uma ferramenta simples até uma plataforma completa.
+          </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
             <Button href="#contacto" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">

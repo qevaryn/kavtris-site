@@ -4,6 +4,7 @@ import { Hero } from '@/components/sections/Hero';
 import { CredibilityBar } from '@/components/sections/CredibilityBar';
 import { ProblemSelector } from '@/components/sections/ProblemSelector';
 import { SolutionExamples } from '@/components/sections/SolutionExamples';
+import { Industries } from '@/components/sections/Industries';
 import { InteractiveProductDemo } from '@/components/sections/InteractiveProductDemo';
 import { BusinessSolutionWizard } from '@/components/sections/BusinessSolutionWizard';
 import { ProcessTimeline } from '@/components/sections/ProcessTimeline';
@@ -36,6 +37,7 @@ export default function HomePage() {
         <CredibilityBar />
         <ProblemSelector />
         <SolutionExamples />
+        <Industries />
         <InteractiveProductDemo />
         <BusinessSolutionWizard />
         <ProcessTimeline />

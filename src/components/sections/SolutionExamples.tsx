@@ -14,7 +14,7 @@ export function SolutionExamples() {
         <SectionHeading
           eyebrow="Exemplos simples"
           title="Primeiro o resultado. Depois os detalhes."
-          subtitle="Cada solução começa pelo problema do negócio. As informações técnicas aparecem apenas quando fizer sentido."
+          subtitle="Cada solução começa pelo problema do negócio e pode crescer conforme a realidade da empresa, desde uma ferramenta interna simples até uma plataforma integrada."
           align="center"
         />
 

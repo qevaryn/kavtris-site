@@ -9,11 +9,11 @@ export function Industries() {
         <SectionHeading
           eyebrow="Sectores iniciais"
           title="Tecnologia aplicada a problemas reais"
-          subtitle="A Qevaryn Systems começa por mercados onde sistemas simples, bem pensados e evolutivos podem reduzir trabalho manual rapidamente."
+          subtitle="A dimensão do cliente não é o ponto principal. Trabalhamos quando existe um problema operacional real que pode ser organizado, automatizado ou acompanhado com software."
           align="center"
         />
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {industries.map((industry) => {
             const Icon = industry.icon;
 

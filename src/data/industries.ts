@@ -1,28 +1,40 @@
-import { BriefcaseBusiness, Coffee, Rocket, Store } from 'lucide-react';
+import { BriefcaseBusiness, Building2, Hotel, Store, Truck } from 'lucide-react';
 
 export const industries = [
   {
-    title: 'Restaurantes e comércio local',
-    description: 'Ferramentas para encomendas, reservas, menus digitais, pedidos, administração e fidelização.',
-    examples: ['encomendas online', 'reservas', 'menus digitais', 'painéis administrativos'],
-    icon: Coffee
+    title: 'Hotelaria, alojamento e restauração',
+    description: 'Sistemas para reservas, pedidos, comunicação interna, estados, tarefas e acompanhamento de clientes.',
+    examples: ['reservas', 'pedidos', 'quartos e mesas', 'comunicação interna'],
+    icon: Hotel
   },
   {
-    title: 'Empresas de serviços',
-    description: 'Soluções para clientes, marcações, equipas, escalas, relatórios e acompanhamento operacional.',
-    examples: ['clientes', 'marcações', 'equipas', 'serviços realizados'],
+    title: 'Lojas, mercados e comércio',
+    description: 'Ferramentas para stock, encomendas, fornecedores, tarefas internas, notificações e relatórios simples.',
+    examples: ['stock', 'encomendas', 'fornecedores', 'vendas'],
+    icon: Store
+  },
+  {
+    title: 'Serviços, clínicas e oficinas',
+    description: 'Soluções para marcações, clientes, equipas, histórico, documentos e serviços realizados.',
+    examples: ['marcações', 'clientes', 'histórico', 'documentos'],
     icon: BriefcaseBusiness
   },
   {
-    title: 'Startups e empresas de software',
-    description: 'Apoio em QA, automação de testes, releases, requisitos, manutenção e melhoria de processos.',
-    examples: ['QA', 'automação de testes', 'releases', 'requisitos'],
-    icon: Rocket
+    title: 'Equipas externas e operações móveis',
+    description: 'Aplicações para visitas, rotas, check-in, formulários, fotografias, assinaturas e relatórios.',
+    examples: ['rotas', 'check-in', 'formulários', 'relatórios'],
+    icon: Truck
   },
   {
-    title: 'Pequenas e médias empresas',
-    description: 'Substituição de folhas de cálculo por sistemas internos, relatórios e integrações graduais.',
-    examples: ['ferramentas internas', 'relatórios', 'integrações', 'automação'],
+    title: 'PME e empresas em crescimento',
+    description: 'Plataformas internas, áreas de cliente, permissões, integrações, relatórios e automações por fases.',
+    examples: ['portais', 'permissões', 'integrações', 'automação'],
     icon: Store
+  },
+  {
+    title: 'Empresas maiores e equipas técnicas',
+    description: 'Apoio em requisitos, arquitetura, APIs, QA, documentação, monitorização, suporte e evolução.',
+    examples: ['arquitetura', 'APIs', 'QA', 'suporte'],
+    icon: Building2
   }
 ];
