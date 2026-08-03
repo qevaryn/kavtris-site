@@ -55,7 +55,7 @@ export function ProductCatalogClient() {
           })}
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {visibleProducts.map((product) => (
             <ProductCard key={product.slug} product={product} />
           ))}
