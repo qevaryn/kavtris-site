@@ -27,10 +27,10 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button href="#contacto" className="px-4 py-2 text-navy-950 min-[1180px]:hidden" aria-label="Explique o seu problema">
+          <Button href="/#contacto" className="px-4 py-2 text-navy-950 min-[1180px]:hidden" aria-label="Explique o seu problema">
             Explicar
           </Button>
-          <Button href="#contacto" className="hidden px-5 py-2.5 text-navy-950 min-[1180px]:inline-flex">
+          <Button href="/#contacto" className="hidden px-5 py-2.5 text-navy-950 min-[1180px]:inline-flex">
             Explique o seu problema
           </Button>
           <MobileMenu />

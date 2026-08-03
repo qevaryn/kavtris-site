@@ -7,6 +7,7 @@ export const contactSchema = z.object({
   phone: z.string().trim().max(40, 'O telefone está demasiado longo.').optional().default(''),
   sector: z.string().trim().min(1, 'Indique o setor ou área do negócio.').max(120, 'O setor está demasiado longo.'),
   service: z.string().trim().min(1, 'Selecione o que está difícil.'),
+  productInterest: z.string().trim().max(120, 'O produto selecionado está demasiado longo.').optional().default(''),
   currentProcess: z
     .string()
     .trim()

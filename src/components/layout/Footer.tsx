@@ -35,7 +35,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3 text-sm text-white/70 lg:items-end">
-            <Link href="#contacto" className="transition hover:text-white">
+            <Link href="/#contacto" className="transition hover:text-white">
               Contacto
             </Link>
             <Link href="/privacy" className="transition hover:text-white">

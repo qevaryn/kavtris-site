@@ -23,6 +23,7 @@ const validValues: ContactFormValues = {
   phone: '',
   sector: 'Serviços',
   service: 'Automação de processos',
+  productInterest: '',
   currentProcess: 'Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.',
   affectedPeople: 'Funcionários',
   contactPreference: 'Email',

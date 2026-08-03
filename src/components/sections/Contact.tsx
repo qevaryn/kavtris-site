@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Send } from 'lucide-react';
@@ -8,6 +8,7 @@ import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
+import { getProductBySlug, products } from '@/data/products';
 
 const serviceOptions = [
   'Organização da equipa',
@@ -22,6 +23,7 @@ const serviceOptions = [
 
 const affectedOptions = ['Gestão', 'Funcionários', 'Clientes', 'Parceiros', 'Todos'];
 const contactPreferenceOptions = ['Email', 'Telefone', 'LinkedIn', 'Ainda não sei'];
+const productInterestOptions = products.map((product) => product.name);
 
 export function Contact() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -31,7 +33,8 @@ export function Contact() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm<ContactFormInput, unknown, ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -40,6 +43,7 @@ export function Contact() {
       email: '',
       phone: '',
       service: '',
+      productInterest: '',
       sector: '',
       currentProcess: '',
       affectedPeople: '',
@@ -49,6 +53,15 @@ export function Contact() {
       honeypot: ''
     }
   });
+
+  useEffect(() => {
+    const selectedSlug = new URLSearchParams(window.location.search).get('produto');
+    const selectedProduct = selectedSlug ? getProductBySlug(selectedSlug) : undefined;
+
+    if (selectedProduct) {
+      setValue('productInterest', selectedProduct.name, { shouldDirty: true });
+    }
+  }, [setValue]);
 
   const onSubmit = (values: ContactFormValues) => {
     setMessage(null);
@@ -218,6 +231,25 @@ export function Contact() {
                 ))}
               </select>
               {errors.affectedPeople ? <p id="affectedPeople-error" className="mt-2 text-sm text-red-600" role="alert">{errors.affectedPeople.message}</p> : null}
+            </div>
+
+            <div>
+              <label htmlFor="productInterest" className="text-sm font-medium text-navy-800">
+                Produto de interesse <span className="font-normal text-slate-500">(opcional)</span>
+              </label>
+              <select
+                id="productInterest"
+                {...register('productInterest')}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                aria-invalid={errors.productInterest ? 'true' : 'false'}
+                aria-describedby={errors.productInterest ? 'productInterest-error' : undefined}
+              >
+                <option value="">Ainda não sei qual solução preciso</option>
+                {productInterestOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              {errors.productInterest ? <p id="productInterest-error" className="mt-2 text-sm text-red-600" role="alert">{errors.productInterest.message}</p> : null}
             </div>
 
             <div>

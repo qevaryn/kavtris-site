@@ -55,6 +55,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     phone: escapeHtml(formatDisplayValue(input.phone)),
     sector: escapeHtml(input.sector),
     service: escapeHtml(input.service),
+    productInterest: escapeHtml(formatDisplayValue(input.productInterest)),
     currentProcess: escapeHtml(input.currentProcess).replace(/\n/g, '<br />'),
     affectedPeople: escapeHtml(input.affectedPeople),
     contactPreference: escapeHtml(input.contactPreference),
@@ -90,6 +91,13 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                     <td style="padding:12px;background:#FBF7ED;border:1px solid #EAD7AE;border-radius:12px;">
                       <p style="margin:0 0 4px 0;color:#7A4E00;font-size:12px;font-weight:700;text-transform:uppercase;">Tipo de necessidade</p>
                       <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;font-weight:700;">${safe.service}</p>
+                    </td>
+                  </tr>
+                  <tr><td style="height:10px;"></td></tr>
+                  <tr>
+                    <td style="padding:12px;background:#F8F8F6;border:1px solid #E6E7E8;border-radius:12px;">
+                      <p style="margin:0 0 4px 0;color:#4B5563;font-size:12px;font-weight:700;text-transform:uppercase;">Produto de interesse</p>
+                      <p style="margin:0;color:#0A1B30;font-size:15px;line-height:22px;">${safe.productInterest}</p>
                     </td>
                   </tr>
                   <tr><td style="height:10px;"></td></tr>
@@ -189,6 +197,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     `Telefone: ${formatDisplayValue(input.phone)}`,
     `Setor: ${input.sector}`,
     `Tipo de necessidade: ${input.service}`,
+    `Produto de interesse: ${formatDisplayValue(input.productInterest)}`,
     `Quem é afetado: ${input.affectedPeople}`,
     `Melhor forma de contacto: ${input.contactPreference}`,
     '',
