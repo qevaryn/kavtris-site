@@ -34,8 +34,9 @@ test('valida camada simples, exemplos técnicos opcionais e experiência preserv
   await expect(page.getByRole('button', { name: /Protótipo/i })).toBeVisible();
 
   await expect(page.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
-  await page.locator('#empresas details').filter({ hasText: 'Segurança e proteção de dados' }).locator('summary').click();
-  await expect(page.getByText('Gestão de acessos')).toBeVisible();
+  const securityDetails = page.locator('#empresas details').filter({ hasText: 'Segurança e proteção de dados' });
+  await securityDetails.locator('summary').click();
+  await expect(securityDetails.getByText('Perfis e permissões')).toBeVisible();
 
   await expect(page.getByRole('heading', { name: 'CareFlow' })).toBeVisible();
   await expect(page.getByText('Conceito de solução que pode ser adaptado ao negócio.').first()).toBeVisible();

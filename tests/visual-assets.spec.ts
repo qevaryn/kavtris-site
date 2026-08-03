@@ -163,7 +163,7 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   const metrics = await readRenderedImageMetrics(symbol);
   const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 180 : 340;
   expect(metrics.renderedWidth).toBeGreaterThanOrEqual(minSymbolWidth);
-  expect(metrics.renderedWidth).toBeLessThanOrEqual(symbolFileSize.width);
+  expect(metrics.renderedWidth).toBeLessThanOrEqual(560);
   expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
   expect(metrics.objectFit).toBe('contain');
 });

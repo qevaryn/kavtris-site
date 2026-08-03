@@ -1,22 +1,75 @@
 export const enterpriseDetails = [
   {
     title: 'Segurança e proteção de dados',
-    points: ['Gestão de acessos', 'Autenticação', 'Permissões', 'Registo de atividades', 'RGPD', 'Backups', 'Recuperação', 'Monitorização']
+    points: [
+      'Autenticação',
+      'Perfis e permissões',
+      'Registo de atividades',
+      'Minimização de dados',
+      'RGPD',
+      'Backups',
+      'Recuperação',
+      'Monitorização',
+      'Tratamento de incidentes',
+      'Revisões de acessos'
+    ]
   },
   {
     title: 'Desenvolvimento',
-    points: ['Levantamento de requisitos', 'Prototipagem', 'Arquitetura', 'Aplicações web', 'Mobile', 'APIs', 'Integrações', 'Documentação']
+    points: [
+      'Descoberta',
+      'Levantamento de requisitos',
+      'Prototipagem',
+      'Arquitetura',
+      'Aplicações web',
+      'Aplicações mobile',
+      'APIs',
+      'Integrações',
+      'Bases de dados',
+      'Documentação',
+      'Controlo de versões'
+    ]
   },
   {
     title: 'Qualidade',
-    points: ['Critérios de aceitação', 'Testes manuais', 'Testes automatizados', 'Testes E2E', 'Regressão', 'Testes de API', 'Gestão de defeitos']
+    points: [
+      'Critérios de aceitação',
+      'Testes manuais',
+      'Testes automatizados',
+      'Testes E2E',
+      'Testes de API',
+      'Regressão',
+      'Gestão de defeitos',
+      'Validação de releases'
+    ]
   },
   {
     title: 'Operação e suporte',
-    points: ['Manutenção', 'Prioridades', 'Tempos de resposta', 'Correções', 'Atualizações', 'Acompanhamento', 'Evolução']
+    points: [
+      'Manutenção',
+      'Prioridades',
+      'Tempos de resposta definidos por contrato',
+      'Correções',
+      'Atualizações',
+      'Monitorização',
+      'Planos de suporte',
+      'Evolução',
+      'Continuidade do serviço'
+    ]
   },
   {
-    title: 'Contratação',
-    points: ['Projeto fechado', 'MVP', 'Desenvolvimento por fases', 'Equipa dedicada quando aplicável', 'Suporte mensal', 'Evolução contínua']
+    title: 'Clareza comercial e contratual',
+    points: [
+      'Escopo do projeto',
+      'MVP',
+      'Desenvolvimento por fases',
+      'Planos de suporte',
+      'Manutenção mensal',
+      'Equipa dedicada quando aplicável',
+      'Propriedade do código',
+      'Modelo de licenciamento',
+      'Entrega de documentação',
+      'Condições de transição e handover'
+    ]
   }
 ] as const;

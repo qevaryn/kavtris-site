@@ -1,5 +1,6 @@
 import { enterpriseDetails } from '@/data/enterprise-details';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Button } from '@/components/ui/Button';
 
 export function EnterpriseDetails() {
   return (
@@ -28,6 +29,12 @@ export function EnterpriseDetails() {
               </ul>
             </details>
           ))}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10">
+            Ver informações para empresas
+          </Button>
         </div>
       </div>
     </section>

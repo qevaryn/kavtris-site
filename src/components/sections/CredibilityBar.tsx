@@ -3,11 +3,11 @@ import { Bot, CircleCheck, Code2, LifeBuoy, PlugZap } from 'lucide-react';
 import { Logo } from '@/components/layout/Logo';
 
 const serviceStripItems = [
-  { title: 'Automação inteligente', icon: Bot },
-  { title: 'Qualidade e conformidade', icon: CircleCheck },
-  { title: 'Sistemas web e mobile', icon: Code2 },
-  { title: 'Integrações e APIs', icon: PlugZap },
-  { title: 'Suporte e evolução', icon: LifeBuoy }
+  { title: 'Reduzir tarefas manuais', subtitle: 'Automação inteligente', icon: Bot },
+  { title: 'Evitar falhas e melhorar processos', subtitle: 'Qualidade e conformidade', icon: CircleCheck },
+  { title: 'Sistemas para computador e telemóvel', subtitle: 'Web e mobile', icon: Code2 },
+  { title: 'Ligar as ferramentas da empresa', subtitle: 'Integrações e APIs', icon: PlugZap },
+  { title: 'Suporte, correções e melhorias', subtitle: 'Suporte e evolução', icon: LifeBuoy }
 ];
 
 export function CredibilityBar() {
@@ -27,7 +27,10 @@ export function CredibilityBar() {
                   <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-gold-600">
                     <Icon className="h-5 w-5 stroke-[1.7]" aria-hidden="true" />
                   </span>
-                  <p className="max-w-[9rem] text-[0.65rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-navy-900">{item.title}</p>
+                  <p className="max-w-[11rem] text-[0.65rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-navy-900">
+                    {item.title}
+                    <span className="mt-0.5 block text-[0.58rem] font-semibold normal-case tracking-normal text-muted">{item.subtitle}</span>
+                  </p>
                 </div>
               );
             })}

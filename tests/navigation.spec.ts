@@ -11,7 +11,7 @@ test('menu desktop navega por âncoras', async ({ page }) => {
   await expect(page.locator('#simulador')).toBeInViewport();
 });
 
-test('páginas legais e página da rede abrem corretamente', async ({ page }) => {
+test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.getByRole('heading', { name: 'Política de Privacidade' })).toBeVisible();
 
@@ -23,4 +23,11 @@ test('páginas legais e página da rede abrem corretamente', async ({ page }) =>
   await expect(page.getByText('Marca institucional', { exact: true })).toBeVisible();
   await expect(page.getByText('Empresa operadora', { exact: true })).toBeVisible();
   await expect(page.getByText(/estrutura jurídica e contratual da rede encontra-se em desenvolvimento/i)).toBeVisible();
+
+  await page.goto('/empresas');
+  await expect(page.getByRole('heading', { name: /Soluções simples de utilizar/i })).toBeVisible();
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/empresas$/);
+  await expect(page.getByRole('heading', { name: 'Segurança e proteção de dados' })).toBeVisible();
+  await expect(page.getByText('Propriedade do código', { exact: true })).toBeVisible();
+  await expect(page.getByText(/não está posicionada como fabricante de máquinas industriais/i)).toBeVisible();
 });

@@ -156,8 +156,8 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.locator('#demonstracao').getByRole('button', { name: 'Equipa externa' }).click();
     await expect(page.locator('#demonstracao h3').filter({ hasText: 'Operação acompanhada fora da empresa' })).toBeVisible();
 
-    await expect(page.getByLabel('Serviços principais').getByText('Automação inteligente')).toBeVisible();
-    await expect(page.getByLabel('Serviços principais').getByText('Suporte e evolução')).toBeVisible();
+    await expect(page.getByLabel('Serviços principais').getByText('Reduzir tarefas manuais')).toBeVisible();
+    await expect(page.getByLabel('Serviços principais').getByText('Suporte, correções e melhorias')).toBeVisible();
   });
 
   test('campos, botões e âncoras mantêm medidas acessíveis', async ({ page }) => {
