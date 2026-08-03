@@ -22,7 +22,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
-            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação. Não precisa perceber de tecnologia.
+            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação.
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
@@ -36,7 +36,7 @@ export function Hero() {
         </div>
 
         <div className="relative min-h-[250px] md:min-h-[310px] lg:min-h-[370px]" data-testid="hero-brand-visual">
-          <div className="absolute left-[58%] top-[36%] h-[min(72vw,25rem)] w-[min(72vw,25rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/14 blur-3xl md:top-1/2" aria-hidden="true" />
+          <div className="absolute left-[60%] top-[36%] h-[min(72vw,25rem)] w-[min(72vw,25rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/14 blur-3xl md:top-1/2" aria-hidden="true" />
           <svg className="absolute inset-y-0 right-0 h-full w-full text-gold-500/68" viewBox="0 0 720 460" fill="none" aria-hidden="true">
             <path d="M24 118H188L232 162H336" stroke="currentColor" strokeWidth="1.35" />
             <path d="M68 200H240L292 148H484" stroke="currentColor" strokeWidth="1.35" />
@@ -59,8 +59,8 @@ export function Hero() {
             width={760}
             height={760}
             priority
-            sizes="(max-width: 768px) 192px, (max-width: 1280px) 376px, 400px"
-            className="absolute left-[58%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[20rem] lg:w-[23.5rem] xl:w-[25rem]"
+            sizes="(max-width: 768px) 192px, (max-width: 1280px) 408px, 440px"
+            className="absolute left-[60%] top-[36%] h-auto w-[min(50vw,12rem)] -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)] md:top-1/2 md:w-[20rem] lg:w-[25.5rem] xl:w-[27.5rem]"
           />
           <div className="absolute right-8 top-14 h-2 w-2 rounded-full bg-gold-500 shadow-[0_0_24px_rgba(242,182,50,0.9)]" aria-hidden="true" />
           <div className="absolute bottom-20 left-8 h-1.5 w-1.5 rounded-full bg-gold-500 shadow-[0_0_20px_rgba(242,182,50,0.85)]" aria-hidden="true" />
