@@ -13,10 +13,11 @@ export function Hero() {
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
-          <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(1.9rem,8vw,2.3rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[2.45rem] lg:text-[1.62rem] xl:text-[1.78rem] 2xl:text-[1.92rem]">
-            <span className="block lg:whitespace-nowrap">Transformamos tarefas complicadas</span>
+          <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(2rem,8.5vw,2.45rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[2.65rem] lg:text-[1.92rem] xl:text-[2.12rem] 2xl:text-[2.22rem]">
+            <span className="block lg:whitespace-nowrap">Transformamos tarefas</span>
+            <span className="block lg:whitespace-nowrap">complicadas em</span>
             <span className="block lg:whitespace-nowrap">
-              em <span className="text-gold-500">sistemas simples de utilizar.</span>
+              <span className="text-gold-500">sistemas simples de utilizar.</span>
             </span>
           </h1>
 
