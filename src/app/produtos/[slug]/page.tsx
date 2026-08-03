@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
 import { ProductMockup } from '@/components/products/ProductMockup';
+import { FieldOpsPage } from '@/components/products/fieldops/FieldOpsPage';
 import { getProductBySlug, products } from '@/data/products';
 import { siteUrl } from '@/lib/constants';
 
@@ -25,8 +26,13 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
     return {};
   }
 
-  const title = `${product.name} | Produto adaptável Qevaryn Systems`;
-  const description = `${product.description} ${product.problem}`;
+  const isFieldOps = product.slug === 'fieldops';
+  const title = isFieldOps
+    ? 'Qevaryn FieldOps | Gestão de Equipas e Serviços Externos'
+    : `${product.name} | Produto adaptável Qevaryn Systems`;
+  const description = isFieldOps
+    ? 'Conheça um conceito de software para organizar equipas externas, serviços, visitas, checklists, evidências e relatórios.'
+    : `${product.description} ${product.problem}`;
   const canonicalPath = `/produtos/${product.slug}`;
 
   return {
@@ -66,6 +72,10 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
 
   if (!product) {
     notFound();
+  }
+
+  if (product.slug === 'fieldops') {
+    return <FieldOpsPage />;
   }
 
   return (

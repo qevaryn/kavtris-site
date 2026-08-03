@@ -47,6 +47,18 @@ test('filtros de setor atualizam cartões visíveis', async ({ page }) => {
 test('rotas de produto carregam com detalhes técnicos progressivos', async ({ page }) => {
   for (const product of productRoutes) {
     await page.goto(`/produtos/${product.slug}`);
+
+    if (product.slug === 'fieldops') {
+      await expect(page.getByRole('heading', { name: /Organize equipas externas/i })).toBeVisible();
+      await expect(page.getByText('Conceito de solução adaptável')).toBeVisible();
+      await expect(page.getByText(/Esta demonstração apresenta uma possível configuração/i)).toBeVisible();
+      const technicalDetails = page.locator('details').filter({ hasText: 'Acesso e segurança' });
+      await expect(technicalDetails.locator('summary')).toBeVisible();
+      await technicalDetails.locator('summary').click();
+      await expect(technicalDetails.getByText('autenticação')).toBeVisible();
+      continue;
+    }
+
     await expect(page.getByRole('heading', { name: product.name })).toBeVisible();
     await expect(page.getByText(/Este é um exemplo de solução que pode ser adaptado/i)).toBeVisible();
     const technicalDetails = page.locator('details').filter({ hasText: 'Ver detalhes técnicos' });
