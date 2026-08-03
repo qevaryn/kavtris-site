@@ -51,7 +51,7 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
   await expect(cards).toHaveCount(6);
 
   const firstCard = cards.first();
-  await expect(firstCard.getByTestId('product-card-visual')).toHaveAttribute('aria-label', /FieldOps/i);
+  await expect(firstCard.getByRole('img', { name: /FieldOps/i })).toBeVisible();
   await expect(firstCard.getByText('Equipas externas')).toBeVisible();
   await expect(firstCard.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
   await expect(firstCard.getByText('Organize equipas, serviços, visitas, checklists e relatórios num único sistema.')).toBeVisible();

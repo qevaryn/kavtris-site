@@ -17,6 +17,7 @@ export type ProductConcept = {
   problem: string;
   description: string;
   shortDescription: string;
+  image: string;
   imageAlt: string;
   benefits: string[];
   features: string[];
@@ -54,6 +55,7 @@ export const products: ProductConcept[] = [
     problem: 'Equipas trabalham fora do escritório e a gestão perde visibilidade sobre visitas, tarefas, evidências e estados.',
     description: 'Organize funcionários, serviços, horários, visitas, fotografias, checklists e relatórios num único lugar.',
     shortDescription: 'Organize equipas, serviços, visitas, checklists e relatórios num único sistema.',
+    image: '/images/products/qevaryn-fieldops.webp',
     imageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
     benefits: ['Serviços acompanhados', 'Evidências centralizadas', 'Menos chamadas', 'Relatórios por cliente'],
     features: [
@@ -93,6 +95,7 @@ export const products: ProductConcept[] = [
     problem: 'Stock, fornecedores e encomendas ainda são controlados em papel, mensagens ou folhas de cálculo.',
     description: 'Controle produtos, fornecedores, encomendas, quantidades e alertas de reposição num só sistema.',
     shortDescription: 'Controle produtos, fornecedores, encomendas e alertas de stock num só lugar.',
+    image: '/images/products/qevaryn-stock-orders.webp',
     imageAlt: 'Mockup visual do Qevaryn Stock & Orders com produtos, alertas de stock e pedido a fornecedor',
     benefits: ['Stock visível', 'Reposição mais organizada', 'Histórico de preços', 'Menos ruturas'],
     features: [
@@ -129,6 +132,7 @@ export const products: ProductConcept[] = [
     problem: 'Receção, limpeza e manutenção têm dificuldade em partilhar estado de quartos e pedidos internos.',
     description: 'Organize quartos, limpeza, manutenção, pedidos de hóspedes e tarefas da equipa num único sistema.',
     shortDescription: 'Ligue receção, limpeza e manutenção através de uma operação organizada.',
+    image: '/images/products/qevaryn-hotel-operations.webp',
     imageAlt: 'Mockup visual do Qevaryn Hotel Operations com estado de quartos, limpeza e manutenção',
     benefits: ['Estado dos quartos claro', 'Pedidos internos acompanhados', 'Prioridades visíveis', 'Histórico operacional'],
     features: [
@@ -164,6 +168,7 @@ export const products: ProductConcept[] = [
     problem: 'Pedidos e informações perdem-se entre atendimento, cozinha, preparação e entrega.',
     description: 'Ligue atendimento, cozinha e preparação para que todos acompanhem o estado de cada pedido.',
     shortDescription: 'Acompanhe pedidos entre atendimento, cozinha, preparação e entrega.',
+    image: '/images/products/qevaryn-kitchen-sync.webp',
     imageAlt: 'Mockup visual do Qevaryn KitchenSync com fila de pedidos e estados de preparação',
     benefits: ['Fila de pedidos visível', 'Menos informação perdida', 'Prioridades claras', 'Atrasos identificados'],
     features: [
@@ -200,6 +205,7 @@ export const products: ProductConcept[] = [
     problem: 'Tarefas, aprovações, documentos e pedidos internos estão espalhados por emails, mensagens e folhas.',
     description: 'Organize tarefas, aprovações, documentos, pedidos e indicadores numa plataforma interna.',
     shortDescription: 'Organize tarefas, aprovações, documentos e processos internos.',
+    image: '/images/products/qevaryn-ops.webp',
     imageAlt: 'Mockup visual do Qevaryn Ops com tarefas, aprovações, documentos e indicadores internos',
     benefits: ['Responsáveis definidos', 'Aprovações acompanhadas', 'Documentos organizados', 'Indicadores visíveis'],
     features: [
@@ -237,6 +243,7 @@ export const products: ProductConcept[] = [
     problem: 'Clientes ligam ou enviam mensagens repetidas para saber pedidos, serviços, documentos ou pagamentos.',
     description: 'Dê aos clientes uma área protegida para acompanhar pedidos, documentos, pagamentos, mensagens e estado de serviços.',
     shortDescription: 'Dê aos clientes uma área simples para acompanhar pedidos, documentos e mensagens.',
+    image: '/images/products/qevaryn-customer-portal.webp',
     imageAlt: 'Mockup visual do Qevaryn Customer Portal com pedidos, documentos e mensagens para clientes',
     benefits: ['Menos contactos repetidos', 'Cliente informado', 'Documentos acessíveis', 'Histórico centralizado'],
     features: [
