@@ -14,21 +14,23 @@ export function Hero() {
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
           <h1 className="mt-6 max-w-[37rem] font-sans text-[clamp(2.3rem,9.5vw,2.75rem)] font-extrabold uppercase leading-[0.98] tracking-normal text-white md:text-[3.05rem] lg:text-[2.12rem] xl:text-[2.24rem] 2xl:text-[2.34rem]">
-            <span className="block lg:whitespace-nowrap">Tecnologia que conecta</span>
-            <span className="block lg:whitespace-nowrap">Processos. Pessoas.</span>
-            <span className="block text-gold-500">Resultados.</span>
+            <span className="block lg:whitespace-nowrap">Transformamos tarefas complicadas</span>
+            <span className="block lg:whitespace-nowrap">
+              em <span className="text-gold-500">sistemas simples de utilizar.</span>
+            </span>
           </h1>
 
           <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
-            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação.
+            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação.{' '}
+            Não precisa perceber de tecnologia.
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-            <Button href="#solucoes" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
-              Nossas soluções
+            <Button href="#contacto" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
+              Conte-nos como a sua empresa funciona e onde estão as dificuldades.
             </Button>
-            <Button href="#contacto" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
-              Fale com um especialista
+            <Button href="#solucoes" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
+              Nossas soluções
             </Button>
           </div>
         </div>
