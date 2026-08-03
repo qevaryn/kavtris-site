@@ -26,7 +26,7 @@ export function Hero() {
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
             <Button href="#contacto" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
-              Conte-nos como a sua empresa funciona e onde estão as dificuldades.
+              Explique o seu problema
             </Button>
             <Button href="#solucoes" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
               Nossas soluções
