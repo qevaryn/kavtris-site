@@ -45,9 +45,12 @@ Current status:
 - no confirmed user-visible failure;
 - no speculative CSS correction has been applied.
 
-Recommended Phase 8 investigation:
+Phase 8 investigation result:
 
-- capture a minimal reproduction if the warning appears again;
-- confirm whether the style is injected by browser/test tooling, extension behavior or application code;
-- verify whether production build output reproduces it;
-- only change CSS after the root cause is confirmed.
+- the warning appeared during first-run desktop Playwright execution;
+- no application source currently defines `caret-color: transparent`;
+- mobile, API and complete E2E validation passed;
+- no user-visible failure was confirmed;
+- no speculative CSS correction was applied.
+
+See [investigations/hydration-caret-color.md](investigations/hydration-caret-color.md).

@@ -71,6 +71,11 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 ## Development
 
+- [../CONTRIBUTING.md](../CONTRIBUTING.md)
+  Audience: all contributors
+  Purpose: contribution entry point.
+  Status: current.
+
 - [development/branching.md](development/branching.md)
   Audience: all contributors
   Purpose: current branch evidence and recommended branch naming.
@@ -228,3 +233,49 @@ This directory documents the architecture that currently exists. Future ideas ar
   Audience: all contributors
   Purpose: confirmed limitations and investigation items.
   Status: current.
+
+## Governance
+
+- [governance/repository-maintenance.md](governance/repository-maintenance.md)
+  Audience: technical lead, DevOps, QA and maintainers
+  Purpose: periodic maintenance responsibilities.
+  Status: current guidance.
+
+- [governance/definition-of-done.md](governance/definition-of-done.md)
+  Audience: all contributors
+  Purpose: proportional Definition of Done.
+  Status: current guidance.
+
+- [governance/final-architecture-map.md](governance/final-architecture-map.md)
+  Audience: all technical contributors
+  Purpose: final architecture snapshot.
+  Status: current snapshot.
+
+- [governance/final-readiness-report.md](governance/final-readiness-report.md)
+  Audience: technical lead and reviewers
+  Purpose: final organization-readiness summary.
+  Status: snapshot.
+
+- [governance/merge-strategy.md](governance/merge-strategy.md)
+  Audience: maintainers
+  Purpose: final branch merge recommendation.
+  Status: current recommendation.
+
+## Legacy
+
+- [legacy/policy.md](legacy/policy.md)
+  Audience: technical lead, frontend and QA
+  Purpose: evidence required before legacy deletion.
+  Status: current guidance.
+
+- [legacy/inventory.md](legacy/inventory.md)
+  Audience: technical lead, frontend and QA
+  Purpose: Phase 8 legacy inventory.
+  Status: snapshot.
+
+## Investigations
+
+- [investigations/hydration-caret-color.md](investigations/hydration-caret-color.md)
+  Audience: frontend and QA
+  Purpose: hydration warning evidence and decision.
+  Status: investigation snapshot.
