@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown } from 'lucide-react';
 import { networkPrinciples } from '@/data/network';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
