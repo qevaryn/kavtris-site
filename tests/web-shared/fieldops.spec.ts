@@ -10,6 +10,15 @@ test('FieldOps carrega como conceito com CTAs e aviso honesto', async ({ page })
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /organizar equipas externas/i);
   await expect(page.getByText(/clientes reais|app stores|SaaS completo|99,9%|garantido|Comprar agora|checkout|carrinho/i)).toHaveCount(0);
 
+  const heroImage = page.getByRole('img', { name: /agenda mobile, check-in e estado de serviços externos/i });
+  await expect(heroImage).toBeVisible();
+  await expect.poll(async () => heroImage.evaluate((image: HTMLImageElement) => (
+    image.complete &&
+    image.naturalWidth > 0 &&
+    image.naturalHeight > 0 &&
+    image.currentSrc.includes('qevaryn-fieldops.webp')
+  ))).toBe(true);
+
   await page.getByRole('link', { name: 'Ver como funciona' }).click();
   await expect(page).toHaveURL(/#fieldops-experience$/);
   await expect(page.getByRole('heading', { name: 'Veja o FieldOps em funcionamento' })).toBeInViewport();

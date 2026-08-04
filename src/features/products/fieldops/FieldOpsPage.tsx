@@ -60,7 +60,10 @@ export function FieldOpsPage() {
               </div>
             </div>
 
-            <HeroVisual image={fieldOpsProduct.image} imageAlt={fieldOpsProduct.imageAlt} />
+            <HeroVisual
+              image={fieldOpsProduct.heroImage ?? fieldOpsProduct.image}
+              imageAlt={fieldOpsProduct.heroImageAlt ?? fieldOpsProduct.imageAlt}
+            />
           </div>
         </section>
 

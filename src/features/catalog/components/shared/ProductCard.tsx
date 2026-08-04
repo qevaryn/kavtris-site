@@ -9,6 +9,9 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const image = product.catalogImage ?? product.image;
+  const imageAlt = product.catalogImageAlt ?? product.imageAlt;
+
   return (
     <article
       data-testid="product-card"
@@ -19,8 +22,8 @@ export function ProductCard({ product }: ProductCardProps) {
         className="relative aspect-[16/10] overflow-hidden bg-navy-950"
       >
         <Image
-          src={product.image}
-          alt={product.imageAlt}
+          src={image}
+          alt={imageAlt}
           fill
           sizes="(min-width: 1280px) 360px, (min-width: 768px) 50vw, 100vw"
           className="object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"

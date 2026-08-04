@@ -19,6 +19,10 @@ export interface ProductConcept {
   shortDescription: string;
   image: string;
   imageAlt: string;
+  catalogImage?: string;
+  catalogImageAlt?: string;
+  heroImage?: string;
+  heroImageAlt?: string;
   benefits: string[];
   features: string[];
   optionalEquipment?: string[];
