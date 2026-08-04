@@ -3,7 +3,7 @@ import {
   buildContactEmailSubject,
   buildContactNotificationEmail
 } from '@/emails/contact-notification';
-import type { ContactFormValues } from '@/lib/validation';
+import type { ContactFormValues } from '@/domain/contact';
 
 const baseValues: ContactFormValues = {
   name: 'Ana Silva',

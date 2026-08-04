@@ -2,9 +2,10 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Resend, type Attachment } from 'resend';
 import { buildContactNotificationEmail } from '@/emails/contact-notification';
-import type { ContactFormValues } from '@/lib/validation';
+import { getContactEmailEnv } from '@/config/server-env';
+import type { ContactFormValues } from '@/domain/contact';
+import type { ContactEmailProvider } from '@/services/email/email-provider';
 
-const requiredEnvKeys = ['RESEND_API_KEY', 'RESEND_FROM_EMAIL', 'RESEND_TO_EMAIL'] as const;
 const logoContentId = 'qualidade-e-vida-logo';
 const logoFilename = 'qevaryn-systems.png';
 type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
@@ -23,30 +24,26 @@ async function readEmailLogo() {
 }
 
 export async function sendContactEmail(values: ContactFormValues) {
-  const isMockEnabled = process.env.CONTACT_FORM_MOCK === 'true';
-  const missingKeys = requiredEnvKeys.filter((key) => !process.env[key]);
+  const emailEnv = getContactEmailEnv();
 
-  if (isMockEnabled && process.env.NODE_ENV !== 'production') {
+  if (emailEnv.isMockEnabled) {
     return {
       mode: 'mock',
       id: 'mock-contact-email'
     };
   }
 
-  if (missingKeys.length > 0) {
+  if (emailEnv.missingKeys.length > 0) {
     throw new Error('CONTACT_EMAIL_NOT_CONFIGURED');
   }
 
-  const apiKey = process.env.RESEND_API_KEY as string;
-  const fromEmail = process.env.RESEND_FROM_EMAIL as string;
-  const toEmail = process.env.RESEND_TO_EMAIL as string;
   const logoContent = await readEmailLogo();
   const email = buildContactNotificationEmail({
     ...values,
     submittedAt: new Date()
   });
 
-  const resend = new Resend(apiKey);
+  const resend = new Resend(emailEnv.apiKey as string);
   const inlineLogoAttachment: InlineLogoAttachment = {
     filename: logoFilename,
     content: logoContent,
@@ -56,8 +53,8 @@ export async function sendContactEmail(values: ContactFormValues) {
   };
 
   const { data, error } = await resend.emails.send({
-    from: fromEmail,
-    to: toEmail,
+    from: emailEnv.fromEmail as string,
+    to: emailEnv.toEmail as string,
     replyTo: values.email,
     subject: email.subject,
     html: email.html,
@@ -71,3 +68,7 @@ export async function sendContactEmail(values: ContactFormValues) {
 
   return data;
 }
+
+export const resendEmailProvider: ContactEmailProvider = {
+  sendContactNotification: sendContactEmail
+};

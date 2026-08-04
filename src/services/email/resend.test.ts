@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { sendContactEmail } from '@/services/email/resend';
-import type { ContactFormValues } from '@/lib/validation';
+import type { ContactFormValues } from '@/domain/contact';
 
 const sendMock = vi.fn();
 
