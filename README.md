@@ -1,259 +1,265 @@
-# Qevaryn Systems
+# Qevaryn Systems website
 
-Site comercial da Qevaryn Systems, empresa de tecnologia focada em sistemas web, aplicações mobile, automação de processos, integrações, ferramentas internas, MVPs digitais, plataformas empresariais e qualidade de software.
+Public website for Qevaryn Systems.
 
-A Qevaryn Systems atua como operadora independente e integra a Rede Qualidade é Vida como identidade institucional secundária.
+The repository contains one responsive Next.js web application. Desktop web and mobile web are not separate applications, and both use the same shared contact API boundary.
 
-Mensagem principal da experiência atual:
+## Current Scope
 
-> Tecnologia forte por trás. Simplicidade na frente.
+Implemented:
 
-O site comunica em duas camadas: primeiro explica problemas e soluções em linguagem simples para empresas de qualquer dimensão; depois revela detalhes técnicos em componentes opcionais para equipas que precisam avaliar segurança, arquitetura, integrações, qualidade e suporte.
+- public marketing website;
+- product catalog;
+- adaptable product concepts;
+- detailed Qevaryn FieldOps concept page;
+- enterprise capability page;
+- contact form and `POST /api/contact`;
+- email notification through Resend;
+- unit, desktop web, mobile web, API, accessibility and visual audit tests.
 
-Resumo de posicionamento:
+Not implemented:
 
-> Soluções de software adaptadas à realidade de cada empresa — desde uma ferramenta simples até uma plataforma completa.
+- authentication;
+- payments or checkout;
+- database;
+- real SaaS accounts;
+- production FieldOps platform;
+- native mobile application;
+- external backend repository;
+- separate desktop or mobile backend.
 
-## Stack
+Product pages describe adaptable solution concepts. They must not be treated as completed SaaS products or fixed-price commercial packages.
 
-- Next.js com App Router
+## Architecture Summary
+
+```text
+src/app       -> Next.js routes, metadata, route handlers and global styles
+src/features  -> business-facing UI grouped by feature
+src/components -> global layout and domain-neutral shared UI
+src/domain    -> pure contracts and types
+src/server    -> server orchestration for route handlers
+src/services  -> external provider integrations
+src/config    -> runtime configuration helpers
+tests         -> E2E, API, accessibility and visual audit tests
+docs          -> architecture, QA, development and decision records
+```
+
+Route files should remain thin. Feature implementation belongs under `src/features`, pure contracts under `src/domain`, server orchestration under `src/server`, and provider integrations under `src/services`.
+
+Start with [docs/README.md](docs/README.md) for the full documentation map.
+
+## Technology Stack
+
+- Next.js App Router
+- React
 - TypeScript
 - Tailwind CSS
-- Lucide React
-- React Hook Form + Zod
-- Route Handler do Next.js
+- React Hook Form
+- Zod
 - Resend
-- Playwright
 - Vitest
+- Playwright
 - ESLint
 - GitHub Actions
 
-## Serviços atuais
+The repository does not currently pin a Node.js version in a `.nvmrc` or `engines` field. CI uses Node.js 20. Pinning local runtime versions should be a later explicit decision.
 
-- Sistemas e aplicações web
-- Automação de processos
-- Ferramentas internas e painéis
-- Integrações e APIs
-- QA e qualidade de software
-- MVPs e protótipos digitais
-- Manutenção, suporte e melhoria contínua
-
-O site não apresenta hardware, robótica, automação industrial, máquinas físicas ou produtos ainda não construídos.
-
-A Qevaryn pode desenvolver software que funcione sozinho ou ligado a equipamentos acessíveis e fáceis de encontrar, como QR Codes, NFC, tablets, leitores de código de barras, impressoras comuns, câmaras, sensores simples ou equipamentos já existentes no cliente. Esses elementos são apresentados apenas como extensão opcional do software.
-
-## Relação institucional
-
-A Qevaryn Systems é apresentada como marca principal e operadora comercial.
-
-A Rede Qualidade é Vida aparece apenas como identificação institucional secundária. A página `/rede-qualidade-e-vida` explica que a rede não é uma única empresa operacional, que cada participante deverá manter responsabilidades próprias e que projetos conjuntos dependerão de contratos específicos.
-
-Os textos institucionais e legais são provisórios. A estrutura jurídica e contratual da rede deve ser validada por profissionais especializados em Portugal antes de qualquer publicação comercial definitiva.
-
-## Instalação
+## Local Setup
 
 ```bash
+git clone <repository-url>
+cd qualidade-e-vida-tech
 npm install
 ```
 
-## Execução local
+Create a local environment file from `.env.example`.
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Unix shell:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the development server:
 
 ```bash
 npm run dev
 ```
 
-Depois abra `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-## Variáveis de ambiente
+## Environment Variables
 
-Crie um ficheiro `.env.local` com base no `.env.example`:
-
-```bash
-RESEND_API_KEY=
-RESEND_FROM_EMAIL=
-RESEND_TO_EMAIL=
-NEXT_PUBLIC_SITE_URL=
-CONTACT_FORM_MOCK=false
-```
-
-O formulário só pode usar mock em desenvolvimento/teste quando `CONTACT_FORM_MOCK=true`. Em produção, configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` e `NEXT_PUBLIC_SITE_URL`.
-
-`RESEND_TO_EMAIL` é o endereço que receberá os pedidos enviados pelo formulário. Exemplo genérico:
-
-```bash
-RESEND_TO_EMAIL=destinatario@example.com
-```
-
-O email interno usa `public/images/email-logo.png` como logomarca inline por CID. O envio real mantém o email do cliente apenas em `replyTo`, para que a resposta no cliente de email seja direcionada ao potencial cliente.
-
-## Ativos de marca
-
-As imagens usadas pelo site estão em `public/images`:
-
-- `qevaryn-systems-logo.png`
-- `qualidade-e-vida-logo.png`
-- `qualidade-e-vida-seal.png`
-- `email-logo.png`
-- `travel-project.jpg`
-- `insurance-project.jpg`
-- `tax-services-project.jpg`
-- `gabriel.webp`
-
-`qevaryn-systems-logo.png` é a marca principal do site. `qualidade-e-vida-logo.png` é usada de forma secundária na secção institucional da rede, sem o sufixo TECH/SYSTEMS. `email-logo.png` usa a marca Qevaryn Systems para o email comercial.
-
-A imagem Open Graph está em `src/app/opengraph-image.png` e a imagem de Twitter/X está em `src/app/twitter-image.png`, ambas com 1200 × 630 px.
-
-O favicon atual pode continuar provisório se não existir uma versão quadrada aprovada apenas com o símbolo Qevaryn.
-
-## Estrutura
+The current variables are:
 
 ```text
-src/
-  app/                    # rotas, metadata, route handlers e estilos globais
-  components/
-    layout/               # Header, Footer, MobileMenu e Logo
-    shared/               # primitivas UI reutilizáveis
-  features/
-    home/
-    catalog/
-    products/
-      generic/
-      fieldops/
-      shared/
-    enterprise/
-    contact/
-    legacy/
-  domain/
-    contact/
-    enterprise/
-    products/
-  server/
-    contact/
-  services/
-    email/
-  data/                   # dados retidos para componentes legacy
-  emails/
-  lib/
-docs/
-  architecture/
-tests/
-public/images/
+RESEND_API_KEY
+RESEND_FROM_EMAIL
+RESEND_TO_EMAIL
+NEXT_PUBLIC_SITE_URL
+CONTACT_FORM_MOCK
 ```
 
-As rotas em `src/app` devem permanecer finas. A marcação principal das páginas atuais vive em componentes de feature, como `HomePageView`, `CatalogPageView`, `GenericProductPage`, `FieldOpsPage` e `EnterprisePageView`.
+For local development without real email delivery, use:
 
-A homepage atual segue a sequência: Hero, faixa de credibilidade, SolutionFinder, produtos em destaque, processo simples, prévia empresarial, confiança institucional e contacto.
+```text
+CONTACT_FORM_MOCK=true
+```
 
-Componentes antigos que não fazem parte da composição atual foram preservados em `src/features/legacy` para revisão futura, sem serem apagados nesta reorganização.
+Production email delivery requires `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` and `NEXT_PUBLIC_SITE_URL`.
 
-## Sistema visual responsivo
+Do not commit real secrets. See [docs/development/setup.md](docs/development/setup.md) and [docs/architecture/contact-flow.md](docs/architecture/contact-flow.md).
 
-A landing page usa navy, dourado, branco e fundos claros alternados para separar visualmente as secções.
-
-O projeto mantém uma única aplicação web responsiva. Desktop web e mobile web não são aplicações separadas. Diferenças de layout devem ser resolvidas com componentes responsivos, e componentes específicos de mobile só devem existir quando a interação for estruturalmente diferente.
-
-Em mobile:
-
-- o SolutionFinder mantém opções tocáveis e resultado curto;
-- o catálogo usa filtros horizontais controlados e cards em uma coluna;
-- o FieldOps transforma demonstrações densas em leituras mais simples;
-- detalhes técnicos usam tabs ou accordions quando apropriado;
-- o formulário usa campos em uma coluna com altura e fonte adequadas para toque.
-
-As screenshots de auditoria visual são geradas pelos testes Playwright em `test-results/**/phase6-*.png`.
-
-Mais detalhes:
-
-- `docs/architecture/overview.md`
-- `docs/architecture/responsive-web.md`
-- `docs/architecture/contact-flow.md`
-
-## Textos legais
-
-As páginas de Política de Privacidade e Política de Cookies são versões provisórias. Os textos legais devem ser revistos antes da publicação comercial.
-
-## Scripts
+## Development Commands
 
 ```bash
+npm run dev
 npm run lint
 npm run typecheck
-npm run build
 npm run test:unit
+npm run build
+```
+
+## Testing Commands
+
+```bash
 npm run test:e2e
 npm run test:e2e:desktop
 npm run test:e2e:mobile
 npm run test:e2e:api
 ```
 
-Para executar os testes Playwright contra uma URL publicada, use:
+What they cover:
+
+- `test:unit`: unit tests close to implementation under `src/**/*.test.ts`;
+- `test:e2e`: complete supported Playwright suite;
+- `test:e2e:desktop`: desktop Chromium project;
+- `test:e2e:mobile`: responsive mobile Chromium project;
+- `test:e2e:api`: direct API tests.
+
+To run Playwright against a deployed URL:
 
 ```bash
-BASE_URL=https://url-publicada.vercel.app npm run test:e2e
+BASE_URL=https://example.com npm run test:e2e
 ```
 
-O teste que valida erro de configuração do formulário é ignorado quando `BASE_URL` está definido para evitar envios reais em ambientes publicados.
+API tests must not send real email. The local negative configuration tests are skipped when `BASE_URL` is set.
 
-Os testes Playwright estão organizados por responsabilidade:
+## Main Routes
 
 ```text
-tests/web-shared/
-tests/web-desktop/
-tests/web-mobile/
-tests/api/
-tests/accessibility/
-tests/visual/
-tests/shared/
+/                         homepage
+/produtos                 product catalog
+/produtos/[slug]          product detail pages
+/produtos/fieldops        detailed FieldOps concept
+/empresas                 enterprise capability page
+/rede-qualidade-e-vida    institutional network page
+/privacy                  privacy policy
+/cookies                  cookie policy
+/api/contact              contact API route
 ```
 
-`npm run test:e2e` continua a executar a suíte completa suportada. Os comandos desktop, mobile e API existem para investigação e ownership de QA.
+## Contact Flow
 
-Mais detalhes:
+```text
+ContactForm
+-> submitContact
+-> POST /api/contact
+-> route adapter
+-> controller
+-> validation, honeypot and rate limiter
+-> contact service
+-> email provider interface
+-> Resend
+```
 
-- `docs/qa/strategy.md`
-- `docs/qa/web-desktop.md`
-- `docs/qa/web-mobile.md`
-- `docs/qa/api.md`
+Supported URL intent parameters:
 
-## Segurança
+```text
+?produto=fieldops
+?tipo=empresa
+?tipo=personalizada
+```
 
-O projeto define headers HTTP em `next.config.mjs`:
+See [docs/architecture/contact-flow.md](docs/architecture/contact-flow.md).
 
-- `X-Content-Type-Options`;
-- `Referrer-Policy`;
-- `Permissions-Policy`;
-- `X-Frame-Options`;
-- `Content-Security-Policy`.
+## Responsive Strategy
 
-A CSP de produção não utiliza `unsafe-eval`. Em desenvolvimento, `unsafe-eval` é permitido apenas para compatibilidade com o servidor local do Next.js.
+The project keeps one responsive frontend.
 
-## Deploy
+Spacing, columns and wrapping should stay CSS-driven. Separate mobile or desktop components only when interaction, structure or information hierarchy differs.
 
-O projeto está preparado para Vercel. Configure as variáveis de ambiente na Vercel antes de publicar, especialmente `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` e `NEXT_PUBLIC_SITE_URL`.
+Current examples:
 
-Na Vercel, configure:
+- `MobileMenu`: mobile-specific layout behavior;
+- `ProductCatalogClient`: responsive orchestrator;
+- `FieldOpsExperience`: shared state with desktop/mobile product demonstrations.
+
+See [docs/architecture/responsive-web.md](docs/architecture/responsive-web.md) and [docs/architecture/frontend-responsibilities.md](docs/architecture/frontend-responsibilities.md).
+
+## Contribution Workflow
+
+Use focused branches and small commits.
+
+Typical commit prefixes:
+
+```text
+feat:
+fix:
+refactor:
+test:
+docs:
+chore:
+```
+
+Before opening a PR, run the commands relevant to the change. For broad changes, run:
 
 ```bash
-RESEND_API_KEY=<api-key-do-resend>
-RESEND_FROM_EMAIL=<remetente-validado-no-resend>
-RESEND_TO_EMAIL=destinatario@example.com
-NEXT_PUBLIC_SITE_URL=<url-publica-do-site>
-CONTACT_FORM_MOCK=false
+npm run lint
+npm run typecheck
+npm run test:unit
+npm run build
+npm run test:e2e
 ```
 
-No Resend, confirme que o domínio/remetente usado em `RESEND_FROM_EMAIL` está validado antes de testar o formulário publicado.
+See:
 
-## Smoke test publicado
+- [docs/development/coding-standards.md](docs/development/coding-standards.md)
+- [docs/development/commits.md](docs/development/commits.md)
+- [docs/development/pull-requests.md](docs/development/pull-requests.md)
 
-Existe um workflow manual `Production Smoke` em `.github/workflows/smoke.yml`. Execute-o no GitHub Actions informando a URL publicada no input `base_url`. O workflow não usa secrets e não envia emails reais automaticamente.
+## Known Limitations
 
-## Teste manual do email
+Important current limitations are tracked in [docs/known-limitations.md](docs/known-limitations.md).
 
-Após o deploy:
+Confirmed examples:
 
-1. Abra a página publicada.
-2. Preencha o formulário com dados de teste.
-3. Confirme no painel do Resend que o envio foi aceite.
-4. Confirme no cliente de email que o email chegou com a logomarca Qevaryn Systems no topo.
-5. Clique em responder e confirme que o destinatário da resposta é o email informado no formulário.
+- no database;
+- no authentication;
+- no native app;
+- process-local contact rate limiter;
+- no certified WCAG audit;
+- no Firefox/WebKit coverage yet;
+- legacy components are preserved for later review;
+- an intermittent `caret-color: transparent` hydration warning remains under investigation.
 
-Os testes automatizados não enviam emails reais: os testes unitários usam mock do Resend e os testes Playwright interceptam a rota quando validam sucesso.
+## Documentation Map
+
+Start here:
+
+- [docs/README.md](docs/README.md)
+
+Key guides:
+
+- [docs/architecture/overview.md](docs/architecture/overview.md)
+- [docs/architecture/frontend.md](docs/architecture/frontend.md)
+- [docs/architecture/shared-backend.md](docs/architecture/shared-backend.md)
+- [docs/qa/strategy.md](docs/qa/strategy.md)
+- [docs/development/setup.md](docs/development/setup.md)
+- [docs/products/fieldops.md](docs/products/fieldops.md)
