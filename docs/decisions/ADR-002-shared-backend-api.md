@@ -19,6 +19,7 @@ Do not create separate desktop, mobile or product-specific backends.
 - Frontend clients should use the same public API contract.
 - Provider details such as Resend stay behind server/service boundaries.
 - Future backend extraction remains possible without redesigning frontend routes.
+- Future integration should use versioned APIs and shared contracts, not copied server source.
 
 ## Alternatives Considered
 

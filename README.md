@@ -263,3 +263,6 @@ Key guides:
 - [docs/qa/strategy.md](docs/qa/strategy.md)
 - [docs/development/setup.md](docs/development/setup.md)
 - [docs/products/fieldops.md](docs/products/fieldops.md)
+- [docs/repositories/future-repositories.md](docs/repositories/future-repositories.md)
+- [docs/ownership/team-responsibilities.md](docs/ownership/team-responsibilities.md)
+- [docs/operations/deployment.md](docs/operations/deployment.md)
