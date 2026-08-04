@@ -1,53 +1,54 @@
-"use client";
-
-import { useState } from 'react';
-import { simpleProcessSteps } from '@/data/simple-process';
+import { ClipboardCheck, Layers3, Rocket, Search } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
-export function ProcessTimeline() {
-  const [openIndex, setOpenIndex] = useState(0);
+const processSteps = [
+  {
+    title: 'Entender',
+    description: 'Conhecemos o problema, a operação e as pessoas envolvidas.',
+    icon: Search
+  },
+  {
+    title: 'Prototipar',
+    description: 'Mostramos uma versão navegável antes do desenvolvimento completo.',
+    icon: Layers3
+  },
+  {
+    title: 'Construir e testar',
+    description: 'Desenvolvemos primeiro o essencial e validamos o funcionamento.',
+    icon: ClipboardCheck
+  },
+  {
+    title: 'Lançar e acompanhar',
+    description: 'Colocamos a solução em funcionamento e evoluímos quando necessário.',
+    icon: Rocket
+  }
+];
 
+export function ProcessTimeline() {
   return (
-    <section id="processo" className="bg-white py-16 sm:py-20 lg:py-24">
+    <section id="processo" className="bg-white py-14 sm:py-16 lg:py-20">
       <div className="container-section">
         <SectionHeading
           eyebrow="Como funciona"
-          title="Construção por etapas, com linguagem clara."
-          subtitle="Começamos pela solução necessária para validar o resultado, sem obrigar o cliente a investir imediatamente num sistema enorme."
+          title="Um processo simples para chegar à solução certa."
+          subtitle="Começamos pelo essencial, validamos com clareza e evoluímos conforme a operação precisar."
           align="center"
         />
 
-        <div className="relative mt-12">
-          <div className="absolute left-[7%] right-[7%] top-8 hidden h-px bg-gold-600/40 lg:block" aria-hidden="true" />
-          <div className="relative grid gap-4 lg:grid-cols-7">
-            {simpleProcessSteps.map((step, index) => {
+        <div className="relative mt-10">
+          <div className="absolute left-[12%] right-[12%] top-8 hidden h-px bg-gold-600/40 lg:block" aria-hidden="true" />
+          <div className="relative grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((step, index) => {
               const Icon = step.icon;
-              const isOpen = openIndex === index;
 
               return (
-                <article key={step.title} className="relative">
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                    className="group grid w-full grid-cols-[4rem_1fr] gap-4 rounded-2xl p-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 lg:block lg:text-center"
-                  >
-                    <span className="flex flex-col items-center gap-2">
-                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">0{index + 1}</span>
-                      <span className={`grid h-14 w-14 place-items-center rounded-full border transition lg:mx-auto ${isOpen ? 'border-gold-600 bg-navy-900 text-gold-500' : 'border-gold-600/30 bg-white text-gold-600'}`}>
-                        <Icon className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                    </span>
-                    <span>
-                      <span className="block text-base font-semibold text-navy-900 lg:mt-4">{step.title}</span>
-                      <span className="mt-2 block text-sm leading-6 text-muted">{step.description}</span>
-                    </span>
-                  </button>
-                  {isOpen ? (
-                    <div className="mt-2 rounded-2xl border border-borderline bg-paper p-4 text-sm leading-6 text-muted lg:absolute lg:left-1/2 lg:z-10 lg:w-64 lg:-translate-x-1/2 lg:shadow-card">
-                      {step.detail}
-                    </div>
-                  ) : null}
+                <article key={step.title} className="rounded-[1.25rem] border border-borderline bg-paper p-5 text-center shadow-sm">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">0{index + 1}</p>
+                  <span className="mx-auto mt-3 grid h-14 w-14 place-items-center rounded-full border border-gold-600/30 bg-white text-gold-600">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-4 text-base font-semibold text-navy-900">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted">{step.description}</p>
                 </article>
               );
             })}

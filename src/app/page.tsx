@@ -2,18 +2,11 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { CredibilityBar } from '@/components/sections/CredibilityBar';
-import { ProblemSelector } from '@/components/sections/ProblemSelector';
-import { SolutionExamples } from '@/components/sections/SolutionExamples';
-import { Industries } from '@/components/sections/Industries';
+import { SolutionFinder } from '@/components/sections/SolutionFinder';
 import { FeaturedProducts } from '@/components/products/FeaturedProducts';
-import { InteractiveProductDemo } from '@/components/sections/InteractiveProductDemo';
-import { BusinessSolutionWizard } from '@/components/sections/BusinessSolutionWizard';
 import { ProcessTimeline } from '@/components/sections/ProcessTimeline';
 import { EnterpriseDetails } from '@/components/sections/EnterpriseDetails';
-import { ConceptProducts } from '@/components/sections/ConceptProducts';
-import { Experience } from '@/components/sections/Experience';
-import { Network } from '@/components/sections/Network';
-import { Founder } from '@/components/sections/Founder';
+import { TrustAndCompany } from '@/components/sections/TrustAndCompany';
 import { Contact } from '@/components/sections/Contact';
 import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
@@ -36,18 +29,11 @@ export default function HomePage() {
       <main>
         <Hero />
         <CredibilityBar />
-        <ProblemSelector />
-        <SolutionExamples />
+        <SolutionFinder />
         <FeaturedProducts />
-        <Industries />
-        <InteractiveProductDemo />
-        <BusinessSolutionWizard />
         <ProcessTimeline />
         <EnterpriseDetails />
-        <ConceptProducts />
-        <Experience />
-        <Network />
-        <Founder />
+        <TrustAndCompany />
         <Contact />
       </main>
       <Footer />
