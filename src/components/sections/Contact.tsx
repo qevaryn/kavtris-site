@@ -12,6 +12,7 @@ import { getProductBySlug, products } from '@/data/products';
 
 const serviceOptions = [
   'Ainda não sei qual solução preciso',
+  'Solução personalizada / outro problema',
   'Organizar pedidos',
   'Reduzir tarefas manuais',
   'Acompanhar clientes',
@@ -65,6 +66,8 @@ export function Contact() {
 
     if (selectedType === 'empresa') {
       setValue('service', 'Projeto empresarial / requisitos e integrações', { shouldDirty: true });
+    } else if (selectedType === 'personalizada') {
+      setValue('service', 'Solução personalizada / outro problema', { shouldDirty: true });
     }
   }, [setValue]);
 

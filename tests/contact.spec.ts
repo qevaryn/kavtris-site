@@ -64,3 +64,11 @@ test('formulário sem configuração de email não retorna falso sucesso', async
     message: 'O formulário não está configurado para envio neste ambiente.'
   });
 });
+
+test('contacto preserva intenção de solução personalizada', async ({ page }) => {
+  await page.goto('/?tipo=personalizada#contacto');
+
+  await expect(page.locator('#contacto')).toBeInViewport();
+  await expect(page.getByLabel('Produto ou problema')).toHaveValue('Solução personalizada / outro problema');
+  await expect(page.getByLabel(/Produto de interesse/)).toContainText('Ainda não sei qual solução preciso');
+});

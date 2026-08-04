@@ -78,7 +78,7 @@ export function ProductCatalogClient() {
                 </p>
               </div>
               <Link
-                href="/#contacto"
+                href="/?tipo=personalizada#contacto"
                 className="mt-8 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold-600 px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
               >
                 Falar sobre uma solução personalizada

@@ -87,7 +87,7 @@ test('card de solução personalizada e CTA final apontam para contacto', async 
 
   const customCard = page.getByTestId('custom-solution-card');
   await expect(customCard.getByRole('heading', { name: 'Não encontrou uma solução parecida?' })).toBeVisible();
-  await expect(customCard.getByRole('link', { name: /Falar sobre uma solução personalizada/ })).toHaveAttribute('href', '/#contacto');
+  await expect(customCard.getByRole('link', { name: /Falar sobre uma solução personalizada/ })).toHaveAttribute('href', '/?tipo=personalizada#contacto');
 
   await expect(page.getByRole('link', { name: 'Explique o seu problema' }).last()).toHaveAttribute('href', '/#contacto');
 });
