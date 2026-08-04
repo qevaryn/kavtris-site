@@ -3,9 +3,10 @@ import { test, expect } from '@playwright/test';
 test('carrega a homepage', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('heading', { name: /Transformamos tarefas\s*complicadas em\s*sistemas simples de utilizar\./i })).toBeVisible();
-  await expect(page.getByText(/Não precisa perceber de tecnologia\. Explique-nos como a sua empresa funciona/i)).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Ver soluções' })).toHaveAttribute('href', '/produtos');
+  await expect(page.getByRole('heading', { name: /Sistemas simples para organizar e automatizar a sua empresa\./i })).toBeVisible();
+  await expect(page.getByText(/Escolha um produto por assinatura ou fale connosco sobre uma solução personalizada/i)).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Encontrar uma solução' })).toHaveAttribute('href', '#problemas');
+  await expect(page.getByRole('link', { name: 'Ver produtos' })).toHaveAttribute('href', '/produtos');
   await expect(page.getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo Qevaryn Systems')).toBeVisible();
   await expect(page.getByLabel('Serviços principais').getByText('Reduzir tarefas manuais')).toBeVisible();
