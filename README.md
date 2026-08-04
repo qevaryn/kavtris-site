@@ -109,35 +109,64 @@ O favicon atual pode continuar provisório se não existir uma versão quadrada 
 
 ```text
 src/
-  app/
+  app/                    # rotas, metadata, route handlers e estilos globais
   components/
-    layout/
-    sections/
-    ui/
-  data/
+    layout/               # Header, Footer, MobileMenu e Logo
+    shared/               # primitivas UI reutilizáveis
+  features/
+    home/
+    catalog/
+    products/
+      generic/
+      fieldops/
+      shared/
+    enterprise/
+    contact/
+    legacy/
+  domain/
+    contact/
+    enterprise/
+    products/
+  server/
+    contact/
+  services/
+    email/
+  data/                   # dados retidos para componentes legacy
   emails/
   lib/
+docs/
+  architecture/
 tests/
 public/images/
 ```
 
-As secções principais da homepage são: Header, Hero, faixa de competências, problemas interativos, exemplos de soluções, demonstração interativa, simulador de solução, processo, detalhes para empresas, produtos-conceito, experiência, Rede Qualidade é Vida, sobre e contacto.
+As rotas em `src/app` devem permanecer finas. A marcação principal das páginas atuais vive em componentes de feature, como `HomePageView`, `CatalogPageView`, `GenericProductPage`, `FieldOpsPage` e `EnterprisePageView`.
+
+A homepage atual segue a sequência: Hero, faixa de credibilidade, SolutionFinder, produtos em destaque, processo simples, prévia empresarial, confiança institucional e contacto.
+
+Componentes antigos que não fazem parte da composição atual foram preservados em `src/features/legacy` para revisão futura, sem serem apagados nesta reorganização.
 
 ## Sistema visual responsivo
 
 A landing page usa navy, dourado, branco e fundos claros alternados para separar visualmente as secções.
 
+O projeto mantém uma única aplicação web responsiva. Desktop web e mobile web não são aplicações separadas. Diferenças de layout devem ser resolvidas com componentes responsivos, e componentes específicos de mobile só devem existir quando a interação for estruturalmente diferente.
+
 Em mobile:
 
-- problemas usam cartões clicáveis em grelha responsiva;
-- exemplos de soluções usam detalhes técnicos opcionais;
-- a demonstração alterna entre computador e telemóvel;
-- o simulador usa perguntas de negócio antes de traduzir para tecnologia;
-- o processo usa etapas clicáveis com detalhes progressivos;
-- projetos usam carrossel nativo horizontal com scroll-snap;
+- o SolutionFinder mantém opções tocáveis e resultado curto;
+- o catálogo usa filtros horizontais controlados e cards em uma coluna;
+- o FieldOps transforma demonstrações densas em leituras mais simples;
+- detalhes técnicos usam tabs ou accordions quando apropriado;
 - o formulário usa campos em uma coluna com altura e fonte adequadas para toque.
 
 As screenshots de auditoria visual são geradas pelos testes Playwright em `test-results/**/phase6-*.png`.
+
+Mais detalhes:
+
+- `docs/architecture/overview.md`
+- `docs/architecture/responsive-web.md`
+- `docs/architecture/contact-flow.md`
 
 ## Textos legais
 
