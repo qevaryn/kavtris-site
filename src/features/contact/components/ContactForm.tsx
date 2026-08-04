@@ -4,11 +4,12 @@ import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Send } from 'lucide-react';
-import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/lib/validation';
+import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/domain/contact';
 import { Button } from '@/components/shared/Button';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
 import { getProductBySlug, products } from '@/features/products/data/products';
+import { submitContact } from '@/features/contact/services/submit-contact';
 import { resolveContactIntent } from '@/features/contact/utils/resolveContactIntent';
 
 const serviceOptions = [
@@ -75,18 +76,7 @@ export function Contact() {
 
     startTransition(async () => {
       try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values)
-        });
-
-        const payload = (await response.json().catch(() => null)) as { message?: string } | null;
-
-        if (!response.ok) {
-          throw new Error(payload?.message || 'Não foi possível enviar o pedido.');
-        }
-
+        await submitContact(values);
         reset();
         setMessage({ type: 'success', text: 'Pedido enviado com sucesso. Entraremos em contacto em breve.' });
       } catch (error) {
