@@ -30,6 +30,10 @@ export const contactSchema = z.object({
 export type ContactFormInput = z.input<typeof contactSchema>;
 export type ContactFormValues = z.output<typeof contactSchema>;
 
+/**
+ * Public JSON contract returned by POST /api/contact.
+ * Keep this shape backward-compatible unless the API change is intentional.
+ */
 export type ContactApiResponse =
   | { ok: true }
   | {

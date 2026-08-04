@@ -1,5 +1,9 @@
 import type { ContactIntent } from '@/domain/contact/types';
 
+/**
+ * Resolves supported commercial intent parameters from the public URL.
+ * Unknown values fall back to the general contact state.
+ */
 export function resolveContactIntent(searchParams: URLSearchParams): ContactIntent {
   const productSlug = searchParams.get('produto')?.trim() || undefined;
   const selectedType = searchParams.get('tipo');

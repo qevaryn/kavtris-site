@@ -1,5 +1,9 @@
 import type { ContactApiResponse, ContactFormValues } from '@/domain/contact';
 
+/**
+ * Browser-side adapter for the public contact endpoint.
+ * UI state stays in ContactForm; this function only preserves request/response handling.
+ */
 export async function submitContact(values: ContactFormValues) {
   const response = await fetch('/api/contact', {
     method: 'POST',

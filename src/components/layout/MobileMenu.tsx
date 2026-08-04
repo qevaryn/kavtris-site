@@ -13,6 +13,7 @@ export function MobileMenu() {
     setOpen(false);
 
     if (restoreFocus) {
+      // Restoring focus keeps keyboard users at the menu trigger after Escape or backdrop close.
       window.setTimeout(() => {
         document.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu-panel"]')?.focus();
       }, 0);
