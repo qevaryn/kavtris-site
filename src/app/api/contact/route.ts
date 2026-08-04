@@ -1,37 +1,13 @@
 import { NextResponse } from 'next/server';
 import { contactSchema } from '@/lib/validation';
-import { sendContactEmail } from '@/lib/resend';
+import { isContactRateLimited } from '@/server/contact/contact-rate-limit';
+import { processContactRequest } from '@/server/contact/contact.service';
 
 export const runtime = 'nodejs';
 
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const RATE_LIMIT_MAX_REQUESTS = 3;
-const submissions = new Map<string, { count: number; resetAt: number }>();
-
-function getClientKey(request: Request) {
-  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    || request.headers.get('x-real-ip')
-    || 'local';
-}
-
-function isRateLimited(key: string) {
-  const now = Date.now();
-  const current = submissions.get(key);
-
-  if (!current || current.resetAt <= now) {
-    submissions.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-
-  current.count += 1;
-  return current.count > RATE_LIMIT_MAX_REQUESTS;
-}
-
 export async function POST(request: Request) {
   try {
-    const clientKey = getClientKey(request);
-
-    if (isRateLimited(clientKey)) {
+    if (isContactRateLimited(request)) {
       return NextResponse.json(
         { ok: false, message: 'Foram enviados demasiados pedidos. Tente novamente mais tarde.' },
         { status: 429 }
@@ -56,7 +32,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, message: 'Pedido inválido.' }, { status: 400 });
     }
 
-    await sendContactEmail(parsed.data);
+    await processContactRequest(parsed.data);
 
     return NextResponse.json({ ok: true });
   } catch (error) {

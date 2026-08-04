@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/shared/Button';
 import { Logo } from '@/components/layout/Logo';
 import { MobileMenu } from '@/components/layout/MobileMenu';
 import { navigationLinks } from '@/lib/constants';
