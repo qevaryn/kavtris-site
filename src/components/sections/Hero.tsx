@@ -22,18 +22,15 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-md text-sm leading-6 text-white/74">
-            Soluções de software, automação e qualidade para empresas que procuram eficiência, desempenho e inovação. Não precisa perceber de tecnologia. Conte-nos como a sua empresa funciona e onde estão as dificuldades.
-          </p>
-          <p className="mt-3 max-w-md text-sm font-semibold leading-6 text-white/84">
-            Soluções adaptadas à realidade de cada empresa, desde uma ferramenta simples até uma plataforma completa.
+            Criamos software adaptado à operação de cada empresa, desde ferramentas simples até plataformas completas. Não precisa perceber de tecnologia. Explique-nos como a sua empresa funciona e onde estão as dificuldades.
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
             <Button href="#contacto" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
               Explique o seu problema
             </Button>
-            <Button href="#solucoes" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
-              Nossas soluções
+            <Button href="/produtos" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
+              Ver soluções
             </Button>
           </div>
         </div>

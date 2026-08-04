@@ -12,10 +12,14 @@ const productRoutes = [
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
   await page.goto('/produtos');
 
-  await expect(page.getByRole('heading', { name: /Soluções de software adaptadas/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Encontre uma solução próxima/i })).toBeVisible();
+  await expect(page.getByText(/As soluções apresentadas são pontos de partida adaptáveis/i)).toBeVisible();
+  await expect(page.getByText('Como usar o catálogo')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByTestId('product-card')).toHaveCount(6);
   await expect(page.getByTestId('product-card-visual')).toHaveCount(6);
+  await expect(page.getByTestId('custom-solution-card')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Ainda não sabe qual solução escolher?' })).toBeVisible();
   await expect(page.getByText(/Comprar agora|Adicionar ao carrinho|checkout|carrinho/i)).toHaveCount(0);
 });
 
@@ -35,12 +39,28 @@ test('menu principal inclui Produtos e abre o catálogo', async ({ page }) => {
 test('filtros de setor atualizam cartões visíveis', async ({ page }) => {
   await page.goto('/produtos');
 
-  await page.getByRole('button', { name: 'Hotelaria' }).click();
-  await expect(page.getByRole('button', { name: 'Hotelaria' })).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Qevaryn KitchenSync' })).toHaveCount(0);
+  const filterExpectations = [
+    { filter: 'Hotelaria', visible: 'Qevaryn Hotel Operations', hidden: 'Qevaryn KitchenSync' },
+    { filter: 'Restauração', visible: 'Qevaryn KitchenSync', hidden: 'Qevaryn FieldOps' },
+    { filter: 'Retalho', visible: 'Qevaryn Stock & Orders', hidden: 'Qevaryn FieldOps' },
+    { filter: 'Serviços', visible: 'Qevaryn FieldOps', hidden: 'Qevaryn Stock & Orders' },
+    { filter: 'Equipas externas', visible: 'Qevaryn FieldOps', hidden: 'Qevaryn Hotel Operations' },
+    { filter: 'Gestão', visible: 'Qevaryn Ops', hidden: 'Qevaryn KitchenSync' },
+    { filter: 'Clientes', visible: 'Qevaryn Customer Portal', hidden: 'Qevaryn Hotel Operations' }
+  ];
+
+  for (const item of filterExpectations) {
+    await page.getByRole('button', { name: item.filter }).click();
+    await expect(page.getByRole('button', { name: item.filter })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('heading', { name: item.visible })).toBeVisible();
+    await expect(page.getByRole('heading', { name: item.hidden })).toHaveCount(0);
+    await expect(page.getByTestId('custom-solution-card')).toHaveCount(0);
+  }
 
   await page.getByRole('button', { name: 'Todos' }).click();
+  await expect(page.getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('product-card')).toHaveCount(6);
+  await expect(page.getByTestId('custom-solution-card')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Qevaryn KitchenSync' })).toBeVisible();
 });
 
@@ -53,12 +73,23 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
   const firstCard = cards.first();
   await expect(firstCard.getByRole('img', { name: /FieldOps/i })).toBeVisible();
   await expect(firstCard.getByText('Equipas externas')).toBeVisible();
+  await expect(firstCard.getByText('Demonstração visual')).toBeVisible();
   await expect(firstCard.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
   await expect(firstCard.getByText('Organize equipas, serviços, visitas, checklists e relatórios num único sistema.')).toBeVisible();
   await expect(firstCard.getByRole('link', { name: 'Ver produto' })).toHaveAttribute('href', '/produtos/fieldops');
   await expect(firstCard.getByRole('link', { name: /Adaptar à minha empresa/ })).toHaveAttribute('href', '/?produto=fieldops#contacto');
 
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
+});
+
+test('card de solução personalizada e CTA final apontam para contacto', async ({ page }) => {
+  await page.goto('/produtos');
+
+  const customCard = page.getByTestId('custom-solution-card');
+  await expect(customCard.getByRole('heading', { name: 'Não encontrou uma solução parecida?' })).toBeVisible();
+  await expect(customCard.getByRole('link', { name: /Falar sobre uma solução personalizada/ })).toHaveAttribute('href', '/?tipo=personalizada#contacto');
+
+  await expect(page.getByRole('link', { name: 'Explique o seu problema' }).last()).toHaveAttribute('href', '/#contacto');
 });
 
 test('rotas de produto carregam com detalhes técnicos progressivos', async ({ page }) => {
@@ -68,8 +99,8 @@ test('rotas de produto carregam com detalhes técnicos progressivos', async ({ p
     if (product.slug === 'fieldops') {
       await expect(page.getByRole('heading', { name: /Organize equipas externas/i })).toBeVisible();
       await expect(page.getByText('Conceito de solução adaptável')).toBeVisible();
-      await expect(page.getByText(/Esta demonstração apresenta uma possível configuração/i)).toBeVisible();
-      const technicalDetails = page.locator('details').filter({ hasText: 'Acesso e segurança' });
+      await expect(page.getByText(/Esta apresentação mostra uma possível configuração/i)).toBeVisible();
+      const technicalDetails = page.locator('details').filter({ hasText: 'Segurança' });
       await expect(technicalDetails.locator('summary')).toBeVisible();
       await technicalDetails.locator('summary').click();
       await expect(technicalDetails.getByText('autenticação')).toBeVisible();
@@ -99,9 +130,11 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await page.goto('/');
 
   const preview = page.locator('#produtos-preview');
-  await expect(preview.getByTestId('product-card')).toHaveCount(4);
-  await expect(preview.getByTestId('product-card-visual')).toHaveCount(4);
-  await expect(preview.getByRole('link', { name: 'Ver produto' }).first()).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
+  await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });
 

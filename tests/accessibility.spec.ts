@@ -34,4 +34,9 @@ test('permite navegação por teclado no header e menu mobile', async ({ page })
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();
   await page.keyboard.press('Space');
   await expect(page.getByRole('button', { name: 'Fechar menu' }).first()).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();
 });
