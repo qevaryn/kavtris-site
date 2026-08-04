@@ -36,3 +36,12 @@ test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => 
   await expect(page.getByText(/não são apresentadas certificações/i)).toBeVisible();
   await expect(page.getByRole('contentinfo')).toBeVisible();
 });
+
+test('logotipo do header volta para a homepage a partir de páginas internas', async ({ page }) => {
+  await page.goto('/empresas');
+
+  const homeLink = page.getByLabel('Qevaryn Systems - início');
+  await expect(homeLink).toHaveAttribute('href', '/#inicio');
+  await homeLink.click();
+  await expect(page).toHaveURL(/\/#inicio$/);
+});
