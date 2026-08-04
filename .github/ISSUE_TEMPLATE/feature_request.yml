@@ -1,0 +1,36 @@
+name: Feature request
+description: Propose a product, website or technical improvement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: business-problem
+    attributes:
+      label: Business problem
+      description: What problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: target-users
+    attributes:
+      label: Target users
+      description: Who needs this?
+    validations:
+      required: true
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Desired outcome
+      description: What should be better after this work?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Proposed scope
+      description: Routes, features, API, QA or docs that may be affected.
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Explicit exclusions
+      description: What should this not include?
