@@ -123,6 +123,28 @@ This directory documents the architecture that currently exists. Future ideas ar
   Purpose: contact feature responsibilities and API integration.
   Status: current.
 
+## Visual Assets
+
+- [visual-assets/audit.md](visual-assets/audit.md)
+  Audience: product, design, frontend, QA and technical lead
+  Purpose: current visual-asset audit and replacement priorities.
+  Status: snapshot.
+
+- [visual-assets/inventory.md](visual-assets/inventory.md)
+  Audience: frontend, QA and technical lead
+  Purpose: current asset metadata, usage and integrity baseline.
+  Status: snapshot.
+
+- [visual-assets/product-comparison.md](visual-assets/product-comparison.md)
+  Audience: product, design and frontend
+  Purpose: comparison of the six current product visuals.
+  Status: snapshot.
+
+- [visual-assets/phase-2-requirements.md](visual-assets/phase-2-requirements.md)
+  Audience: product, design, frontend and QA
+  Purpose: requirements to define before replacing product assets.
+  Status: draft guidance.
+
 ## Decisions
 
 - [decisions/ADR-001-single-responsive-web-app.md](decisions/ADR-001-single-responsive-web-app.md)
