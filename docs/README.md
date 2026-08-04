@@ -142,8 +142,33 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 - [visual-assets/phase-2-requirements.md](visual-assets/phase-2-requirements.md)
   Audience: product, design, frontend and QA
-  Purpose: requirements to define before replacing product assets.
-  Status: draft guidance.
+  Purpose: Phase 1 requirements that Phase 2 resolved.
+  Status: superseded snapshot.
+
+- [visual-assets/system-principles.md](visual-assets/system-principles.md)
+  Audience: product, design, frontend, QA and technical lead
+  Purpose: product visual-system principles and shared visual family.
+  Status: current specification.
+
+- [visual-assets/technical-specification.md](visual-assets/technical-specification.md)
+  Audience: design, frontend, QA and technical lead
+  Purpose: ratios, safe areas, export rules, naming and future directory strategy.
+  Status: current specification.
+
+- [visual-assets/product-briefs.md](visual-assets/product-briefs.md)
+  Audience: product, design, frontend, QA and technical lead
+  Purpose: product-specific visual briefs for the six current product concepts.
+  Status: current specification.
+
+- [visual-assets/review-and-acceptance.md](visual-assets/review-and-acceptance.md)
+  Audience: product, design, frontend, QA, accessibility and technical lead
+  Purpose: review sequence, acceptance criteria and production-method guidance.
+  Status: current specification.
+
+- [visual-assets/phase-3-production-plan.md](visual-assets/phase-3-production-plan.md)
+  Audience: product, design, frontend, QA and technical lead
+  Purpose: proposed image-production and replacement plan for Visual Phase 3.
+  Status: proposed plan.
 
 ## Decisions
 
