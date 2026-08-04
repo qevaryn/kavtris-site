@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/shared/Button';
 import { navigationLinks } from '@/lib/constants';
 
 export function MobileMenu() {
@@ -13,6 +13,7 @@ export function MobileMenu() {
     setOpen(false);
 
     if (restoreFocus) {
+      // Restoring focus keeps keyboard users at the menu trigger after Escape or backdrop close.
       window.setTimeout(() => {
         document.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu-panel"]')?.focus();
       }, 0);

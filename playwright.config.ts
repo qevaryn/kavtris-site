@@ -26,17 +26,34 @@ export default defineConfig({
     : undefined,
   projects: [
     {
-      name: 'chromium',
+      name: 'web-desktop-chromium',
+      testMatch: [
+        '**/web-shared/**/*.spec.ts',
+        '**/web-desktop/**/*.spec.ts',
+        '**/accessibility/shared/**/*.spec.ts',
+        '**/accessibility/desktop/**/*.spec.ts',
+        '**/visual/shared/**/*.spec.ts',
+        '**/visual/desktop/**/*.spec.ts'
+      ],
       use: { ...devices['Desktop Chrome'] }
     },
     {
-      name: 'mobile',
+      name: 'web-mobile-chromium',
+      testMatch: [
+        '**/web-mobile/**/*.spec.ts',
+        '**/accessibility/mobile/**/*.spec.ts',
+        '**/visual/mobile/**/*.spec.ts'
+      ],
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 390, height: 844 },
         isMobile: true,
         hasTouch: true
       }
+    },
+    {
+      name: 'api',
+      testMatch: ['**/api/**/*.spec.ts']
     }
   ]
 });

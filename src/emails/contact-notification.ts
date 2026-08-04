@@ -1,4 +1,4 @@
-import type { ContactFormValues } from '@/lib/validation';
+import type { ContactFormValues } from '@/domain/contact';
 import { brandTagline, companyName, siteUrl, socialLinks } from '@/lib/constants';
 
 const emailSubjectPrefix = 'Re: Pedido — Qevaryn Systems';

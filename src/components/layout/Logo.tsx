@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { cn } from '@/components/ui/cn';
+import { cn } from '@/components/shared/cn';
 
 type LogoProps = {
   className?: string;

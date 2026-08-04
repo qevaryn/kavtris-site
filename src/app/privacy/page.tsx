@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import { SectionHeading } from '@/components/shared/SectionHeading';
 
 export default function PrivacyPage() {
   return (
