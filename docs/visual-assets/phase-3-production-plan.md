@@ -178,6 +178,46 @@ Recommended first PR deliverable:
 
 If the FieldOps hero requires page code to use a separate hero image, keep that code change scoped and tested.
 
+## Pilot Decision Log
+
+### Qevaryn Ops catalog visual
+
+Status: Approved for pilot integration.
+
+Approved asset:
+
+```text
+public/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp
+```
+
+Metadata:
+
+```text
+Format: WebP
+Dimensions: 1920x1200
+Aspect ratio: 16:10
+Size: 101868 bytes
+Color: sRGB
+SHA256: BA7A50306D038B4A776594384EDCFEF3A5D4DA70FB5D7D32FA406A626863A7EA
+```
+
+Decision:
+
+- Use the approved Qevaryn Ops visual for catalog and generic product-page contexts.
+- Keep the previous `public/images/products/qevaryn-ops.webp` asset available for rollback during the pilot.
+- Update the alt text to reflect approvals, responsible people, deadlines, recent documents and approval flow.
+- Do not integrate rejected previews, comparison images or temporary review artifacts.
+
+Reason:
+
+- The approved visual communicates internal processes, approvals, documents, responsible people and deadlines more clearly than the previous generic dashboard image.
+- The composition remains software-first and follows the Phase 2 navy, gold and white product visual system.
+- The 16:10 export aligns with the existing product-card rendering without requiring layout changes.
+
+Next gate:
+
+- Produce and review the Qevaryn FieldOps catalog proposals before replacing additional product visuals.
+
 ## Explicit Non-Goals
 
 Phase 3 should not:
