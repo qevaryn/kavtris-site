@@ -7,6 +7,17 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
   await expectNoHorizontalOverflow(page);
   await expect(page.getByRole('button', { name: 'Todos' })).toBeVisible();
 
+  const fieldOpsCard = page.getByTestId('product-card').filter({ hasText: 'Qevaryn FieldOps' });
+  await fieldOpsCard.scrollIntoViewIfNeeded();
+  const fieldOpsImage = fieldOpsCard.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
+  await expect(fieldOpsImage).toBeVisible();
+  await expect.poll(async () => fieldOpsImage.evaluate((image: HTMLImageElement) => (
+    image.complete &&
+    image.naturalWidth > 0 &&
+    image.naturalHeight > 0 &&
+    image.currentSrc.includes('fieldops-catalog-v1.webp')
+  ))).toBe(true);
+
   const opsCard = page.getByTestId('product-card').filter({ hasText: 'Qevaryn Ops' });
   await opsCard.scrollIntoViewIfNeeded();
   await expect(opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i })).toBeVisible();
