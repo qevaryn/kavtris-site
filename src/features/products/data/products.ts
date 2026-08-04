@@ -33,6 +33,11 @@ export const products: ProductConcept[] = [
     shortDescription: 'Organize equipas, serviços, visitas, checklists e relatórios num único sistema.',
     image: '/images/products/qevaryn-fieldops.webp',
     imageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
+    catalogImage: '/images/products/fieldops/fieldops-catalog-v1.webp',
+    catalogImageAlt:
+      'Interface do Qevaryn FieldOps com agenda de serviços, profissionais, locais e estados num computador, acompanhada por check-in, checklist e evidências num telemóvel.',
+    heroImage: '/images/products/qevaryn-fieldops.webp',
+    heroImageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
     benefits: ['Serviços acompanhados', 'Evidências centralizadas', 'Menos chamadas', 'Relatórios por cliente'],
     features: [
       'escala de funcionários',
