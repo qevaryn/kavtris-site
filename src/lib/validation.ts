@@ -5,15 +5,17 @@ export const contactSchema = z.object({
   company: z.string().trim().max(120, 'A empresa está demasiado longa.'),
   email: z.string().trim().email('Indique um email válido.').max(160, 'O email está demasiado longo.'),
   phone: z.string().trim().max(40, 'O telefone está demasiado longo.').optional().default(''),
-  sector: z.string().trim().min(1, 'Indique o setor ou área do negócio.').max(120, 'O setor está demasiado longo.'),
+  sector: z.string().trim().max(120, 'O setor está demasiado longo.').optional().default(''),
   service: z.string().trim().min(1, 'Selecione o que está difícil.'),
+  productInterest: z.string().trim().max(120, 'O produto selecionado está demasiado longo.').optional().default(''),
   currentProcess: z
     .string()
     .trim()
-    .min(10, 'Explique brevemente como funciona atualmente.')
-    .max(700, 'A descrição do funcionamento atual está demasiado longa.'),
-  affectedPeople: z.string().trim().min(1, 'Indique quem é afetado.').max(160, 'A resposta está demasiado longa.'),
-  contactPreference: z.string().trim().min(1, 'Selecione a melhor forma de contacto.'),
+    .max(700, 'A descrição do funcionamento atual está demasiado longa.')
+    .optional()
+    .default(''),
+  affectedPeople: z.string().trim().max(160, 'A resposta está demasiado longa.').optional().default(''),
+  contactPreference: z.string().trim().optional().default(''),
   message: z
     .string()
     .trim()

@@ -12,6 +12,7 @@ const baseValues: ContactFormValues = {
   phone: '+351 900 000 000',
   sector: 'Serviços',
   service: 'Automação de processos',
+  productInterest: 'Qevaryn FieldOps',
   currentProcess: 'Hoje a equipa confirma pedidos por mensagem e atualiza uma folha manualmente.',
   affectedPeople: 'Funcionários',
   contactPreference: 'Email',
@@ -32,6 +33,7 @@ describe('contact notification email template', () => {
     expect(email.html).toContain('Novo pedido comercial');
     expect(email.html).toContain('Ana Silva');
     expect(email.html).toContain('Automação de processos');
+    expect(email.html).toContain('Qevaryn FieldOps');
     expect(email.html).toContain('+351 900 000 000');
     expect(email.html).toContain('Serviços');
     expect(email.html).toContain('Funcionários');
@@ -63,6 +65,7 @@ describe('contact notification email template', () => {
     expect(email.text).toContain('Nome: Ana Silva');
     expect(email.text).toContain('Empresa: Empresa Exemplo');
     expect(email.text).toContain('Email: ana@example.com');
+    expect(email.text).toContain('Produto de interesse: Qevaryn FieldOps');
     expect(email.text).toContain('Responder diretamente ao email do cliente: ana@example.com');
   });
 

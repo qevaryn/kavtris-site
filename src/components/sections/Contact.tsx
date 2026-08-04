@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Send } from 'lucide-react';
@@ -8,20 +8,22 @@ import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/
 import { Button } from '@/components/ui/Button';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
+import { getProductBySlug, products } from '@/data/products';
 
 const serviceOptions = [
-  'Organização da equipa',
-  'Atendimento ao cliente',
-  'Gestão de pedidos',
-  'Reservas e marcações',
-  'Vendas',
-  'Comunicação entre setores',
-  'Tarefas repetitivas',
-  'Ainda não sei'
+  'Ainda não sei qual solução preciso',
+  'Solução personalizada / outro problema',
+  'Organizar pedidos',
+  'Reduzir tarefas manuais',
+  'Acompanhar clientes',
+  'Gerir equipas externas',
+  'Controlar stock',
+  'Organizar reservas',
+  'Melhorar comunicação entre setores',
+  'Projeto empresarial / requisitos e integrações'
 ];
 
-const affectedOptions = ['Gestão', 'Funcionários', 'Clientes', 'Parceiros', 'Todos'];
-const contactPreferenceOptions = ['Email', 'Telefone', 'LinkedIn', 'Ainda não sei'];
+const productInterestOptions = products.map((product) => product.name);
 
 export function Contact() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -31,7 +33,8 @@ export function Contact() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm<ContactFormInput, unknown, ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -40,6 +43,7 @@ export function Contact() {
       email: '',
       phone: '',
       service: '',
+      productInterest: '',
       sector: '',
       currentProcess: '',
       affectedPeople: '',
@@ -49,6 +53,23 @@ export function Contact() {
       honeypot: ''
     }
   });
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const selectedSlug = searchParams.get('produto');
+    const selectedType = searchParams.get('tipo');
+    const selectedProduct = selectedSlug ? getProductBySlug(selectedSlug) : undefined;
+
+    if (selectedProduct) {
+      setValue('productInterest', selectedProduct.name, { shouldDirty: true });
+    }
+
+    if (selectedType === 'empresa') {
+      setValue('service', 'Projeto empresarial / requisitos e integrações', { shouldDirty: true });
+    } else if (selectedType === 'personalizada') {
+      setValue('service', 'Solução personalizada / outro problema', { shouldDirty: true });
+    }
+  }, [setValue]);
 
   const onSubmit = (values: ContactFormValues) => {
     setMessage(null);
@@ -166,23 +187,8 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="sector" className="text-sm font-medium text-navy-800">
-                Setor
-              </label>
-              <input
-                id="sector"
-                {...register('sector')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
-                aria-invalid={errors.sector ? 'true' : 'false'}
-                aria-describedby={errors.sector ? 'sector-error' : undefined}
-                placeholder="Ex.: restauração, serviços, comércio"
-              />
-              {errors.sector ? <p id="sector-error" className="mt-2 text-sm text-red-600" role="alert">{errors.sector.message}</p> : null}
-            </div>
-
-            <div>
               <label htmlFor="service" className="text-sm font-medium text-navy-800">
-                Principal dificuldade
+                Produto ou problema
               </label>
               <select
                 id="service"
@@ -202,62 +208,27 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="affectedPeople" className="text-sm font-medium text-navy-800">
-                Quem é afetado?
+              <label htmlFor="productInterest" className="text-sm font-medium text-navy-800">
+                Produto de interesse <span className="font-normal text-slate-500">(opcional)</span>
               </label>
               <select
-                id="affectedPeople"
-                {...register('affectedPeople')}
+                id="productInterest"
+                {...register('productInterest')}
                 className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
-                aria-invalid={errors.affectedPeople ? 'true' : 'false'}
-                aria-describedby={errors.affectedPeople ? 'affectedPeople-error' : undefined}
+                aria-invalid={errors.productInterest ? 'true' : 'false'}
+                aria-describedby={errors.productInterest ? 'productInterest-error' : undefined}
               >
-                <option value="">Selecione uma opção</option>
-                {affectedOptions.map((option) => (
+                <option value="">Ainda não sei qual solução preciso</option>
+                {productInterestOptions.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
-              {errors.affectedPeople ? <p id="affectedPeople-error" className="mt-2 text-sm text-red-600" role="alert">{errors.affectedPeople.message}</p> : null}
-            </div>
-
-            <div>
-              <label htmlFor="contactPreference" className="text-sm font-medium text-navy-800">
-                Melhor forma de contacto
-              </label>
-              <select
-                id="contactPreference"
-                {...register('contactPreference')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
-                aria-invalid={errors.contactPreference ? 'true' : 'false'}
-                aria-describedby={errors.contactPreference ? 'contactPreference-error' : undefined}
-              >
-                <option value="">Selecione uma opção</option>
-                {contactPreferenceOptions.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-              {errors.contactPreference ? <p id="contactPreference-error" className="mt-2 text-sm text-red-600" role="alert">{errors.contactPreference.message}</p> : null}
-            </div>
-
-            <div className="md:col-span-2">
-              <label htmlFor="currentProcess" className="text-sm font-medium text-navy-800">
-                Como funciona atualmente?
-              </label>
-              <textarea
-                id="currentProcess"
-                rows={3}
-                {...register('currentProcess')}
-                className="mt-2 min-h-24 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
-                aria-invalid={errors.currentProcess ? 'true' : 'false'}
-                aria-describedby={errors.currentProcess ? 'currentProcess-error' : undefined}
-                placeholder="Ex.: os pedidos chegam por WhatsApp e depois alguém passa para uma folha..."
-              />
-              {errors.currentProcess ? <p id="currentProcess-error" className="mt-2 text-sm text-red-600" role="alert">{errors.currentProcess.message}</p> : null}
+              {errors.productInterest ? <p id="productInterest-error" className="mt-2 text-sm text-red-600" role="alert">{errors.productInterest.message}</p> : null}
             </div>
 
             <div className="md:col-span-2">
               <label htmlFor="message" className="text-sm font-medium text-navy-800">
-                O que está difícil?
+                Breve explicação
               </label>
               <textarea
                 id="message"
@@ -272,6 +243,11 @@ export function Contact() {
                 <span>Não precisa usar termos técnicos.</span>
               </div>
             </div>
+
+            <input type="hidden" {...register('sector')} />
+            <input type="hidden" {...register('currentProcess')} />
+            <input type="hidden" {...register('affectedPeople')} />
+            <input type="hidden" {...register('contactPreference')} />
 
             <div className="md:col-span-2">
               <label className="flex items-start gap-3 rounded-2xl border border-borderline bg-paper px-4 py-3 text-sm text-navy-800">

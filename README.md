@@ -1,6 +1,6 @@
 # Qevaryn Systems
 
-Site comercial da Qevaryn Systems, empresa de tecnologia focada em sistemas web, automação de processos, integrações, ferramentas internas, MVPs digitais e qualidade de software.
+Site comercial da Qevaryn Systems, empresa de tecnologia focada em sistemas web, aplicações mobile, automação de processos, integrações, ferramentas internas, MVPs digitais, plataformas empresariais e qualidade de software.
 
 A Qevaryn Systems atua como operadora independente e integra a Rede Qualidade é Vida como identidade institucional secundária.
 
@@ -8,7 +8,11 @@ Mensagem principal da experiência atual:
 
 > Tecnologia forte por trás. Simplicidade na frente.
 
-O site foi reposicionado para comunicar em duas camadas: primeiro explica problemas e soluções em linguagem simples para empresários e gestores não técnicos; depois revela detalhes técnicos em componentes opcionais para equipas maiores.
+O site comunica em duas camadas: primeiro explica problemas e soluções em linguagem simples para empresas de qualquer dimensão; depois revela detalhes técnicos em componentes opcionais para equipas que precisam avaliar segurança, arquitetura, integrações, qualidade e suporte.
+
+Resumo de posicionamento:
+
+> Soluções de software adaptadas à realidade de cada empresa — desde uma ferramenta simples até uma plataforma completa.
 
 ## Stack
 
@@ -35,6 +39,8 @@ O site foi reposicionado para comunicar em duas camadas: primeiro explica proble
 - Manutenção, suporte e melhoria contínua
 
 O site não apresenta hardware, robótica, automação industrial, máquinas físicas ou produtos ainda não construídos.
+
+A Qevaryn pode desenvolver software que funcione sozinho ou ligado a equipamentos acessíveis e fáceis de encontrar, como QR Codes, NFC, tablets, leitores de código de barras, impressoras comuns, câmaras, sensores simples ou equipamentos já existentes no cliente. Esses elementos são apresentados apenas como extensão opcional do software.
 
 ## Relação institucional
 

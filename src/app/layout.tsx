@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="pt-PT" className={`${display.variable} ${sans.variable}`}>
+    <html lang="pt-PT" data-scroll-behavior="smooth" className={`${display.variable} ${sans.variable}`}>
       <body className="bg-paper font-sans text-navy-800 antialiased">
         {children}
       </body>

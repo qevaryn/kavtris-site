@@ -9,12 +9,13 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  { label: 'O que resolvemos', href: '#problemas' },
-  { label: 'Exemplos', href: '#exemplos' },
-  { label: 'Como funciona', href: '#processo' },
-  { label: 'Descobrir solução', href: '#simulador' },
-  { label: 'Para empresas', href: '#empresas' },
-  { label: 'Contacto', href: '#contacto' }
+  { label: 'O que resolvemos', href: '/#problemas' },
+  { label: 'Exemplos', href: '/#produtos-preview' },
+  { label: 'Produtos', href: '/produtos' },
+  { label: 'Como funciona', href: '/#processo' },
+  { label: 'Descobrir solução', href: '/#problemas' },
+  { label: 'Para empresas', href: '/#empresas' },
+  { label: 'Contacto', href: '/#contacto' }
 ];
 
 export const socialLinks = {
