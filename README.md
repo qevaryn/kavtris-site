@@ -180,6 +180,9 @@ npm run typecheck
 npm run build
 npm run test:unit
 npm run test:e2e
+npm run test:e2e:desktop
+npm run test:e2e:mobile
+npm run test:e2e:api
 ```
 
 Para executar os testes Playwright contra uma URL publicada, use:
@@ -189,6 +192,27 @@ BASE_URL=https://url-publicada.vercel.app npm run test:e2e
 ```
 
 O teste que valida erro de configuração do formulário é ignorado quando `BASE_URL` está definido para evitar envios reais em ambientes publicados.
+
+Os testes Playwright estão organizados por responsabilidade:
+
+```text
+tests/web-shared/
+tests/web-desktop/
+tests/web-mobile/
+tests/api/
+tests/accessibility/
+tests/visual/
+tests/shared/
+```
+
+`npm run test:e2e` continua a executar a suíte completa suportada. Os comandos desktop, mobile e API existem para investigação e ownership de QA.
+
+Mais detalhes:
+
+- `docs/qa/strategy.md`
+- `docs/qa/web-desktop.md`
+- `docs/qa/web-mobile.md`
+- `docs/qa/api.md`
 
 ## Segurança
 
