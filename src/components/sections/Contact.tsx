@@ -18,7 +18,8 @@ const serviceOptions = [
   'Gerir equipas externas',
   'Controlar stock',
   'Organizar reservas',
-  'Melhorar comunicação entre setores'
+  'Melhorar comunicação entre setores',
+  'Projeto empresarial / requisitos e integrações'
 ];
 
 const productInterestOptions = products.map((product) => product.name);
@@ -53,11 +54,17 @@ export function Contact() {
   });
 
   useEffect(() => {
-    const selectedSlug = new URLSearchParams(window.location.search).get('produto');
+    const searchParams = new URLSearchParams(window.location.search);
+    const selectedSlug = searchParams.get('produto');
+    const selectedType = searchParams.get('tipo');
     const selectedProduct = selectedSlug ? getProductBySlug(selectedSlug) : undefined;
 
     if (selectedProduct) {
       setValue('productInterest', selectedProduct.name, { shouldDirty: true });
+    }
+
+    if (selectedType === 'empresa') {
+      setValue('service', 'Projeto empresarial / requisitos e integrações', { shouldDirty: true });
     }
   }, [setValue]);
 
