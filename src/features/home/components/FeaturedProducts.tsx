@@ -33,8 +33,8 @@ export function FeaturedProducts() {
               <div className="flex w-full flex-col">
                 <div className="relative aspect-[16/10] bg-navy-950">
                   <Image
-                    src={product.image}
-                    alt={product.imageAlt}
+                    src={product.catalogImage ?? product.image}
+                    alt={product.catalogImageAlt ?? product.imageAlt}
                     fill
                     sizes="(min-width: 1280px) 270px, (min-width: 768px) 50vw, 100vw"
                     className="object-cover"

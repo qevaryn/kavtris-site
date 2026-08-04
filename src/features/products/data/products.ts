@@ -33,6 +33,11 @@ export const products: ProductConcept[] = [
     shortDescription: 'Organize equipas, serviços, visitas, checklists e relatórios num único sistema.',
     image: '/images/products/qevaryn-fieldops.webp',
     imageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
+    catalogImage: '/images/products/fieldops/fieldops-catalog-v1.webp',
+    catalogImageAlt:
+      'Interface do Qevaryn FieldOps com agenda de serviços, profissionais, locais e estados num computador, acompanhada por check-in, checklist e evidências num telemóvel.',
+    heroImage: '/images/products/qevaryn-fieldops.webp',
+    heroImageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
     benefits: ['Serviços acompanhados', 'Evidências centralizadas', 'Menos chamadas', 'Relatórios por cliente'],
     features: [
       'escala de funcionários',
@@ -181,8 +186,9 @@ export const products: ProductConcept[] = [
     problem: 'Tarefas, aprovações, documentos e pedidos internos estão espalhados por emails, mensagens e folhas.',
     description: 'Organize tarefas, aprovações, documentos, pedidos e indicadores numa plataforma interna.',
     shortDescription: 'Organize tarefas, aprovações, documentos e processos internos.',
-    image: '/images/products/qevaryn-ops.webp',
-    imageAlt: 'Mockup visual do Qevaryn Ops com tarefas, aprovações, documentos e indicadores internos',
+    image: '/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp',
+    imageAlt:
+      'Interface do Qevaryn Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
     benefits: ['Responsáveis definidos', 'Aprovações acompanhadas', 'Documentos organizados', 'Indicadores visíveis'],
     features: [
       'tarefas',
