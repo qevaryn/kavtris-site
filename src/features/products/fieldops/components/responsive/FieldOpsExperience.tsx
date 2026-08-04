@@ -1,19 +1,22 @@
 "use client";
 
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { KeyboardEvent } from 'react';
 import { useMemo, useState } from 'react';
-import { AlertTriangle, Camera, CheckCircle2, ClipboardCheck, Clock, FileText, MapPin, UserCheck } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
+import { FieldOpsManagementDashboard } from '@/features/products/fieldops/components/desktop/FieldOpsManagementDashboard';
+import { FieldOpsEmployeeMobileView } from '@/features/products/fieldops/components/mobile/FieldOpsEmployeeMobileView';
+import { FieldOpsProcessWorkflow } from '@/features/products/fieldops/components/responsive/FieldOpsProcessWorkflow';
 import {
   fieldOpsConfigurations,
   fieldOpsExperienceViews,
-  fieldOpsSectors,
-  fieldOpsWorkflowSteps
+  fieldOpsSectors
 } from '@/features/products/fieldops/data/fieldops';
 
 type ExperienceId = (typeof fieldOpsExperienceViews)[number]['id'];
 type ConfigId = (typeof fieldOpsConfigurations)[number]['id'];
 
 export function FieldOpsExperience() {
+  // Keep all selectors in this orchestrator so desktop and mobile product views share the same state.
   const [experienceId, setExperienceId] = useState<ExperienceId>('management');
   const [sectorId, setSectorId] = useState(fieldOpsSectors[0].id);
   const [configId, setConfigId] = useState<ConfigId>('essential');
@@ -78,9 +81,9 @@ export function FieldOpsExperience() {
                 <h3 className="text-2xl font-semibold text-navy-950">{experience.title}</h3>
                 <p className="mt-4 text-base leading-8 text-slate-600">{experience.description}</p>
               </div>
-              {experience.id === 'management' && <ManagementView sectorName={sector.name} dashboardState={sector.dashboardState} />}
-              {experience.id === 'team' && <TeamView sectorName={sector.name} />}
-              {experience.id === 'process' && <ProcessView />}
+              {experience.id === 'management' && <FieldOpsManagementDashboard sectorName={sector.name} dashboardState={sector.dashboardState} />}
+              {experience.id === 'team' && <FieldOpsEmployeeMobileView sectorName={sector.name} />}
+              {experience.id === 'process' && <FieldOpsProcessWorkflow />}
             </div>
           </div>
         </div>
@@ -237,106 +240,6 @@ export function FieldOpsExperience() {
         </div>
       </section>
     </>
-  );
-}
-
-function ManagementView({ sectorName, dashboardState }: { sectorName: string; dashboardState: string }) {
-  const stats = [
-    ['Ativos', '12'],
-    ['Agendados', '28'],
-    ['Atrasados', '2'],
-    ['Incidentes', '3'],
-    ['Aprovações', '5']
-  ];
-
-  return (
-    <article className="min-w-0 rounded-[1.8rem] border border-borderline bg-white p-5 shadow-card">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold-600">Painel de gestão</p>
-          <h3 className="mt-2 text-2xl font-semibold text-navy-950">{dashboardState}</h3>
-        </div>
-        <span className="rounded-full bg-paper px-3 py-1 text-sm font-semibold text-navy-800">{sectorName}</span>
-      </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {stats.map(([label, value]) => (
-          <div key={label} className="rounded-2xl bg-paper p-4">
-            <p className="text-xs font-semibold text-slate-600">{label}</p>
-            <p className="mt-1 text-2xl font-bold text-navy-950">{value}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-5 grid gap-3 md:grid-cols-2">
-        {[
-          ['Serviço ativo', 'Em curso', Clock],
-          ['Relatório disponível', 'Concluído', FileText],
-          ['Incidente a rever', 'Pendente', AlertTriangle],
-          ['Cliente ou local', 'Filtrado por equipa', MapPin]
-        ].map(([title, status, Icon]) => (
-          <div key={title as string} className="flex items-center gap-3 rounded-2xl border border-borderline p-4">
-            <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
-            <div>
-              <p className="text-sm font-semibold text-navy-900">{title as string}</p>
-              <p className="text-sm text-slate-600">{status as string}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-function TeamView({ sectorName }: { sectorName: string }) {
-  return (
-    <article className="mx-auto w-full max-w-md rounded-[1.8rem] border border-borderline bg-white p-4 shadow-card lg:mx-0">
-      <div className="rounded-[1.45rem] bg-navy-950 p-4 text-white">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold-500">FieldOps Mobile</p>
-          <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-[0.68rem] font-semibold text-emerald-200">Offline opcional</span>
-        </div>
-        <div className="mt-4 rounded-2xl bg-white p-4 text-navy-950">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold-700">Agenda de hoje</p>
-          <h3 className="mt-2 text-lg font-semibold">{sectorName} - serviço atribuído</h3>
-          <div className="mt-4 grid gap-3">
-            <InfoRow icon={<Clock className="h-4 w-4" />} label="Horário" value="09:30 - 11:00" />
-            <InfoRow icon={<MapPin className="h-4 w-4" />} label="Local" value="Cliente / localização atribuída" />
-            <InfoRow icon={<ClipboardCheck className="h-4 w-4" />} label="Checklist" value="Pontos preparados para execução" />
-            <InfoRow icon={<Camera className="h-4 w-4" />} label="Evidências" value="Fotografias e notas ligadas ao serviço" />
-            <InfoRow icon={<AlertTriangle className="h-4 w-4" />} label="Incidente" value="Registo quando algo precisa de revisão" />
-            <InfoRow icon={<UserCheck className="h-4 w-4" />} label="Conclusão" value="Confirmação ou check-out quando aplicável" />
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function ProcessView() {
-  return (
-    <ol className="grid gap-3 md:grid-cols-2">
-      {fieldOpsWorkflowSteps.map((step, index) => (
-        <li key={step.id} className="rounded-2xl border border-borderline bg-white p-4 shadow-sm">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-600 text-sm font-bold text-white">
-            {index + 1}
-          </span>
-          <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-gold-700">{step.statusLabel}</p>
-          <h3 className="mt-1 text-base font-semibold text-navy-950">{step.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function InfoRow({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex gap-3 rounded-xl bg-paper p-3">
-      <span className="text-gold-600">{icon}</span>
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.1em] text-slate-600">{label}</p>
-        <p className="mt-1 text-sm text-navy-900">{value}</p>
-      </div>
-    </div>
   );
 }
 

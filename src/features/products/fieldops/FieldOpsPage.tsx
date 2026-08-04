@@ -5,7 +5,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
-import { FieldOpsExperience } from '@/features/products/fieldops/components/FieldOpsExperience';
+import { FieldOpsExperience } from '@/features/products/fieldops/components/responsive/FieldOpsExperience';
 import { getProductBySlug } from '@/features/products/data/products';
 import { fieldOpsTechnicalGroups } from '@/features/products/fieldops/data/fieldops';
 

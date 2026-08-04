@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { ProductCard } from '@/features/catalog/components/ProductCard';
+import { ProductCard } from '@/features/catalog/components/shared/ProductCard';
 import { Button } from '@/components/shared/Button';
 import { products, sectorFilters, type ProductSector } from '@/features/products/data/products';
 

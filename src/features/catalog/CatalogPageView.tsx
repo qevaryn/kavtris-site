@@ -1,7 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
-import { ProductCatalogClient } from '@/features/catalog/components/ProductCatalogClient';
+import { ProductCatalogClient } from '@/features/catalog/components/responsive/ProductCatalogClient';
 
 export function CatalogPageView() {
   return (

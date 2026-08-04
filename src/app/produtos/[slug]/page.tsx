@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { FieldOpsPage } from '@/features/products/fieldops/components/FieldOpsPage';
+import { FieldOpsPage } from '@/features/products/fieldops/FieldOpsPage';
 import { GenericProductPage } from '@/features/products/generic/GenericProductPage';
 import { getProductBySlug, products } from '@/features/products/data/products';
 import { siteUrl } from '@/lib/constants';
