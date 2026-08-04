@@ -5,6 +5,7 @@ export interface FieldOpsSectorExample {
   description: string;
   workflow: string[];
   modules: string[];
+  outcome: string;
   mobileState: string;
   dashboardState: string;
 }
@@ -20,6 +21,21 @@ export interface FieldOpsWorkflowStep {
   title: string;
   description: string;
   statusLabel?: string;
+}
+
+export interface FieldOpsExperienceView {
+  id: 'management' | 'team' | 'process';
+  label: string;
+  title: string;
+  description: string;
+}
+
+export interface FieldOpsConfiguration {
+  id: 'essential' | 'growth' | 'enterprise';
+  name: string;
+  audience: string[];
+  modules: string[];
+  outcome: string;
 }
 
 export const fieldOpsProblems = [
@@ -42,16 +58,16 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
     problem: 'Serviços recorrentes dependem de mensagens, fotografias soltas e confirmações manuais.',
     description: 'A equipa recebe a localização, confirma presença, segue checklist, regista evidências e gera relatório.',
     workflow: [
-      'Funcionário recebe a localização',
-      'Check-in no local',
-      'Checklist de limpeza aberta',
-      'Áreas concluídas registadas',
-      'Fotografias antes e depois',
-      'Incidente reportado quando necessário',
-      'Confirmação do cliente',
-      'Check-out e relatório disponível'
+      'Localização recebida',
+      'Check-in',
+      'Checklist',
+      'Fotografias',
+      'Incidente se necessário',
+      'Confirmação',
+      'Relatório'
     ],
     modules: ['serviços recorrentes', 'checklists', 'fotografias', 'assinatura', 'relatórios'],
+    outcome: 'Serviços recorrentes ficam mais fáceis de acompanhar e comprovar.',
     mobileState: 'Checklist de limpeza',
     dashboardState: 'Serviços por cliente'
   },
@@ -61,16 +77,16 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
     problem: 'Técnicos precisam consultar ordens, histórico, materiais e aprovações sem perder informação.',
     description: 'O técnico recebe a ordem, confirma chegada, regista diagnóstico, materiais, evidências e fecho.',
     workflow: [
-      'Técnico recebe a ordem de serviço',
-      'Consulta histórico do equipamento',
-      'Confirma chegada',
-      'Regista diagnóstico',
-      'Regista materiais usados',
-      'Envia evidências',
-      'Pede aprovação se necessário',
-      'Fecha o serviço'
+      'Ordem recebida',
+      'Histórico consultado',
+      'Chegada confirmada',
+      'Diagnóstico',
+      'Materiais registados',
+      'Evidências',
+      'Conclusão'
     ],
     modules: ['ordens de serviço', 'materiais', 'aprovações', 'histórico técnico', 'evidências'],
+    outcome: 'Ordens, materiais, histórico e evidências ficam ligados ao mesmo serviço.',
     mobileState: 'Ordem de manutenção',
     dashboardState: 'Aprovações pendentes'
   },
@@ -80,16 +96,16 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
     problem: 'Receção, limpeza e manutenção precisam partilhar estado de quartos, áreas e pedidos internos.',
     description: 'Tarefas são atribuídas, o estado muda em tempo real e supervisores aprovam antes de libertar a área.',
     workflow: [
-      'Quarto ou área precisa de intervenção',
+      'Tarefa criada',
       'Tarefa atribuída',
-      'Funcionário recebe a tarefa',
-      'Estado muda para em curso',
-      'Checklist concluída',
-      'Incidente registado se necessário',
-      'Supervisor aprova',
-      'Área fica disponível'
+      'Em execução',
+      'Checklist',
+      'Incidente',
+      'Aprovação',
+      'Área disponível'
     ],
     modules: ['quartos', 'áreas comuns', 'supervisão', 'prioridades', 'histórico'],
+    outcome: 'Receção, limpeza e manutenção acompanham o mesmo estado operacional.',
     mobileState: 'Tarefa de quarto',
     dashboardState: 'Estado de quartos'
   },
@@ -99,15 +115,16 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
     problem: 'Visitas domiciliárias exigem registo organizado sem transformar o software em ferramenta clínica regulada.',
     description: 'O profissional segue a agenda, confirma visita, regista observações operacionais e disponibiliza relatório autorizado.',
     workflow: [
-      'Profissional recebe agenda',
-      'Confirma chegada',
-      'Segue checklist da visita',
-      'Regista observações relevantes',
-      'Reporta incidente operacional',
-      'Confirma fim da visita',
-      'Utilizadores autorizados consultam relatório'
+      'Visita agendada',
+      'Chegada confirmada',
+      'Rotina acompanhada',
+      'Observações',
+      'Incidente',
+      'Conclusão',
+      'Relatório'
     ],
     modules: ['agenda', 'visitas', 'observações', 'incidentes', 'acesso autorizado'],
+    outcome: 'Visitas e observações operacionais ficam disponíveis para utilizadores autorizados.',
     mobileState: 'Visita agendada',
     dashboardState: 'Relatórios de visitas'
   },
@@ -127,6 +144,7 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
       'Fecha a instalação'
     ],
     modules: ['instalações', 'materiais', 'checklists técnicas', 'aprovações', 'evidências'],
+    outcome: 'Instalações fora da empresa ganham instruções, evidências e fecho mais claros.',
     mobileState: 'Instalação atribuída',
     dashboardState: 'Instalações por estado'
   },
@@ -146,6 +164,7 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
       'Histórico fica disponível'
     ],
     modules: ['roteiros', 'formulários', 'fotografias', 'ocorrências', 'relatórios'],
+    outcome: 'Formulários, ocorrências e evidências ficam consolidados para revisão.',
     mobileState: 'Roteiro de inspeção',
     dashboardState: 'Inspeções e ocorrências'
   },
@@ -155,16 +174,17 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
     problem: 'Rotas, paragens, comprovativos e incidentes precisam ficar ligados ao serviço correto.',
     description: 'O motorista segue a rota, regista paragens, envia comprovativos e fecha o relatório operacional.',
     workflow: [
-      'Motorista recebe rota ou tarefa',
-      'Confirma partida',
-      'Segue paragens do serviço',
-      'Envia comprovativo',
-      'Regista incidente',
-      'Recolhe assinatura',
-      'Conclui a rota',
-      'Gestão recebe relatório'
+      'Rota atribuída',
+      'Partida',
+      'Paragens',
+      'Prova de entrega',
+      'Incidente',
+      'Assinatura',
+      'Conclusão',
+      'Relatório'
     ],
     modules: ['rotas', 'paragens', 'comprovativos', 'assinaturas', 'relatórios'],
+    outcome: 'Rotas e entregas ficam ligadas a comprovativos e relatórios operacionais.',
     mobileState: 'Rota em curso',
     dashboardState: 'Rotas e paragens'
   },
@@ -183,8 +203,30 @@ export const fieldOpsSectors: FieldOpsSectorExample[] = [
       'Gestão consulta indicadores'
     ],
     modules: ['múltiplas localizações', 'supervisores', 'permissões', 'aprovações', 'indicadores'],
+    outcome: 'Supervisores acompanham várias unidades sem perder a visão por localização.',
     mobileState: 'Serviço por localização',
     dashboardState: 'Operação multi-local'
+  }
+];
+
+export const fieldOpsExperienceViews: FieldOpsExperienceView[] = [
+  {
+    id: 'management',
+    label: 'Gestão',
+    title: 'Painel para acompanhar serviços e prioridades',
+    description: 'A gestão vê serviços ativos, atrasos, incidentes, aprovações pendentes e relatórios sem procurar informação em mensagens soltas.'
+  },
+  {
+    id: 'team',
+    label: 'Equipa',
+    title: 'Experiência mobile para quem executa o serviço',
+    description: 'O profissional consulta a agenda, abre a tarefa, confirma presença, segue checklist, envia evidências e conclui o serviço no telemóvel.'
+  },
+  {
+    id: 'process',
+    label: 'Processo',
+    title: 'Do planeamento ao relatório final',
+    description: 'O serviço passa por uma sequência clara, desde a criação até à validação e consulta do relatório.'
   }
 ];
 
@@ -240,21 +282,27 @@ export const fieldOpsModules: FieldOpsModuleGroup[] = [
   }
 ];
 
-export const fieldOpsSolutionLevels = [
+export const fieldOpsConfigurations: FieldOpsConfiguration[] = [
   {
-    title: 'Configuração essencial',
-    suitableFor: 'Profissionais independentes, pequenas equipas e organização inicial.',
-    scope: ['clientes', 'serviços', 'horários', 'checklists', 'fotografias', 'relatórios simples']
+    id: 'essential',
+    name: 'Essencial',
+    audience: ['profissionais independentes', 'pequenas equipas', 'organização inicial'],
+    modules: ['clientes', 'localizações', 'serviços', 'horários', 'checklists', 'fotografias', 'relatórios básicos'],
+    outcome: 'Organizar serviços e reduzir informação perdida.'
   },
   {
-    title: 'Operação em crescimento',
-    suitableFor: 'Vários funcionários, clientes recorrentes, supervisores e serviços repetidos.',
-    scope: ['perfis', 'aprovações', 'notificações', 'acesso de cliente', 'incidentes', 'QR Code ou NFC']
+    id: 'growth',
+    name: 'Crescimento',
+    audience: ['vários funcionários', 'clientes recorrentes', 'supervisores', 'serviços repetidos'],
+    modules: ['perfis', 'permissões', 'aprovações', 'incidentes', 'acesso de cliente', 'notificações', 'QR Code ou NFC', 'relatórios avançados'],
+    outcome: 'Acompanhar equipas e manter responsabilidades mais claras.'
   },
   {
-    title: 'Operação empresarial',
-    suitableFor: 'Múltiplas localizações, departamentos, equipas grandes e sistemas existentes.',
-    scope: ['permissões avançadas', 'APIs', 'integrações', 'logs de auditoria', 'monitorização', 'documentação', 'suporte']
+    id: 'enterprise',
+    name: 'Empresarial',
+    audience: ['múltiplas localizações', 'departamentos', 'equipas maiores', 'sistemas existentes'],
+    modules: ['permissões avançadas', 'APIs', 'integrações', 'histórico de auditoria', 'monitorização', 'documentação', 'plano de suporte', 'rollout por fases'],
+    outcome: 'Integrar a operação e criar controlo adequado à escala do negócio.'
   }
 ];
 
@@ -278,7 +326,7 @@ export const fieldOpsTechnicalGroups: FieldOpsModuleGroup[] = [
     items: ['aplicação web responsiva', 'experiência mobile-first', 'PWA opcional', 'aplicação nativa conforme escopo', 'suporte offline quando necessário']
   },
   {
-    title: 'Acesso e segurança',
+    title: 'Segurança',
     description: 'Controlos definidos de acordo com risco, utilizadores e dados tratados.',
     items: ['autenticação', 'perfis e permissões', 'separação por cliente e localização', 'histórico de atividade', 'ficheiros seguros', 'revisão de acessos', 'desenho orientado ao RGPD']
   },
