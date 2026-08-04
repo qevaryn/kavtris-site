@@ -96,4 +96,10 @@ This is not a strict import chain for every file, but it describes ownership:
 
 Future repository extraction is not active. The current goal is clear ownership inside one repository.
 
+The lightweight architecture check is available through:
+
+```bash
+npm run check:architecture
+```
+
 See [../README.md](../README.md).

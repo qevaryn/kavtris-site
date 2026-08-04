@@ -121,6 +121,7 @@ Do not commit real secrets. See [docs/development/setup.md](docs/development/set
 ```bash
 npm run dev
 npm run lint
+npm run check:architecture
 npm run typecheck
 npm run test:unit
 npm run build
@@ -133,6 +134,13 @@ npm run test:e2e
 npm run test:e2e:desktop
 npm run test:e2e:mobile
 npm run test:e2e:api
+```
+
+For common validation:
+
+```bash
+npm run verify
+npm run verify:full
 ```
 
 What they cover:
@@ -266,3 +274,4 @@ Key guides:
 - [docs/repositories/future-repositories.md](docs/repositories/future-repositories.md)
 - [docs/ownership/team-responsibilities.md](docs/ownership/team-responsibilities.md)
 - [docs/operations/deployment.md](docs/operations/deployment.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
