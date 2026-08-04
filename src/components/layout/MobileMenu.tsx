@@ -37,7 +37,7 @@ export function MobileMenu() {
         <nav aria-label="Menu móvel" className="grid gap-2">
           {navigationLinks.map((link) => (
             <Link
-              key={link.href}
+              key={`${link.href}-${link.label}`}
               href={link.href}
               className="rounded-2xl px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/10"
               onClick={() => setOpen(false)}
