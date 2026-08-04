@@ -1,0 +1,30 @@
+import { expect, test } from '@playwright/test';
+import { expectNoHorizontalOverflow } from '../shared/helpers/overflow';
+
+test('mobile catalog has no horizontal overflow', async ({ page }) => {
+  await page.goto('/produtos');
+
+  await expectNoHorizontalOverflow(page);
+  await expect(page.getByRole('button', { name: 'Todos' })).toBeVisible();
+});
+
+test('mobile catalog shows one-column cards and buttons stay inside viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.goto('/produtos');
+
+  const firstCard = page.getByTestId('product-card').first();
+  const secondCard = page.getByTestId('product-card').nth(1);
+  const firstBox = await firstCard.boundingBox();
+  const secondBox = await secondCard.boundingBox();
+
+  expect(firstBox).not.toBeNull();
+  expect(secondBox).not.toBeNull();
+  expect(Math.round(secondBox!.y)).toBeGreaterThan(Math.round(firstBox!.y + firstBox!.height - 4));
+
+  for (const link of await firstCard.getByRole('link').all()) {
+    const box = await link.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(320);
+  }
+});

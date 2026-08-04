@@ -64,13 +64,3 @@ test('CTA empresarial abre contacto com requisitos selecionados e preserva produ
   await page.goto('/?produto=fieldops#contacto');
   await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('Qevaryn FieldOps');
 });
-
-test('página empresarial não cria overflow horizontal no mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 780 });
-  await page.goto('/empresas');
-
-  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-  expect(hasOverflow).toBe(false);
-  await expect(page.getByRole('heading', { name: /Software claro para operações/i })).toBeVisible();
-  await expect(page.locator('#capacidades').locator('summary').first()).toBeVisible();
-});

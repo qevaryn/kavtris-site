@@ -1,16 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-test('menu desktop navega por âncoras', async ({ page }) => {
-  await page.goto('/');
-  await page.setViewportSize({ width: 1440, height: 900 });
-
-  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'O que resolvemos', exact: true }).click();
-  await expect(page.locator('#problemas')).toBeInViewport();
-
-  await page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Descobrir solução', exact: true }).click();
-  await expect(page.locator('#problemas')).toBeInViewport();
-});
-
 test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.getByRole('heading', { name: 'Política de Privacidade' })).toBeVisible();

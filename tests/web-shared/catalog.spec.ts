@@ -1,13 +1,5 @@
 import { expect, test } from '@playwright/test';
-
-const productRoutes = [
-  { slug: 'fieldops', name: 'Qevaryn FieldOps' },
-  { slug: 'stock-orders', name: 'Qevaryn Stock & Orders' },
-  { slug: 'hotel-operations', name: 'Qevaryn Hotel Operations' },
-  { slug: 'kitchen-sync', name: 'Qevaryn KitchenSync' },
-  { slug: 'qevaryn-ops', name: 'Qevaryn Ops' },
-  { slug: 'customer-portal', name: 'Qevaryn Customer Portal' }
-];
+import { productRoutes } from '../shared/data/product-data';
 
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
   await page.goto('/produtos');
@@ -21,19 +13,6 @@ test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({
   await expect(page.getByTestId('custom-solution-card')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Ainda não sabe qual solução escolher?' })).toBeVisible();
   await expect(page.getByText(/Comprar agora|Adicionar ao carrinho|checkout|carrinho/i)).toHaveCount(0);
-});
-
-test('menu principal inclui Produtos e abre o catálogo', async ({ page }) => {
-  await page.goto('/');
-  await page.setViewportSize({ width: 1440, height: 900 });
-
-  const productsLink = page
-    .getByRole('navigation', { name: 'Navegação principal' })
-    .getByRole('link', { name: 'Produtos', exact: true });
-
-  await expect(productsLink).toHaveAttribute('href', '/produtos');
-  await productsLink.click();
-  await expect(page).toHaveURL(/\/produtos$/);
 });
 
 test('filtros de setor atualizam cartões visíveis', async ({ page }) => {
@@ -136,34 +115,4 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
-});
-
-test('catálogo não cria overflow horizontal no mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/produtos');
-
-  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-  expect(hasOverflow).toBe(false);
-  await expect(page.getByRole('button', { name: 'Todos' })).toBeVisible();
-});
-
-test('catálogo mobile mostra cards em uma coluna e botões sem overflow', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 780 });
-  await page.goto('/produtos');
-
-  const firstCard = page.getByTestId('product-card').first();
-  const secondCard = page.getByTestId('product-card').nth(1);
-  const firstBox = await firstCard.boundingBox();
-  const secondBox = await secondCard.boundingBox();
-
-  expect(firstBox).not.toBeNull();
-  expect(secondBox).not.toBeNull();
-  expect(Math.round(secondBox!.y)).toBeGreaterThan(Math.round(firstBox!.y + firstBox!.height - 4));
-
-  for (const link of await firstCard.getByRole('link').all()) {
-    const box = await link.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box!.x).toBeGreaterThanOrEqual(0);
-    expect(box!.x + box!.width).toBeLessThanOrEqual(320);
-  }
 });

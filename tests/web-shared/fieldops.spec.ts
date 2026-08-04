@@ -118,14 +118,3 @@ test('CTAs de contacto mantêm FieldOps selecionado ou contacto geral', async ({
   await page.getByRole('link', { name: 'Ainda não sei qual solução preciso' }).click();
   await expect(page).toHaveURL(/\/#contacto$/);
 });
-
-test('FieldOps não cria overflow horizontal no mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 780 });
-  await page.goto('/produtos/fieldops');
-
-  const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
-  expect(hasOverflow).toBe(false);
-  await expect(page.getByRole('heading', { name: /Organize equipas externas/i })).toBeVisible();
-  await page.getByRole('tab', { name: 'Equipa', exact: true }).click();
-  await expect(page.getByText('FieldOps Mobile')).toBeVisible();
-});

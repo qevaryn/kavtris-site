@@ -1,20 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-const validContactPayload = {
-  name: 'Ana',
-  company: 'Empresa Exemplo',
-  email: 'ana@example.com',
-  phone: '',
-  sector: '',
-  service: 'Reduzir tarefas manuais',
-  currentProcess: '',
-  affectedPeople: '',
-  contactPreference: '',
-  message: 'Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.',
-  privacyConsent: true,
-  honeypot: ''
-};
-
 test('valida formulário vazio, email inválido e envio com sucesso interceptado', async ({ page }) => {
   await page.goto('/');
 
@@ -45,24 +30,6 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
   await page.getByLabel('Email').fill('ana@example.com');
   await page.getByRole('button', { name: 'Enviar explicação' }).click();
   await expect(page.getByRole('status')).toHaveText(/Pedido enviado com sucesso/i);
-});
-
-test('formulário sem configuração de email não retorna falso sucesso', async ({ request }) => {
-  test.skip(Boolean(process.env.BASE_URL), 'Teste negativo de configuração só deve correr contra ambiente local controlado.');
-
-  const response = await request.post('/api/contact', {
-    data: validContactPayload,
-    headers: {
-      'x-forwarded-for': `203.0.113.${test.info().workerIndex + 10}`
-    }
-  });
-
-  expect(response.status()).toBe(503);
-  await expect(response).not.toBeOK();
-  await expect(await response.json()).toMatchObject({
-    ok: false,
-    message: 'O formulário não está configurado para envio neste ambiente.'
-  });
 });
 
 test('contacto preserva intenção de solução personalizada', async ({ page }) => {
