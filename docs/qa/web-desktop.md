@@ -1,5 +1,8 @@
 # Web desktop QA
 
+Status: Current
+Audience: Web desktop QA and Developers
+
 Desktop web tests run through:
 
 ```bash
@@ -24,3 +27,5 @@ The desktop project runs:
 Desktop-specific tests should cover behavior that is structurally desktop, such as the full desktop header navigation.
 
 Do not place a test in `web-desktop` merely because it was first written on a desktop viewport.
+
+See [../README.md](../README.md) and [writing-tests.md](writing-tests.md).

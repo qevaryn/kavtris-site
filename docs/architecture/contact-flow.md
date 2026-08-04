@@ -1,5 +1,8 @@
 # Contact flow
 
+Status: Current
+Audience: Frontend, Backend and QA
+
 The contact flow supports general requests, product-specific requests, enterprise requests and custom-solution requests.
 
 ## Client flow
@@ -73,3 +76,5 @@ The inline CID logo is intentional because email clients need the image attached
 - Unit tests for the contact service live under `src/server/contact`.
 - Unit tests for Resend integration live under `src/services/email`.
 - Direct API tests live in `tests/api/contact-api.spec.ts`.
+
+See [../README.md](../README.md).

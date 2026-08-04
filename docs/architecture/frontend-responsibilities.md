@@ -1,5 +1,8 @@
 # Frontend responsibilities
 
+Status: Current
+Audience: Frontend desktop/mobile web owners
+
 The project remains one responsive Next.js web application.
 
 Desktop web and mobile web are ownership areas inside the same frontend, not separate applications, routes or backends.
@@ -93,3 +96,5 @@ Do not create:
 - user-agent device detection;
 - separate desktop/mobile APIs;
 - native mobile code inside this repository.
+
+See [../README.md](../README.md).

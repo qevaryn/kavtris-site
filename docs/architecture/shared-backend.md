@@ -1,5 +1,8 @@
 # Shared backend boundary
 
+Status: Current
+Audience: Frontend, Backend and Technical Lead
+
 The current backend remains inside the Next.js application.
 
 There is one shared API boundary for desktop web, mobile web and any future clients. The project must not create separate desktop, mobile or product-specific backends.
@@ -67,3 +70,5 @@ Frontend features
 ```
 
 Domain contracts must not import React, Next.js, server code or Resend. Client Components must not import from `src/server` or provider implementations.
+
+See [../README.md](../README.md).

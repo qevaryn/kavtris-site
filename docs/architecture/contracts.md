@@ -1,5 +1,8 @@
 # Contracts
 
+Status: Current
+Audience: Frontend, Backend and Technical Lead
+
 Contracts are the typed agreements between layers of the application.
 
 In this repository, a contract is practical rather than theoretical: it describes data that crosses a boundary between frontend, domain, API, server services or provider integrations.
@@ -43,3 +46,5 @@ If a backend repository is extracted, shared contracts can move to a future cont
 - server-only implementation details.
 
 Versioning will matter once multiple deployed clients consume the same API. Until then, the repository keeps contracts close to the current implementation and validates compatibility through tests.
+
+See [../README.md](../README.md).

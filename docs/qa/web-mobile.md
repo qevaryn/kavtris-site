@@ -1,5 +1,8 @@
 # Web mobile QA
 
+Status: Current
+Audience: Web mobile QA and Developers
+
 Mobile QA is responsive browser testing, not native application testing.
 
 Mobile web tests run through:
@@ -29,3 +32,7 @@ Mobile tests live in:
 They should cover mobile menu behavior, focus restoration, touch target usability, horizontal overflow, one-column product cards and mobile-specific layout behavior.
 
 Use manual viewport overrides only when a test intentionally validates a specific narrow width such as 320px.
+
+This is not native mobile application testing.
+
+See [../README.md](../README.md) and [writing-tests.md](writing-tests.md).

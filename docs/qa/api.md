@@ -1,5 +1,8 @@
 # API QA
 
+Status: Current
+Audience: API QA and Backend
+
 API tests validate route behavior directly without driving the browser UI.
 
 Current API scope:
@@ -20,6 +23,8 @@ Project:
 api
 ```
 
-Current checks include the local negative path where email delivery is not configured. Tests must not call the real email provider or expose secrets.
+Current checks cover direct request/response behavior such as missing local email configuration, invalid payload and honeypot rejection. Tests must not call the real email provider or expose secrets.
 
 Contact form UI tests remain under web tests. Direct request/response behavior belongs under `tests/api`.
+
+See [../README.md](../README.md) and [writing-tests.md](writing-tests.md).

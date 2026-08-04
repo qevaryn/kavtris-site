@@ -1,5 +1,8 @@
 # Responsive web strategy
 
+Status: Current
+Audience: Frontend and QA
+
 Qevaryn Systems uses one responsive web frontend for desktop and mobile.
 
 The project should not duplicate pages into separate desktop-web and mobile-web applications. Differences in spacing, grid columns and text wrapping should remain CSS-responsive inside shared components.
@@ -41,3 +44,15 @@ src/features/products/fieldops/components
 ## Backend principle
 
 Desktop web, mobile web and any future native applications should use one shared backend/API boundary. Do not create separate APIs for desktop and mobile.
+
+## Separation rule
+
+```text
+Spacing or columns differ
+-> keep one component
+
+Interaction or information hierarchy differs
+-> separation may be justified
+```
+
+See [../README.md](../README.md).

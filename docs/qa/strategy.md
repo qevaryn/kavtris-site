@@ -1,5 +1,8 @@
 # QA strategy
 
+Status: Current
+Audience: QA and Developers
+
 The project keeps one responsive web application and one shared API boundary.
 
 Automated tests are organized by responsibility:
@@ -23,3 +26,7 @@ Firefox, WebKit, native mobile automation and external QA repositories are inten
 ## Coverage principle
 
 The same shared user journey should not run in both desktop and mobile unless viewport differences are part of the expected behavior. Mobile-specific tests cover the mobile responsibilities directly.
+
+Test counts are intentionally not documented as permanent facts. They change as coverage is added, moved or deduplicated.
+
+See [../README.md](../README.md) and [writing-tests.md](writing-tests.md).
