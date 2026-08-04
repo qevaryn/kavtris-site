@@ -181,8 +181,9 @@ export const products: ProductConcept[] = [
     problem: 'Tarefas, aprovações, documentos e pedidos internos estão espalhados por emails, mensagens e folhas.',
     description: 'Organize tarefas, aprovações, documentos, pedidos e indicadores numa plataforma interna.',
     shortDescription: 'Organize tarefas, aprovações, documentos e processos internos.',
-    image: '/images/products/qevaryn-ops.webp',
-    imageAlt: 'Mockup visual do Qevaryn Ops com tarefas, aprovações, documentos e indicadores internos',
+    image: '/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp',
+    imageAlt:
+      'Interface do Qevaryn Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
     benefits: ['Responsáveis definidos', 'Aprovações acompanhadas', 'Documentos organizados', 'Indicadores visíveis'],
     features: [
       'tarefas',

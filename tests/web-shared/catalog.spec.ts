@@ -59,6 +59,16 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
   await expect(firstCard.getByRole('link', { name: /Adaptar à minha empresa/ })).toHaveAttribute('href', '/?produto=fieldops#contacto');
 
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
+
+  const opsCard = cards.filter({ hasText: 'Qevaryn Ops' });
+  const opsImage = opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i });
+  await expect(opsImage).toBeVisible();
+  await expect.poll(async () => opsImage.evaluate((image: HTMLImageElement) => (
+    image.complete &&
+    image.naturalWidth > 0 &&
+    image.naturalHeight > 0 &&
+    image.currentSrc.includes('qevaryn-ops-catalog-v1.webp')
+  ))).toBe(true);
 });
 
 test('card de solução personalizada e CTA final apontam para contacto', async ({ page }) => {
