@@ -1,19 +1,19 @@
 import { test, expect } from '@playwright/test';
 
-async function waitForExperienceImages(page: import('@playwright/test').Page) {
-  const experience = page.locator('#experiencia');
+async function waitForTrustImages(page: import('@playwright/test').Page) {
+  const trust = page.locator('#sobre');
 
-  await experience.scrollIntoViewIfNeeded();
-  await expect.poll(async () => experience.evaluate((section) => {
+  await trust.scrollIntoViewIfNeeded();
+  await expect.poll(async () => trust.evaluate((section) => {
     const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
       const rect = image.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;
     });
 
     return renderedImages.length;
-  })).toBe(3);
+  })).toBeGreaterThanOrEqual(1);
 
-  await expect.poll(async () => experience.evaluate((section) => {
+  await expect.poll(async () => trust.evaluate((section) => {
     const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
       const rect = image.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;
@@ -22,7 +22,7 @@ async function waitForExperienceImages(page: import('@playwright/test').Page) {
     return renderedImages.every((image) => image.complete && image.naturalWidth > 0 && image.naturalHeight > 0);
   })).toBe(true);
 
-  await experience.evaluate(async (section) => {
+  await trust.evaluate(async (section) => {
     const renderedImages = Array.from(section.querySelectorAll('img')).filter((image) => {
       const rect = image.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;
@@ -97,7 +97,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     ]) {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto('/');
-      await waitForExperienceImages(page);
+      await waitForTrustImages(page);
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
         path: testInfo.outputPath(`phase6-full-${viewport.name}.png`),
@@ -111,12 +111,10 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.goto('/');
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-desktop.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
-    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-problems-desktop.png') });
-    await page.locator('#exemplos').screenshot({ path: testInfo.outputPath('phase6-examples-desktop.png') });
-    await page.locator('#simulador').screenshot({ path: testInfo.outputPath('phase6-wizard-desktop.png') });
-    await waitForExperienceImages(page);
-    await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-desktop.png') });
-    await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-desktop.png') });
+    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-solution-finder-desktop.png') });
+    await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-desktop.png') });
+    await waitForTrustImages(page);
+    await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-trust-desktop.png') });
     await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-desktop.png') });
 
     await page.setViewportSize({ width: 390, height: 844 });
@@ -124,14 +122,11 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
     await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
     await page.getByTestId('hero-brand-visual').screenshot({ path: testInfo.outputPath('phase6-hero-brand-mobile.png') });
-    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-problems-mobile.png') });
-    await page.locator('#exemplos').screenshot({ path: testInfo.outputPath('phase6-examples-mobile.png') });
-    await page.locator('#simulador').screenshot({ path: testInfo.outputPath('phase6-wizard-mobile.png') });
+    await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-solution-finder-mobile.png') });
+    await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-mobile.png') });
     await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
-    await waitForExperienceImages(page);
-    await page.locator('#experiencia').screenshot({ path: testInfo.outputPath('phase6-projects-mobile.png') });
-    await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-network-mobile.png') });
-    await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-founder-mobile.png') });
+    await waitForTrustImages(page);
+    await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-trust-mobile.png') });
     await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-mobile.png') });
     await page.getByRole('contentinfo').screenshot({ path: testInfo.outputPath('phase6-footer-mobile.png') });
   });
@@ -140,21 +135,11 @@ test.describe('responsividade e acessibilidade básica', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const projectsCarousel = page.getByTestId('projects-carousel');
+    await page.getByRole('button', { name: 'Ainda não sei' }).click();
+    await expect(page.getByRole('heading', { name: 'Começar pela conversa certa' })).toBeVisible();
 
-    await expect.poll(async () => projectsCarousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
-
-    await page.getByRole('button', { name: 'Não sei exatamente do que preciso' }).click();
-    await expect(page.getByRole('heading', { name: 'Descobrir a solução certa' })).toBeVisible();
-
-    const pedidosCard = page.locator('#exemplos article').filter({ has: page.getByRole('heading', { name: 'Gestão de pedidos' }) });
-    const technicalButton = pedidosCard.getByRole('button');
-    await expect(technicalButton).toHaveAttribute('aria-expanded', 'false');
-    await technicalButton.click();
-    await expect(technicalButton).toHaveAttribute('aria-expanded', 'true');
-
-    await page.locator('#demonstracao').getByRole('button', { name: 'Equipa externa' }).click();
-    await expect(page.locator('#demonstracao h3').filter({ hasText: 'Operação acompanhada fora da empresa' })).toBeVisible();
+    await page.getByRole('button', { name: 'Controlar stock' }).click();
+    await expect(page.locator('#problemas').getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
 
     await expect(page.getByLabel('Serviços principais').getByText('Reduzir tarefas manuais')).toBeVisible();
     await expect(page.getByLabel('Serviços principais').getByText('Suporte, correções e melhorias')).toBeVisible();
@@ -178,7 +163,7 @@ test.describe('responsividade e acessibilidade básica', () => {
     const submitBox = await submit.boundingBox();
     expect(submitBox?.height).toBeGreaterThanOrEqual(44);
 
-    for (const href of ['#problemas', '#exemplos', '#processo', '#experiencia', '#rede', '#sobre', '#contacto']) {
+    for (const href of ['#problemas', '#produtos-preview', '#processo', '#empresas', '#sobre', '#contacto']) {
       await page.goto(`/${href}`);
       const top = await page.locator(href).boundingBox();
       expect(top?.y).toBeGreaterThanOrEqual(68);

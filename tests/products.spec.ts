@@ -99,9 +99,11 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await page.goto('/');
 
   const preview = page.locator('#produtos-preview');
-  await expect(preview.getByTestId('product-card')).toHaveCount(4);
-  await expect(preview.getByTestId('product-card-visual')).toHaveCount(4);
-  await expect(preview.getByRole('link', { name: 'Ver produto' }).first()).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
+  await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });
 

@@ -1,61 +1,48 @@
 import { test, expect } from '@playwright/test';
 
-test('valida camada simples, exemplos técnicos opcionais e experiência preservada', async ({ page }) => {
+test('homepage usa uma jornada curta de descoberta, produtos, processo e confiança', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByAltText('Qevaryn Systems').first()).toBeVisible();
   await expect(page.getByText('Qualidade é Vida Tech')).toHaveCount(0);
 
-  await expect(page.getByRole('heading', { name: 'O que está a dificultar o seu negócio?' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Não sei exatamente do que preciso' })).toBeVisible();
-  await page.getByRole('button', { name: 'Não sei exatamente do que preciso' }).click();
-  await expect(page.getByRole('heading', { name: 'Descobrir a solução certa' })).toBeVisible();
-  await expect(page.getByText('Não há problema. Primeiro entendemos como a sua empresa trabalha')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ainda não sei' })).toBeVisible();
 
-  await expect(page.getByRole('heading', { name: 'Primeiro o resultado. Depois os detalhes.' })).toBeVisible();
-  const pedidosCard = page.locator('#exemplos article').filter({ has: page.getByRole('heading', { name: 'Gestão de pedidos' }) });
-  const firstTechnicalButton = pedidosCard.getByRole('button');
-  await expect(firstTechnicalButton).toHaveAttribute('aria-expanded', 'false');
-  await firstTechnicalButton.click();
-  await expect(firstTechnicalButton).toHaveAttribute('aria-expanded', 'true');
-  await expect(pedidosCard.getByText('Perfis e permissões')).toBeVisible();
+  await page.getByRole('button', { name: 'Gerir equipas externas' }).click();
+  const finder = page.locator('#problemas');
+  await expect(finder.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(finder.getByText('Organize serviços, visitas, checklists, evidências e relatórios num único sistema.')).toBeVisible();
+  await expect(finder.getByRole('link', { name: /Ver como funciona/ })).toHaveAttribute('href', '/produtos/fieldops');
+  await expect(finder.getByRole('link', { name: 'Falar sobre esta solução' })).toHaveAttribute('href', '/?produto=fieldops#contacto');
 
-  await expect(page.getByRole('heading', { name: 'Veja um exemplo sem precisar entender termos técnicos.' })).toBeVisible();
-  await page.getByLabel('Tipos de demonstração').getByRole('button', { name: 'Reservas e marcações' }).click();
-  await expect(page.locator('#demonstracao h3').filter({ hasText: 'Agenda simples para clientes e equipa' })).toBeVisible();
-  await page.getByRole('tab', { name: 'Ver no telemóvel' }).click();
-  await expect(page.getByRole('tab', { name: 'Ver no telemóvel' })).toHaveAttribute('aria-selected', 'true');
-
-  await expect(page.getByRole('heading', { name: 'Tecnologia aplicada a problemas reais' })).toBeVisible();
-  await expect(page.getByText(/A dimensão do cliente não é o ponto principal/i)).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Hotelaria, alojamento e restauração' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Lojas, mercados e comércio' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Empresas maiores e equipas técnicas' })).toBeVisible();
-
-  await expect(page.getByRole('heading', { name: 'Responda sobre o negócio. Nós traduzimos para tecnologia.' })).toBeVisible();
   await page.getByRole('button', { name: 'Ainda não sei' }).click();
-  await expect(page.getByRole('heading', { name: 'Descoberta e protótipo inicial' })).toBeVisible();
+  await expect(page.getByText(/Não há problema\. Conte-nos como a sua empresa funciona/i)).toBeVisible();
+  await expect(finder.getByRole('link', { name: 'Explique o seu problema' })).toHaveAttribute('href', '#contacto');
 
-  await expect(page.getByRole('heading', { name: 'Construção por etapas, com linguagem clara.' })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Protótipo/i })).toBeVisible();
+  const preview = page.locator('#produtos-preview');
+  await expect(preview.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
+  await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
+
+  await expect(page.getByRole('heading', { name: 'Um processo simples para chegar à solução certa.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Entender' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Prototipar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Construir e testar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lançar e acompanhar' })).toBeVisible();
 
   await expect(page.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
-  const securityDetails = page.locator('#empresas details').filter({ hasText: 'Segurança e proteção de dados' });
-  await securityDetails.locator('summary').click();
-  await expect(securityDetails.getByText('Perfis e permissões')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Segurança e acessos' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Ver informações para empresas' })).toHaveAttribute('href', '/empresas');
 
-  await expect(page.getByRole('heading', { name: 'CareFlow' })).toBeVisible();
-  await expect(page.getByText('Conceito de solução que pode ser adaptado ao negócio.').first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Experiência e responsabilidade por trás da Qevaryn.' })).toBeVisible();
+  await expect(page.locator('#sobre').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/gabrielsouza80/');
+  await expect(page.locator('#sobre').getByRole('link', { name: /GitHub/ })).toHaveCount(0);
 
-  await expect(page.getByRole('heading', { name: 'Plataforma internacional de viagens' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Seguradora multinacional' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Plataforma de Tax Services' })).toBeVisible();
-
-  const insuranceCard = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Seguradora multinacional' }) });
-  const taxCard = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Plataforma de Tax Services' }) });
-
-  await expect(insuranceCard.getByText('Robot Framework', { exact: true })).toBeVisible();
-  await expect(insuranceCard.getByText('Playwright', { exact: true })).toHaveCount(0);
-  await expect(taxCard.getByText('QA Manual', { exact: true })).toBeVisible();
-  await expect(taxCard.getByText(/Automação/)).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Primeiro o resultado. Depois os detalhes.' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Veja um exemplo sem precisar entender termos técnicos.' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Responda sobre o negócio. Nós traduzimos para tecnologia.' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'CareFlow' })).toHaveCount(0);
 });

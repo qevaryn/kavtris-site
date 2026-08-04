@@ -198,7 +198,7 @@ test('fotografia aprovada do fundador aparece sem fallback e mantém cartão com
   expect(photoMetrics.renderedHeight).toBeGreaterThan(72);
   expect(photoMetrics.objectFit).toBe('cover');
 
-  const cardHeight = await page.locator('#sobre > div > div').boundingBox();
+  const cardHeight = await page.locator('[data-testid="founder-card"]').boundingBox();
   const viewport = page.viewportSize();
   expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 340);
 });
@@ -214,7 +214,7 @@ test('header e cartão do fundador continuam responsivos no mobile', async ({ pa
   await expect(page.locator('#sobre').getByAltText(founderAlt)).toBeVisible();
   await expect(page.locator('#sobre').getByText('GS', { exact: true })).toHaveCount(0);
 
-  const founderBox = await page.locator('#sobre > div > div').boundingBox();
+  const founderBox = await page.locator('[data-testid="founder-card"]').boundingBox();
   expect(founderBox?.height).toBeLessThanOrEqual(540);
 });
 

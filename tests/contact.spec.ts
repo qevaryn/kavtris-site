@@ -5,11 +5,11 @@ const validContactPayload = {
   company: 'Empresa Exemplo',
   email: 'ana@example.com',
   phone: '',
-  sector: 'Serviços',
-  service: 'Automação de processos',
-  currentProcess: 'Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.',
-  affectedPeople: 'Funcionários',
-  contactPreference: 'Email',
+  sector: '',
+  service: 'Reduzir tarefas manuais',
+  currentProcess: '',
+  affectedPeople: '',
+  contactPreference: '',
   message: 'Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.',
   privacyConsent: true,
   honeypot: ''
@@ -28,11 +28,7 @@ test('valida formulário vazio, email inválido e envio com sucesso interceptado
   await page.getByRole('textbox', { name: 'Empresa' }).fill('Empresa Exemplo');
   await page.getByRole('textbox', { name: 'Email' }).fill('email-invalido');
   await page.getByRole('textbox', { name: /Telefone/ }).fill('+351 900 000 000');
-  await page.getByRole('textbox', { name: 'Setor' }).fill('Serviços');
-  await page.getByLabel('Principal dificuldade').selectOption({ label: 'Tarefas repetitivas' });
-  await page.getByLabel('Quem é afetado?').selectOption({ label: 'Funcionários' });
-  await page.getByLabel('Melhor forma de contacto').selectOption({ label: 'Email' });
-  await page.getByLabel('Como funciona atualmente?').fill('Hoje a equipa organiza pedidos por mensagens e folhas de cálculo.');
+  await page.getByLabel('Produto ou problema').selectOption({ label: 'Reduzir tarefas manuais' });
   await page.locator('textarea#message').fill('Quero automatizar tarefas repetitivas e organizar melhor os pedidos da empresa.');
   await page.getByLabel('Li e aceito a Política de Privacidade.').check();
   await page.getByRole('button', { name: 'Enviar explicação' }).click();
