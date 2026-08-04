@@ -99,8 +99,8 @@ test('rotas de produto carregam com detalhes técnicos progressivos', async ({ p
     if (product.slug === 'fieldops') {
       await expect(page.getByRole('heading', { name: /Organize equipas externas/i })).toBeVisible();
       await expect(page.getByText('Conceito de solução adaptável')).toBeVisible();
-      await expect(page.getByText(/Esta demonstração apresenta uma possível configuração/i)).toBeVisible();
-      const technicalDetails = page.locator('details').filter({ hasText: 'Acesso e segurança' });
+      await expect(page.getByText(/Esta apresentação mostra uma possível configuração/i)).toBeVisible();
+      const technicalDetails = page.locator('details').filter({ hasText: 'Segurança' });
       await expect(technicalDetails.locator('summary')).toBeVisible();
       await technicalDetails.locator('summary').click();
       await expect(technicalDetails.getByText('autenticação')).toBeVisible();
