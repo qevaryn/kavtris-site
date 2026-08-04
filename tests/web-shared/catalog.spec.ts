@@ -68,6 +68,7 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
 
   const opsCard = cards.filter({ hasText: 'Qevaryn Ops' });
+  await opsCard.scrollIntoViewIfNeeded();
   const opsImage = opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i });
   await expect(opsImage).toBeVisible();
   await expect.poll(async () => opsImage.evaluate((image: HTMLImageElement) => (
