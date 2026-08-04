@@ -1,9 +1,19 @@
 # Product Visual System Requirements For Phase 2
 
-Status: Draft requirements from Product Visual Assets Phase 1
+Status: Superseded by Product Visual Assets Phase 2 specification
 Audience: Product, design, frontend, QA and technical lead
 
-This document defines the questions and constraints Visual Phase 2 must resolve before any new product image is generated or substituted.
+This document was created in Phase 1 to define the questions and constraints Visual Phase 2 needed to resolve before any image production.
+
+Phase 2 resolved those questions in:
+
+- [system-principles.md](system-principles.md)
+- [technical-specification.md](technical-specification.md)
+- [product-briefs.md](product-briefs.md)
+- [review-and-acceptance.md](review-and-acceptance.md)
+- [phase-3-production-plan.md](phase-3-production-plan.md)
+
+The original Phase 1 requirements are retained below as audit traceability.
 
 ## Decisions Required In Visual Phase 2
 
