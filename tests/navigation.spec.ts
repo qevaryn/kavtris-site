@@ -28,12 +28,11 @@ test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => 
 
   await page.goto('/empresas');
   await expect(page.getByRole('banner')).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Da ferramenta simples à plataforma completa/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Software claro para operações/i })).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/empresas$/);
-  await expect(page.getByText(/empresas de diferentes dimensões e sectores/i)).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Segurança e proteção de dados' })).toBeVisible();
-  await expect(page.getByText('Propriedade do código', { exact: true })).toBeVisible();
-  await expect(page.getByText(/empresa unipessoal, uma loja, um restaurante, um hotel/i)).toBeVisible();
-  await expect(page.getByText(/não está posicionada como fabricante de máquinas industriais/i)).toBeVisible();
+  await expect(page.getByText(/A comunicação começa pelo problema da empresa/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Segurança e acessos' })).toBeVisible();
+  await expect(page.getByText(/Propriedade do código, componentes de terceiros/i)).toBeVisible();
+  await expect(page.getByText(/não são apresentadas certificações/i)).toBeVisible();
   await expect(page.getByRole('contentinfo')).toBeVisible();
 });
