@@ -23,6 +23,15 @@ section[id] {
   scroll-margin-top: 5.5rem;
 }
 
+@keyframes looping-ticker {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -78,6 +87,11 @@ section[id] {
 
   .soft-section-line {
     box-shadow: inset 0 1px rgba(3, 20, 38, 0.06), inset 0 -1px rgba(3, 20, 38, 0.05);
+  }
+
+  .animate-looping-ticker {
+    animation: looping-ticker linear infinite;
+    will-change: transform;
   }
 }
 
