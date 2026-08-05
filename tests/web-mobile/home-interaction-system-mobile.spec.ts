@@ -7,6 +7,11 @@ test('solution finder mobile expande inline com um único resultado aberto', asy
   const manualButton = problems.getByRole('button', { name: 'Centralizar operações' });
   const fieldButton = problems.getByRole('button', { name: 'Organizar equipas externas' });
 
+  await expect(manualButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(fieldButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
+
+  await manualButton.click();
   await expect(manualButton).toHaveAttribute('aria-expanded', 'true');
   await expect(problems.locator('[data-testid="solution-option-panel-manual-work"]')).toBeVisible();
 
@@ -18,9 +23,9 @@ test('solution finder mobile expande inline com um único resultado aberto', asy
 
   await fieldButton.focus();
   await page.keyboard.press('Enter');
-  await expect(fieldButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(fieldButton).toHaveAttribute('aria-expanded', 'false');
 
-  await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(1);
+  await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
 });
 
 test('carrossel de produtos mobile usa scroll-snap, swipe manual e CTA único', async ({ page }) => {

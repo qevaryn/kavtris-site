@@ -41,12 +41,23 @@ export function EnterpriseDetails() {
           align="center"
         />
 
-        <div className="mx-auto mt-9 max-w-3xl rounded-[1.25rem] border border-borderline bg-white p-5 text-center shadow-sm sm:p-6">
-          <p className="text-base leading-7 text-muted">Interface simples para a equipa.</p>
-          <p className="mt-2 text-base leading-7 text-muted">Estrutura técnica preparada para a operação.</p>
+        <div className="mt-8 hidden gap-4 lg:grid lg:grid-cols-2 min-[1360px]:grid-cols-4" data-testid="enterprise-capabilities-desktop-grid">
+          {enterprisePillars.map((pillar) => {
+            const Icon = pillar.icon;
+
+            return (
+              <article key={pillar.title} className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
+                <div className="flex items-center gap-3 text-left">
+                  <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
+                  <span className="text-sm font-semibold text-navy-900">{pillar.title}</span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
+              </article>
+            );
+          })}
         </div>
 
-        <div className="mt-6 rounded-[1.25rem] border border-borderline bg-white px-3 py-3 shadow-sm sm:px-4">
+        <div className="mt-8 rounded-[1.25rem] border border-borderline bg-white px-3 py-3 shadow-sm sm:px-4 lg:hidden" data-testid="enterprise-capabilities-mobile-ticker-wrapper">
           <LoopingTicker
             ariaLabel="Capacidades técnicas"
             items={enterpriseCapabilities}
@@ -62,7 +73,7 @@ export function EnterpriseDetails() {
           />
         </div>
 
-        <div className="mt-8 grid gap-3">
+        <div className="mt-7 grid gap-3 lg:hidden" data-testid="enterprise-capabilities-mobile-details">
           {enterprisePillars.map((pillar) => {
             const Icon = pillar.icon;
 

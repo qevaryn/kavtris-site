@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const logoAlt = 'Qevaryn Systems';
 const logoSourcePattern = /qevaryn-systems-white/;
 const symbolSourcePattern = /qevaryn-symbol/;
-const founderAlt = 'Gabriel Souza, Fundador e QA Engineer da Qevaryn Systems';
+const founderAlt = 'Gabriel Dias de Souza, Fundador e QA Engineer da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
   await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
@@ -168,11 +168,10 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   expect(metrics.objectFit).toBe('contain');
 });
 
-test('fotografia aprovada do fundador aparece sem fallback e mantém cartão compacto', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('#sobre').scrollIntoViewIfNeeded();
+test('fotografia aprovada do fundador aparece em /sobre sem fallback e mantém cartão compacto', async ({ page }) => {
+  await page.goto('/sobre');
 
-  const founderSection = page.locator('#sobre');
+  const founderSection = page.getByTestId('about-founder-card');
   const photo = founderSection.getByAltText(founderAlt);
 
   await expect(photo).toBeVisible();
@@ -198,23 +197,22 @@ test('fotografia aprovada do fundador aparece sem fallback e mantém cartão com
   expect(photoMetrics.renderedHeight).toBeGreaterThan(72);
   expect(photoMetrics.objectFit).toBe('cover');
 
-  const cardHeight = await page.locator('[data-testid="founder-card"]').boundingBox();
+  const cardHeight = await page.getByTestId('about-founder-card').boundingBox();
   const viewport = page.viewportSize();
-  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 340);
+  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 380);
 });
 
 test('header e cartão do fundador continuam responsivos no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/sobre');
 
   await expect(page.getByRole('banner').getByAltText(logoAlt)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
-  await page.locator('#sobre').scrollIntoViewIfNeeded();
-  await expect(page.locator('#sobre').getByAltText(founderAlt)).toBeVisible();
-  await expect(page.locator('#sobre').getByText('GS', { exact: true })).toHaveCount(0);
+  await expect(page.getByTestId('about-founder-card').getByAltText(founderAlt)).toBeVisible();
+  await expect(page.getByTestId('about-founder-card').getByText('GS', { exact: true })).toHaveCount(0);
 
-  const founderBox = await page.locator('[data-testid="founder-card"]').boundingBox();
+  const founderBox = await page.getByTestId('about-founder-card').boundingBox();
   expect(founderBox?.height).toBeLessThanOrEqual(540);
 });
 

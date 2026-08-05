@@ -2,9 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Button } from '@/components/shared/Button';
 import { Tag } from '@/components/shared/Tag';
-import { socialLinks } from '@/lib/constants';
 
 const tags = ['Produto', 'Processos', 'QA', 'Automação', 'Sistemas web'];
 
@@ -49,12 +47,6 @@ export function Founder() {
                   ))}
                 </div>
               </div>
-            </div>
-
-            <div className="grid gap-3 sm:flex sm:flex-wrap lg:justify-end">
-              <Button href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="px-4 py-2" aria-label="LinkedIn de Gabriel Dias de Souza">
-                LinkedIn
-              </Button>
             </div>
           </div>
         </div>

@@ -9,8 +9,8 @@ import { getProductBySlug } from '@/features/products/data/products';
 import type { SolutionFinderOption } from '@/features/home/data/solution-finder';
 
 export function SolutionFinder() {
-  const [selectedId, setSelectedId] = useState(homepageSolutionFinderOptions[0].id);
-  const selected = homepageSolutionFinderOptions.find((option) => option.id === selectedId) ?? homepageSolutionFinderOptions[0];
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selected = homepageSolutionFinderOptions.find((option) => option.id === selectedId) ?? null;
 
   return (
     <section id="problemas" className="bg-paper py-14 sm:py-16 lg:py-20">
@@ -24,7 +24,7 @@ export function SolutionFinder() {
         <div className="mt-7 lg:hidden">
           <div role="group" aria-label="Opções de melhoria" className="grid gap-3">
             {homepageSolutionFinderOptions.map((option) => {
-              const isSelected = selected.id === option.id;
+              const isSelected = selected?.id === option.id;
               const panelId = `solution-option-panel-${option.id}`;
 
               return (
@@ -35,7 +35,7 @@ export function SolutionFinder() {
                     aria-pressed={isSelected}
                     aria-expanded={isSelected}
                     aria-controls={panelId}
-                    onClick={() => setSelectedId(option.id)}
+                    onClick={() => setSelectedId((currentId) => (currentId === option.id ? null : option.id))}
                     className={
                       `flex min-h-14 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
                         isSelected ? 'bg-navy-950 text-white' : 'text-navy-900 hover:bg-gold-500/10'
@@ -75,14 +75,14 @@ export function SolutionFinder() {
           <div>
             <div className="grid gap-2" role="group" aria-label="Opções de melhoria">
               {homepageSolutionFinderOptions.map((option) => {
-                const isSelected = selected.id === option.id;
+                const isSelected = selected?.id === option.id;
 
                 return (
                   <button
                     key={option.id}
                     type="button"
                     aria-pressed={isSelected}
-                    onClick={() => setSelectedId(option.id)}
+                    onClick={() => setSelectedId((currentId) => (currentId === option.id ? null : option.id))}
                     className={`min-h-14 rounded-2xl border px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
                       isSelected
                         ? 'border-gold-600 bg-navy-950 text-white shadow-card'
@@ -104,11 +104,34 @@ export function SolutionFinder() {
           </div>
 
           <article className="rounded-[1.5rem] border border-borderline bg-white p-6 shadow-card lg:sticky lg:top-28" data-testid="solution-desktop-result">
-            <RecommendationContent option={selected} />
+            {selected ? <RecommendationContent option={selected} /> : <NeutralRecommendationContent />}
           </article>
         </div>
       </div>
     </section>
+  );
+}
+
+function NeutralRecommendationContent() {
+  return (
+    <>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-600">Descobrir solução</p>
+      <h3 className="mt-3 text-xl font-semibold text-navy-900 sm:text-2xl">Escolha uma opção para ver a recomendação.</h3>
+      <p className="mt-3 text-sm leading-7 text-muted">
+        Selecione uma intenção ao lado para ver um produto sugerido e o melhor próximo passo para a sua equipa.
+      </p>
+
+      <div className="mt-5 rounded-2xl border border-borderline bg-paper/60 p-4">
+        <p className="text-sm leading-7 text-muted">Preferir ajuda direta também funciona. Podemos orientar sem compromisso.</p>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:flex sm:flex-wrap">
+        <Button href="#contacto" className="w-full text-navy-950 sm:w-auto">
+          Falar sobre o meu contexto
+          <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+        </Button>
+      </div>
+    </>
   );
 }
 
