@@ -139,9 +139,12 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
     image.naturalHeight > 0 &&
     image.currentSrc.includes('fieldops-catalog-v1.webp')
   ))).toBe(true);
+  await preview.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await preview.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
+  await preview.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect(preview.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });

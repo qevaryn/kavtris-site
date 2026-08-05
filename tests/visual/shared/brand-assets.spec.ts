@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const logoAlt = 'Qevaryn Systems';
 const logoSourcePattern = /qevaryn-systems-white/;
 const symbolSourcePattern = /qevaryn-symbol/;
-const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
+const founderAlt = 'Gabriel Souza, Fundador e QA Engineer da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
   await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
