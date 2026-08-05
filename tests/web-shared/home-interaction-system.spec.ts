@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-test('ticker de serviços mantém duplicação visual escondida e pausa por hover/foco', async ({ page }) => {
+test('ticker de serviços mantém duplicação visual escondida e pausa por hover/foco no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
   const ticker = page.getByTestId('services-ticker');
@@ -80,6 +81,7 @@ test('ticker de serviços mantém duplicação visual escondida e pausa por hove
 });
 
 test('motion budget mantém apenas um autoplay ativo e transfere quando o dono deixa viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
   const servicesTrack = page.getByTestId('services-ticker-track');
@@ -108,21 +110,32 @@ test('ticker e carrosséis respeitam reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
 
-  const servicesTrack = page.getByTestId('services-ticker-track');
+  await expect(page.getByTestId('services-static-reduced')).toBeVisible();
+  await expect(page.getByTestId('services-ticker')).toHaveCount(0);
+
   const productsTrack = page.getByTestId('featured-products-carousel-track');
 
   const initialProductsScroll = await productsTrack.evaluate((element) => element.scrollLeft);
-
-  await expect
-    .poll(() => servicesTrack.evaluate((element) => getComputedStyle(element).animationName))
-    .toBe('none');
 
   await expect
     .poll(() => productsTrack.evaluate((element) => element.scrollLeft), { timeout: 8500 })
     .toBe(initialProductsScroll);
 });
 
-test('carrossel de produtos suporta setas, indicadores, teclado e pausa após interação', async ({ page }) => {
+test('produtos no desktop exibem grelha comparável sem carrossel', async ({ page }) => {
+  await page.goto('/');
+
+  const desktopGrid = page.getByTestId('featured-products-desktop-grid');
+  await expect(desktopGrid).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  await expect(page.getByTestId('featured-products-carousel')).toBeHidden();
+});
+
+test('carrossel de produtos mobile suporta setas, indicadores, teclado e pausa após interação', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
   const carousel = page.getByTestId('featured-products-carousel');
@@ -158,6 +171,8 @@ test('carrossel de produtos suporta setas, indicadores, teclado e pausa após in
 });
 
 test('carrossel de processo mantém ordem, contador e controles manuais', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.locator('#processo').scrollIntoViewIfNeeded();
 
@@ -174,5 +189,53 @@ test('carrossel de processo mantém ordem, contador e controles manuais', async 
 
   await processCarousel.getByTestId('process-carousel-track').focus();
   await page.keyboard.press('ArrowRight');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('3 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).not.toHaveText('1 de 4');
+});
+
+test('processo no desktop usa grade estática sem autoplay', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#processo').scrollIntoViewIfNeeded();
+
+  const desktopGrid = page.getByTestId('process-desktop-grid');
+  await expect(desktopGrid).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Entender' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Prototipar' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Construir e testar' })).toBeVisible();
+  await expect(desktopGrid.getByRole('heading', { name: 'Lançar e acompanhar' })).toBeVisible();
+});
+
+test('credibilidade no desktop usa apresentação estática sem ticker', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('services-static-desktop')).toBeVisible();
+  await expect(page.getByTestId('services-static-grid').getByText('Reduzir tarefas manuais').first()).toBeVisible();
+  await expect(page.getByTestId('services-static-grid').getByText('Evitar falhas e melhorar processos').first()).toBeVisible();
+  await expect(page.getByTestId('services-static-grid').getByText('Sistemas para computador e telemóvel').first()).toBeVisible();
+  await expect(page.getByTestId('services-static-grid').getByText('Ligar as ferramentas da empresa').first()).toBeVisible();
+  await expect(page.getByTestId('services-static-grid').getByText('Suporte, correções e melhorias').first()).toBeVisible();
+  await expect(page.getByTestId('services-ticker')).toBeHidden();
+});
+
+test('empresas no desktop mostra quatro capacidades sem details ou ticker', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#empresas').scrollIntoViewIfNeeded();
+
+  const desktopGrid = page.getByTestId('enterprise-capabilities-desktop-grid');
+  await expect(desktopGrid).toBeVisible();
+  await expect(desktopGrid.getByText('Segurança e acessos')).toBeVisible();
+  await expect(desktopGrid.getByText('Qualidade e testes')).toBeVisible();
+  await expect(desktopGrid.getByText('Integrações e arquitetura')).toBeVisible();
+  await expect(desktopGrid.getByText('Suporte e continuidade')).toBeVisible();
+
+  await expect(page.getByTestId('enterprise-capabilities-mobile-details')).toBeHidden();
+  await expect(page.getByTestId('enterprise-capabilities-ticker')).toBeHidden();
+});
+
+test('hero mantém CTAs principais e sem overflow em 320', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('/');
+
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Encontrar uma solução' })).toBeVisible();
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Ver produtos' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });

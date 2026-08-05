@@ -7,6 +7,7 @@ test('mobile layout uses compact interactions and responsive bands', async ({ pa
   await expect(page.getByRole('button', { name: 'Organizar equipas externas' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Controlar stock e pedidos' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Melhorar atendimento ao cliente' })).toBeVisible();
+  await expect(page.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Centralizar operações' }).click();
   await expect(page.getByRole('button', { name: 'Centralizar operações' })).toHaveAttribute('aria-expanded', 'true');
@@ -19,6 +20,11 @@ test('mobile layout uses compact interactions and responsive bands', async ({ pa
 
   await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
   await expect(page.getByTestId('services-ticker').getByText('Suporte, correções e melhorias').first()).toBeVisible();
+  await expect(page.getByTestId('featured-products-carousel')).toBeVisible();
+  await expect(page.getByTestId('featured-products-desktop-grid')).toBeHidden();
+  await expect(page.getByTestId('enterprise-capabilities-ticker')).toBeVisible();
+  await expect(page.getByTestId('enterprise-capabilities-mobile-details')).toBeVisible();
+  await expect(page.getByTestId('enterprise-capabilities-desktop-grid')).toBeHidden();
   await expect(page.getByLabel('Assinatura institucional')).toHaveCount(0);
   await expect(page.getByText('Ainda não sabe o que precisa?').first()).toBeVisible();
   await expect(page.locator('#problemas').getByRole('link', { name: 'Explique o seu problema' })).toHaveAttribute('href', '#contacto');
