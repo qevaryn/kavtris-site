@@ -7,9 +7,6 @@ test('mobile menu supports keyboard navigation, Escape and focus return', async 
   await expect(page.getByLabel('Qevaryn Systems - início')).toBeFocused();
 
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('banner').getByLabel('Explique o seu problema')).toBeFocused();
-
-  await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();
   await page.keyboard.press('Space');
   await expect(page.getByRole('button', { name: 'Fechar menu' }).first()).toHaveAttribute('aria-expanded', 'true');

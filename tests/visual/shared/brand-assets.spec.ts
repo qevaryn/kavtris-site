@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const logoAlt = 'Qevaryn Systems';
 const logoSourcePattern = /qevaryn-systems-white/;
 const symbolSourcePattern = /qevaryn-symbol/;
-const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
+const founderAlt = 'Gabriel Dias de Souza, Fundador e QA Engineer da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
   await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
@@ -115,8 +115,8 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
-    ? await page.getByRole('banner').locator('a[aria-label="Explique o seu problema"]').boundingBox()
-    : await page.getByRole('banner').getByRole('link', { name: 'Explique o seu problema' }).boundingBox();
+    ? await page.getByRole('banner').getByRole('button', { name: 'Abrir menu' }).boundingBox()
+    : await page.getByRole('banner').getByRole('link', { name: 'Pedir demonstração' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
     expectNoOverlap(headerMetrics, toEdges(navBox));
@@ -168,11 +168,10 @@ test('hero usa símbolo Qevaryn em destaque e não mostra dashboard operacional'
   expect(metrics.objectFit).toBe('contain');
 });
 
-test('fotografia aprovada do fundador aparece sem fallback e mantém cartão compacto', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('#sobre').scrollIntoViewIfNeeded();
+test('fotografia aprovada do fundador aparece em /sobre sem fallback e mantém cartão compacto', async ({ page }) => {
+  await page.goto('/sobre');
 
-  const founderSection = page.locator('#sobre');
+  const founderSection = page.getByTestId('about-founder-card');
   const photo = founderSection.getByAltText(founderAlt);
 
   await expect(photo).toBeVisible();
@@ -198,23 +197,22 @@ test('fotografia aprovada do fundador aparece sem fallback e mantém cartão com
   expect(photoMetrics.renderedHeight).toBeGreaterThan(72);
   expect(photoMetrics.objectFit).toBe('cover');
 
-  const cardHeight = await page.locator('[data-testid="founder-card"]').boundingBox();
+  const cardHeight = await page.getByTestId('about-founder-card').boundingBox();
   const viewport = page.viewportSize();
-  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 340);
+  expect(cardHeight?.height).toBeLessThanOrEqual(viewport && viewport.width < 640 ? 540 : 380);
 });
 
 test('header e cartão do fundador continuam responsivos no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/sobre');
 
   await expect(page.getByRole('banner').getByAltText(logoAlt)).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
-  await page.locator('#sobre').scrollIntoViewIfNeeded();
-  await expect(page.locator('#sobre').getByAltText(founderAlt)).toBeVisible();
-  await expect(page.locator('#sobre').getByText('GS', { exact: true })).toHaveCount(0);
+  await expect(page.getByTestId('about-founder-card').getByAltText(founderAlt)).toBeVisible();
+  await expect(page.getByTestId('about-founder-card').getByText('GS', { exact: true })).toHaveCount(0);
 
-  const founderBox = await page.locator('[data-testid="founder-card"]').boundingBox();
+  const founderBox = await page.getByTestId('about-founder-card').boundingBox();
   expect(founderBox?.height).toBeLessThanOrEqual(540);
 });
 
@@ -225,7 +223,6 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
-  const analysisButtonBox = await banner.locator('a[aria-label="Explique o seu problema"]').boundingBox();
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
   expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);
@@ -234,14 +231,14 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   expect(initialMetrics.renderedHeight).toBeLessThanOrEqual(70);
   expect(Math.abs(initialMetrics.naturalRatio - initialMetrics.renderedRatio)).toBeLessThan(0.03);
   expect(initialMetrics.right).toBeLessThanOrEqual(390);
-  expect(analysisButtonBox).not.toBeNull();
   expect(menuButtonBox).not.toBeNull();
-  expectNoOverlap(initialMetrics, toEdges(analysisButtonBox!));
   expectNoOverlap(initialMetrics, toEdges(menuButtonBox!));
+  await expect(banner.getByRole('link', { name: 'Pedir demonstração' })).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
   await expect(page.getByTestId('mobile-network-signature')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Pedir demonstração' })).toBeVisible();
   await expect(page.getByRole('banner').getByAltText('Rede Qualidade é Vida')).toHaveCount(0);
   const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
 
@@ -329,13 +326,13 @@ test('gera screenshots da integração visual final', async ({ page }, testInfo)
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase4-header-desktop.png') });
-  await page.locator('#sobre > div').screenshot({ path: testInfo.outputPath('phase4-founder-desktop.png') });
+  await page.locator('#rede > div').screenshot({ path: testInfo.outputPath('phase4-network-desktop.png') });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase4-header-mobile.png') });
-  await page.locator('#sobre').scrollIntoViewIfNeeded();
-  await page.locator('#sobre > div').screenshot({ path: testInfo.outputPath('phase4-founder-mobile.png') });
+  await page.locator('#rede').scrollIntoViewIfNeeded();
+  await page.locator('#rede > div').screenshot({ path: testInfo.outputPath('phase4-network-mobile.png') });
 });
 
 test('gera screenshots específicas da logomarca transparente', async ({ page }, testInfo) => {

@@ -1,4 +1,7 @@
+"use client";
+
 import { Code2, LifeBuoy, ShieldCheck, TestTube2 } from 'lucide-react';
+import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Button } from '@/components/shared/Button';
 
@@ -36,23 +39,33 @@ export function EnterpriseDetails() {
           align="center"
         />
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {enterprisePillars.map((pillar) => {
+        <AccessibleCarousel
+          ariaLabel="Capacidades técnicas para empresas"
+          testId="enterprise-capabilities-carousel"
+          className="mt-8"
+          items={enterprisePillars}
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
+          autoplayMs={3000}
+          interactionPauseMs={2000}
+          getItemLabel={(pillar) => pillar.title}
+          renderItem={(pillar) => {
             const Icon = pillar.icon;
 
             return (
-              <article key={pillar.title} className="rounded-[1.25rem] border border-borderline bg-white p-5 shadow-sm">
-                <Icon className="h-6 w-6 text-gold-600" aria-hidden="true" />
-                <h3 className="mt-4 text-base font-semibold text-navy-900">{pillar.title}</h3>
+              <article className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
+                <div className="flex items-center gap-3 text-left">
+                  <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
+                  <span className="text-sm font-semibold text-navy-900">{pillar.title}</span>
+                </div>
                 <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
               </article>
             );
-          })}
-        </div>
+          }}
+        />
 
         <div className="mt-8 flex justify-center">
           <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10">
-            Ver informações para empresas
+            Ver capacidades técnicas
           </Button>
         </div>
       </div>

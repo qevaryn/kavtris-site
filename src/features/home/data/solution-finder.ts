@@ -11,6 +11,8 @@ export interface SolutionFinderOption {
   secondaryCtaHref?: string;
 }
 
+export const homepageSolutionFinderOptionIds = ['manual-work', 'field', 'stock', 'customers'] as const;
+
 export const solutionFinderOptions: SolutionFinderOption[] = [
   {
     id: 'orders',
@@ -26,10 +28,10 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
   },
   {
     id: 'manual-work',
-    label: 'Reduzir tarefas manuais',
-    problem: 'A equipa repete tarefas que poderiam ser organizadas ou automatizadas.',
-    recommendationTitle: 'Automação e plataforma interna',
-    recommendationDescription: 'Criamos fluxos simples para reduzir repetição, evitar esquecimentos e deixar a informação mais organizada.',
+    label: 'Centralizar operações',
+    problem: 'A operação está espalhada por mensagens, folhas e tarefas soltas.',
+    recommendationTitle: 'Plataforma para centralizar operações',
+    recommendationDescription: 'Junte tarefas, estados e informação num único ponto para reduzir dispersão e acelerar a equipa.',
     productSlug: 'qevaryn-ops',
     primaryCtaLabel: 'Ver como funciona',
     primaryCtaHref: '/produtos/qevaryn-ops',
@@ -38,10 +40,10 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
   },
   {
     id: 'customers',
-    label: 'Acompanhar clientes',
-    problem: 'Clientes pedem atualizações porque não conseguem acompanhar pedidos, documentos ou serviços.',
-    recommendationTitle: 'Qevaryn Customer Portal',
-    recommendationDescription: 'Dê aos clientes uma área simples para consultar pedidos, documentos, mensagens e estados sem depender de chamadas repetidas.',
+    label: 'Melhorar atendimento ao cliente',
+    problem: 'Os clientes pedem atualizações porque a informação não está num sítio claro.',
+    recommendationTitle: 'Portal para atendimento mais claro',
+    recommendationDescription: 'Dê aos clientes uma área simples para consultar pedidos, documentos, mensagens e estados sem repetir tarefas.',
     productSlug: 'customer-portal',
     primaryCtaLabel: 'Ver como funciona',
     primaryCtaHref: '/produtos/customer-portal',
@@ -50,7 +52,7 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
   },
   {
     id: 'field',
-    label: 'Gerir equipas externas',
+    label: 'Organizar equipas externas',
     problem: 'A gestão perde visibilidade quando as equipas trabalham fora do escritório.',
     recommendationTitle: 'Qevaryn FieldOps',
     recommendationDescription: 'Organize serviços, visitas, checklists, evidências e relatórios num único sistema.',
@@ -62,7 +64,7 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
   },
   {
     id: 'stock',
-    label: 'Controlar stock',
+    label: 'Controlar stock e pedidos',
     problem: 'Produtos, fornecedores e reposições estão espalhados por papel, mensagens ou folhas de cálculo.',
     recommendationTitle: 'Qevaryn Stock & Orders',
     recommendationDescription: 'Controle produtos, fornecedores, encomendas e alertas de stock num só lugar.',
@@ -108,3 +110,7 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
     secondaryCtaHref: '/produtos'
   }
 ];
+
+export const homepageSolutionFinderOptions = homepageSolutionFinderOptionIds
+  .map((id) => solutionFinderOptions.find((option) => option.id === id))
+  .filter((option): option is SolutionFinderOption => Boolean(option));

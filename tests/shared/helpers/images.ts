@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 
 export async function waitForTrustImages(page: Page) {
-  const trust = page.locator('#sobre');
+  const trust = page.locator('#rede');
 
   await trust.scrollIntoViewIfNeeded();
   await expect.poll(async () => trust.evaluate((section) => {

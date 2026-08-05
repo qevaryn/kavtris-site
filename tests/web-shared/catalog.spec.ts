@@ -1,5 +1,29 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import { productRoutes } from '../shared/data/product-data';
+
+async function expectImageToLoad(
+  image: Locator,
+  expectedFilename: string
+) {
+  await image.scrollIntoViewIfNeeded();
+  await expect(image).toBeVisible();
+  await image.evaluate((img) => {
+    if (typeof (img as HTMLImageElement).decode === 'function') {
+      return (img as HTMLImageElement).decode();
+    }
+  });
+  await expect.poll(async () => {
+    const complete = await image.evaluate((img) => (img as HTMLImageElement).complete);
+    const naturalWidth = await image.evaluate((img) => (img as HTMLImageElement).naturalWidth);
+    const naturalHeight = await image.evaluate((img) => (img as HTMLImageElement).naturalHeight);
+    const currentSrc = await image.evaluate((img) => (img as HTMLImageElement).currentSrc || (img as HTMLImageElement).src);
+    const hasFile = decodeURIComponent(currentSrc).includes(expectedFilename);
+    if (!(complete && naturalWidth > 0 && naturalHeight > 0 && hasFile)) {
+      return false;
+    }
+    return true;
+  }, { timeout: 20000 }).toBe(true);
+}
 
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
   await page.goto('/produtos');
@@ -51,13 +75,7 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
 
   const firstCard = cards.first();
   const fieldOpsCatalogImage = firstCard.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
-  await expect(fieldOpsCatalogImage).toBeVisible();
-  await expect.poll(async () => fieldOpsCatalogImage.evaluate((image: HTMLImageElement) => (
-    image.complete &&
-    image.naturalWidth > 0 &&
-    image.naturalHeight > 0 &&
-    image.currentSrc.includes('fieldops-catalog-v1.webp')
-  ))).toBe(true);
+  await expectImageToLoad(fieldOpsCatalogImage, 'fieldops-catalog-v1.webp');
   await expect(firstCard.getByText('Equipas externas')).toBeVisible();
   await expect(firstCard.getByText('Demonstração visual')).toBeVisible();
   await expect(firstCard.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
@@ -67,16 +85,9 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
 
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
 
-  const opsCard = cards.filter({ hasText: 'Qevaryn Ops' });
-  await opsCard.scrollIntoViewIfNeeded();
+  const opsCard = cards.filter({ has: page.getByRole('heading', { name: 'Qevaryn Ops' }) });
   const opsImage = opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i });
-  await expect(opsImage).toBeVisible();
-  await expect.poll(async () => opsImage.evaluate((image: HTMLImageElement) => (
-    image.complete &&
-    image.naturalWidth > 0 &&
-    image.naturalHeight > 0 &&
-    image.currentSrc.includes('qevaryn-ops-catalog-v1.webp')
-  ))).toBe(true);
+  await expectImageToLoad(opsImage, 'qevaryn-ops-catalog-v1.webp');
 });
 
 test('card de solução personalizada e CTA final apontam para contacto', async ({ page }) => {
@@ -127,18 +138,16 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await page.goto('/');
 
   const preview = page.locator('#produtos-preview');
-  await expect(preview.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  const fieldOpsPreviewImage = preview.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
-  await expect(fieldOpsPreviewImage).toBeVisible();
-  await expect.poll(async () => fieldOpsPreviewImage.evaluate((image: HTMLImageElement) => (
-    image.complete &&
-    image.naturalWidth > 0 &&
-    image.naturalHeight > 0 &&
-    image.currentSrc.includes('fieldops-catalog-v1.webp')
-  ))).toBe(true);
-  await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
-  await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
+  const carousel = preview.getByTestId('featured-products-carousel');
+  await expect(carousel).toBeVisible();
+
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+
+  const fieldOpsPreviewImage = carousel.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
+  await expectImageToLoad(fieldOpsPreviewImage, 'fieldops-catalog-v1.webp');
+  await expect(carousel.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });

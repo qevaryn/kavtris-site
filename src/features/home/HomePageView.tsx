@@ -6,7 +6,7 @@ import { SolutionFinder } from '@/features/home/components/SolutionFinder';
 import { FeaturedProducts } from '@/features/home/components/FeaturedProducts';
 import { ProcessTimeline } from '@/features/home/components/ProcessTimeline';
 import { EnterpriseDetails } from '@/features/enterprise/components/EnterprisePreview';
-import { TrustAndCompany } from '@/features/home/components/TrustAndCompany';
+import { NetworkPreview } from '@/features/home/components/NetworkPreview';
 import { Contact } from '@/features/contact/components/ContactForm';
 import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
@@ -18,8 +18,7 @@ const schema = {
   description:
     'Desenvolvimento de sistemas web, automação de processos, integrações, aplicações empresariais e qualidade de software para empresas em Portugal.',
   slogan: brandTagline,
-  areaServed: 'PT',
-  sameAs: ['https://github.com/gabrielsouza80', 'https://www.linkedin.com/in/gabrielsouza80/']
+  areaServed: 'PT'
 };
 
 export function HomePageView() {
@@ -33,7 +32,7 @@ export function HomePageView() {
         <FeaturedProducts />
         <ProcessTimeline />
         <EnterpriseDetails />
-        <TrustAndCompany />
+        <NetworkPreview />
         <Contact />
       </main>
       <Footer />

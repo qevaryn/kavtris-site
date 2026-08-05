@@ -9,17 +9,15 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  { label: 'O que resolvemos', href: '/#problemas' },
-  { label: 'Exemplos', href: '/#produtos-preview' },
+  { label: 'Soluções', href: '/#problemas' },
   { label: 'Produtos', href: '/produtos' },
-  { label: 'Como funciona', href: '/#processo' },
-  { label: 'Descobrir solução', href: '/#problemas' },
   { label: 'Para empresas', href: '/#empresas' },
+  { label: 'Sobre', href: '/sobre' },
   { label: 'Contacto', href: '/#contacto' }
+  // O link "Planos" (/#planos) entra apenas no PR 3, quando a secção existir.
 ];
 
 export const socialLinks = {
-  linkedin: 'https://www.linkedin.com/in/gabrielsouza80/',
   github: 'https://github.com/gabrielsouza80'
 };
 
