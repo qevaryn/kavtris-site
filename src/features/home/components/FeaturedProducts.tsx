@@ -63,55 +63,22 @@ export function FeaturedProducts() {
           </Button>
         </div>
 
-        <div className="mt-8 hidden gap-4 lg:grid lg:grid-cols-2 min-[1380px]:grid-cols-4" data-testid="featured-products-desktop-grid">
-          {carouselItems.map((item) =>
-            item.type === 'product' ? (
-              <article key={item.slug} className="flex h-full overflow-hidden rounded-[1.35rem] border border-borderline bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-card">
-                <div className="flex w-full flex-col">
-                  <div className="relative aspect-[16/10] bg-navy-950">
-                    <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 280px, (min-width: 1024px) 44vw, 100vw" className="object-cover" />
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">{item.categoryLabel}</p>
-                    <h3 className="mt-3 text-xl font-semibold text-navy-950">{item.name}</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted">{item.shortDescription}</p>
-                    <Link href={`/produtos/${item.slug}`} className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full bg-gold-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2">
-                      Ver produto
-                      <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ) : (
-              <article key={item.title} className="flex h-full rounded-[1.35rem] border border-gold-600/25 bg-navy-950 p-5 text-white shadow-sm">
-                <div className="flex w-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-500">Solução personalizada</p>
-                  <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
-                  <p className="mt-4 text-sm leading-7 text-white/70">{item.description}</p>
-                  <Button href="#contacto" className="mt-auto w-full text-navy-950">
-                    Explique o seu problema
-                  </Button>
-                </div>
-              </article>
-            )
-          )}
-        </div>
-
         <AccessibleCarousel
           ariaLabel="Produtos em destaque"
           testId="featured-products-carousel"
-          className="mt-8 lg:hidden"
+          className="mt-8"
           items={carouselItems}
-          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%]"
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"
-          autoplayMs={0}
+          autoplayMs={8000}
+          interactionPauseMs={12000}
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (
               <article className="flex h-full overflow-hidden rounded-[1.35rem] border border-borderline bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-card">
                 <div className="flex w-full flex-col">
                   <div className="relative aspect-[16/10] bg-navy-950">
-                    <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+                    <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">{item.categoryLabel}</p>

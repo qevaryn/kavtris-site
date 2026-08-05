@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type UIEvent } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type UIEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/components/shared/cn';
 import { useInViewport } from '@/components/shared/useInViewport';
@@ -17,6 +17,7 @@ type AccessibleCarouselProps<T> = {
   viewportClassName?: string;
   trackClassName?: string;
   autoplayMs?: number;
+  interactionPauseMs?: number;
   showCounter?: boolean;
   counterClassName?: string;
   testId?: string;
@@ -32,6 +33,7 @@ export function AccessibleCarousel<T>({
   viewportClassName,
   trackClassName,
   autoplayMs = 0,
+  interactionPauseMs = 12000,
   showCounter = false,
   counterClassName,
   testId
@@ -42,9 +44,11 @@ export function AccessibleCarousel<T>({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [pausedByIntent, setPausedByIntent] = useState(false);
   const [pausedByInteraction, setPausedByInteraction] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(true);
+  const interactionTimeoutRef = useRef<number | null>(null);
   const isInViewport = useInViewport(viewportRef, 0.35);
   const reducedMotion = useReducedMotion();
-  const wantsAutoplay = autoplayMs > 0 && isInViewport && !reducedMotion;
+  const wantsAutoplay = autoplayMs > 0 && isInViewport && !reducedMotion && isPageVisible;
   const canOwnMotion = useMotionBudget(`carousel-${carouselId}`, wantsAutoplay);
 
   const clampedIndex = useMemo(() => {
@@ -54,6 +58,60 @@ export function AccessibleCarousel<T>({
 
     return Math.min(currentIndex, items.length - 1);
   }, [currentIndex, items.length]);
+
+  useEffect(() => {
+    function onVisibilityChange() {
+      setIsPageVisible(document.visibilityState === 'visible');
+    }
+
+    onVisibilityChange();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        window.clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const registerInteractionPause = useCallback(() => {
+    if (items.length <= 1) {
+      return;
+    }
+
+    setPausedByInteraction(true);
+
+    if (interactionTimeoutRef.current) {
+      window.clearTimeout(interactionTimeoutRef.current);
+    }
+
+    interactionTimeoutRef.current = window.setTimeout(() => {
+      setPausedByInteraction(false);
+    }, interactionPauseMs);
+  }, [interactionPauseMs, items.length]);
+
+  const goTo = useCallback((index: number, options: { smooth: boolean; fromInteraction?: boolean }) => {
+    if (!slideRefs.current[index]) {
+      return;
+    }
+
+    if (options.fromInteraction) {
+      registerInteractionPause();
+    }
+
+    setCurrentIndex(index);
+    slideRefs.current[index]?.scrollIntoView({
+      behavior: options.smooth && !reducedMotion ? 'smooth' : 'auto',
+      inline: 'start',
+      block: 'nearest'
+    });
+  }, [reducedMotion, registerInteractionPause]);
 
   useEffect(() => {
     if (!wantsAutoplay || !canOwnMotion || pausedByIntent || pausedByInteraction || items.length <= 1) {
@@ -67,24 +125,7 @@ export function AccessibleCarousel<T>({
     return () => {
       window.clearInterval(interval);
     };
-  }, [autoplayMs, canOwnMotion, clampedIndex, items.length, pausedByIntent, pausedByInteraction, wantsAutoplay]);
-
-  function goTo(index: number, options: { smooth: boolean; fromInteraction?: boolean }) {
-    if (!slideRefs.current[index]) {
-      return;
-    }
-
-    if (options.fromInteraction) {
-      setPausedByInteraction(true);
-    }
-
-    setCurrentIndex(index);
-    slideRefs.current[index]?.scrollIntoView({
-      behavior: options.smooth ? 'smooth' : 'auto',
-      inline: 'start',
-      block: 'nearest'
-    });
-  }
+  }, [autoplayMs, canOwnMotion, clampedIndex, goTo, items.length, pausedByIntent, pausedByInteraction, wantsAutoplay]);
 
   function onScroll(event: UIEvent<HTMLDivElement>) {
     const viewport = event.currentTarget;
@@ -137,7 +178,10 @@ export function AccessibleCarousel<T>({
       data-testid={testId}
       onMouseEnter={() => setPausedByIntent(true)}
       onMouseLeave={() => setPausedByIntent(false)}
-      onFocusCapture={() => setPausedByIntent(true)}
+      onFocusCapture={() => {
+        setPausedByIntent(true);
+        registerInteractionPause();
+      }}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
           setPausedByIntent(false);
@@ -151,8 +195,9 @@ export function AccessibleCarousel<T>({
           viewportClassName
         )}
         onScroll={onScroll}
-        onPointerDown={() => setPausedByInteraction(true)}
-        onTouchStart={() => setPausedByInteraction(true)}
+        onPointerDown={() => registerInteractionPause()}
+        onTouchStart={() => registerInteractionPause()}
+        onWheel={() => registerInteractionPause()}
       >
         <div
           className={cn('flex snap-x snap-mandatory gap-4', trackClassName)}
@@ -219,8 +264,8 @@ export function AccessibleCarousel<T>({
       </div>
 
       {showCounter ? (
-        <p className={cn('mt-2 text-center text-sm font-semibold text-muted', counterClassName)} data-testid={testId ? `${testId}-counter` : undefined}>
-          {clampedIndex + 1} de {items.length}
+        <p className={cn('mt-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted', counterClassName)} data-testid={testId ? `${testId}-counter` : undefined}>
+          {items.length === 0 ? '0 de 0' : `${clampedIndex + 1} de ${items.length}`}
         </p>
       ) : null}
     </section>
