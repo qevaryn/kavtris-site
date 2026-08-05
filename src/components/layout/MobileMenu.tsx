@@ -62,7 +62,7 @@ export function MobileMenu() {
       {open ? (
         <div
           id="mobile-menu-panel"
-          className="fixed inset-x-5 top-20 z-50 rounded-3xl border border-white/10 bg-navy-900 p-4 text-white shadow-2xl transition duration-200"
+          className="fixed inset-x-4 top-20 z-50 rounded-3xl border border-white/10 bg-navy-900 p-4 text-white shadow-2xl transition duration-200 sm:inset-x-5"
         >
           <nav aria-label="Menu móvel" className="grid gap-2">
             {navigationLinks.map((link) => (
@@ -81,7 +81,7 @@ export function MobileMenu() {
               Operadora da Qualidade é Vida
             </p>
             <Button href="/#contacto" className="w-full justify-center" onClick={() => closeMenu()}>
-              Explique o seu problema
+              Pedir demonstração
             </Button>
           </div>
         </div>
