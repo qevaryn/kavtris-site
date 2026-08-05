@@ -34,7 +34,7 @@ test('generates desktop and mobile section screenshots for visual audit', async 
   await page.locator('#problemas').screenshot({ path: testInfo.outputPath('phase6-solution-finder-desktop.png') });
   await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-desktop.png') });
   await waitForTrustImages(page);
-  await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-trust-desktop.png') });
+  await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-trust-desktop.png') });
   await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-desktop.png') });
 
   await page.setViewportSize({ width: qaViewports.mobileStandard.width, height: qaViewports.mobileStandard.height });
@@ -46,7 +46,7 @@ test('generates desktop and mobile section screenshots for visual audit', async 
   await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-mobile.png') });
   await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
   await waitForTrustImages(page);
-  await page.locator('#sobre').screenshot({ path: testInfo.outputPath('phase6-trust-mobile.png') });
+  await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-trust-mobile.png') });
   await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-mobile.png') });
   await page.getByRole('contentinfo').screenshot({ path: testInfo.outputPath('phase6-footer-mobile.png') });
 });

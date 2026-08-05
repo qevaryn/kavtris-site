@@ -10,6 +10,7 @@ test('desktop navigation opens homepage anchors', async ({ page }) => {
 
   await expect(desktopNav.getByRole('link', { name: 'Produtos', exact: true })).toHaveAttribute('href', '/produtos');
   await expect(desktopNav.getByRole('link', { name: 'Para empresas', exact: true })).toHaveAttribute('href', '/#empresas');
+  await expect(desktopNav.getByRole('link', { name: 'Sobre', exact: true })).toHaveAttribute('href', '/sobre');
   await expect(desktopNav.getByRole('link', { name: 'Contacto', exact: true })).toHaveAttribute('href', '/#contacto');
 
   await expect(desktopNav.getByRole('link', { name: 'O que resolvemos', exact: true })).toHaveCount(0);

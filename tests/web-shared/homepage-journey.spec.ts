@@ -12,9 +12,11 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(page.getByRole('button', { name: 'Controlar stock e pedidos' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Melhorar atendimento ao cliente' })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Organizar equipas externas' }).click();
   const finder = page.locator('#problemas');
   const desktopResult = finder.getByTestId('solution-desktop-result');
+  await expect(desktopResult.getByRole('heading', { name: 'Escolha uma opção para ver a recomendação.' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Organizar equipas externas' }).click();
   await expect(desktopResult.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
   await expect(desktopResult.getByText('Organize serviços, visitas, checklists, evidências e relatórios num único sistema.')).toBeVisible();
   await expect(desktopResult.getByRole('link', { name: /Ver como funciona/ })).toHaveAttribute('href', '/produtos/fieldops');
@@ -24,13 +26,12 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(finder.getByRole('link', { name: 'Explique o seu problema' }).first()).toHaveAttribute('href', '#contacto');
 
   const preview = page.locator('#produtos-preview');
-  await expect(preview.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(preview.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  const productsCarousel = preview.getByTestId('featured-products-carousel');
+  await expect(productsCarousel).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
 
@@ -42,13 +43,19 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
 
   const enterprise = page.locator('#empresas');
   await expect(enterprise.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
-  await expect(enterprise.getByText('Segurança', { exact: true }).first()).toBeVisible();
+  const enterpriseCarousel = enterprise.getByTestId('enterprise-capabilities-carousel');
+  await expect(enterpriseCarousel).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Segurança e acessos')).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Qualidade e testes')).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Integrações e arquitetura')).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Suporte e continuidade')).toBeVisible();
   await expect(enterprise.getByRole('link', { name: 'Ver capacidades técnicas' })).toHaveAttribute('href', '/empresas');
 
-  await expect(page.getByRole('heading', { name: 'Software de qualidade para servir melhor pessoas e empresas.' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('heading', { name: 'Gabriel Souza' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('button', { name: 'Conhecer o fundador' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('heading', { name: 'Não trabalhamos isolados.' })).toBeVisible();
+  const networkPreview = page.locator('#rede');
+  await expect(networkPreview.getByText('Rede Qualidade é Vida').first()).toBeVisible();
+  await expect(networkPreview.getByRole('heading', { name: 'Tecnologia integrada a uma rede criada para servir melhor.' })).toBeVisible();
+  await expect(networkPreview.getByRole('link', { name: 'Conhecer a Rede' })).toHaveAttribute('href', '/rede-qualidade-e-vida');
+  await expect(networkPreview.getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
 
   await expect(page.getByRole('heading', { name: 'Primeiro o resultado. Depois os detalhes.' })).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Veja um exemplo sem precisar entender termos técnicos.' })).toHaveCount(0);

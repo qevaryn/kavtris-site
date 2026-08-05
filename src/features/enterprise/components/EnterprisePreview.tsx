@@ -1,7 +1,7 @@
 "use client";
 
 import { Code2, LifeBuoy, ShieldCheck, TestTube2 } from 'lucide-react';
-import { LoopingTicker } from '@/components/shared/LoopingTicker';
+import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Button } from '@/components/shared/Button';
 
@@ -28,8 +28,6 @@ const enterprisePillars = [
   }
 ];
 
-const enterpriseCapabilities = ['Segurança', 'Permissões', 'Integrações', 'Auditoria', 'Escalabilidade', 'Automação', 'Suporte', 'Evolução'] as const;
-
 export function EnterpriseDetails() {
   return (
     <section id="empresas" className="soft-section-line bg-mist py-14 sm:py-16 lg:py-20">
@@ -41,42 +39,29 @@ export function EnterpriseDetails() {
           align="center"
         />
 
-        <div className="mx-auto mt-9 max-w-3xl rounded-[1.25rem] border border-borderline bg-white p-5 text-center shadow-sm sm:p-6">
-          <p className="text-base leading-7 text-muted">Interface simples para a equipa.</p>
-          <p className="mt-2 text-base leading-7 text-muted">Estrutura técnica preparada para a operação.</p>
-        </div>
-
-        <div className="mt-6 rounded-[1.25rem] border border-borderline bg-white px-3 py-3 shadow-sm sm:px-4">
-          <LoopingTicker
-            ariaLabel="Capacidades técnicas"
-            items={enterpriseCapabilities}
-            durationSeconds={30}
-            testId="enterprise-capabilities-ticker"
-            viewportClassName="py-1"
-            itemClassName="min-w-[12rem]"
-            renderItem={(capability) => (
-              <span className="inline-flex min-h-10 items-center justify-center rounded-full border border-navy-950/10 bg-mist px-4 py-2 text-sm font-semibold text-navy-900">
-                {capability}
-              </span>
-            )}
-          />
-        </div>
-
-        <div className="mt-8 grid gap-3">
-          {enterprisePillars.map((pillar) => {
+        <AccessibleCarousel
+          ariaLabel="Capacidades técnicas para empresas"
+          testId="enterprise-capabilities-carousel"
+          className="mt-8"
+          items={enterprisePillars}
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
+          autoplayMs={3000}
+          interactionPauseMs={2000}
+          getItemLabel={(pillar) => pillar.title}
+          renderItem={(pillar) => {
             const Icon = pillar.icon;
 
             return (
-              <details key={pillar.title} className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
-                <summary className="flex cursor-pointer list-none items-center gap-3 text-left">
+              <article className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
+                <div className="flex items-center gap-3 text-left">
                   <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
                   <span className="text-sm font-semibold text-navy-900">{pillar.title}</span>
-                </summary>
+                </div>
                 <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
-              </details>
+              </article>
             );
-          })}
-        </div>
+          }}
+        />
 
         <div className="mt-8 flex justify-center">
           <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10">

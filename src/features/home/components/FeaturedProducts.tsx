@@ -68,16 +68,17 @@ export function FeaturedProducts() {
           testId="featured-products-carousel"
           className="mt-8"
           items={carouselItems}
-          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[38%] xl:basis-[31%]"
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"
-          autoplayMs={7600}
+          autoplayMs={3000}
+          interactionPauseMs={2000}
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (
               <article className="flex h-full overflow-hidden rounded-[1.35rem] border border-borderline bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-card">
                 <div className="flex w-full flex-col">
                   <div className="relative aspect-[16/10] bg-navy-950">
-                    <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1280px) 360px, (min-width: 768px) 50vw, 100vw" className="object-cover" />
+                    <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">{item.categoryLabel}</p>
@@ -110,9 +111,6 @@ export function FeaturedProducts() {
             Ver todos os produtos
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>
-          <Link href="#contacto" className="text-sm font-semibold text-navy-900 underline-offset-4 hover:underline">
-            Precisa de uma solução personalizada?
-          </Link>
         </div>
       </div>
     </section>

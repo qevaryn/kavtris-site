@@ -20,14 +20,17 @@ export function Header() {
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-4 min-[1180px]:flex 2xl:gap-5">
           {navigationLinks.map((link) => (
-            <Link key={`${link.href}-${link.label}`} href={link.href} className="rounded-sm px-0.5 text-xs font-semibold text-white transition hover:text-gold-500 2xl:text-[0.82rem]">
+            <Link key={`${link.href}-${link.label}`} href={link.href} className="rounded-sm px-0.5 text-xs font-semibold text-white/84 transition hover:text-gold-500 focus-visible:text-gold-500 2xl:text-[0.82rem]">
               {link.label}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-2.5">
-          <Button href="/#contacto" className="hidden px-5 py-2.5 text-navy-950 min-[1180px]:inline-flex">
+          <Button
+            href="/#contacto"
+            className="hidden border border-gold-400/80 bg-gold-500 px-5 py-2.5 text-navy-950 shadow-[0_10px_26px_rgba(242,182,50,0.28)] transition hover:bg-gold-400 hover:shadow-[0_14px_30px_rgba(242,182,50,0.36)] min-[1180px]:inline-flex"
+          >
             Pedir demonstração
           </Button>
           <MobileMenu />

@@ -16,6 +16,7 @@ test('mobile menu opens, locks body scroll and closes after route selection', as
   await expect(mobileNav.getByRole('link', { name: 'Soluções', exact: true })).toHaveAttribute('href', '/#problemas');
   await expect(mobileNav.getByRole('link', { name: 'Produtos', exact: true })).toHaveAttribute('href', '/produtos');
   await expect(mobileNav.getByRole('link', { name: 'Para empresas', exact: true })).toHaveAttribute('href', '/#empresas');
+  await expect(mobileNav.getByRole('link', { name: 'Sobre', exact: true })).toHaveAttribute('href', '/sobre');
   await expect(mobileNav.getByRole('link', { name: 'Contacto', exact: true })).toHaveAttribute('href', '/#contacto');
   await expect(mobileNav.getByRole('link', { name: 'Exemplos', exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Pedir demonstração' })).toBeVisible();

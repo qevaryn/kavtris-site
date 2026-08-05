@@ -12,12 +12,12 @@ export const navigationLinks = [
   { label: 'Soluções', href: '/#problemas' },
   { label: 'Produtos', href: '/produtos' },
   { label: 'Para empresas', href: '/#empresas' },
+  { label: 'Sobre', href: '/sobre' },
   { label: 'Contacto', href: '/#contacto' }
   // O link "Planos" (/#planos) entra apenas no PR 3, quando a secção existir.
 ];
 
 export const socialLinks = {
-  linkedin: 'https://www.linkedin.com/in/gabrielsouza80/',
   github: 'https://github.com/gabrielsouza80'
 };
 

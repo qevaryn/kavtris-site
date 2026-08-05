@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section id="inicio" className="relative overflow-hidden bg-[#03182B] text-white">
       <div className="absolute inset-0 bg-hero-grid bg-[size:70px_70px] opacity-[0.12]" aria-hidden="true" />
-      <div className="absolute inset-y-0 right-0 w-3/5 bg-[radial-gradient(circle_at_65%_46%,rgba(242,182,50,0.2),transparent_42%)]" aria-hidden="true" />
+      <div className="absolute inset-y-0 right-0 w-3/5 bg-[radial-gradient(circle_at_66%_46%,rgba(242,182,50,0.27),transparent_45%)]" aria-hidden="true" />
       <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(3,24,43,0.98),rgba(3,24,43,0))]" aria-hidden="true" />
 
       <div className="relative mx-auto grid max-w-[1180px] items-start gap-6 px-5 py-7 sm:gap-8 sm:px-8 sm:py-9 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-10 lg:py-10 xl:gap-12">
@@ -13,7 +13,7 @@ export function Hero() {
           <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-gold-500">Qevaryn Systems</p>
           <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
 
-          <h1 className="mt-5 max-w-[38rem] text-[clamp(1.75rem,7vw,2.75rem)] font-extrabold leading-[1.03] tracking-tight text-white sm:text-[clamp(2rem,6vw,2.85rem)] lg:text-[2.45rem]">
+          <h1 className="mt-5 max-w-[38rem] font-display text-[clamp(1.9rem,7vw,3rem)] font-extrabold leading-[1.01] tracking-tight text-white sm:text-[clamp(2.15rem,6vw,3.15rem)] lg:text-[2.75rem]">
             Sistemas simples para organizar e automatizar a sua empresa.
           </h1>
 
@@ -22,7 +22,7 @@ export function Hero() {
           </p>
 
           <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-            <Button href="#problemas" className="min-h-11 w-full px-6 text-navy-950 sm:w-auto">
+            <Button href="#problemas" className="min-h-11 w-full border border-gold-300/80 bg-gold-500 px-6 text-navy-950 shadow-[0_14px_30px_rgba(242,182,50,0.24)] hover:bg-gold-400 sm:w-auto">
               Encontrar uma solução
             </Button>
             <Button href="/produtos" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-gold-500 hover:bg-gold-500/10 sm:w-auto">
@@ -31,8 +31,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative min-h-[165px] sm:min-h-[205px] lg:min-h-[330px]" data-testid="hero-brand-visual">
-          <div className="absolute left-1/2 top-[45%] h-[min(60vw,20rem)] w-[min(60vw,20rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/14 blur-3xl lg:left-[61%] lg:top-1/2 lg:h-[min(72vw,27rem)] lg:w-[min(72vw,27rem)]" aria-hidden="true" />
+        <div className="relative min-h-[175px] sm:min-h-[215px] lg:min-h-[340px]" data-testid="hero-brand-visual">
+          <div className="absolute left-1/2 top-[45%] h-[min(63vw,21rem)] w-[min(63vw,21rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/16 blur-3xl lg:left-[61%] lg:top-1/2 lg:h-[min(76vw,29rem)] lg:w-[min(76vw,29rem)]" aria-hidden="true" />
           <svg className="absolute inset-y-0 right-0 h-full w-full text-gold-500/68" viewBox="0 0 720 460" fill="none" aria-hidden="true">
             <path d="M24 118H188L232 162H336" stroke="currentColor" strokeWidth="1.35" />
             <path d="M68 200H240L292 148H484" stroke="currentColor" strokeWidth="1.35" />
@@ -49,7 +49,7 @@ export function Hero() {
             ))}
           </svg>
 
-          <div className="absolute left-1/2 top-[46%] w-[min(41vw,8.9rem)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(39vw,10.5rem)] lg:left-[61%] lg:top-1/2 lg:w-[25rem] xl:w-[29rem]">
+          <div className="absolute left-1/2 top-[46%] w-[min(44vw,9.6rem)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(41vw,11rem)] lg:left-[61%] lg:top-1/2 lg:w-[26rem] xl:w-[30rem]">
             <Image
               src="/images/qevaryn-symbol.png"
               alt="Símbolo Qevaryn Systems"

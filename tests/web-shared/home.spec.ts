@@ -15,9 +15,13 @@ test('carrega a homepage', async ({ page }) => {
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Desenvolvimento de sistemas web/);
   await expect(page.getByLabel('Assinatura institucional')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('heading', { name: 'Software de qualidade para servir melhor pessoas e empresas.' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('button', { name: 'Conhecer o fundador' })).toBeVisible();
-  await expect(page.locator('#sobre').getByRole('link', { name: 'Conhecer a Rede' }).first()).toHaveAttribute('href', '/rede-qualidade-e-vida');
+  await expect(page.locator('#rede').getByText('Rede Qualidade é Vida').first()).toBeVisible();
+  await expect(page.locator('#rede').getByRole('heading', { name: 'Tecnologia integrada a uma rede criada para servir melhor.' })).toBeVisible();
+  await expect(page.locator('#rede').getByRole('link', { name: 'Conhecer a Rede' })).toHaveAttribute('href', '/rede-qualidade-e-vida');
+  await expect(page.locator('#rede').getByRole('link', { name: 'Conhecer a nossa história' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
+  await expect(page.getByText(/A sua fé cristã inspira princípios/)).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Conhecer o fundador' })).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Primeiro o resultado. Depois os detalhes.' })).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Responda sobre o negócio. Nós traduzimos para tecnologia.' })).toHaveCount(0);
 });
