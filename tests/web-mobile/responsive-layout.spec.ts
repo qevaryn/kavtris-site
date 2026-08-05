@@ -3,25 +3,14 @@ import { expect, test } from '@playwright/test';
 test('mobile layout uses compact interactions and responsive bands', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByRole('button', { name: 'Centralizar operações' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Organizar equipas externas' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Controlar stock e pedidos' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Melhorar atendimento ao cliente' })).toBeVisible();
+  await page.getByRole('button', { name: 'Ainda não sei' }).click();
+  await expect(page.getByRole('heading', { name: 'Começar pela conversa certa' })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Centralizar operações' }).click();
-  await expect(page.getByRole('button', { name: 'Centralizar operações' })).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('[data-testid="solution-option-panel-manual-work"]')).toBeVisible();
-
-  await page.getByRole('button', { name: 'Controlar stock e pedidos' }).click();
-  await expect(page.locator('[data-testid="solution-option-panel-stock"]')).toBeVisible();
-  await expect(page.locator('[data-testid="solution-option-panel-manual-work"]')).toBeHidden();
+  await page.getByRole('button', { name: 'Controlar stock' }).click();
   await expect(page.locator('#problemas').getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
 
-  await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
-  await expect(page.getByTestId('services-ticker').getByText('Suporte, correções e melhorias').first()).toBeVisible();
-  await expect(page.getByLabel('Assinatura institucional')).toHaveCount(0);
-  await expect(page.getByText('Ainda não sabe o que precisa?').first()).toBeVisible();
-  await expect(page.locator('#problemas').getByRole('link', { name: 'Explique o seu problema' })).toHaveAttribute('href', '#contacto');
+  await expect(page.getByLabel('Serviços principais').getByText('Reduzir tarefas manuais')).toBeVisible();
+  await expect(page.getByLabel('Serviços principais').getByText('Suporte, correções e melhorias')).toBeVisible();
 });
 
 test('mobile fields, buttons and anchored sections remain accessible', async ({ page }) => {

@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const logoAlt = 'Qevaryn Systems';
 const logoSourcePattern = /qevaryn-systems-white/;
 const symbolSourcePattern = /qevaryn-symbol/;
-const founderAlt = 'Gabriel Souza, Fundador e QA Engineer da Qevaryn Systems';
+const founderAlt = 'Gabriel Dias de Souza, QA Engineer e fundador da Qevaryn Systems';
 
 async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
   await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
@@ -115,8 +115,8 @@ test('logomarca Qevaryn aparece no header e no footer sem caixa clara ou quadrad
   const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
-    ? await page.getByRole('banner').getByRole('button', { name: 'Abrir menu' }).boundingBox()
-    : await page.getByRole('banner').getByRole('link', { name: 'Pedir demonstração' }).boundingBox();
+    ? await page.getByRole('banner').locator('a[aria-label="Explique o seu problema"]').boundingBox()
+    : await page.getByRole('banner').getByRole('link', { name: 'Explique o seu problema' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
     expectNoOverlap(headerMetrics, toEdges(navBox));
@@ -225,6 +225,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
   const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
+  const analysisButtonBox = await banner.locator('a[aria-label="Explique o seu problema"]').boundingBox();
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
   expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);
@@ -233,14 +234,14 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   expect(initialMetrics.renderedHeight).toBeLessThanOrEqual(70);
   expect(Math.abs(initialMetrics.naturalRatio - initialMetrics.renderedRatio)).toBeLessThan(0.03);
   expect(initialMetrics.right).toBeLessThanOrEqual(390);
+  expect(analysisButtonBox).not.toBeNull();
   expect(menuButtonBox).not.toBeNull();
+  expectNoOverlap(initialMetrics, toEdges(analysisButtonBox!));
   expectNoOverlap(initialMetrics, toEdges(menuButtonBox!));
-  await expect(banner.getByRole('link', { name: 'Pedir demonstração' })).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
   await expect(page.getByTestId('mobile-network-signature')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Pedir demonstração' })).toBeVisible();
   await expect(page.getByRole('banner').getByAltText('Rede Qualidade é Vida')).toHaveCount(0);
   const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
 

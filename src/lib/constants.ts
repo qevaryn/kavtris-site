@@ -9,11 +9,13 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  { label: 'Soluções', href: '/#problemas' },
+  { label: 'O que resolvemos', href: '/#problemas' },
+  { label: 'Exemplos', href: '/#produtos-preview' },
   { label: 'Produtos', href: '/produtos' },
+  { label: 'Como funciona', href: '/#processo' },
+  { label: 'Descobrir solução', href: '/#problemas' },
   { label: 'Para empresas', href: '/#empresas' },
   { label: 'Contacto', href: '/#contacto' }
-  // O link "Planos" (/#planos) entra apenas no PR 3, quando a secção existir.
 ];
 
 export const socialLinks = {

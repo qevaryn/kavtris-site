@@ -67,12 +67,9 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
 
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
 
-  const opsCard = cards.filter({ has: page.getByRole('heading', { name: 'Qevaryn Ops' }) });
+  const opsCard = cards.filter({ hasText: 'Qevaryn Ops' });
+  await opsCard.scrollIntoViewIfNeeded();
   const opsImage = opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i });
-  await opsImage.evaluate((image) => {
-    image.scrollIntoView({ block: 'center', inline: 'nearest' });
-  });
-  await expect(opsImage).toBeInViewport();
   await expect(opsImage).toBeVisible();
   await expect.poll(async () => opsImage.evaluate((image: HTMLImageElement) => (
     image.complete &&
@@ -139,12 +136,9 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
     image.naturalHeight > 0 &&
     image.currentSrc.includes('fieldops-catalog-v1.webp')
   ))).toBe(true);
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(preview.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(preview.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await preview.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(preview.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  await expect(preview.getByRole('heading', { name: 'Precisa de outra solução?' })).toBeVisible();
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });

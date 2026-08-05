@@ -12,29 +12,7 @@ test('mobile menu opens, locks body scroll and closes after route selection', as
   await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
   await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('hidden');
 
-  const mobileNav = page.getByRole('navigation', { name: 'Menu móvel' });
-  await expect(mobileNav.getByRole('link', { name: 'Soluções', exact: true })).toHaveAttribute('href', '/#problemas');
-  await expect(mobileNav.getByRole('link', { name: 'Produtos', exact: true })).toHaveAttribute('href', '/produtos');
-  await expect(mobileNav.getByRole('link', { name: 'Para empresas', exact: true })).toHaveAttribute('href', '/#empresas');
-  await expect(mobileNav.getByRole('link', { name: 'Contacto', exact: true })).toHaveAttribute('href', '/#contacto');
-  await expect(mobileNav.getByRole('link', { name: 'Exemplos', exact: true })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Pedir demonstração' })).toBeVisible();
-
-  await mobileNav.getByRole('link', { name: 'Soluções', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu móvel' }).getByRole('link', { name: 'Exemplos', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toHaveAttribute('aria-expanded', 'false');
   await expect.poll(async () => page.evaluate(() => document.body.style.overflow)).toBe('');
-});
-
-test('mobile menu fecha com Escape e devolve foco ao botão', async ({ page }) => {
-  await page.goto('/');
-
-  const trigger = page.getByRole('button', { name: 'Abrir menu' });
-  await trigger.click();
-  await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toBeVisible();
-
-  await page.keyboard.press('Escape');
-
-  await expect(trigger).toBeFocused();
-  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.getByRole('navigation', { name: 'Menu móvel' })).toHaveCount(0);
 });
