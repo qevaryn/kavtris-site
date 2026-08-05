@@ -70,8 +70,8 @@ export function FeaturedProducts() {
           items={carouselItems}
           itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"
-          autoplayMs={8000}
-          interactionPauseMs={12000}
+          autoplayMs={3000}
+          interactionPauseMs={2000}
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (

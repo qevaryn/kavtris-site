@@ -44,8 +44,8 @@ export function ProcessTimeline() {
           className="mt-10"
           items={processSteps}
           itemClassName="basis-[89%] sm:basis-[74%] md:basis-[52%] lg:basis-[34%] xl:basis-[32%]"
-          autoplayMs={10000}
-          interactionPauseMs={12000}
+          autoplayMs={3000}
+          interactionPauseMs={2000}
           showCounter
           getItemLabel={(step, index) => `Passo ${index + 1}: ${step.title}`}
           renderItem={(step, context) => {

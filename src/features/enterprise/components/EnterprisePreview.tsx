@@ -45,8 +45,8 @@ export function EnterpriseDetails() {
           className="mt-8"
           items={enterprisePillars}
           itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
-          autoplayMs={9000}
-          interactionPauseMs={12000}
+          autoplayMs={3000}
+          interactionPauseMs={2000}
           getItemLabel={(pillar) => pillar.title}
           renderItem={(pillar) => {
             const Icon = pillar.icon;
