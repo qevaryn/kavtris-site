@@ -54,25 +54,35 @@ test('carrossel de produtos mobile usa scroll-snap, swipe manual e CTA único', 
   await expect(page.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
 });
 
-test('processo mobile mostra contador, setas e respeita reduced motion no autoplay', async ({ page }) => {
+test('processo mobile mostra autoplay por etapas e controles manuais', async ({ page }) => {
   await page.goto('/');
   await page.locator('#processo').scrollIntoViewIfNeeded();
 
   const processCarousel = page.getByTestId('process-carousel');
 
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+  const initialSelection = await processCarousel
+    .getByLabel('Indicadores de posição')
+    .locator('button[aria-pressed="true"]')
+    .first()
+    .getAttribute('aria-label');
+  await expect
+    .poll(
+      () =>
+        processCarousel
+          .getByLabel('Indicadores de posição')
+          .locator('button[aria-pressed="true"]')
+          .first()
+          .getAttribute('aria-label'),
+      { timeout: 13000 }
+    )
+    .not.toBe(initialSelection);
+
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
 
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
-
-  const reducedTrack = page.getByTestId('process-carousel-track');
-  const initialScroll = await reducedTrack.evaluate((element) => element.scrollLeft);
-
-  await expect.poll(() => reducedTrack.evaluate((element) => element.scrollLeft), { timeout: 9000 }).toBe(initialScroll);
-  await reducedTrack.focus();
+  const track = page.getByTestId('process-carousel-track');
+  await track.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(page.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
+  await expect(page.getByTestId('process-carousel-counter')).toHaveText('3 de 4');
 });

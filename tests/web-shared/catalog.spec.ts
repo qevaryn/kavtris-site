@@ -130,16 +130,15 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await page.goto('/');
 
   const preview = page.locator('#produtos-preview');
-  const desktopGrid = preview.getByTestId('featured-products-desktop-grid');
-  await expect(desktopGrid).toBeVisible();
-  await expect(preview.getByTestId('featured-products-carousel')).toBeHidden();
+  const carousel = preview.getByTestId('featured-products-carousel');
+  await expect(carousel).toBeVisible();
 
-  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(desktopGrid.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(desktopGrid.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
 
-  const fieldOpsPreviewImage = desktopGrid.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
+  const fieldOpsPreviewImage = carousel.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
   await expect(fieldOpsPreviewImage).toBeVisible();
   await expect.poll(async () => fieldOpsPreviewImage.evaluate((image: HTMLImageElement) => (
     image.complete &&
@@ -147,6 +146,6 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
     image.naturalHeight > 0 &&
     image.currentSrc.includes('fieldops-catalog-v1.webp')
   ))).toBe(true);
-  await expect(desktopGrid.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
+  await expect(carousel.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
 });

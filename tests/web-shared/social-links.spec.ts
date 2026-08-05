@@ -5,7 +5,7 @@ test('LinkedIn pessoal aparece apenas no fundador da página sobre', async ({ pa
 
   await expect(page.getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
   await expect(page.getByRole('contentinfo').getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
-  await expect(page.locator('#sobre').getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
+  await expect(page.locator('#rede').getByRole('link', { name: /LinkedIn/i })).toHaveCount(0);
 
   await page.goto('/sobre');
 
