@@ -75,6 +75,13 @@ export function MobileMenu() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/sobre"
+              className="rounded-2xl px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/10"
+              onClick={() => closeMenu()}
+            >
+              Sobre
+            </Link>
           </nav>
           <div className="mt-4 border-t border-white/10 pt-4">
             <p data-testid="mobile-network-signature" className="mb-3 rounded-2xl border border-gold-500/20 bg-white/5 px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/62">

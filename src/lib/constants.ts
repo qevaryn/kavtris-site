@@ -17,7 +17,6 @@ export const navigationLinks = [
 ];
 
 export const socialLinks = {
-  linkedin: 'https://www.linkedin.com/in/gabrielsouza80/',
   github: 'https://github.com/gabrielsouza80'
 };
 

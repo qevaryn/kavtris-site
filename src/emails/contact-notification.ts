@@ -63,7 +63,6 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     submittedAt: escapeHtml(submittedAt),
     origin: escapeHtml(origin),
     mailto: escapeHtml(mailto),
-    linkedin: escapeHtml(socialLinks.linkedin),
     github: escapeHtml(socialLinks.github)
   };
 
@@ -174,7 +173,6 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
                 <p style="margin:0 0 14px 0;color:#D1D5DB;font-size:13px;line-height:20px;">${brandTagline}</p>
                 <p style="margin:0 0 12px 0;color:#9CA3AF;font-size:12px;line-height:18px;">Esta mensagem foi gerada automaticamente através do formulário de contacto do site.</p>
                 <p style="margin:0;color:#D1D5DB;font-size:12px;line-height:18px;">
-                  LinkedIn: <a href="${safe.linkedin}" style="color:#F2B632;text-decoration:none;">${safe.linkedin}</a><br />
                   GitHub: <a href="${safe.github}" style="color:#F2B632;text-decoration:none;">${safe.github}</a>
                 </p>
               </td>

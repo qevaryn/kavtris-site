@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { Button } from '@/components/shared/Button';
 import { Logo } from '@/components/layout/Logo';
-import { brandTagline, companyName, socialLinks } from '@/lib/constants';
+import { brandTagline, companyName } from '@/lib/constants';
 
 export function Footer() {
   return (
@@ -12,11 +11,6 @@ export function Footer() {
             <Logo variant="qevarynWhite" />
             <p className="text-sm text-white/72">{brandTagline}</p>
             <p className="max-w-md text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
-            <div className="flex flex-wrap gap-3">
-              <Button href={socialLinks.linkedin} variant="secondary" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Gabriel Dias de Souza">
-                LinkedIn
-              </Button>
-            </div>
           </div>
 
           <div className="rounded-[1.35rem] border border-white/10 bg-white/5 p-5 lg:border-l lg:border-y-0 lg:border-r-0 lg:bg-transparent lg:pl-8">
@@ -35,6 +29,9 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3 text-sm text-white/70 lg:items-end">
+            <Link href="/sobre" className="transition hover:text-white">
+              Sobre
+            </Link>
             <Link href="/#contacto" className="transition hover:text-white">
               Contacto
             </Link>
