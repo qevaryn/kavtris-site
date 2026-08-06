@@ -67,11 +67,11 @@ export function FeaturedProducts() {
           ariaLabel="Produtos em destaque"
           testId="featured-products-carousel"
           className="mt-8"
-          motionMode="continuous"
+          motionMode="featured-step"
           items={carouselItems}
-          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
+          itemClassName="basis-[85%] sm:basis-[76%] md:basis-[60%] lg:basis-[52%] xl:basis-[48%]"
           viewportClassName="-mx-1 px-1"
-          autoplayMs={3000}
+          autoplayMs={2000}
           interactionPauseMs={2000}
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
