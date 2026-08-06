@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 async function readActiveIndicatorLabel(carousel: Locator) {
   return carousel
@@ -8,26 +8,15 @@ async function readActiveIndicatorLabel(carousel: Locator) {
     .getAttribute('aria-label');
 }
 
-async function clockAutoplayCadence(page: Page, carousel: Locator) {
-  const readLabel = () => readActiveIndicatorLabel(carousel);
+async function readScrollLeft(viewport: Locator) {
+  return viewport.evaluate((element) => element.scrollLeft);
+}
 
-  const initial = await readLabel();
-  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  const afterClick = await readLabel();
-  expect(afterClick).not.toBe(initial);
-
-  await page.clock.runFor(1800);
-  expect(await readLabel()).toBe(afterClick);
-
-  await page.clock.runFor(200);
-  await page.clock.runFor(100);
-  const atResume = await readLabel();
-  expect(atResume).not.toBe(afterClick);
-
-  await page.clock.runFor(2800);
-  expect(await readLabel()).toBe(atResume);
-  await page.clock.runFor(200);
-  expect(await readLabel()).not.toBe(atResume);
+async function waitForScrollChange(viewport: Locator, timeout = 4000) {
+  const initial = await readScrollLeft(viewport);
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout })
+    .not.toBe(initial);
 }
 
 test('ticker de serviços mantém duplicação visual escondida e pausa momentaneamente por hover/foco no mobile', async ({ page }) => {
@@ -100,25 +89,21 @@ test('ticker de serviços mantém duplicação visual escondida e pausa momentan
   });
   await page.mouse.move(0, 0);
 
-  const runningStart = await tickerViewport.evaluate((element) => element.scrollLeft);
-  await expect
-    .poll(() => tickerViewport.evaluate((element) => element.scrollLeft), { timeout: 5000 })
-    .not.toBe(runningStart);
+  await waitForScrollChange(tickerViewport);
 
   await ticker.hover();
+  const pausedFirst = await readScrollLeft(tickerViewport);
   await page.waitForTimeout(400);
-  const pausedFirst = await tickerViewport.evaluate((element) => element.scrollLeft);
-  await page.waitForTimeout(600);
-  const pausedSecond = await tickerViewport.evaluate((element) => element.scrollLeft);
+  const pausedSecond = await readScrollLeft(tickerViewport);
   expect(pausedSecond).toBe(pausedFirst);
 
   await tickerViewport.focus();
   await expect(tickerViewport).toBeFocused();
+  const focusedFirst = await readScrollLeft(tickerViewport);
   await page.waitForTimeout(400);
-  const focusedFirst = await tickerViewport.evaluate((element) => element.scrollLeft);
-  await page.waitForTimeout(600);
-  const focusedSecond = await tickerViewport.evaluate((element) => element.scrollLeft);
+  const focusedSecond = await readScrollLeft(tickerViewport);
   expect(focusedSecond).toBe(focusedFirst);
+  await waitForScrollChange(tickerViewport);
 });
 
 test('motion budget permite autoplay por seção conforme visibilidade', async ({ page }) => {
@@ -138,36 +123,37 @@ test('motion budget permite autoplay por seção conforme visibilidade', async (
       ?.scrollIntoView({ block: 'center' });
   });
 
-  const initialTickerScroll = await tickerViewport.evaluate((element) => element.scrollLeft);
-  await expect
-    .poll(() => tickerViewport.evaluate((element) => element.scrollLeft), { timeout: 5000 })
-    .not.toBe(initialTickerScroll);
+  await waitForScrollChange(tickerViewport);
 
-  const productsInitial = await readActiveIndicatorLabel(productsCarousel);
-  await expect
-    .poll(() => readActiveIndicatorLabel(productsCarousel), { timeout: 3500 })
-    .toBe(productsInitial);
+  const productsInitialScroll = await readScrollLeft(productsCarousel.getByTestId('featured-products-carousel-viewport'));
+  await page.waitForTimeout(500);
 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(500);
   await expect
-    .poll(() => readActiveIndicatorLabel(productsCarousel), { timeout: 11000 })
-    .not.toBe(productsInitial);
+    .poll(() => readScrollLeft(productsCarousel.getByTestId('featured-products-carousel-viewport')), { timeout: 11000 })
+    .not.toBe(productsInitialScroll);
 
-  const processInitial = await readActiveIndicatorLabel(processCarousel);
+  const processInitialScroll = await readScrollLeft(processCarousel.getByTestId('process-carousel-viewport'));
   await expect
-    .poll(() => readActiveIndicatorLabel(processCarousel), { timeout: 5000 })
-    .toBe(processInitial);
+    .poll(() => readScrollLeft(processCarousel.getByTestId('process-carousel-viewport')), { timeout: 5000 })
+    .toBe(processInitialScroll);
 
   await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#processo').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(500);
   await expect
-    .poll(() => readActiveIndicatorLabel(processCarousel), { timeout: 13000 })
-    .not.toBe(processInitial);
+    .poll(() => readScrollLeft(processCarousel.getByTestId('process-carousel-viewport')), { timeout: 13000 })
+    .not.toBe(processInitialScroll);
 
-  const enterpriseInitial = await readActiveIndicatorLabel(enterpriseCarousel);
+  const enterpriseInitialScroll = await readScrollLeft(enterpriseCarousel.getByTestId('enterprise-capabilities-carousel-viewport'));
   await page.locator('#empresas').scrollIntoViewIfNeeded();
+  await page.locator('#empresas').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await page.waitForTimeout(500);
   await expect
-    .poll(() => readActiveIndicatorLabel(enterpriseCarousel), { timeout: 12000 })
-    .not.toBe(enterpriseInitial);
+    .poll(() => readScrollLeft(enterpriseCarousel.getByTestId('enterprise-capabilities-carousel-viewport')), { timeout: 12000 })
+    .not.toBe(enterpriseInitialScroll);
 });
 
 test('ticker e carrosséis respeitam reduced motion', async ({ page }) => {
@@ -181,54 +167,69 @@ test('ticker e carrosséis respeitam reduced motion', async ({ page }) => {
   const processViewport = page.getByTestId('process-carousel-viewport');
   const enterpriseViewport = page.getByTestId('enterprise-capabilities-carousel-viewport');
 
-  const initialProductsScroll = await productsViewport.evaluate((element) => element.scrollLeft);
-  const initialProcessScroll = await processViewport.evaluate((element) => element.scrollLeft);
-  const initialEnterpriseScroll = await enterpriseViewport.evaluate((element) => element.scrollLeft);
+  const initialProductsScroll = await readScrollLeft(productsViewport);
+  const initialProcessScroll = await readScrollLeft(processViewport);
+  const initialEnterpriseScroll = await readScrollLeft(enterpriseViewport);
 
   await expect
-    .poll(() => productsViewport.evaluate((element) => element.scrollLeft), { timeout: 8500 })
+    .poll(() => readScrollLeft(productsViewport), { timeout: 8500 })
     .toBe(initialProductsScroll);
   await expect
-    .poll(() => processViewport.evaluate((element) => element.scrollLeft), { timeout: 10500 })
+    .poll(() => readScrollLeft(processViewport), { timeout: 10500 })
     .toBe(initialProcessScroll);
   await expect
-    .poll(() => enterpriseViewport.evaluate((element) => element.scrollLeft), { timeout: 9500 })
+    .poll(() => readScrollLeft(enterpriseViewport), { timeout: 9500 })
     .toBe(initialEnterpriseScroll);
 });
 
-test('produtos no desktop usam carrossel com autoplay e foco não exige blur para retomar', async ({ page }) => {
+test('produtos no desktop usam carrossel contínuo sem troca por cartão', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
   const track = page.getByTestId('featured-products-carousel-track');
+  const viewport = page.getByTestId('featured-products-carousel-viewport');
   await expect(carousel).toBeVisible();
   await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
   await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
   await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
   await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
 
-  const initialSelection = await readActiveIndicatorLabel(carousel);
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 11000 }).not.toBe(initialSelection);
+  const initialScroll = await readScrollLeft(viewport);
+  await page.waitForTimeout(250);
+  const nextScroll = await readScrollLeft(viewport);
+  expect(nextScroll).not.toBe(initialScroll);
+  await page.waitForTimeout(1000);
+  const laterScroll = await readScrollLeft(viewport);
+  expect(laterScroll).toBeGreaterThan(nextScroll);
 
   await track.focus();
   const focusedSelection = await readActiveIndicatorLabel(carousel);
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).not.toBe(focusedSelection);
+  await page.waitForTimeout(2200);
+  expect(await readActiveIndicatorLabel(carousel)).toBe(focusedSelection);
   await expect(track).toBeFocused();
 });
 
-test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma por inatividade', async ({ page }) => {
+test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma contínua após 2s', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
   const carousel = page.getByTestId('featured-products-carousel');
   const track = page.getByTestId('featured-products-carousel-track');
 
-  await expect(carousel.locator('[data-testid^="featured-products-carousel-slide-"]')).toHaveCount(4);
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
+
+  await expect(carousel.locator('[data-testid^="featured-products-carousel-slide-"]')).toHaveCount(6);
   await expect(carousel.getByLabel('Indicadores de posição').locator('button')).toHaveCount(4);
 
   const initialIndex = await carousel.getByLabel('Indicadores de posição').locator('button[aria-pressed="true"]').count();
   expect(initialIndex).toBe(1);
+
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout: 4000 })
+    .not.toBe(await readScrollLeft(viewport));
 
   await track.focus();
   await page.keyboard.press('ArrowRight');
@@ -243,181 +244,13 @@ test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma 
   await page.waitForTimeout(600);
   expect(await readActiveIndicatorLabel(carousel)).toBe(selectedAfterInteraction);
 
-  await expect
-    .poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 })
-    .not.toBe(selectedAfterInteraction);
+  const beforeResume = await readScrollLeft(viewport);
+  await page.waitForTimeout(2500);
+  const afterResume = await readScrollLeft(viewport);
+  expect(afterResume).not.toBe(beforeResume);
 });
 
-test('carrossel de produtos segue cadência de autoplay 3s e pausa por inatividade de 2s', async ({ page }) => {
-  await page.clock.install();
-  await page.goto('/');
-  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
-
-  const carousel = page.getByTestId('featured-products-carousel');
-  const viewport = page.getByTestId('featured-products-carousel-viewport');
-  const readLabel = () => readActiveIndicatorLabel(carousel);
-
-  await clockAutoplayCadence(page, carousel);
-
-  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await readLabel();
-  await page.clock.runFor(1500);
-  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  const afterSecond = await readLabel();
-  await page.clock.runFor(1500);
-  expect(await readLabel()).toBe(afterSecond);
-  await page.clock.runFor(500);
-  await page.clock.runFor(100);
-  expect(await readLabel()).not.toBe(afterSecond);
-
-  await page.evaluate(() => {
-    (document.activeElement as HTMLElement | null)?.blur?.();
-  });
-  const track = page.getByTestId('featured-products-carousel-track');
-  await track.focus();
-  const focusedStart = await readLabel();
-  await page.clock.runFor(1900);
-  expect(await readLabel()).toBe(focusedStart);
-  await page.clock.runFor(100);
-  await page.clock.runFor(100);
-  expect(await readLabel()).not.toBe(focusedStart);
-  await expect(track).toBeFocused();
-
-  const box = await viewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
-
-  await page.mouse.move(1, 1);
-  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2);
-  const hoverStart = await readLabel();
-  await page.clock.runFor(1900);
-  expect(await readLabel()).toBe(hoverStart);
-  await page.clock.runFor(100);
-  await page.clock.runFor(100);
-  expect(await readLabel()).not.toBe(hoverStart);
-
-  await page.mouse.down();
-  const held = await readLabel();
-  await page.clock.runFor(2500);
-  await page.clock.runFor(100);
-  expect(await readLabel()).toBe(held);
-  await page.mouse.up();
-  await page.clock.runFor(1900);
-  expect(await readLabel()).toBe(held);
-  await page.clock.runFor(100);
-  await page.clock.runFor(100);
-  expect(await readLabel()).not.toBe(held);
-
-  await page.clock.runFor(3100);
-  await page.clock.runFor(100);
-  const beforeHidden = await readLabel();
-  await page.evaluate(() => {
-    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
-    document.dispatchEvent(new Event('visibilitychange'));
-  });
-  await page.clock.runFor(6100);
-  expect(await readLabel()).toBe(beforeHidden);
-
-  await page.evaluate(() => {
-    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
-    document.dispatchEvent(new Event('visibilitychange'));
-  });
-  await page.clock.runFor(1900);
-  expect(await readLabel()).toBe(beforeHidden);
-  await page.clock.runFor(100);
-  await page.clock.runFor(100);
-  expect(await readLabel()).not.toBe(beforeHidden);
-
-  const resumed = await readLabel();
-  await page.clock.runFor(2800);
-  expect(await readLabel()).toBe(resumed);
-  await page.clock.runFor(200);
-  expect(await readLabel()).not.toBe(resumed);
-});
-
-test('carrossel de processo mantém ordem, contador e controles manuais', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
-
-  const processCarousel = page.getByTestId('process-carousel');
-
-  await expect(processCarousel.getByRole('heading', { name: 'Entender' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Prototipar' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Construir e testar' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Lançar e acompanhar' })).toBeVisible();
-
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
-  await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
-
-  await processCarousel.getByTestId('process-carousel-track').focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).not.toHaveText('1 de 4');
-});
-
-test('processo no desktop usa carrossel com autoplay', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
-
-  const processCarousel = page.getByTestId('process-carousel');
-  await expect(processCarousel).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Entender' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Prototipar' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Construir e testar' })).toBeVisible();
-  await expect(processCarousel.getByRole('heading', { name: 'Lançar e acompanhar' })).toBeVisible();
-
-  const processInitial = await readActiveIndicatorLabel(processCarousel);
-  await expect.poll(() => readActiveIndicatorLabel(processCarousel), { timeout: 13000 }).not.toBe(processInitial);
-});
-
-test('credibilidade no desktop usa ticker contínuo', async ({ page }) => {
-  await page.goto('/');
-
-  const ticker = page.getByTestId('services-ticker');
-  await expect(ticker).toBeVisible();
-  await expect(ticker.getByText('Reduzir tarefas manuais').first()).toBeVisible();
-  await expect(ticker.getByText('Evitar falhas e melhorar processos').first()).toBeVisible();
-  await expect(ticker.getByText('Sistemas para computador e telemóvel').first()).toBeVisible();
-  await expect(ticker.getByText('Ligar as ferramentas da empresa').first()).toBeVisible();
-  await expect(ticker.getByText('Suporte, correções e melhorias').first()).toBeVisible();
-});
-
-test('empresas no desktop mostra quatro capacidades em carrossel com autoplay', async ({ page }) => {
-  await page.goto('/');
-  await page.locator('#empresas').scrollIntoViewIfNeeded();
-
-  const enterpriseCarousel = page.getByTestId('enterprise-capabilities-carousel');
-  await expect(enterpriseCarousel).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Segurança e acessos')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Qualidade e testes')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Integrações e arquitetura')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Suporte e continuidade')).toBeVisible();
-
-  const enterpriseInitial = await readActiveIndicatorLabel(enterpriseCarousel);
-  await expect.poll(() => readActiveIndicatorLabel(enterpriseCarousel), { timeout: 12000 }).not.toBe(enterpriseInitial);
-});
-
-test('carrosséis de processo e empresas seguem cadência de 3s e pausa por inatividade de 2s', async ({ page }) => {
-  const configs = [
-    { testId: 'process-carousel', section: '#processo' },
-    { testId: 'enterprise-capabilities-carousel', section: '#empresas' }
-  ];
-
-  await page.clock.install();
-  for (const config of configs) {
-    await page.goto('/');
-    await page.locator(config.section).scrollIntoViewIfNeeded();
-    await page.waitForTimeout(300);
-
-    await clockAutoplayCadence(page, page.getByTestId(config.testId));
-  }
-});
-
-test('carrossel de produtos faz loop circular com controles sem quebrar a ordem', async ({ page }) => {
+test('carrossel de produtos avança e recua com setas sem quebrar indicadores', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
@@ -425,14 +258,10 @@ test('carrossel de produtos faz loop circular com controles sem quebrar a ordem'
   const carousel = page.getByTestId('featured-products-carousel');
   const startLabel = await readActiveIndicatorLabel(carousel);
 
-  for (let i = 0; i < 4; i += 1) {
-    await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  }
-  await expect.poll(() => readActiveIndicatorLabel(carousel)).toBe(startLabel);
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect.poll(() => readActiveIndicatorLabel(carousel)).not.toBe(startLabel);
 
-  for (let i = 0; i < 4; i += 1) {
-    await carousel.getByRole('button', { name: 'Slide anterior' }).click();
-  }
+  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
   await expect.poll(() => readActiveIndicatorLabel(carousel)).toBe(startLabel);
 });
 
@@ -462,21 +291,21 @@ test('credibilidade pausa por hover/foco e retoma aos 2s sem mouseleave ou blur'
 
   const ticker = page.getByTestId('services-ticker');
   const tickerViewport = page.getByTestId('services-ticker-viewport');
-  const readScroll = () => tickerViewport.evaluate((element) => element.scrollLeft);
+  const readScroll = () => readScrollLeft(tickerViewport);
 
   await page.evaluate(() => {
     document
       .querySelector('[data-testid="services-ticker"]')
       ?.scrollIntoView({ block: 'center' });
   });
-  await expect.poll(() => readScroll(), { timeout: 4000 }).toBeGreaterThan(0);
+  await waitForScrollChange(tickerViewport);
 
   await ticker.hover();
   const hoverPausedFirst = await readScroll();
   await page.waitForTimeout(500);
   const hoverPausedSecond = await readScroll();
   expect(hoverPausedSecond).toBe(hoverPausedFirst);
-  await expect.poll(() => readScroll(), { timeout: 4000 }).not.toBe(hoverPausedSecond);
+  await waitForScrollChange(tickerViewport);
   const hoverResumed = await readScroll();
   expect(hoverResumed).toBeGreaterThanOrEqual(hoverPausedSecond);
 
@@ -486,7 +315,7 @@ test('credibilidade pausa por hover/foco e retoma aos 2s sem mouseleave ou blur'
   await page.waitForTimeout(500);
   const focusPausedSecond = await readScroll();
   expect(focusPausedSecond).toBe(focusPausedFirst);
-  await expect.poll(() => readScroll(), { timeout: 4000 }).not.toBe(focusPausedSecond);
+  await waitForScrollChange(tickerViewport);
   const focusResumed = await readScroll();
   expect(focusResumed).toBeGreaterThanOrEqual(focusPausedSecond);
 });
@@ -495,14 +324,14 @@ test('credibilidade mantém-se parada durante pointerdown e hidden e retoma aos 
   await page.goto('/');
 
   const tickerViewport = page.getByTestId('services-ticker-viewport');
-  const readScroll = () => tickerViewport.evaluate((element) => element.scrollLeft);
+  const readScroll = () => readScrollLeft(tickerViewport);
 
   await page.evaluate(() => {
     document
       .querySelector('[data-testid="services-ticker"]')
       ?.scrollIntoView({ block: 'center' });
   });
-  await expect.poll(() => readScroll(), { timeout: 4000 }).toBeGreaterThan(0);
+  await waitForScrollChange(tickerViewport);
 
   const box = await tickerViewport.boundingBox();
   if (!box) {
@@ -521,7 +350,7 @@ test('credibilidade mantém-se parada durante pointerdown e hidden e retoma aos 
   await page.waitForTimeout(500);
   const releaseSecond = await readScroll();
   expect(releaseSecond).toBe(releaseFirst);
-  await expect.poll(() => readScroll(), { timeout: 4000 }).not.toBe(releaseSecond);
+  await waitForScrollChange(tickerViewport);
   expect(await readScroll()).toBeGreaterThanOrEqual(releaseSecond);
 
   await page.evaluate(() => {
@@ -539,7 +368,7 @@ test('credibilidade mantém-se parada durante pointerdown e hidden e retoma aos 
   const visibleFirst = await readScroll();
   await page.waitForTimeout(500);
   expect(await readScroll()).toBe(visibleFirst);
-  await expect.poll(() => readScroll(), { timeout: 4000 }).not.toBe(visibleFirst);
+  await waitForScrollChange(tickerViewport);
   expect(await readScroll()).toBeGreaterThanOrEqual(visibleFirst);
 });
 

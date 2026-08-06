@@ -45,10 +45,10 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(enterprise.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
   const enterpriseCarousel = enterprise.getByTestId('enterprise-capabilities-carousel');
   await expect(enterpriseCarousel).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Segurança e acessos')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Qualidade e testes')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Integrações e arquitetura')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Suporte e continuidade')).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Segurança e acessos').first()).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Qualidade e testes').first()).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Integrações e arquitetura').first()).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Suporte e continuidade').first()).toBeVisible();
   await expect(enterprise.getByRole('link', { name: 'Ver capacidades técnicas' })).toHaveAttribute('href', '/empresas');
 
   const networkPreview = page.locator('#rede');
