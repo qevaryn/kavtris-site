@@ -1061,7 +1061,7 @@ export function AccessibleCarousel<T>({
               : clampedIndex === trackIndex - 1;
         return cn(
           'shrink-0 transition duration-500 motion-reduce:transition-none motion-reduce:duration-0',
-          active ? 'z-10 scale-100 saturate-100' : 'z-0 scale-[0.97] sm:scale-[0.95] lg:scale-[0.92] saturate-[0.85]',
+          active ? 'z-10 scale-100 saturate-100' : 'z-0 scale-[0.98] sm:scale-[0.95] lg:scale-[0.92] saturate-[0.85]',
           itemClassName
         );
       }
