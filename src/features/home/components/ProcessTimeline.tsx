@@ -44,7 +44,7 @@ export function ProcessTimeline() {
           className="mt-10"
           motionMode="featured-step"
           items={processSteps}
-          itemClassName="basis-[85%] sm:basis-[76%] md:basis-[60%] lg:basis-[52%] xl:basis-[48%]"
+          itemClassName="basis-[89%] sm:basis-[74%] md:basis-[52%] lg:basis-[34%] xl:basis-[32%]"
           autoplayMs={2000}
           interactionPauseMs={2000}
           showCounter

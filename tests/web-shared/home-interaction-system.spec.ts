@@ -221,6 +221,11 @@ test('produtos em destaque exibem um cartão central e vizinhos parcialmente vis
   expect(activeBox.x + activeBox.width).toBeLessThanOrEqual(viewportBox.x + viewportBox.width + 1);
   expect(activeOpacity).toBe('1');
 
+  // largura real do cartão conforme a main (xl basis 32% no viewport 1280)
+  const widthRatio = activeBox.width / viewportBox.width;
+  expect(widthRatio).toBeGreaterThanOrEqual(0.28);
+  expect(widthRatio).toBeLessThanOrEqual(0.38);
+
   const allSlides = carousel.locator('[data-testid^="featured-products-carousel-slide-"]');
   await expect(allSlides).toHaveCount(6);
 
@@ -246,6 +251,8 @@ test('produtos em destaque exibem um cartão central e vizinhos parcialmente vis
     }
   }
   expect(partiallyVisible.length).toBeGreaterThanOrEqual(2);
+  // desktop exibe múltiplos cartões ao mesmo tempo (ativo + vizinhos)
+  expect(partiallyVisible.length + 1).toBeGreaterThanOrEqual(3);
 });
 
 test('autoplay em destaque troca a cada 2000 ms sem acumular avanços', async ({ page }) => {
@@ -396,16 +403,16 @@ test('arrastar com o rato encaixa no cartão vizinho nos dois sentidos sem abrir
   }
 
   // drag para a esquerda → próximo cartão
-  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
+  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * 0.15, box.y + box.height / 2, { steps: 10 });
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2, { steps: 10 });
   await page.mouse.up();
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
 
   // drag para a direita → cartão anterior
-  await page.mouse.move(box.x + box.width * 0.15, box.y + box.height / 2);
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * 0.85, box.y + box.height / 2, { steps: 10 });
+  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2, { steps: 10 });
   await page.mouse.up();
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 

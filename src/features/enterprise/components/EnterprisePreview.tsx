@@ -45,7 +45,7 @@ export function EnterpriseDetails() {
           className="mt-8"
           motionMode="featured-step"
           items={enterprisePillars}
-          itemClassName="basis-[85%] sm:basis-[76%] md:basis-[60%] lg:basis-[52%] xl:basis-[48%]"
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           autoplayMs={2000}
           interactionPauseMs={2000}
           getItemLabel={(pillar) => pillar.title}

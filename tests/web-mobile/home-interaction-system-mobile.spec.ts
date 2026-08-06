@@ -65,6 +65,33 @@ test('carrossel de produtos mobile mostra um cartão em destaque e avança com s
 
   await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
 
+  // largura real do cartão conforme a main (base 89%) e vizinhos visíveis
+  const viewportBox = await viewport.boundingBox();
+  const activeBox = await carousel.locator('[data-active="true"]').first().boundingBox();
+  if (!viewportBox || !activeBox) {
+    throw new Error('sem dimensões');
+  }
+  const widthRatio = activeBox.width / viewportBox.width;
+  expect(widthRatio).toBeGreaterThanOrEqual(0.8);
+  expect(widthRatio).toBeLessThanOrEqual(0.92);
+  expect(activeBox.x).toBeGreaterThanOrEqual(viewportBox.x - 1);
+  expect(activeBox.x + activeBox.width).toBeLessThanOrEqual(viewportBox.x + viewportBox.width + 1);
+
+  let mobileNeighbors = 0;
+  const allSlides = carousel.locator('[data-testid^="featured-products-carousel-slide-"]');
+  const totalSlides = await allSlides.count();
+  for (let i = 0; i < totalSlides; i += 1) {
+    const box = await allSlides.nth(i).boundingBox();
+    if (!box) {
+      continue;
+    }
+    const overlaps = box.x < viewportBox.x + viewportBox.width && box.x + box.width > viewportBox.x;
+    if (overlaps && (await allSlides.nth(i).getAttribute('data-active')) !== 'true') {
+      mobileNeighbors += 1;
+    }
+  }
+  expect(mobileNeighbors).toBeGreaterThanOrEqual(1);
+
   // swipe para a esquerda → próximo cartão
   await touchSwipe(page, viewport, 0.85, 0.15);
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');

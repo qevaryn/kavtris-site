@@ -69,7 +69,7 @@ export function FeaturedProducts() {
           className="mt-8"
           motionMode="featured-step"
           items={carouselItems}
-          itemClassName="basis-[85%] sm:basis-[76%] md:basis-[60%] lg:basis-[52%] xl:basis-[48%]"
+          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"
           autoplayMs={2000}
           interactionPauseMs={2000}
