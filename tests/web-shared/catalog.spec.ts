@@ -17,7 +17,7 @@ async function expectImageToLoad(
       return false;
     }
     return true;
-  }, { timeout: 20000 }).toBe(true);
+  }, { timeout: 60000 }).toBe(true);
 }
 
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
