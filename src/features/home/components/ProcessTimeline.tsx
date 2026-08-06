@@ -42,6 +42,7 @@ export function ProcessTimeline() {
           ariaLabel="Passos do processo"
           testId="process-carousel"
           className="mt-10"
+          motionMode="continuous"
           items={processSteps}
           itemClassName="basis-[89%] sm:basis-[74%] md:basis-[52%] lg:basis-[34%] xl:basis-[32%]"
           autoplayMs={3000}

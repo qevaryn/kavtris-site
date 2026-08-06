@@ -43,6 +43,7 @@ export function EnterpriseDetails() {
           ariaLabel="Capacidades técnicas para empresas"
           testId="enterprise-capabilities-carousel"
           className="mt-8"
+          motionMode="continuous"
           items={enterprisePillars}
           itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           autoplayMs={3000}
