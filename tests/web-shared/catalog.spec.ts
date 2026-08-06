@@ -7,11 +7,6 @@ async function expectImageToLoad(
 ) {
   await image.scrollIntoViewIfNeeded();
   await expect(image).toBeVisible();
-  await image.evaluate((img) => {
-    if (typeof (img as HTMLImageElement).decode === 'function') {
-      return (img as HTMLImageElement).decode();
-    }
-  });
   await expect.poll(async () => {
     const complete = await image.evaluate((img) => (img as HTMLImageElement).complete);
     const naturalWidth = await image.evaluate((img) => (img as HTMLImageElement).naturalWidth);

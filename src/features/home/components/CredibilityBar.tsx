@@ -44,7 +44,6 @@ export function CredibilityBar() {
           <LoopingTicker
             ariaLabel="Serviços principais"
             items={serviceStripItems}
-            durationSeconds={32}
             testId="services-ticker"
             viewportClassName="py-1"
             itemClassName="min-w-[15.5rem] sm:min-w-[17rem]"

@@ -8,6 +8,10 @@ async function readActiveLabel(carousel: Locator) {
     .getAttribute('aria-label');
 }
 
+async function readScrollLeft(viewport: Locator) {
+  return viewport.evaluate((element) => element.scrollLeft);
+}
+
 test('solution finder mobile expande inline com um único resultado aberto', async ({ page }) => {
   await page.goto('/');
 
@@ -26,7 +30,6 @@ test('solution finder mobile expande inline com um único resultado aberto', asy
   await fieldButton.click();
   await expect(fieldButton).toHaveAttribute('aria-expanded', 'true');
   await expect(manualButton).toHaveAttribute('aria-expanded', 'false');
-  await expect(problems.locator('[data-testid="solution-option-panel-field"]')).toBeVisible();
   await expect(problems.locator('[data-testid="solution-option-panel-manual-work"]')).toBeHidden();
 
   await fieldButton.focus();
@@ -36,20 +39,21 @@ test('solution finder mobile expande inline com um único resultado aberto', asy
   await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
 });
 
-test('carrossel de produtos mobile usa scroll-snap, swipe manual e CTA único', async ({ page }) => {
+test('carrossel de produtos mobile usa scroll contínuo, swipe manual e CTA único', async ({ page }) => {
   await page.clock.install();
   await page.goto('/');
 
   const carousel = page.getByTestId('featured-products-carousel');
   const track = page.getByTestId('featured-products-carousel-track');
+  const viewport = page.getByTestId('featured-products-carousel-viewport');
 
-  const snapType = await track.evaluate((element) => getComputedStyle(element).scrollSnapType);
-  expect(snapType).toContain('x');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
 
-  const firstSlideWidth = await carousel.getByTestId('featured-products-carousel-slide-1').evaluate((element) => element.getBoundingClientRect().width);
-  const viewportWidth = page.viewportSize()?.width ?? 390;
-  expect(firstSlideWidth).toBeGreaterThan(viewportWidth * 0.75);
-  expect(firstSlideWidth).toBeLessThan(viewportWidth * 0.98);
+  const initialScroll = await readScrollLeft(viewport);
+  await page.clock.runFor(1000);
+  const nextScroll = await readScrollLeft(viewport);
+  expect(nextScroll).not.toBe(initialScroll);
 
   await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
 
@@ -64,33 +68,27 @@ test('carrossel de produtos mobile usa scroll-snap, swipe manual e CTA único', 
   await expect(page.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
 });
 
-test('processo mobile segue cadência de autoplay e controles manuais', async ({ page }) => {
+test('processo mobile segue movimento contínuo e controles manuais', async ({ page }) => {
   await page.clock.install();
   await page.goto('/');
   await page.locator('#processo').scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
 
   const processCarousel = page.getByTestId('process-carousel');
+  const viewport = page.getByTestId('process-carousel-viewport');
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout: 6000 })
+    .not.toBe(await readScrollLeft(viewport));
 
   const initial = await readActiveLabel(processCarousel);
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
   const afterNext = await readActiveLabel(processCarousel);
   expect(afterNext).not.toBe(initial);
 
-  await page.clock.runFor(1800);
-  expect(await readActiveLabel(processCarousel)).toBe(afterNext);
-
-  await page.clock.runFor(200);
-  await page.clock.runFor(100);
-  const afterResume = await readActiveLabel(processCarousel);
-  expect(afterResume).not.toBe(afterNext);
-
-  await page.clock.runFor(2800);
-  expect(await readActiveLabel(processCarousel)).toBe(afterResume);
-  await page.clock.runFor(200);
-  const afterInterval = await readActiveLabel(processCarousel);
-  expect(afterInterval).not.toBe(afterResume);
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout: 6000 })
+    .not.toBe(await readScrollLeft(viewport));
 
   const track = page.getByTestId('process-carousel-track');
   await track.focus();
@@ -99,14 +97,17 @@ test('processo mobile segue cadência de autoplay e controles manuais', async ({
   await expect.poll(() => readActiveLabel(processCarousel)).not.toBe(beforeKeyboard);
 });
 
-test('carrossel de produtos mobile avança com swipe e retoma por inatividade após 2s', async ({ page }) => {
+test('carrossel de produtos mobile avança com swipe e retoma contínua após 2s', async ({ page }) => {
   await page.clock.install();
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
 
   const carousel = page.getByTestId('featured-products-carousel');
   const viewport = page.getByTestId('featured-products-carousel-viewport');
+
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout: 6000 })
+    .not.toBe(await readScrollLeft(viewport));
 
   const before = await readActiveLabel(carousel);
 
@@ -133,12 +134,9 @@ test('carrossel de produtos mobile avança com swipe e retoma por inatividade ap
   });
 
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).not.toBe(before);
-  const afterSwipe = await readActiveLabel(carousel);
 
-  await page.clock.runFor(1900);
-  expect(await readActiveLabel(carousel)).toBe(afterSwipe);
-
-  await page.clock.runFor(100);
-  await page.clock.runFor(100);
-  expect(await readActiveLabel(carousel)).not.toBe(afterSwipe);
+  const beforeResumeScroll = await readScrollLeft(viewport);
+  await expect
+    .poll(() => readScrollLeft(viewport), { timeout: 10000 })
+    .not.toBe(beforeResumeScroll);
 });

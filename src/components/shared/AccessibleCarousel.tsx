@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode, type UIEvent } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode, type UIEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/components/shared/cn';
 import { useInViewport } from '@/components/shared/useInViewport';
@@ -21,11 +21,13 @@ type AccessibleCarouselProps<T> = {
   showCounter?: boolean;
   counterClassName?: string;
   testId?: string;
+  motionMode?: 'default' | 'continuous';
 };
 
 const DRAG_THRESHOLD = 6;
 const PROGRAMMATIC_SCROLL_EPSILON = 4;
 const PROGRAMMATIC_SCROLL_FALLBACK_MS = 5000;
+const CONTINUOUS_SPEED_PX_PER_SECOND = 40;
 
 type ProgrammaticScrollState = {
   active: boolean;
@@ -46,10 +48,12 @@ export function AccessibleCarousel<T>({
   interactionPauseMs = 2000,
   showCounter = false,
   counterClassName,
-  testId
+  testId,
+  motionMode = 'default'
 }: AccessibleCarouselProps<T>) {
   const carouselId = useId();
   const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<Array<HTMLDivElement | null>>([]);
   const activeIndexRef = useRef(0);
   const interactionTimeoutRef = useRef<number | null>(null);
@@ -69,6 +73,9 @@ export function AccessibleCarousel<T>({
     startScrollLeft: 0,
     isDragging: false
   });
+  const animationFrameRef = useRef<number | null>(null);
+  const lastFrameTimeRef = useRef<number | null>(null);
+  const offsetRef = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [pausedByInteraction, setPausedByInteraction] = useState(false);
@@ -76,15 +83,103 @@ export function AccessibleCarousel<T>({
   const { inViewport: isInViewport, priority } = useInViewport(viewportRef, 0.35);
   const reducedMotion = useReducedMotion();
 
+  const isContinuous = motionMode === 'continuous';
+
+  const getCycleWidth = useCallback(() => {
+    if (!isContinuous || items.length === 0) {
+      return 0;
+    }
+    const track = trackRef.current;
+    if (!track || track.children.length < items.length + 2) {
+      return 0;
+    }
+    let width = 0;
+    for (let i = 1; i < track.children.length - 1; i++) {
+      const slide = track.children[i] as HTMLElement | undefined;
+      if (slide) {
+        width += slide.offsetWidth;
+      }
+    }
+    return width;
+  }, [isContinuous, items.length]);
+
+  const getInitialOffset = useCallback(() => {
+    if (!isContinuous || items.length === 0) {
+      return 0;
+    }
+    const track = trackRef.current;
+    if (!track || track.children.length < 1) {
+      return 0;
+    }
+    const firstSlide = track.children[0] as HTMLElement | undefined;
+    return firstSlide ? firstSlide.offsetWidth : 0;
+  }, [isContinuous, items.length]);
+
+  const normalizeOffset = useCallback((offset: number, cycleWidth: number) => {
+    if (cycleWidth <= 0) {
+      return 0;
+    }
+    return ((offset % cycleWidth) + cycleWidth) % cycleWidth;
+  }, []);
+
+  const getLogicalIndexFromOffset = useCallback((offset: number, cycleWidth: number) => {
+    if (cycleWidth <= 0 || items.length === 0) {
+      return 0;
+    }
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track || track.children.length < items.length) {
+      return 0;
+    }
+
+    const viewportCenter = offset + viewport.clientWidth / 2;
+    let nearestIndex = 0;
+    let shortestDistance = Number.POSITIVE_INFINITY;
+
+    for (let i = 0; i < items.length; i++) {
+      const slide = track.children[i + 1] as HTMLElement | undefined;
+      if (!slide) {
+        continue;
+      }
+      const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+      const distance = Math.abs(viewportCenter - slideCenter);
+      if (distance < shortestDistance) {
+        shortestDistance = distance;
+        nearestIndex = i;
+      }
+    }
+
+    return nearestIndex;
+  }, [items.length]);
+
+  const getSlideOffset = useCallback((logicalIndex: number) => {
+    if (!isContinuous || items.length === 0) {
+      return 0;
+    }
+    const track = trackRef.current;
+    if (!track || track.children.length < items.length) {
+      return 0;
+    }
+    let offset = getInitialOffset();
+    for (let i = 0; i < logicalIndex; i++) {
+      const slide = track.children[i + 1] as HTMLElement | undefined;
+      if (slide) {
+        offset += slide.offsetWidth;
+      }
+    }
+    return offset;
+  }, [isContinuous, items.length, getInitialOffset]);
+
   const clampedIndex = useMemo(() => {
     if (items.length === 0) {
       return 0;
     }
-
     return Math.min(currentIndex, items.length - 1);
   }, [currentIndex, items.length]);
 
-  const wantsAutoplay = autoplayMs > 0 && isInViewport && !reducedMotion && isPageVisible && !pausedByInteraction;
+  const wantsAutoplay = isContinuous
+    ? isInViewport && !reducedMotion && isPageVisible && !pausedByInteraction && items.length > 1
+    : autoplayMs > 0 && isInViewport && !reducedMotion && isPageVisible && !pausedByInteraction && items.length > 1;
   const canOwnMotion = useMotionBudget(`carousel-${carouselId}`, wantsAutoplay, priority);
   const shouldAutoplay = wantsAutoplay && canOwnMotion && items.length > 1;
 
@@ -132,12 +227,19 @@ export function AccessibleCarousel<T>({
 
     activeIndexRef.current = state.targetIndex;
     setCurrentIndex(state.targetIndex);
-  }, []);
 
-  const goTo = useCallback((index: number, options: { smooth: boolean; fromInteraction?: boolean }) => {
-    const slide = slideRefs.current[index];
-    const viewport = viewportRef.current;
-    if (!slide || !viewport) {
+    if (isContinuous) {
+      const viewport = viewportRef.current;
+      const cycleWidth = getCycleWidth();
+      if (viewport && cycleWidth > 0) {
+        offsetRef.current = normalizeOffset(state.targetScrollLeft, cycleWidth);
+        viewport.scrollLeft = offsetRef.current;
+      }
+    }
+  }, [isContinuous, getCycleWidth, normalizeOffset]);
+
+  const goToLogicalIndex = useCallback((index: number, options: { smooth: boolean; fromInteraction?: boolean }) => {
+    if (items.length === 0) {
       return;
     }
 
@@ -145,8 +247,58 @@ export function AccessibleCarousel<T>({
       registerInteractionPause();
     }
 
-    setCurrentIndex(index);
-    activeIndexRef.current = index;
+    const targetIndex = ((index % items.length) + items.length) % items.length;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) {
+      return;
+    }
+
+    activeIndexRef.current = targetIndex;
+    setCurrentIndex(targetIndex);
+
+    if (isContinuous) {
+      const targetOffset = getSlideOffset(targetIndex);
+      const cycleWidth = getCycleWidth();
+      const normalizedTarget = normalizeOffset(targetOffset, cycleWidth);
+
+      if (!options.smooth || reducedMotion) {
+        offsetRef.current = normalizedTarget;
+        viewport.scrollLeft = normalizedTarget;
+        return;
+      }
+
+      programmaticScrollRef.current = {
+        active: true,
+        targetIndex,
+        targetScrollLeft: normalizedTarget
+      };
+
+      if (programmaticScrollTimeoutRef.current) {
+        window.clearTimeout(programmaticScrollTimeoutRef.current);
+      }
+      programmaticScrollTimeoutRef.current = window.setTimeout(() => {
+        programmaticScrollTimeoutRef.current = null;
+        const state = programmaticScrollRef.current;
+        if (!state.active) {
+          return;
+        }
+        if (Math.abs(viewport.scrollLeft - state.targetScrollLeft) <= PROGRAMMATIC_SCROLL_EPSILON) {
+          finalizeProgrammaticScroll();
+        }
+      }, PROGRAMMATIC_SCROLL_FALLBACK_MS);
+
+      viewport.scrollTo({
+        left: normalizedTarget,
+        behavior: 'smooth'
+      });
+      return;
+    }
+
+    const slide = slideRefs.current[targetIndex];
+    if (!slide) {
+      return;
+    }
 
     const slideRect = slide.getBoundingClientRect();
     const viewportRect = viewport.getBoundingClientRect();
@@ -154,7 +306,7 @@ export function AccessibleCarousel<T>({
 
     programmaticScrollRef.current = {
       active: true,
-      targetIndex: index,
+      targetIndex,
       targetScrollLeft
     };
 
@@ -177,7 +329,7 @@ export function AccessibleCarousel<T>({
       inline: 'start',
       block: 'nearest'
     });
-  }, [finalizeProgrammaticScroll, reducedMotion, registerInteractionPause]);
+  }, [items.length, isContinuous, reducedMotion, registerInteractionPause, getSlideOffset, getCycleWidth, normalizeOffset, finalizeProgrammaticScroll]);
 
   useEffect(() => {
     let lastVisible = document.visibilityState === 'visible';
@@ -207,7 +359,104 @@ export function AccessibleCarousel<T>({
     };
   }, [beginInteractionPause, scheduleInteractionResume]);
 
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) {
+      return;
+    }
+
+    if (isContinuous && items.length > 0) {
+      const cycleWidth = getCycleWidth();
+      const initialOffset = getInitialOffset();
+      offsetRef.current = normalizeOffset(initialOffset, cycleWidth);
+      viewport.scrollLeft = offsetRef.current;
+    }
+  }, [isContinuous, items.length, getCycleWidth, getInitialOffset, normalizeOffset]);
+
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    if (!track || !isContinuous) {
+      return;
+    }
+
+    track.querySelectorAll('[data-duplicate-clone]').forEach((node) => {
+      (node as HTMLElement).inert = true;
+      (node as HTMLElement).setAttribute('inert', '');
+    });
+  });
+
   useEffect(() => {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        window.clearTimeout(interactionTimeoutRef.current);
+      }
+      if (programmaticScrollTimeoutRef.current) {
+        window.clearTimeout(programmaticScrollTimeoutRef.current);
+      }
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isContinuous) {
+      return;
+    }
+
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track || !shouldAutoplay) {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      lastFrameTimeRef.current = null;
+      return;
+    }
+
+    const step = (timestamp: number) => {
+      if (lastFrameTimeRef.current === null) {
+        lastFrameTimeRef.current = timestamp;
+      }
+
+      const deltaMs = timestamp - lastFrameTimeRef.current;
+      lastFrameTimeRef.current = timestamp;
+
+      const deltaSeconds = Math.min(deltaMs, 100) / 1000;
+      const cycleWidth = getCycleWidth();
+
+      if (cycleWidth > 0) {
+        if (!programmaticScrollRef.current.active) {
+          offsetRef.current += CONTINUOUS_SPEED_PX_PER_SECOND * deltaSeconds;
+        }
+        offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
+        viewport.scrollLeft = offsetRef.current;
+        activeIndexRef.current = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
+        setCurrentIndex(activeIndexRef.current);
+      }
+
+      animationFrameRef.current = window.requestAnimationFrame(step);
+    };
+
+    animationFrameRef.current = window.requestAnimationFrame(step);
+
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      lastFrameTimeRef.current = null;
+    };
+  }, [isContinuous, shouldAutoplay, getCycleWidth, normalizeOffset, getLogicalIndexFromOffset]);
+
+  useEffect(() => {
+    if (isContinuous) {
+      return;
+    }
+
     if (!shouldAutoplay) {
       return;
     }
@@ -218,10 +467,10 @@ export function AccessibleCarousel<T>({
     let intervalId: number | null = null;
 
     const timeoutId = window.setTimeout(() => {
-      goTo((activeIndexRef.current + 1) % items.length, { smooth: true });
+      goToLogicalIndex(activeIndexRef.current + 1, { smooth: true });
 
       intervalId = window.setInterval(() => {
-        goTo((activeIndexRef.current + 1) % items.length, { smooth: true });
+        goToLogicalIndex(activeIndexRef.current + 1, { smooth: true });
       }, autoplayMs);
     }, firstDelay);
 
@@ -231,7 +480,7 @@ export function AccessibleCarousel<T>({
         window.clearInterval(intervalId);
       }
     };
-  }, [autoplayMs, goTo, items.length, shouldAutoplay]);
+  }, [autoplayMs, goToLogicalIndex, items.length, shouldAutoplay, isContinuous]);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -258,10 +507,18 @@ export function AccessibleCarousel<T>({
       if (programmaticScrollTimeoutRef.current) {
         window.clearTimeout(programmaticScrollTimeoutRef.current);
       }
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
     };
   }, []);
 
   const snapToNearest = useCallback(() => {
+    if (isContinuous) {
+      return;
+    }
+
     const viewport = viewportRef.current;
     if (!viewport || slideRefs.current.length === 0) {
       return;
@@ -284,8 +541,8 @@ export function AccessibleCarousel<T>({
       }
     });
 
-    goTo(nearestIndex, { smooth: true });
-  }, [clampedIndex, goTo]);
+    goToLogicalIndex(nearestIndex, { smooth: true });
+  }, [clampedIndex, goToLogicalIndex, isContinuous]);
 
   function onScroll(event: UIEvent<HTMLDivElement>) {
     const viewport = event.currentTarget;
@@ -295,6 +552,18 @@ export function AccessibleCarousel<T>({
       const distance = Math.abs(viewport.scrollLeft - state.targetScrollLeft);
       if (distance <= PROGRAMMATIC_SCROLL_EPSILON) {
         finalizeProgrammaticScroll();
+      }
+      return;
+    }
+
+    if (isContinuous) {
+      const cycleWidth = getCycleWidth();
+      if (cycleWidth > 0) {
+        const normalized = normalizeOffset(viewport.scrollLeft, cycleWidth);
+        if (Math.abs(viewport.scrollLeft - normalized) > 1) {
+          offsetRef.current = normalized;
+          viewport.scrollLeft = normalized;
+        }
       }
       return;
     }
@@ -330,6 +599,19 @@ export function AccessibleCarousel<T>({
     }
 
     event.preventDefault();
+    if (isContinuous) {
+      const nextIndex =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? items.length - 1
+            : event.key === 'ArrowRight'
+              ? (clampedIndex + 1) % items.length
+              : (clampedIndex - 1 + items.length) % items.length;
+      goToLogicalIndex(nextIndex, { smooth: true, fromInteraction: true });
+      return;
+    }
+
     const nextIndex =
       event.key === 'Home'
         ? 0
@@ -339,7 +621,7 @@ export function AccessibleCarousel<T>({
             ? (clampedIndex + 1) % items.length
             : (clampedIndex - 1 + items.length) % items.length;
 
-    goTo(nextIndex, { smooth: true, fromInteraction: true });
+    goToLogicalIndex(nextIndex, { smooth: true, fromInteraction: true });
   }
 
   function onPointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -350,6 +632,10 @@ export function AccessibleCarousel<T>({
 
     isPointerActiveRef.current = true;
     beginInteractionPause();
+
+    if (isContinuous) {
+      offsetRef.current = viewport.scrollLeft;
+    }
 
     dragStateRef.current = {
       pointerId: event.pointerId,
@@ -382,7 +668,19 @@ export function AccessibleCarousel<T>({
       suppressClickRef.current = true;
     }
 
-    viewport.scrollLeft = dragState.startScrollLeft - deltaX;
+    if (isContinuous) {
+      const cycleWidth = getCycleWidth();
+      let nextOffset = dragState.startScrollLeft - deltaX;
+      if (cycleWidth > 0) {
+        nextOffset = normalizeOffset(nextOffset, cycleWidth);
+      } else {
+        nextOffset = Math.max(0, nextOffset);
+      }
+      offsetRef.current = nextOffset;
+      viewport.scrollLeft = nextOffset;
+    } else {
+      viewport.scrollLeft = dragState.startScrollLeft - deltaX;
+    }
 
     if (event.cancelable) {
       event.preventDefault();
@@ -406,7 +704,16 @@ export function AccessibleCarousel<T>({
     isPointerActiveRef.current = false;
     setIsDragging(false);
 
-    if (wasDragging) {
+    if (isContinuous) {
+      const cycleWidth = getCycleWidth();
+      if (cycleWidth > 0) {
+        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
+        viewport.scrollLeft = offsetRef.current;
+      }
+      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
+      activeIndexRef.current = logical;
+      setCurrentIndex(logical);
+    } else if (wasDragging) {
       snapToNearest();
     }
 
@@ -425,12 +732,93 @@ export function AccessibleCarousel<T>({
     isPointerActiveRef.current = false;
     setIsDragging(false);
 
-    if (wasDragging) {
+    if (isContinuous) {
+      const viewport = viewportRef.current;
+      const cycleWidth = getCycleWidth();
+      if (viewport && cycleWidth > 0) {
+        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
+        viewport.scrollLeft = offsetRef.current;
+      }
+      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
+      activeIndexRef.current = logical;
+      setCurrentIndex(logical);
+    } else if (wasDragging) {
       snapToNearest();
     }
 
     scheduleInteractionResume();
   }
+
+  const slides = useMemo(() => {
+    if (!isContinuous || items.length === 0) {
+      return items.map((item, index) => (
+        <div
+          key={`${carouselId}-${index}`}
+          ref={(node) => {
+            slideRefs.current[index] = node;
+          }}
+          className={cn('shrink-0 snap-start', itemClassName)}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${index + 1} de ${items.length}: ${getItemLabel(item, index)}`}
+          data-active={index === clampedIndex ? 'true' : 'false'}
+          data-testid={testId ? `${testId}-slide-${index + 1}` : undefined}
+        >
+          {renderItem(item, { index, isActive: index === clampedIndex })}
+        </div>
+      ));
+    }
+
+    const previousClone = items[items.length - 1];
+    const nextClone = items[0];
+
+    return [
+      <div
+        key={`${carouselId}-prev-clone`}
+        ref={(node) => {
+          slideRefs.current[0] = node;
+        }}
+        className={cn('shrink-0', itemClassName)}
+        role="group"
+        aria-roledescription="slide"
+        aria-hidden="true"
+        data-duplicate-clone=""
+        data-testid={testId ? `${testId}-slide-clone-prev` : undefined}
+      >
+        {renderItem(previousClone, { index: items.length - 1, isActive: false })}
+      </div>,
+      ...items.map((item, index) => (
+        <div
+          key={`${carouselId}-${index}`}
+          ref={(node) => {
+            slideRefs.current[index + 1] = node;
+          }}
+          className={cn('shrink-0', itemClassName)}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${index + 1} de ${items.length}: ${getItemLabel(item, index)}`}
+          data-active={index === clampedIndex ? 'true' : 'false'}
+          data-testid={testId ? `${testId}-slide-${index + 1}` : undefined}
+        >
+          {renderItem(item, { index, isActive: index === clampedIndex })}
+        </div>
+      )),
+      <div
+        key={`${carouselId}-next-clone`}
+        ref={(node) => {
+          slideRefs.current[items.length + 1] = node;
+        }}
+        className={cn('shrink-0', itemClassName)}
+        role="group"
+        aria-roledescription="slide"
+        aria-hidden="true"
+        data-duplicate-clone=""
+        data-testid={testId ? `${testId}-slide-clone-next` : undefined}
+      >
+        {renderItem(nextClone, { index: 0, isActive: false })}
+      </div>
+    ];
+  }, [isContinuous, items, carouselId, itemClassName, clampedIndex, renderItem, getItemLabel, testId]);
 
   return (
     <section
@@ -480,8 +868,9 @@ export function AccessibleCarousel<T>({
         data-testid={testId ? `${testId}-viewport` : undefined}
       >
         <div
-          className={cn('flex snap-x snap-mandatory gap-4', trackClassName)}
-          style={{ scrollSnapType: isDragging ? 'none' : undefined }}
+          ref={trackRef}
+          className={cn('flex', isContinuous ? '' : 'snap-x snap-mandatory gap-4', trackClassName)}
+          style={{ scrollSnapType: isDragging && !isContinuous ? 'none' : undefined }}
           role="group"
           aria-roledescription="carousel"
           aria-label={ariaLabel}
@@ -489,22 +878,7 @@ export function AccessibleCarousel<T>({
           onKeyDown={onKeyboardNavigation}
           data-testid={testId ? `${testId}-track` : undefined}
         >
-          {items.map((item, index) => (
-            <div
-              key={`${carouselId}-${index}`}
-              ref={(node) => {
-                slideRefs.current[index] = node;
-              }}
-              className={cn('shrink-0 snap-start', itemClassName)}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${index + 1} de ${items.length}: ${getItemLabel(item, index)}`}
-              data-active={index === clampedIndex ? 'true' : 'false'}
-              data-testid={testId ? `${testId}-slide-${index + 1}` : undefined}
-            >
-              {renderItem(item, { index, isActive: index === clampedIndex })}
-            </div>
-          ))}
+          {slides}
         </div>
       </div>
 
@@ -513,7 +887,7 @@ export function AccessibleCarousel<T>({
           type="button"
           className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 transition hover:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
           aria-label="Slide anterior"
-          onClick={() => goTo((clampedIndex - 1 + items.length) % items.length, { smooth: true, fromInteraction: true })}
+          onClick={() => goToLogicalIndex(clampedIndex - 1, { smooth: true, fromInteraction: true })}
         >
           <ChevronLeft className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -529,7 +903,7 @@ export function AccessibleCarousel<T>({
               )}
               aria-label={`Ir para ${getItemLabel(item, index)}`}
               aria-pressed={index === clampedIndex}
-              onClick={() => goTo(index, { smooth: true, fromInteraction: true })}
+              onClick={() => goToLogicalIndex(index, { smooth: true, fromInteraction: true })}
             />
           ))}
         </div>
@@ -538,7 +912,7 @@ export function AccessibleCarousel<T>({
           type="button"
           className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 transition hover:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
           aria-label="Próximo slide"
-          onClick={() => goTo((clampedIndex + 1) % items.length, { smooth: true, fromInteraction: true })}
+          onClick={() => goToLogicalIndex(clampedIndex + 1, { smooth: true, fromInteraction: true })}
         >
           <ChevronRight className="h-4 w-4" aria-hidden="true" />
         </button>

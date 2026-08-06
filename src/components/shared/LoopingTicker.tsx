@@ -10,7 +10,7 @@ type LoopingTickerProps<T> = {
   ariaLabel: string;
   items: readonly T[];
   renderItem: (item: T, index: number) => ReactNode;
-  durationSeconds?: number;
+  speedPxPerSecond?: number;
   className?: string;
   viewportClassName?: string;
   trackClassName?: string;
@@ -20,12 +20,13 @@ type LoopingTickerProps<T> = {
 
 const DRAG_THRESHOLD = 6;
 const INTERACTION_PAUSE_MS = 2000;
+const DEFAULT_SPEED_PX_PER_SECOND = 40;
 
 export function LoopingTicker<T>({
   ariaLabel,
   items,
   renderItem,
-  durationSeconds = 30,
+  speedPxPerSecond = DEFAULT_SPEED_PX_PER_SECOND,
   className,
   viewportClassName,
   trackClassName,
@@ -39,12 +40,13 @@ export function LoopingTicker<T>({
   const interactionTimeoutRef = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
+  const offsetRef = useRef(0);
   const isPointerActiveRef = useRef(false);
   const dragStateRef = useRef({
     pointerId: -1,
     startX: 0,
     startY: 0,
-    startScrollLeft: 0,
+    startOffset: 0,
     isDragging: false
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -58,10 +60,35 @@ export function LoopingTicker<T>({
   const canOwnMotion = useMotionBudget(`ticker-${motionId}`, wantsMotion, priority);
   const shouldAnimate = wantsMotion && canOwnMotion;
 
+  const getCycleWidth = useCallback(() => {
+    return mainTrackRef.current?.scrollWidth ?? 0;
+  }, []);
+
+  const normalizeOffset = useCallback((offset: number, cycleWidth: number) => {
+    if (cycleWidth <= 0) {
+      return 0;
+    }
+    return ((offset % cycleWidth) + cycleWidth) % cycleWidth;
+  }, []);
+
+  const applyOffset = useCallback((offset: number) => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+    viewport.scrollLeft = offset;
+  }, []);
+
   const beginInteractionPause = useCallback(() => {
     if (interactionTimeoutRef.current) {
       window.clearTimeout(interactionTimeoutRef.current);
       interactionTimeoutRef.current = null;
+    }
+
+    if (animationFrameRef.current) {
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+      lastFrameTimeRef.current = null;
     }
 
     setPausedByInteraction(true);
@@ -120,6 +147,27 @@ export function LoopingTicker<T>({
   });
 
   useEffect(() => {
+    const viewport = viewportRef.current;
+    const mainTrack = mainTrackRef.current;
+    if (!viewport || !mainTrack) {
+      return;
+    }
+
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth > 0) {
+      offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
+      applyOffset(offsetRef.current);
+    }
+
+    return () => {
+      if (animationFrameRef.current) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [getCycleWidth, normalizeOffset, applyOffset]);
+
+  useEffect(() => {
     return () => {
       if (interactionTimeoutRef.current) {
         window.clearTimeout(interactionTimeoutRef.current);
@@ -148,17 +196,16 @@ export function LoopingTicker<T>({
         lastFrameTimeRef.current = timestamp;
       }
 
-      const delta = timestamp - lastFrameTimeRef.current;
+      const deltaMs = timestamp - lastFrameTimeRef.current;
       lastFrameTimeRef.current = timestamp;
 
-      const cycleWidth = mainTrack.scrollWidth;
+      const deltaSeconds = Math.min(deltaMs, 100) / 1000;
+      const cycleWidth = getCycleWidth();
+
       if (cycleWidth > 0) {
-        const pixelsPerMs = cycleWidth / (durationSeconds * 1000);
-        let nextScrollLeft = viewport.scrollLeft + pixelsPerMs * delta;
-        if (nextScrollLeft >= cycleWidth) {
-          nextScrollLeft -= cycleWidth;
-        }
-        viewport.scrollLeft = nextScrollLeft;
+        offsetRef.current += speedPxPerSecond * deltaSeconds;
+        offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
+        applyOffset(offsetRef.current);
       }
 
       animationFrameRef.current = window.requestAnimationFrame(step);
@@ -173,7 +220,7 @@ export function LoopingTicker<T>({
       }
       lastFrameTimeRef.current = null;
     };
-  }, [durationSeconds, shouldAnimate]);
+  }, [speedPxPerSecond, shouldAnimate, getCycleWidth, normalizeOffset, applyOffset]);
 
   function onPointerDown(event: PointerEvent<HTMLDivElement>) {
     const viewport = viewportRef.current;
@@ -184,11 +231,16 @@ export function LoopingTicker<T>({
     isPointerActiveRef.current = true;
     beginInteractionPause();
 
+    const cycleWidth = getCycleWidth();
+    const currentOffset = cycleWidth > 0 ? normalizeOffset(viewport.scrollLeft, cycleWidth) : viewport.scrollLeft;
+
+    offsetRef.current = currentOffset;
+
     dragStateRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
-      startScrollLeft: viewport.scrollLeft,
+      startOffset: currentOffset,
       isDragging: false
     };
 
@@ -197,9 +249,8 @@ export function LoopingTicker<T>({
 
   function onPointerMove(event: PointerEvent<HTMLDivElement>) {
     const viewport = viewportRef.current;
-    const mainTrack = mainTrackRef.current;
     const dragState = dragStateRef.current;
-    if (!viewport || !mainTrack || dragState.pointerId !== event.pointerId) {
+    if (!viewport || dragState.pointerId !== event.pointerId) {
       return;
     }
 
@@ -215,16 +266,17 @@ export function LoopingTicker<T>({
       setIsDragging(true);
     }
 
-    const cycleWidth = mainTrack.scrollWidth;
-    let nextScrollLeft = dragState.startScrollLeft - deltaX;
+    const cycleWidth = getCycleWidth();
+    let nextOffset = dragState.startOffset - deltaX;
 
     if (cycleWidth > 0) {
-      nextScrollLeft = ((nextScrollLeft % cycleWidth) + cycleWidth) % cycleWidth;
+      nextOffset = normalizeOffset(nextOffset, cycleWidth);
     } else {
-      nextScrollLeft = Math.max(0, nextScrollLeft);
+      nextOffset = Math.max(0, nextOffset);
     }
 
-    viewport.scrollLeft = nextScrollLeft;
+    offsetRef.current = nextOffset;
+    viewport.scrollLeft = nextOffset;
 
     if (event.cancelable) {
       event.preventDefault();
@@ -242,6 +294,12 @@ export function LoopingTicker<T>({
       viewport.releasePointerCapture(event.pointerId);
     }
 
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth > 0) {
+      offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
+      applyOffset(offsetRef.current);
+    }
+
     dragState.pointerId = -1;
     dragState.isDragging = false;
     isPointerActiveRef.current = false;
@@ -253,6 +311,12 @@ export function LoopingTicker<T>({
     const dragState = dragStateRef.current;
     if (dragState.pointerId === -1) {
       return;
+    }
+
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth > 0) {
+      offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
+      applyOffset(offsetRef.current);
     }
 
     dragState.pointerId = -1;
