@@ -19,6 +19,18 @@ async function waitForScrollChange(viewport: Locator, timeout = 4000) {
     .not.toBe(initial);
 }
 
+const PRODUCT_LABELS = [
+  'Ir para Qevaryn FieldOps',
+  'Ir para Qevaryn Hotel Operations',
+  'Ir para Qevaryn Stock & Orders',
+  'Ir para Solução personalizada para o seu contexto'
+];
+
+function nextOf(label: string | null, order: readonly string[]) {
+  const index = order.indexOf(label ?? '');
+  return order[(index + 1) % order.length];
+}
+
 test('ticker de serviços mantém duplicação visual escondida e pausa momentaneamente por hover/foco no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
@@ -182,35 +194,144 @@ test('ticker e carrosséis respeitam reduced motion', async ({ page }) => {
     .toBe(initialEnterpriseScroll);
 });
 
-test('produtos no desktop usam carrossel contínuo sem troca por cartão', async ({ page }) => {
+test('produtos em destaque exibem um cartão central e vizinhos parcialmente visíveis', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  const track = page.getByTestId('featured-products-carousel-track');
-  const viewport = page.getByTestId('featured-products-carousel-viewport');
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
   await expect(carousel).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
 
-  const initialScroll = await readScrollLeft(viewport);
-  await page.waitForTimeout(250);
-  const nextScroll = await readScrollLeft(viewport);
-  expect(nextScroll).not.toBe(initialScroll);
-  await page.waitForTimeout(1000);
-  const laterScroll = await readScrollLeft(viewport);
-  expect(laterScroll).toBeGreaterThan(nextScroll);
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 
-  await track.focus();
-  const focusedSelection = await readActiveIndicatorLabel(carousel);
-  await page.waitForTimeout(2200);
-  expect(await readActiveIndicatorLabel(carousel)).toBe(focusedSelection);
-  await expect(track).toBeFocused();
+  const viewportBox = await viewport.boundingBox();
+  if (!viewportBox) {
+    throw new Error('viewport sem dimensões');
+  }
+
+  const activeSlide = carousel.locator('[data-active="true"]').first();
+  const activeBox = await activeSlide.boundingBox();
+  const activeOpacity = await activeSlide.evaluate((element) => getComputedStyle(element).opacity);
+  if (!activeBox) {
+    throw new Error('cartão ativo sem dimensões');
+  }
+
+  expect(activeBox.x).toBeGreaterThanOrEqual(viewportBox.x - 1);
+  expect(activeBox.x + activeBox.width).toBeLessThanOrEqual(viewportBox.x + viewportBox.width + 1);
+  expect(activeOpacity).toBe('1');
+
+  const allSlides = carousel.locator('[data-testid^="featured-products-carousel-slide-"]');
+  await expect(allSlides).toHaveCount(6);
+
+  const partiallyVisible: number[] = [];
+  const totalSlides = await allSlides.count();
+  for (let i = 0; i < totalSlides; i += 1) {
+    const slide = allSlides.nth(i);
+    const dataActive = await slide.getAttribute('data-active');
+    if (dataActive === 'true') {
+      continue;
+    }
+    const box = await slide.boundingBox();
+    if (!box) {
+      continue;
+    }
+    const overlaps = box.x < viewportBox.x + viewportBox.width && box.x + box.width > viewportBox.x;
+    if (overlaps) {
+      partiallyVisible.push(i);
+      const filter = await slide.evaluate((element) => getComputedStyle(element).filter);
+      const transform = await slide.evaluate((element) => getComputedStyle(element).transform);
+      expect(transform).toContain('0.92');
+      expect(filter).toContain('saturate');
+    }
+  }
+  expect(partiallyVisible.length).toBeGreaterThanOrEqual(2);
 });
 
-test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma contínua após 2s', async ({ page }) => {
+test('autoplay em destaque troca a cada 2000 ms sem acumular avanços', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  await page.waitForTimeout(1500);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+
+  const secondStart = Date.now();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3500 }).toBe('Ir para Qevaryn Hotel Operations');
+  const secondElapsed = Date.now() - secondStart;
+
+  const thirdStart = Date.now();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Stock & Orders');
+  const thirdElapsed = Date.now() - thirdStart;
+
+  expect(secondElapsed).toBeGreaterThanOrEqual(400);
+  expect(thirdElapsed).toBeGreaterThanOrEqual(1900);
+  expect(thirdElapsed).toBeLessThan(4500);
+});
+
+test('seta seguinte após o último cartão volta ao primeiro sem retorno visual', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  for (const target of PRODUCT_LABELS.slice(1)) {
+    await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+    await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(target);
+  }
+
+  const lastScroll = await readScrollLeft(viewport);
+
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+
+  const samples: number[] = [];
+  const startTime = Date.now();
+  while (Date.now() - startTime < 1400) {
+    samples.push(await readScrollLeft(viewport));
+    await page.waitForTimeout(50);
+  }
+
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+  const finalScroll = samples[samples.length - 1];
+  const anomalous = samples.filter((sample) => sample < lastScroll - 60 && Math.abs(sample - finalScroll) > 60);
+  expect(anomalous).toEqual([]);
+});
+
+test('seta anterior no primeiro cartão vai ao último sem retorno visual', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  // garante que a hidratação terminou para medir o scroll inicial de forma fiável
+  const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
+  await expect.poll(() => clonePrev.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+
+  const firstScroll = await readScrollLeft(viewport);
+
+  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
+
+  const samples: number[] = [];
+  const startTime = Date.now();
+  while (Date.now() - startTime < 1400) {
+    samples.push(await readScrollLeft(viewport));
+    await page.waitForTimeout(50);
+  }
+
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Solução personalizada para o seu contexto');
+  const finalScroll = samples[samples.length - 1];
+  const anomalous = samples.filter((sample) => sample > firstScroll + 60 && Math.abs(sample - finalScroll) > 60);
+  expect(anomalous).toEqual([]);
+});
+
+test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma após 2s', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
@@ -222,21 +343,17 @@ test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma 
 
   await expect(carousel.locator('[data-testid^="featured-products-carousel-slide-"]')).toHaveCount(6);
   await expect(carousel.getByLabel('Indicadores de posição').locator('button')).toHaveCount(4);
-
-  const initialIndex = await carousel.getByLabel('Indicadores de posição').locator('button[aria-pressed="true"]').count();
-  expect(initialIndex).toBe(1);
+  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 
   const viewport = carousel.getByTestId('featured-products-carousel-viewport');
-  await expect
-    .poll(() => readScrollLeft(viewport), { timeout: 4000 })
-    .not.toBe(await readScrollLeft(viewport));
+  const before = await readActiveIndicatorLabel(carousel);
 
   await track.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(nextOf(before, PRODUCT_LABELS));
 
   await carousel.getByRole('button', { name: 'Slide anterior' }).click();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(before);
 
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
   const selectedAfterInteraction = await readActiveIndicatorLabel(carousel);
@@ -265,25 +382,208 @@ test('carrossel de produtos avança e recua com setas sem quebrar indicadores', 
   await expect.poll(() => readActiveIndicatorLabel(carousel)).toBe(startLabel);
 });
 
-test('carrossel de produtos pode ser arrastado com o rato e faz snap para o slide vizinho', async ({ page }) => {
+test('arrastar com o rato encaixa no cartão vizinho nos dois sentidos sem abrir o CTA', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  const viewport = page.getByTestId('featured-products-carousel-viewport');
-  const before = await readActiveIndicatorLabel(carousel);
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 
   const box = await viewport.boundingBox();
   if (!box) {
     throw new Error('viewport sem dimensões');
   }
 
+  // drag para a esquerda → próximo cartão
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
   await page.mouse.down();
-  await page.mouse.move(box.x + box.width * 0.15, box.y + box.height / 2, { steps: 8 });
+  await page.mouse.move(box.x + box.width * 0.15, box.y + box.height / 2, { steps: 10 });
+  await page.mouse.up();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+
+  // drag para a direita → cartão anterior
+  await page.mouse.move(box.x + box.width * 0.15, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.85, box.y + box.height / 2, { steps: 10 });
+  await page.mouse.up();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  // um drag real sobre o CTA não abre o link e volta a encaixar no mesmo cartão
+  const urlBefore = page.url();
+  const ctaLink = carousel.locator('[data-active="true"]').getByRole('link', { name: 'Ver produto' });
+  const ctaBox = await ctaLink.boundingBox();
+  if (!ctaBox) {
+    throw new Error('CTA sem dimensões');
+  }
+
+  await page.mouse.move(ctaBox.x + ctaBox.width / 2, ctaBox.y + ctaBox.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(ctaBox.x + ctaBox.width / 2 - 120, ctaBox.y + ctaBox.height / 2, { steps: 8 });
+  await page.mouse.up();
+  await page.waitForTimeout(400);
+  expect(page.url()).toBe(urlBefore);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+});
+
+test('clique sem arrastar no CTA do cartão abre o produto', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  await carousel.locator('[data-active="true"]').getByRole('link', { name: 'Ver produto' }).click();
+  await expect(page).toHaveURL(/\/produtos\/fieldops$/);
+});
+
+test('indicadores e teclado navegam entre cartões e o contador do processo acompanha', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
+  await expect.poll(() => clonePrev.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+
+  await expect(carousel.getByLabel('Indicadores de posição').locator('button')).toHaveCount(4);
+
+  await carousel
+    .getByLabel('Indicadores de posição')
+    .getByRole('button', { name: 'Ir para Qevaryn Stock & Orders' })
+    .click();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+
+  const track = carousel.getByTestId('featured-products-carousel-track');
+  await track.focus();
+  await expect(track).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
+  await page.keyboard.press('ArrowLeft');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await page.keyboard.press('Home');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await page.keyboard.press('End');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
+
+  await page.locator('#processo').scrollIntoViewIfNeeded();
+  const processCarousel = page.getByTestId('process-carousel');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+  await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
+  await processCarousel.getByRole('button', { name: 'Slide anterior' }).click();
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+});
+
+test('autoplay pausa durante pointerdown e retoma 2 s depois; nova interação reinicia o tempo', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  const box = await viewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(2500);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
   await page.mouse.up();
 
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).not.toBe(before);
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Hotel Operations');
+
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await page.waitForTimeout(1400);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3000 }).toBe('Ir para Solução personalizada para o seu contexto');
+});
+
+test('carrossel em destaque não avança com a página escondida e retoma ao voltar', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  // garante que a hidratação terminou (o inert dos clones só é aplicado no cliente)
+  const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
+  await expect.poll(() => clonePrev.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+
+  // tira o carrossel do viewport para parar o autoplay antes de esconder
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(300);
+
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await page.waitForTimeout(200);
+
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(2500);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Hotel Operations');
+});
+
+test('carrossel em destaque não avança fora do viewport', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(2500);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+});
+
+test('clones são aria-hidden e inert e não duplicam links acessíveis', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+
+  const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
+  const cloneNext = carousel.getByTestId('featured-products-carousel-slide-clone-next');
+  await expect(clonePrev).toHaveAttribute('aria-hidden', 'true');
+  await expect(cloneNext).toHaveAttribute('aria-hidden', 'true');
+  await expect.poll(() => clonePrev.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+  await expect.poll(() => cloneNext.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+  await expect.poll(() => clonePrev.locator('a').first().evaluate((node) => node.getAttribute('tabindex'))).toBe('-1');
+  await expect.poll(() => cloneNext.locator('a').first().evaluate((node) => node.getAttribute('tabindex'))).toBe('-1');
+
+  await expect(carousel.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
+});
+
+test('carrosséis em destaque não causam overflow horizontal em 320 px', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('/');
+
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+
+  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+
+  await page.locator('#empresas').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });
 
 test('credibilidade pausa por hover/foco e retoma aos 2s sem mouseleave ou blur', async ({ page }) => {

@@ -9,6 +9,12 @@ test('homepage não tem violações críticas ou sérias de acessibilidade', asy
   await expect(page.locator('main')).toBeVisible();
   await expect(page.getByRole('contentinfo')).toBeVisible();
 
+  // espera a hidratação concluir: os clones só ficam inert/tabindex -1 no cliente,
+  // garantindo que a varredura reflete o estado acessível final.
+  const featuredClone = page.getByTestId('featured-products-carousel-slide-clone-next');
+  await expect.poll(() => featuredClone.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+  await expect.poll(() => featuredClone.locator('a').first().evaluate((node) => node.getAttribute('tabindex'))).toBe('-1');
+
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();

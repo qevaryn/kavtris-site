@@ -137,9 +137,9 @@ test('preview da homepage usa cards visuais simplificados', async ({ page }) => 
   await expect(carousel).toBeVisible();
 
   await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toHaveCount(1);
+  await expect(carousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toHaveCount(1);
+  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toHaveCount(1);
 
   const fieldOpsPreviewImage = carousel.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
   await expectImageToLoad(fieldOpsPreviewImage, 'fieldops-catalog-v1.webp');
