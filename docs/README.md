@@ -1,4 +1,4 @@
-﻿# Documentation index
+# Documentation index
 
 Status: Current
 Audience: Frontend, Backend, QA and Technical Lead
