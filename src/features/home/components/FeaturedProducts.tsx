@@ -67,6 +67,7 @@ export function FeaturedProducts() {
           ariaLabel="Produtos em destaque"
           testId="featured-products-carousel"
           className="mt-8"
+          motionMode="continuous"
           items={carouselItems}
           itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"

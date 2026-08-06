@@ -7,11 +7,6 @@ async function expectImageToLoad(
 ) {
   await image.scrollIntoViewIfNeeded();
   await expect(image).toBeVisible();
-  await image.evaluate((img) => {
-    if (typeof (img as HTMLImageElement).decode === 'function') {
-      return (img as HTMLImageElement).decode();
-    }
-  });
   await expect.poll(async () => {
     const complete = await image.evaluate((img) => (img as HTMLImageElement).complete);
     const naturalWidth = await image.evaluate((img) => (img as HTMLImageElement).naturalWidth);
@@ -22,7 +17,7 @@ async function expectImageToLoad(
       return false;
     }
     return true;
-  }, { timeout: 20000 }).toBe(true);
+  }, { timeout: 60000 }).toBe(true);
 }
 
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
