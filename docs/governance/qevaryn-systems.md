@@ -2,8 +2,8 @@
 title: "Qevaryn Systems — Identidade Empresarial, Operação e Modelo de Negócio"
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
-status: "draft"
-version: "0.1"
+status: "review-candidate"
+version: "0.2"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -50,6 +50,17 @@ Não inventar:
 - resultados financeiros.
 
 Os projetos profissionais do fundador são confidenciais e não devem ser expostos sem autorização.
+
+Pode manter, quando confirmado e comprovado:
+
+- experiência em QA manual;
+- automação de testes;
+- testes E2E;
+- análise de requisitos;
+- processos;
+- projetos de software.
+
+A preparação ou inscrição num exame não equivale a certificação. Certificações futuras só podem ser adicionadas depois de concluídas e comprovadas.
 
 ## 3. Origem da empresa
 
@@ -297,7 +308,9 @@ Marcar como `SUBSTITUÍDO`:
 
 Nova direção:
 
-> Preservá-los como conceitos, configurações verticais ou possíveis módulos da plataforma.
+> Preservá-los como conceitos, configurações verticais, templates, casos demonstrativos ou possíveis módulos da plataforma.
+
+Não apagar a história. Não afirmar que todos serão desenvolvidos.
 
 ## 14. Verdade comercial
 
@@ -532,16 +545,19 @@ Distinção a preservar:
 
 ```text
 Rede Qualidade é Vida
-→ marca institucional
+→ marca institucional e rede comum
 
 Qevaryn Systems
-→ empresa tecnológica
+→ empresa tecnológica independente integrante da Rede
 
 Qevaryn Platform
-→ produto
+→ plataforma SaaS modular da Qevaryn Systems
+
+Qevaryn Core
+→ infraestrutura comum da plataforma
 
 Pedidos e Trabalhos
-→ primeiro sistema
+→ primeiro sistema essencial da plataforma
 ```
 
 Assinatura histórica:
@@ -667,6 +683,37 @@ Riscos a monitorizar (`A VALIDAR`):
 | Data | Versão | Alteração | Autor |
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline empresarial da Qevaryn Systems | Gabriel Dias de Souza |
+| 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: decisões, certificações e pontos em validação | Gabriel Dias de Souza |
+
+## Estado da revisão do proprietário
+
+### Confirmado nesta revisão
+
+- A Qevaryn Systems é a operadora tecnológica, com contratos e responsabilidades próprios.
+- A Qevaryn Systems não representa juridicamente toda a Rede.
+- A Qevaryn Systems pode desenvolver produtos próprios e prestar serviços personalizados.
+- A empresa poderá atuar com desenvolvimento, automação, integrações e QA.
+- A Qevaryn Systems será responsável pela futura Qevaryn Platform.
+- Conceitos e protótipos não podem ser apresentados como produtos concluídos.
+- Clientes, números, avaliações e resultados não podem ser inventados.
+- A experiência profissional do fundador é apresentada sem violar confidencialidade.
+
+### Continua em validação
+
+- Forma jurídica da empresa.
+- Missão e visão propostas.
+- Valores e posicionamento final.
+- Certificações e formações divulgáveis.
+- Projetos do fundador que podem ser referenciados publicamente.
+
+### Não bloqueia a baseline documental
+
+- Modelos de receita.
+- Mapa de contratos e SLA.
+- Níveis de suporte.
+- Detalhe dos serviços por setor.
+
+Este documento não foi aprovado juridicamente. A aprovação final é do proprietário.
 
 ## Documentos relacionados
 

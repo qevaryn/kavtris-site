@@ -2,8 +2,8 @@
 title: "Qevaryn Platform — Plataforma Modular e Primeiro Produto “Pedidos e Trabalhos”"
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
-status: "draft"
-version: "0.1"
+status: "review-candidate"
+version: "0.2"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -35,6 +35,25 @@ Conta da empresa
 ```
 
 A plataforma é o produto SaaS da [Qevaryn Systems](../governance/qevaryn-systems.md), operadora tecnológica da [Rede Qualidade é Vida](../governance/rede-qualidade-e-vida.md).
+
+Hierarquia a preservar:
+
+```text
+Rede Qualidade é Vida
+= rede institucional e marca comum
+
+Qevaryn Systems
+= empresa tecnológica independente integrante da Rede
+
+Qevaryn Platform
+= plataforma SaaS modular da Qevaryn Systems
+
+Qevaryn Core
+= infraestrutura comum da plataforma
+
+Pedidos e Trabalhos
+= primeiro sistema essencial da plataforma
+```
 
 ## 2. Inspiração da Hotmart
 
@@ -107,6 +126,8 @@ Requisitos futuros (`A VALIDAR` na implementação):
 - cada empresa é um tenant;
 - os dados devem ser isolados;
 - utilizadores podem pertencer a uma ou mais empresas somente quando autorizados;
+- utilizadores serão partilhados de forma controlada;
+- clientes e dados comuns poderão ser partilhados entre módulos autorizados;
 - pesquisas devem respeitar o tenant;
 - ficheiros devem respeitar o tenant;
 - logs devem identificar a empresa;
@@ -114,6 +135,8 @@ Requisitos futuros (`A VALIDAR` na implementação):
 - não confiar apenas na interface;
 - administradores Qevaryn precisam de acessos controlados;
 - o suporte deve ser auditável.
+
+A partilha entre módulos é autorizada apenas dentro da mesma empresa, com permissões que limitam o acesso. O isolamento entre empresas mantém-se.
 
 A tecnologia concreta não é definida neste documento.
 
@@ -329,21 +352,28 @@ Automações futuras somente poderão converter automaticamente quando existirem
 
 ### 9.5 Página pública
 
-Documentar (`PROPOSTA` / `A VALIDAR`):
+A identidade da empresa cliente é principal na sua página pública (`DECIDIDO`):
+
+- logótipo do cliente;
+- cores do cliente;
+- descrição;
+- contactos;
+- horário.
+
+A Qevaryn aparece de forma secundária (`DECIDIDO`):
+
+- "Powered by Qevaryn" discreto;
+- a marca da Rede não substitui a identidade do cliente.
+
+Detalhes técnicos `PROPOSTA` / `A VALIDAR`:
 
 - URL por empresa;
 - exemplo `qevaryn.pt/pedir/grafica-silva`;
 - possibilidade futura de domínio personalizado;
-- logótipo do cliente;
-- cores do cliente;
-- descrição;
 - categorias;
-- contactos;
-- horário;
 - política;
 - acessibilidade;
-- responsividade;
-- "Powered by Qevaryn" discreto.
+- responsividade.
 
 ### 9.6 Origem dos pedidos
 
@@ -500,23 +530,16 @@ Permitir:
 
 ### 9.11 Orçamento
 
-Documentado como parte possível do essencial ou do Crescimento, conforme decisão comercial final (`A VALIDAR`).
+Registado como `PROPOSTA RECOMENDADA`:
 
-Funcionalidades conceptuais:
+- Essencial poderá incluir orçamento básico: descrição, itens, quantidades, preço, validade, aceite e recusa;
+- Crescimento poderá incluir orçamento avançado: templates, versões, histórico, aprovação interna, personalização, automação, relatórios e regras.
 
-- itens;
-- descrição;
-- quantidades;
-- preço;
-- impostos;
-- validade;
-- condições;
-- versões;
-- envio;
-- aceite;
-- recusa;
-- comentários;
-- histórico.
+Justificação:
+
+> Muitas empresas precisam de preparar um preço antes de converter o pedido em trabalho. Um orçamento básico pode ser necessário para que o plano essencial resolva o fluxo completo.
+
+A decisão comercial final sobre o orçamento permanece `A VALIDAR`.
 
 Não implementar faturação certificada.
 
@@ -744,6 +767,10 @@ Todos classificados como `PROPOSTA / FUTURO`:
 
 ### FieldOps
 
+Estado: conceito existente e possível módulo futuro.
+Prioridade atual: posterior ao primeiro sistema.
+Primeiro produto: Pedidos e Trabalhos.
+
 - check-in;
 - check-out;
 - QR Code;
@@ -754,6 +781,8 @@ Todos classificados como `PROPOSTA / FUTURO`:
 - incidentes;
 - relatório;
 - offline futuro.
+
+Não o apresentar como sistema essencial inicial.
 
 ### Produção
 
@@ -852,6 +881,12 @@ Marcar como `A VALIDAR`:
 - número de categorias;
 - utilização mensal.
 
+Regra comercial do plano essencial (`DECIDIDO`):
+
+> O plano essencial não pode ser deliberadamente incompleto apenas para obrigar o cliente a comprar upgrades.
+
+A regra "O essencial resolve. Os outros sistemas automatizam, especializam e expandem." está definida na secção sobre a proposta de valor do primeiro sistema.
+
 ### 11.2 Crescimento
 
 ```text
@@ -883,6 +918,17 @@ Incluir como hipótese:
 - um módulo adicional elegível, sujeito a decisão.
 
 Não afirmar ainda qual módulo estará incluído.
+
+Módulo do plano Crescimento — `A VALIDAR`. Opções em análise (`PROPOSTA`):
+
+- Portal do Cliente;
+- Automação básica;
+- FieldOps básico;
+- escolha de um módulo pelo cliente;
+- desconto na contratação de um módulo;
+- nenhum módulo incluído, apenas funções avançadas.
+
+Nenhuma destas opções está aprovada.
 
 ### 11.3 Empresarial
 
@@ -1004,6 +1050,23 @@ Marcar como `A VALIDAR`:
 - exportação;
 - eliminação.
 
+Teste gratuito — `PROPOSTA`:
+
+> Durante a fase inicial, demonstração assistida e programa-piloto podem ser mais seguros do que um teste gratuito totalmente automático.
+
+Motivos:
+
+- produto ainda em validação;
+- suporte;
+- configuração;
+- custos;
+- dados;
+- segurança;
+- risco de abuso;
+- necessidade de acompanhar empresas-piloto.
+
+Isso não impede a criação de um teste gratuito no futuro.
+
 ## 12. Modelo de dados conceptual
 
 Entidades conceptuais (`A VALIDAR`; não é um schema real):
@@ -1114,16 +1177,25 @@ Programa-piloto (`PROPOSTA` / `A VALIDAR`):
 - documentar resultados;
 - obter autorização para caso real.
 
-Possíveis setores:
+Possíveis setores (`PROPOSTA`), com prioridade recomendada:
 
-- limpeza;
-- manutenção;
-- gráficas;
-- oficinas;
-- serviços;
-- hotelaria;
-- pequenos negócios;
-- equipas externas.
+1. limpeza;
+2. manutenção;
+3. gráficas;
+4. oficinas;
+5. pequenos serviços empresariais;
+6. equipas externas.
+
+Justificação:
+
+- recebem pedidos por mensagens;
+- precisam de fotografias e ficheiros;
+- preparam orçamentos;
+- atribuem trabalhos;
+- acompanham estados;
+- podem validar o valor do sistema.
+
+Não afirmar que existem clientes-piloto confirmados.
 
 ## 17. Métricas futuras
 
@@ -1191,6 +1263,44 @@ Documentar sem inventar valores (`PROPOSTA`):
 | Data | Versão | Alteração | Autor |
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline de produto da Qevaryn Platform | Gabriel Dias de Souza |
+| 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: primeiro sistema, orçamento recomendado, módulo Crescimento e pontos em validação | Gabriel Dias de Souza |
+
+## Estado da revisão do proprietário
+
+### Confirmado nesta revisão
+
+- A plataforma será modular, com uma conta única por empresa.
+- A área "Os meus sistemas" reúne os sistemas contratados.
+- Sistemas não contratados poderão aparecer no catálogo.
+- Utilizadores e dados comuns são partilhados de forma controlada e com permissões.
+- A subscrição será central e cada empresa terá os dados isolados.
+- A plataforma não será inicialmente um marketplace, uma plataforma de cursos ou um programa de afiliados.
+- A analogia com a Hotmart limita-se à biblioteca de produtos adquiridos.
+- O primeiro sistema é Pedidos e Trabalhos.
+- FieldOps passa a ser um módulo futuro, posterior ao primeiro sistema.
+- Todo pedido público entra como "Pedido recebido — A validar".
+- Um pedido público não pode tornar-se automaticamente um trabalho confirmado no plano essencial.
+- O cliente essencial não precisa de conta e acompanha por link seguro.
+- A identidade da empresa cliente é principal na sua página pública.
+- Regra comercial: "O essencial resolve. Os outros sistemas automatizam, especializam e expandem."
+
+### Continua em validação
+
+- Orçamento básico no Essencial vs avançado no Crescimento.
+- Módulo incluído no plano Crescimento.
+- Limites que tornam 29 € sustentável.
+- Teste gratuito.
+- Setores do programa-piloto.
+- Armazenamento, retenção e canais de notificação.
+
+### Não bloqueia a baseline documental
+
+- Modelo de dados conceptual.
+- Requisitos de segurança e RGPD na implementação.
+- Mapa de contratos SaaS.
+- Detalhe dos adicionais e do ciclo de subscrição.
+
+Este documento não foi aprovado juridicamente. A aprovação final é do proprietário.
 
 ## Documentos relacionados
 

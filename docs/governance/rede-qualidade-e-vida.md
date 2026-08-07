@@ -2,8 +2,8 @@
 title: "Rede Qualidade é Vida — Governança, Marca, Cooperação e Regras Institucionais"
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
-status: "draft"
-version: "0.1"
+status: "review-candidate"
+version: "0.2"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -480,18 +480,23 @@ Regras de princípio (`DECIDIDO` / `A VALIDAR`):
 Hierarquia a preservar:
 
 ```text
-Marca institucional:
 Rede Qualidade é Vida
+= rede institucional e marca comum
 
-Marca da operadora tecnológica:
 Qevaryn Systems
+= empresa tecnológica independente integrante da Rede
 
-Produto da operadora:
 Qevaryn Platform
+= plataforma SaaS modular da Qevaryn Systems
 
-Sistema dentro do produto:
+Qevaryn Core
+= infraestrutura comum da plataforma
+
 Pedidos e Trabalhos
+= primeiro sistema essencial da plataforma
 ```
+
+Esta hierarquia deve ser preservada de forma consistente nos três documentos de baseline. Não misturar as entidades.
 
 Diferenciar sempre:
 
@@ -561,13 +566,13 @@ A Rede não deve ser apresentada como o produto vendido pela Qevaryn Systems.
 
 ### Páginas dos clientes
 
-Quando uma empresa cliente utilizar a Qevaryn Platform (`PROPOSTA` / `A VALIDAR`):
+Quando uma empresa cliente utilizar a Qevaryn Platform (`DECIDIDO` quanto à identidade visual):
 
 - a identidade do cliente deve ser principal;
 - o logótipo do cliente deve ser visível;
 - as cores do cliente podem ser configuráveis;
-- "Powered by Qevaryn" deve ser discreto;
-- a marca da Rede não deve ocupar o lugar da marca do cliente.
+- "Powered by Qevaryn" deve ser secundário e discreto;
+- a marca da Rede não deve substituir a identidade do cliente.
 
 ## 22. Nomes históricos e referências
 
@@ -592,7 +597,7 @@ Quando uma empresa cliente utilizar a Qevaryn Platform (`PROPOSTA` / `A VALIDAR`
 | Customer Portal | Produto conceito atual | Portal do cliente, presente no catálogo | HISTÓRICO / A VALIDAR | Sim, como conceito no site atual | Sim |
 | Infinity | Referência do proprietário | Contexto integral não localizado | A VALIDAR | Não utilizar publicamente | Sim |
 
-> A referência "Infinity" foi mencionada pelo proprietário, mas o seu contexto integral não foi localizado com segurança nos documentos disponíveis no repositório. Não atribuir significado, não criar regra e não utilizar publicamente até confirmação do proprietário.
+> A referência "Infinity" foi mencionada pelo proprietário, mas o seu contexto integral ainda não foi recuperado com segurança. Não inventar significado, não criar produto, empresa ou módulo, não associar automaticamente a uma marca e não utilizar em conteúdo público até confirmação do proprietário.
 
 ## 23. Analogias
 
@@ -741,6 +746,40 @@ Riscos a monitorizar (`A VALIDAR`):
 | Data | Versão | Alteração | Autor |
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline institucional da Rede | Gabriel Dias de Souza |
+| 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: hierarquia, decisões e pontos em validação | Gabriel Dias de Souza |
+
+## Estado da revisão do proprietário
+
+### Confirmado nesta revisão
+
+- A Rede não é uma única empresa com departamentos internos.
+- As empresas integrantes são independentes, com gestão, contratos, trabalhadores, clientes, contabilidade, património, receitas, despesas, lucros, prejuízos e dívidas próprios.
+- Uma empresa integrante não responde automaticamente pelas obrigações de outra.
+- A cooperação entre integrantes é permitida, mas o investimento em projetos conjuntos é voluntário.
+- Recusar um investimento não deve gerar punição.
+- Projetos conjuntos precisam de contratos específicos.
+- Familiares seguem as mesmas regras.
+- A licença normal da marca não permite franquia automática nem sublicença automática.
+- O proprietário da marca protege padrões e reputação, mas não administra automaticamente todas as empresas.
+- Expressão de referência: "Prioridade interna sem obrigação de participação."
+
+### Continua em validação
+
+- Titular jurídico definitivo da marca.
+- Constituição e forma jurídica das empresas integrantes.
+- Taxas da Rede e fundo de marketing.
+- Regras finais de franquia e sublicença.
+- Conselho da Rede.
+- Contexto da referência "Infinity".
+
+### Não bloqueia a baseline documental
+
+- Modelo de faturação entre empresas.
+- Preços de transferência e empréstimos entre empresas.
+- Mapa de contratos (estruturas preliminares sujeitas a revisão jurídica).
+- Detalhe dos padrões mínimos por setor.
+
+Este documento não foi aprovado juridicamente. A aprovação final é do proprietário.
 
 ## Documentos relacionados
 
