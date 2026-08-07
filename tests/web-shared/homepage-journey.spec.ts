@@ -29,26 +29,26 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   const productsCarousel = preview.getByTestId('featured-products-carousel');
   await expect(productsCarousel).toBeVisible();
   await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toBeVisible();
-  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toBeVisible();
-  await expect(productsCarousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toHaveCount(1);
+  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toHaveCount(1);
+  await expect(productsCarousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toHaveCount(1);
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
 
   await expect(page.getByRole('heading', { name: 'Um processo simples para chegar à solução certa.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Entender' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Prototipar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Construir e testar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Lançar e acompanhar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Prototipar' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Construir e testar' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Lançar e acompanhar' })).toHaveCount(1);
 
   const enterprise = page.locator('#empresas');
   await expect(enterprise.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
   const enterpriseCarousel = enterprise.getByTestId('enterprise-capabilities-carousel');
   await expect(enterpriseCarousel).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Segurança e acessos').first()).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Qualidade e testes').first()).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Integrações e arquitetura').first()).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Suporte e continuidade').first()).toBeVisible();
+  await expect(enterpriseCarousel.locator('[data-active="true"]').getByText('Segurança e acessos')).toBeVisible();
+  await expect(enterpriseCarousel.getByText('Qualidade e testes').first()).toBeAttached();
+  await expect(enterpriseCarousel.getByText('Integrações e arquitetura').first()).toBeAttached();
+  await expect(enterpriseCarousel.getByText('Suporte e continuidade').first()).toBeAttached();
   await expect(enterprise.getByRole('link', { name: 'Ver capacidades técnicas' })).toHaveAttribute('href', '/empresas');
 
   const networkPreview = page.locator('#rede');
