@@ -263,6 +263,8 @@ Start here:
 
 - [docs/README.md](docs/README.md)
 
+Documentação transversal de produto e governança (Qevaryn Docs): [qevaryn/qevaryn-docs](https://github.com/qevaryn/qevaryn-docs).
+
 Key guides:
 
 - [docs/architecture/overview.md](docs/architecture/overview.md)
