@@ -275,7 +275,11 @@ test('autoplay em destaque troca a cada 2000 ms sem acumular avanços', async ({
   const thirdElapsed = Date.now() - thirdStart;
 
   expect(secondElapsed).toBeGreaterThanOrEqual(400);
-  expect(thirdElapsed).toBeGreaterThanOrEqual(1900);
+  // O intervalo de autoplay é de 2000 ms, mas a deteção por expect.poll tem
+  // jitter de ~100-200 ms (intervalo de polling + round-trip do evaluate).
+  // O limite inferior precisa ficar abaixo do menor intervalo medido com folga,
+  // mantendo a garantia de que o avanço não acumula (nunca fica perto de 400 ms).
+  expect(thirdElapsed).toBeGreaterThanOrEqual(1600);
   expect(thirdElapsed).toBeLessThan(4500);
 });
 
