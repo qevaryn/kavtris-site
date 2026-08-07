@@ -125,33 +125,21 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 ## Institutional, Company And Product Baseline
 
-### Rede Qualidade é Vida
+> A documentação transversal (governança, empresa, produto, Qevaryn Platform, sistemas, planos e subscrições) foi transferida para o repositório oficial `qevaryn/qevaryn-docs`. Este repositório mantém apenas ponteiros (stubs) para compatibilidade com links e referências históricas.
 
-- [governance/rede-qualidade-e-vida.md](governance/rede-qualidade-e-vida.md)
-  Audience: owner, product, legal, commercial, partners and future collaborators
-  Purpose: institutional governance, brand, cooperation and network rules baseline.
-  Status: review candidate (draft strategic baseline, version 0.2).
+## Autoridade documental
 
-### Qevaryn Systems
+### Qevaryn Docs
 
-- [governance/qevaryn-systems.md](governance/qevaryn-systems.md)
-  Audience: owner, product, commercial, engineering, QA, legal and future collaborators
-  Purpose: company identity, operations, services, contracts and business model baseline.
-  Status: review candidate (draft company baseline, version 0.2).
+Governança, produto, Platform, sistemas, planos e subscrições:
 
-### Qevaryn Platform
+`qevaryn/qevaryn-docs` — https://github.com/qevaryn/qevaryn-docs
 
-- [products/qevaryn-platform-ecosystem.md](products/qevaryn-platform-ecosystem.md)
-  Audience: product, design, frontend, backend, QA, commercial and legal
-  Purpose: central baseline for the Qevaryn Platform ecosystem, systems, per-system plans and subscriptions.
-  Status: draft (version 0.1).
+### Qevaryn Site
 
-- [products/qevaryn-platform-first-product.md](products/qevaryn-platform-first-product.md)
-  Audience: product, design, frontend, backend, QA, commercial and legal
-  Purpose: Qevaryn Platform definition and first product "Pedidos e Trabalhos" baseline, with per-system illustrative plans.
-  Status: review candidate (draft product baseline, version 0.3).
+Arquitetura técnica, desenvolvimento, QA, deploy e operação do site:
 
-> Estes documentos registam decisões institucionais, empresariais e de produto. Itens classificados como proposta, exemplo ou a validar não representam funcionalidades implementadas nem compromissos públicos.
+este repositório.
 
 ## Visual Assets
 
