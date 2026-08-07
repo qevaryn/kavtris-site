@@ -123,6 +123,31 @@ This directory documents the architecture that currently exists. Future ideas ar
   Purpose: contact feature responsibilities and API integration.
   Status: current.
 
+## Institutional, Company And Product Baseline
+
+### Rede Qualidade é Vida
+
+- [governance/rede-qualidade-e-vida.md](governance/rede-qualidade-e-vida.md)
+  Audience: owner, product, legal, commercial, partners and future collaborators
+  Purpose: institutional governance, brand, cooperation and network rules baseline.
+  Status: review candidate (draft strategic baseline, version 0.2).
+
+### Qevaryn Systems
+
+- [governance/qevaryn-systems.md](governance/qevaryn-systems.md)
+  Audience: owner, product, commercial, engineering, QA, legal and future collaborators
+  Purpose: company identity, operations, services, contracts and business model baseline.
+  Status: review candidate (draft company baseline, version 0.2).
+
+### Qevaryn Platform
+
+- [products/qevaryn-platform-first-product.md](products/qevaryn-platform-first-product.md)
+  Audience: product, design, frontend, backend, QA, commercial and legal
+  Purpose: modular platform concept, first product "Pedidos e Trabalhos" and illustrative plans baseline.
+  Status: review candidate (draft product baseline, version 0.2).
+
+> Estes documentos registam decisões institucionais, empresariais e de produto. Itens classificados como proposta, exemplo ou a validar não representam funcionalidades implementadas nem compromissos públicos.
+
 ## Visual Assets
 
 - [visual-assets/audit.md](visual-assets/audit.md)
