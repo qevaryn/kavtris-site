@@ -141,10 +141,15 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 ### Qevaryn Platform
 
+- [products/qevaryn-platform-ecosystem.md](products/qevaryn-platform-ecosystem.md)
+  Audience: product, design, frontend, backend, QA, commercial and legal
+  Purpose: central baseline for the Qevaryn Platform ecosystem, systems, per-system plans and subscriptions.
+  Status: draft (version 0.1).
+
 - [products/qevaryn-platform-first-product.md](products/qevaryn-platform-first-product.md)
   Audience: product, design, frontend, backend, QA, commercial and legal
-  Purpose: modular platform concept, first product "Pedidos e Trabalhos" and illustrative plans baseline.
-  Status: review candidate (draft product baseline, version 0.2).
+  Purpose: Qevaryn Platform definition and first product "Pedidos e Trabalhos" baseline, with per-system illustrative plans.
+  Status: review candidate (draft product baseline, version 0.3).
 
 > Estes documentos registam decisões institucionais, empresariais e de produto. Itens classificados como proposta, exemplo ou a validar não representam funcionalidades implementadas nem compromissos públicos.
 
