@@ -3,7 +3,7 @@ title: "Rede Qualidade é Vida — Governança, Marca, Cooperação e Regras Ins
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
 status: "review-candidate"
-version: "0.2"
+version: "0.3"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -487,14 +487,16 @@ Qevaryn Systems
 = empresa tecnológica independente integrante da Rede
 
 Qevaryn Platform
-= plataforma SaaS modular da Qevaryn Systems
+= aplicação central através da qual a empresa gere a conta e acede aos sistemas contratados
 
-Qevaryn Core
-= infraestrutura comum da plataforma
+Os meus sistemas
+= área da Qevaryn Platform que reúne os sistemas contratados
 
 Pedidos e Trabalhos
-= primeiro sistema essencial da plataforma
+= primeiro sistema da Qevaryn Platform
 ```
+
+> SUBSTITUÍDO — A expressão "Qevaryn Core" foi utilizada numa versão anterior da arquitetura. A camada foi removida; as capacidades compartilhadas pertencem diretamente à Qevaryn Platform.
 
 Esta hierarquia deve ser preservada de forma consistente nos três documentos de baseline. Não misturar as entidades.
 
@@ -747,6 +749,7 @@ Riscos a monitorizar (`A VALIDAR`):
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline institucional da Rede | Gabriel Dias de Souza |
 | 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: hierarquia, decisões e pontos em validação | Gabriel Dias de Souza |
+| 2026-08-07 | 0.3 | Alinhamento da arquitetura Qevaryn: remoção da camada Qevaryn Core e adoção de Qevaryn Platform → Os meus sistemas → sistemas. | Gabriel Dias de Souza |
 
 ## Estado da revisão do proprietário
 

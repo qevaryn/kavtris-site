@@ -3,7 +3,7 @@ title: "Qevaryn Systems — Identidade Empresarial, Operação e Modelo de Negó
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
 status: "review-candidate"
-version: "0.2"
+version: "0.3"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -284,8 +284,7 @@ A plataforma será modular. Separar sempre (`DECIDIDO`):
 
 - empresa (Qevaryn Systems);
 - plataforma (Qevaryn Platform);
-- núcleo (Qevaryn Core);
-- sistemas (módulos contratáveis);
+- sistemas (produtos contratáveis);
 - módulos (expansões);
 - serviços personalizados (adaptações).
 
@@ -545,20 +544,22 @@ Distinção a preservar:
 
 ```text
 Rede Qualidade é Vida
-→ marca institucional e rede comum
+→ rede institucional e marca comum
 
 Qevaryn Systems
 → empresa tecnológica independente integrante da Rede
 
 Qevaryn Platform
-→ plataforma SaaS modular da Qevaryn Systems
+→ aplicação central da Qevaryn Systems: conta, empresa, ativação de produtos, subscrições e acesso aos sistemas contratados
 
-Qevaryn Core
-→ infraestrutura comum da plataforma
+Os meus sistemas
+→ área da Qevaryn Platform que reúne os sistemas contratados pela empresa
 
 Pedidos e Trabalhos
-→ primeiro sistema essencial da plataforma
+→ primeiro sistema da plataforma
 ```
+
+> SUBSTITUÍDO — A camada conceitual anteriormente designada "Qevaryn Core" foi removida da arquitetura oficial da Qevaryn. As capacidades comuns pertencem diretamente à Qevaryn Platform e não constituem produto, marca ou camada própria.
 
 Assinatura histórica:
 
@@ -629,7 +630,9 @@ Riscos a monitorizar (`A VALIDAR`):
 - A Qevaryn Systems é a operadora tecnológica da Rede, com responsabilidades próprias.
 - A Qevaryn Systems não representa juridicamente todas as empresas da Rede.
 - Poderá desenvolver produtos próprios e soluções personalizadas.
-- A Qevaryn Platform é a principal direção de produto SaaS futuro.
+- A Qevaryn Platform é a principal direção de produto SaaS futuro e a aplicação central de gestão dos sistemas contratados.
+- Cada sistema possui a sua própria subscrição e o seu próprio plano.
+- Essencial, Crescimento e Empresarial são níveis por sistema, não planos globais da Qevaryn Platform.
 - A verdade comercial é uma política obrigatória.
 - O processo de trabalho segue descoberta → levantamento → desenvolvimento → lançamento → evolução.
 
@@ -684,6 +687,7 @@ Riscos a monitorizar (`A VALIDAR`):
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline empresarial da Qevaryn Systems | Gabriel Dias de Souza |
 | 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: decisões, certificações e pontos em validação | Gabriel Dias de Souza |
+| 2026-08-07 | 0.3 | Remoção da camada "Qevaryn Core" da arquitetura oficial; capacidades comuns passam a pertencer diretamente à Qevaryn Platform; plano individual por sistema | Gabriel Dias de Souza |
 
 ## Estado da revisão do proprietário
 
@@ -718,4 +722,5 @@ Este documento não foi aprovado juridicamente. A aprovação final é do propri
 ## Documentos relacionados
 
 - [Rede Qualidade é Vida — Governança, Marca, Cooperação e Regras Institucionais](rede-qualidade-e-vida.md)
+- [Qevaryn Platform — Ecossistema, Sistemas, Planos e Subscrições](../products/qevaryn-platform-ecosystem.md)
 - [Qevaryn Platform — Plataforma Modular e Primeiro Produto "Pedidos e Trabalhos"](../products/qevaryn-platform-first-product.md)

@@ -3,7 +3,7 @@ title: "Qevaryn Platform — Plataforma Modular e Primeiro Produto “Pedidos e 
 owner: "Gabriel Dias de Souza"
 organization: "Qevaryn Systems"
 status: "review-candidate"
-version: "0.2"
+version: "0.3"
 classification: "internal"
 language: "pt-PT"
 last_updated: "2026-08-07"
@@ -16,13 +16,15 @@ commercial_review_required: true
 
 > Funcionalidades, limites, preços e condições aqui descritos podem representar hipóteses de produto e precisam de validação antes da publicação ou comercialização.
 
+> A fonte central do ecossistema, sistemas, planos e subscrições é o documento [Qevaryn Platform — Ecossistema, Sistemas, Planos e Subscrições](qevaryn-platform-ecosystem.md). Este documento detalha a Qevaryn Platform e o seu primeiro sistema, Pedidos e Trabalhos.
+
 # Qevaryn Platform — Plataforma Modular e Primeiro Produto "Pedidos e Trabalhos"
 
 ## 1. Definição da plataforma
 
 Definido como `DECIDIDO`:
 
-> A Qevaryn Platform será uma plataforma empresarial modular na qual uma empresa utiliza uma única conta e acede aos sistemas que contratou.
+> A Qevaryn Platform é a aplicação central através da qual uma empresa cliente acede à sua conta, gere informações gerais da empresa, ativa produtos, administra subscrições e abre os sistemas Qevaryn que contratou.
 
 ```text
 Conta da empresa
@@ -46,14 +48,16 @@ Qevaryn Systems
 = empresa tecnológica independente integrante da Rede
 
 Qevaryn Platform
-= plataforma SaaS modular da Qevaryn Systems
+= aplicação central de gestão de conta, empresa, ativação de produtos, subscrições e acesso aos sistemas contratados
 
-Qevaryn Core
-= infraestrutura comum da plataforma
+Os meus sistemas
+= área da Qevaryn Platform que reúne os sistemas contratados pela empresa
 
 Pedidos e Trabalhos
-= primeiro sistema essencial da plataforma
+= primeiro sistema da plataforma
 ```
+
+> SUBSTITUÍDO — A camada anteriormente designada "Qevaryn Core" foi removida da arquitetura oficial. As capacidades comuns pertencem diretamente à Qevaryn Platform.
 
 ## 2. Inspiração da Hotmart
 
@@ -78,46 +82,29 @@ A Qevaryn não será inicialmente (`DECIDIDO` quanto ao limite de escopo):
 
 Não utilizar publicamente a frase "Hotmart para empresas" como posicionamento oficial.
 
-## 3. Qevaryn Core
+## 3. Capacidades comuns da Qevaryn Platform
 
-Documentado conceitualmente (`PROPOSTA` / `A VALIDAR`):
+Registado como `DECIDIDO`:
+
+> Algumas capacidades são naturalmente comuns à Qevaryn Platform e pertencem diretamente a ela. Não constituem produto, plano comercial, módulo, marca nem camada própria.
+
+Exemplos de capacidades comuns:
 
 ```text
-Qevaryn Core
-│
-├── empresas
-├── unidades
-├── utilizadores
-├── equipas
-├── clientes
-├── permissões
-├── ficheiros
-├── notificações
-├── auditoria
-├── configurações
-├── subscrições
-└── catálogo de sistemas
+Conta
+Empresa
+Utilizadores
+Acessos
+Sistemas comprados
+Subscrições
+Ativação de produto
+Ajuda
+Definições gerais
 ```
 
-O Core é infraestrutura comum, não um sistema vendido isoladamente.
+Tecnicamente poderão existir capacidades reutilizadas entre sistemas — por exemplo: identidade, empresa, utilizadores, permissões, subscrições, ficheiros, notificações e auditoria. Essas devem ser descritas como "capacidades ou serviços comuns da Qevaryn Platform" e não como entidade comercial ou arquitetural chamada Qevaryn Core. A implementação técnica concreta é responsabilidade futura do Backend.
 
-```mermaid
-graph TD
-    C[Qevaryn Core] --> E[empresas]
-    C --> U[unidades]
-    C --> UR[utilizadores]
-    C --> EQ[equipas]
-    C --> CL[clientes]
-    C --> P[permissoes]
-    C --> F[ficheiros]
-    C --> N[notificacoes]
-    C --> A[auditoria]
-    C --> CF[configuracoes]
-    C --> S[subscricoes]
-    C --> CS[Catalogo de sistemas]
-```
-
-*Figura 1 — Módulos conceptuais do Qevaryn Core. Nomes sem acentos no diagrama para compatibilidade, sem valor legal.*
+> SUBSTITUÍDO — A camada anteriormente denominada "Qevaryn Core" foi removida da arquitetura oficial da Qevaryn. Não será substituída por outro nome de marketing equivalente (como Qevaryn Base, Qevaryn Engine, Qevaryn Hub Core, Platform Core ou Shared Core) sem decisão futura explícita do Product Owner.
 
 ## 4. Multiempresa
 
@@ -142,26 +129,49 @@ A tecnologia concreta não é definida neste documento.
 
 ## 5. Os meus sistemas
 
-Área da conta com cartões para (`PROPOSTA`):
+Registado como `DECIDIDO`. Depois de entrar na Qevaryn Platform, o proprietário encontra a área "Os meus sistemas", com cartões para (`PROPOSTA` quanto ao layout):
 
-- sistemas ativos;
+- sistemas contratados, com o respetivo plano individual;
 - estado;
 - alertas;
 - indicadores;
-- botão "Abrir sistema";
-- plano;
+- botão "Abrir";
+- botão "Gerir plano";
 - utilizadores autorizados;
 - configuração inicial.
 
-Exemplo ilustrativo:
+Exemplos ilustrativos:
 
 ```text
 Pedidos e Trabalhos
-Ativo
+Plano: Crescimento
+
 4 pedidos a validar
-12 trabalhos em curso
-[Abrir sistema]
+7 trabalhos em curso
+
+[ Abrir ]
+[ Gerir plano ]
 ```
+
+```text
+Website
+Plano: Essencial
+
+Site publicado
+
+[ Abrir ]
+[ Gerir plano ]
+```
+
+```text
+Mobile
+
+Não contratado
+
+[ Conhecer ]
+```
+
+Separar sempre "Os meus sistemas" de "Outros sistemas / Catálogo".
 
 ## 6. Catálogo
 
@@ -178,7 +188,7 @@ Ativo
 - dependências;
 - teste, quando aprovado.
 
-Não confundir o catálogo da plataforma com o catálogo atual do site institucional (`/produtos`).
+Não confundir o catálogo da plataforma com o catálogo atual do site institucional (`/produtos`). O catálogo reúne sistemas ainda não contratados e mantém-se separado de "Os meus sistemas".
 
 ## 7. Ativação de sistema
 
@@ -739,9 +749,12 @@ Futuro (`PROPOSTA` / `A VALIDAR`):
 
 Custos externos devem ser separados.
 
-## 10. Módulos futuros
+## 10. Sistemas e módulos futuros
 
-Todos classificados como `PROPOSTA / FUTURO`:
+Sistemas e módulos futuros, todos classificados como `PROPOSTA / FUTURO`. Cada sistema futuro, quando comercializado, poderá ter a sua própria subscrição e o seu próprio plano (Essencial, Crescimento, Empresarial) se isso fizer sentido para aquele produto. Não chamar todos de "módulos":
+
+- sistemas futuros: FieldOps, Produção, Stock e Compras;
+- módulos/expansões candidatos: Comunicação, Portal do Cliente, Automação, Relatórios, Múltiplas unidades.
 
 ### Comunicação
 
@@ -835,7 +848,9 @@ Não o apresentar como sistema essencial inicial.
 - relatórios;
 - configurações.
 
-## 11. Planos e preços ilustrativos
+## 11. Planos do sistema Pedidos e Trabalhos (ilustrativos)
+
+> Os planos Essencial, Crescimento e Empresarial pertencem a cada sistema individualmente. A Qevaryn Platform não possui planos próprios — não existem "Qevaryn Platform Essencial", "Qevaryn Platform Crescimento" nem "Qevaryn Platform Empresarial".
 
 > HIPÓTESE COMERCIAL DE EXEMPLO — NÃO PUBLICAR, NÃO CODIFICAR E NÃO UTILIZAR EM CONTRATOS SEM VALIDAÇÃO.
 
@@ -1020,19 +1035,20 @@ Risco registado:
 
 > O preço de 29 € pode não ser sustentável caso o plano inclua utilização elevada, armazenamento significativo ou suporte humano frequente.
 
-### 11.7 Ciclo da subscrição
+### 11.7 Ciclo da subscrição do sistema
 
-Proposta (`PROPOSTA` / `A VALIDAR`):
+Proposta (`PROPOSTA` / `A VALIDAR`). A subscrição é individual por sistema: Empresa + Sistema + Plano.
 
 ```text
 Teste ou demonstração
-→ seleção
+→ seleção do sistema
+→ seleção do plano
 → contratação
 → ativação
 → onboarding
 → utilização
 → renovação
-→ upgrade ou downgrade
+→ upgrade ou downgrade daquele sistema
 → cancelamento
 → retenção ou exportação
 → encerramento
@@ -1220,7 +1236,11 @@ Documentar sem inventar valores (`PROPOSTA`):
 
 ### Decisões
 
+- A Qevaryn Platform é a aplicação central através da qual a empresa acede à conta, gere informação geral, ativa produtos, administra subscrições e abre os sistemas contratados.
 - A plataforma é modular e usa uma única conta por empresa.
+- Cada sistema possui a sua própria subscrição e o seu próprio plano.
+- Essencial, Crescimento e Empresarial são níveis por sistema, não planos globais da Qevaryn Platform.
+- Um sistema pode receber upgrade sem alterar os restantes sistemas da empresa.
 - Todo pedido público entra "A validar".
 - O primeiro sistema é Pedidos e Trabalhos.
 - O cliente essencial não precisa de conta.
@@ -1248,7 +1268,8 @@ Documentar sem inventar valores (`PROPOSTA`):
 
 ### Ideias substituídas
 
-- Apresentar os conceitos históricos como produtos concluídos. Nova direção: Pedidos e Trabalhos como primeiro sistema essencial; FieldOps e demais como módulos futuros.
+- Apresentar os conceitos históricos como produtos concluídos. Nova direção: Pedidos e Trabalhos como primeiro sistema essencial; FieldOps e demais como sistemas/módulos futuros.
+- Considerar "Qevaryn Core" uma camada, produto ou marca da arquitetura oficial. Nova direção: as capacidades comuns pertencem diretamente à Qevaryn Platform.
 
 ### Perguntas para Gabriel
 
@@ -1264,6 +1285,7 @@ Documentar sem inventar valores (`PROPOSTA`):
 | --- | --- | --- | --- |
 | 2026-08-07 | 0.1 | Criação da baseline de produto da Qevaryn Platform | Gabriel Dias de Souza |
 | 2026-08-07 | 0.2 | Consolidação da revisão do proprietário: primeiro sistema, orçamento recomendado, módulo Crescimento e pontos em validação | Gabriel Dias de Souza |
+| 2026-08-07 | 0.3 | Remoção da camada "Qevaryn Core"; capacidades comuns passam a pertencer diretamente à Qevaryn Platform; plano individual por sistema; alinhamento com o documento central do ecossistema | Gabriel Dias de Souza |
 
 ## Estado da revisão do proprietário
 
@@ -1273,7 +1295,10 @@ Documentar sem inventar valores (`PROPOSTA`):
 - A área "Os meus sistemas" reúne os sistemas contratados.
 - Sistemas não contratados poderão aparecer no catálogo.
 - Utilizadores e dados comuns são partilhados de forma controlada e com permissões.
-- A subscrição será central e cada empresa terá os dados isolados.
+- A subscrição é individual por sistema: cada sistema possui a sua própria subscrição e o seu próprio plano.
+- Cada empresa terá os dados isolados (multi-tenant).
+- Essencial, Crescimento e Empresarial são níveis por sistema, não planos globais da Qevaryn Platform.
+- Um sistema pode receber upgrade sem alterar os restantes sistemas da empresa.
 - A plataforma não será inicialmente um marketplace, uma plataforma de cursos ou um programa de afiliados.
 - A analogia com a Hotmart limita-se à biblioteca de produtos adquiridos.
 - O primeiro sistema é Pedidos e Trabalhos.
@@ -1304,5 +1329,6 @@ Este documento não foi aprovado juridicamente. A aprovação final é do propri
 
 ## Documentos relacionados
 
+- [Qevaryn Platform — Ecossistema, Sistemas, Planos e Subscrições](qevaryn-platform-ecosystem.md)
 - [Qevaryn Systems — Identidade Empresarial, Operação e Modelo de Negócio](../governance/qevaryn-systems.md)
 - [Rede Qualidade é Vida — Governança, Marca, Cooperação e Regras Institucionais](../governance/rede-qualidade-e-vida.md)
