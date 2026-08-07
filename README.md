@@ -68,7 +68,7 @@ The repository does not currently pin a Node.js version in a `.nvmrc` or `engine
 
 ```bash
 git clone <repository-url>
-cd qualidade-e-vida-tech
+cd qevaryn-site
 npm install
 ```
 
