@@ -51,7 +51,9 @@ For local development without real email delivery:
 CONTACT_FORM_MOCK=true
 ```
 
-Do not commit real secrets.
+`.env.local` is never versioned (see `.gitignore`). Real secrets must not be committed.
+
+Mock mode only applies when `NODE_ENV` is not `production`; it is not a substitute for real Resend configuration in production.
 
 ## Run Locally
 

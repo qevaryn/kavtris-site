@@ -114,7 +114,7 @@ CONTACT_FORM_MOCK=true
 
 Production email delivery requires `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` and `NEXT_PUBLIC_SITE_URL`.
 
-Do not commit real secrets. See [docs/development/setup.md](docs/development/setup.md) and [docs/architecture/contact-flow.md](docs/architecture/contact-flow.md).
+`.env.local` is never versioned. Do not commit real secrets. See [docs/development/setup.md](docs/development/setup.md) and [docs/architecture/contact-flow.md](docs/architecture/contact-flow.md).
 
 ## Development Commands
 

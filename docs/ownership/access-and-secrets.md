@@ -11,7 +11,7 @@ Do not include credentials in this repository.
 
 - `.env.example` documents variable names only.
 - GitHub Actions CI is defined in `.github/workflows/ci.yml`.
-- A manual smoke workflow is defined in `.github/workflows/smoke.yml`.
+- A manual `smoke` job is defined in `.github/workflows/ci.yml` and runs via `workflow_dispatch`.
 - No `vercel.json` exists in the repository.
 
 ## Recommended Future Ownership
