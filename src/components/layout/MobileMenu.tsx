@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { navigationLinks } from '@/lib/constants';
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  const closeMenu = (restoreFocus = false) => {
+  const closeMenu = useCallback((restoreFocus = false) => {
     setOpen(false);
 
     if (restoreFocus) {
@@ -18,7 +22,7 @@ export function MobileMenu() {
         document.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu-panel"]')?.focus();
       }, 0);
     }
-  };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -32,9 +36,67 @@ export function MobileMenu() {
       return undefined;
     }
 
+    // Conteúdo de fundo não deve receber foco nem ser lido enquanto o menu estiver aberto.
+    const background = Array.from(document.querySelectorAll<HTMLElement>('main, footer'));
+    background.forEach((el) => {
+      el.inert = true;
+    });
+
+    // Foco inicial dentro da superfície interativa do menu.
+    window.setTimeout(() => {
+      panelRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)?.focus();
+    }, 0);
+
+    return () => {
+      background.forEach((el) => {
+        el.inert = false;
+      });
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        event.preventDefault();
         closeMenu(true);
+        return;
+      }
+
+      if (event.key !== 'Tab') {
+        return;
+      }
+
+      const panel = panelRef.current;
+      if (!panel) {
+        return;
+      }
+
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+        (el) => el.offsetParent !== null
+      );
+
+      if (focusable.length === 0) {
+        event.preventDefault();
+        panel.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey) {
+        if (active === first || !panel.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else if (active === last || !panel.contains(active)) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
@@ -43,7 +105,7 @@ export function MobileMenu() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open]);
+  }, [open, closeMenu]);
 
   return (
     <div className="min-[1180px]:hidden">
@@ -61,7 +123,12 @@ export function MobileMenu() {
 
       {open ? (
         <div
+          ref={panelRef}
           id="mobile-menu-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navegação"
+          tabIndex={-1}
           className="fixed inset-x-4 top-20 z-50 rounded-3xl border border-white/10 bg-navy-900 p-4 text-white shadow-2xl transition duration-200 sm:inset-x-5"
         >
           <nav aria-label="Menu móvel" className="grid gap-2">
