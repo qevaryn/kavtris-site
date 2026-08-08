@@ -52,7 +52,7 @@ describe('sendContactEmail', () => {
   });
 
   it('mantém a logomarca do email disponível no repositório', () => {
-    expect(existsSync(path.join(process.cwd(), 'public', 'images', 'email-logo.png'))).toBe(true);
+    expect(existsSync(path.join(process.cwd(), 'public', 'images', 'qevaryn-systems-white.png'))).toBe(true);
   });
 
   it('envia para RESEND_TO_EMAIL, usa replyTo do cliente e attachment inline', async () => {
@@ -66,14 +66,14 @@ describe('sendContactEmail', () => {
     expect(payload.to).toBe('destinatario@example.com');
     expect(payload.replyTo).toBe('ana@example.com');
     expect(payload.subject).toBe('[Novo contacto] Automação de processos — Empresa Exemplo');
-    expect(payload.html).toContain('cid:qualidade-e-vida-logo');
+    expect(payload.html).toContain('cid:qevaryn-systems-logo');
     expect(payload.text).toContain('Responder diretamente ao email do cliente');
     expect(payload.attachments).toEqual([
       expect.objectContaining({
-        filename: 'qevaryn-systems.png',
+        filename: 'qevaryn-systems-white.png',
         contentType: 'image/png',
-        contentId: 'qualidade-e-vida-logo',
-        inlineContentId: 'qualidade-e-vida-logo'
+        contentId: 'qevaryn-systems-logo',
+        inlineContentId: 'qevaryn-systems-logo'
       })
     ]);
     expect(payload.attachments[0].content).toBeInstanceOf(Buffer);

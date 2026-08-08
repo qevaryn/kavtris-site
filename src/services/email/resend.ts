@@ -6,12 +6,12 @@ import { getContactEmailEnv } from '@/config/server-env';
 import type { ContactFormValues } from '@/domain/contact';
 import type { ContactEmailProvider } from '@/services/email/email-provider';
 
-const logoContentId = 'qualidade-e-vida-logo';
-const logoFilename = 'qevaryn-systems.png';
+const logoContentId = 'qevaryn-systems-logo';
+const logoFilename = 'qevaryn-systems-white.png';
 type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
 
 async function readEmailLogo() {
-  const logoPath = path.join(process.cwd(), 'public', 'images', 'email-logo.png');
+  const logoPath = path.join(process.cwd(), 'public', 'images', 'qevaryn-systems-white.png');
 
   try {
     return await readFile(logoPath);

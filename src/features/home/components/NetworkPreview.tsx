@@ -13,8 +13,8 @@ export function NetworkPreview() {
                 Tecnologia integrada a uma rede criada para servir melhor.
               </h2>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-                A Qevaryn Systems é a área de tecnologia da Rede Qualidade é Vida, que liga diferentes iniciativas através do mesmo compromisso com
-                qualidade, responsabilidade e respeito pelas pessoas.
+                A Qevaryn Systems é a empresa operadora de tecnologia integrante da Rede Qualidade é Vida, que liga diferentes iniciativas através do
+                mesmo compromisso com qualidade, responsabilidade e respeito pelas pessoas.
               </p>
               <div className="mt-5">
                 <Button href="/rede-qualidade-e-vida" className="w-full sm:w-auto">
