@@ -244,7 +244,12 @@ export function LoopingTicker<T>({
       isDragging: false
     };
 
-    viewport.setPointerCapture(event.pointerId);
+    // A captura de ponteiro mantém o drag do rato fora do viewport. No toque,
+    // a captura implícita reside num filho e a reatribuição dispararia
+    // lostpointercapture, interrompendo o drag.
+    if (event.pointerType === 'mouse') {
+      viewport.setPointerCapture(event.pointerId);
+    }
   }
 
   function onPointerMove(event: PointerEvent<HTMLDivElement>) {

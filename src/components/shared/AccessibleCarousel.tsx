@@ -911,6 +911,12 @@ export function AccessibleCarousel<T>({
       }
     }
 
+    // Interrompe qualquer scroll suave automático em curso para que o gesto
+    // manual não compita com a animação nativa do browser.
+    if (isFeaturedStep) {
+      viewport.scrollTo({ left: viewport.scrollLeft, behavior: 'auto' });
+    }
+
     if (isContinuous) {
       offsetRef.current = viewport.scrollLeft;
     }

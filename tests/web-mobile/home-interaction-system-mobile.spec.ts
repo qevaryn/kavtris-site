@@ -159,3 +159,32 @@ test('carrossel de produtos mobile retoma autoplay 2 s depois de um swipe e mant
   await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5000 }).toBeGreaterThan(scrollBefore);
 });
+test('ticker mobile permite arrasto horizontal por touch, estabiliza e retoma autoplay', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+  const before = await readScroll();
+
+  // drag para a esquerda (avança) e solta: a posição deve mudar e não ficar presa
+  await touchSwipe(page, tickerViewport, 0.85, 0.15);
+  await page.waitForTimeout(250);
+  const afterLeft = await readScroll();
+  expect(afterLeft).not.toBe(before);
+
+  // drag para a direita (recua) e solta
+  const mid = await readScroll();
+  await touchSwipe(page, tickerViewport, 0.15, 0.85);
+  await page.waitForTimeout(250);
+  const afterRight = await readScroll();
+  expect(afterRight).not.toBe(mid);
+
+  // autoplay retoma após a pausa de interação: o scrollLeft volta a mover
+  const stable = await readScroll();
+  await expect.poll(() => readScroll(), { timeout: 5000 }).not.toBe(stable);
+});
