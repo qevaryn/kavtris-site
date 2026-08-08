@@ -1,5 +1,5 @@
 import type { ContactFormValues } from '@/domain/contact';
-import { brandTagline, companyName, siteUrl, socialLinks } from '@/lib/constants';
+import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
 const emailSubjectPrefix = 'Re: Pedido — Qevaryn Systems';
 
@@ -62,8 +62,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     message: escapeHtml(input.message).replace(/\n/g, '<br />'),
     submittedAt: escapeHtml(submittedAt),
     origin: escapeHtml(origin),
-    mailto: escapeHtml(mailto),
-    github: escapeHtml(socialLinks.github)
+    mailto: escapeHtml(mailto)
   };
 
   const html = `<!doctype html>
@@ -75,7 +74,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
           <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;">
             <tr>
               <td style="background:#031426;padding:28px 32px 22px 32px;border-radius:18px 18px 0 0;">
-                <img src="cid:qualidade-e-vida-logo" width="280" alt="Qevaryn Systems" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
+                <img src="cid:qevaryn-systems-logo" width="280" alt="Qevaryn Systems" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
                 <div style="height:2px;width:96px;background:#D99A16;margin:20px 0 14px 0;"></div>
                 <p style="margin:0;color:#F2B632;font-size:12px;line-height:18px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;">Novo contacto através do site</p>
               </td>
@@ -170,11 +169,9 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
             <tr>
               <td style="background:#031426;padding:24px 32px;border-radius:0 0 18px 18px;color:#FFFFFF;">
                 <p style="margin:0 0 6px 0;font-size:16px;line-height:24px;font-weight:700;">${companyName}</p>
-                <p style="margin:0 0 14px 0;color:#D1D5DB;font-size:13px;line-height:20px;">${brandTagline}</p>
-                <p style="margin:0 0 12px 0;color:#9CA3AF;font-size:12px;line-height:18px;">Esta mensagem foi gerada automaticamente através do formulário de contacto do site.</p>
-                <p style="margin:0;color:#D1D5DB;font-size:12px;line-height:18px;">
-                  GitHub: <a href="${safe.github}" style="color:#F2B632;text-decoration:none;">${safe.github}</a>
-                </p>
+                <p style="margin:0 0 12px 0;color:#D1D5DB;font-size:13px;line-height:20px;">${brandTagline}</p>
+                <p style="margin:0 0 14px 0;color:#F2B632;font-size:13px;line-height:20px;">Integrante da Rede Qualidade é Vida</p>
+                <p style="margin:0;color:#9CA3AF;font-size:12px;line-height:18px;">Esta mensagem foi gerada automaticamente através do formulário de contacto do site.</p>
               </td>
             </tr>
           </table>
@@ -208,7 +205,11 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
     `Data do pedido: ${submittedAt} (Europe/Lisbon)`,
     `Página de origem: ${origin}`,
     '',
-    `Responder diretamente ao email do cliente: ${input.email}`
+    `Responder diretamente ao email do cliente: ${input.email}`,
+    '',
+    `${companyName} — ${brandTagline}`,
+    'Integrante da Rede Qualidade é Vida',
+    'Esta mensagem foi gerada automaticamente através do formulário de contacto do site.'
   ].join('\n');
 
   return {

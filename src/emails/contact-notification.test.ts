@@ -29,8 +29,10 @@ describe('contact notification email template', () => {
       origin: 'https://example.com/contacto'
     });
 
-    expect(email.html).toContain('src="cid:qualidade-e-vida-logo"');
+    expect(email.html).toContain('src="cid:qevaryn-systems-logo"');
     expect(email.html).toContain('Novo pedido comercial');
+    expect(email.html).toContain('Integrante da Rede Qualidade é Vida');
+    expect(email.html).not.toContain('github.com/gabrielsouza80');
     expect(email.html).toContain('Ana Silva');
     expect(email.html).toContain('Automação de processos');
     expect(email.html).toContain('Qevaryn FieldOps');
@@ -66,6 +68,7 @@ describe('contact notification email template', () => {
     expect(email.text).toContain('Empresa: Empresa Exemplo');
     expect(email.text).toContain('Email: ana@example.com');
     expect(email.text).toContain('Produto de interesse: Qevaryn FieldOps');
+    expect(email.text).toContain('Integrante da Rede Qualidade é Vida');
     expect(email.text).toContain('Responder diretamente ao email do cliente: ana@example.com');
   });
 
