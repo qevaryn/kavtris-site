@@ -17,8 +17,4 @@ export const navigationLinks = [
   // O link "Planos" (/#planos) entra apenas no PR 3, quando a secção existir.
 ];
 
-export const socialLinks = {
-  github: 'https://github.com/gabrielsouza80'
-};
-
 export const contactEmail = process.env.RESEND_TO_EMAIL || '';
