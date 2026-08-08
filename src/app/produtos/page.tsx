@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { CatalogPageView } from '@/features/catalog/CatalogPageView';
 import { siteUrl } from '@/lib/constants';
 
-const title = 'Produtos e Soluções de Software | Qevaryn Systems';
+const title = 'Produtos e Soluções de Software';
 const description =
   'Explore soluções de software para hotelaria, restauração, retalho, serviços, equipas externas e gestão empresarial.';
 const canonicalPath = '/produtos';
