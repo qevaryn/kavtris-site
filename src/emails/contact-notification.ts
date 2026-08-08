@@ -67,6 +67,10 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
 
   const html = `<!doctype html>
 <html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
   <body style="margin:0;padding:0;background:#F3F4F6;color:#0A1B30;font-family:Arial,Helvetica,sans-serif;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;background:#F3F4F6;margin:0;padding:32px 12px;">
       <tr>
