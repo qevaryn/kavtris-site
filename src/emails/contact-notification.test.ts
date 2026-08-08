@@ -44,6 +44,50 @@ describe('contact notification email template', () => {
     expect(email.html).toContain('https://example.com/contacto');
   });
 
+  it('preserva UTF-8 em subject, HTML e text/plain (conjunto mínimo de acentos)', () => {
+    const email = buildContactNotificationEmail({
+      ...baseValues,
+      service: 'Automação de processos',
+      company: 'Organização Gestão',
+      currentProcess: 'Configuração de processos com ação imediata.',
+      message: 'Não é necessária uma ação imediata. A qualidade é importante.'
+    });
+
+    // Words carried by the payload must survive intact into the subject.
+    for (const word of ['Automação', 'processos']) {
+      expect(email.subject).toContain(word);
+    }
+
+    // Payload words must survive intact into both HTML and text/plain.
+    const payloadWords = ['Automação', 'Configuração', 'Organização', 'ação', 'Não', 'Gestão', 'processos'];
+
+    for (const word of payloadWords) {
+      expect(email.html).toContain(word);
+      expect(email.text).toContain(word);
+    }
+
+    // Fixed template words with accents must remain intact.
+    for (const word of ['através', 'Informações', 'Preferência', 'está difícil', 'afetado']) {
+      expect(email.html).toContain(word);
+    }
+    expect(email.text).toContain('através');
+
+    // Replacement character must never appear in the generated email.
+    expect(email.subject).not.toContain('\uFFFD');
+    expect(email.html).not.toContain('\uFFFD');
+    expect(email.text).not.toContain('\uFFFD');
+
+    // Mozjibake patterns must not appear.
+    expect(email.html).not.toContain('Automa??o');
+    expect(email.html).not.toContain('Automa\uFFFD\uFFFDo');
+  });
+
+  it('declara charset UTF-8 no HTML do email', () => {
+    const email = buildContactNotificationEmail(baseValues);
+
+    expect(email.html).toMatch(/<meta\s+charset=["']utf-8["']\s*\/?>/i);
+  });
+
   it('escapa conteúdo HTML malicioso', () => {
     const email = buildContactNotificationEmail({
       ...baseValues,

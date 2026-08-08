@@ -21,6 +21,24 @@ CONTACT_FORM_MOCK=true
 
 Mock mode is for non-production local development and tests.
 
+## Encoding In External Test Payloads
+
+Synthetic payloads sent from a shell or PowerShell must preserve UTF-8 explicitly.
+
+A terminal or shell with an incorrect code page can corrupt non-ASCII characters before they reach the application and produce a false encoding positive.
+
+When a mojibake issue is observed, check first:
+
+```text
+source
+→ serialization
+→ request
+→ application
+→ template
+```
+
+The application pipeline preserves UTF-8; verify the external tooling before attributing corruption to the product.
+
 ## Port 3000 Is Occupied
 
 Check the running process.
