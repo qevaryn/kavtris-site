@@ -25,11 +25,13 @@ CI workflow:
 .github/workflows/ci.yml
 ```
 
-Manual smoke workflow:
+Manual smoke job:
 
 ```text
-.github/workflows/smoke.yml
+.github/workflows/ci.yml -> job `smoke`
 ```
+
+The `smoke` job lives in the same workflow as CI and runs only when the workflow is triggered manually via `workflow_dispatch` (requires the `base_url` input).
 
 No `vercel.json` exists in the repository. Any Vercel project settings are external configuration and must be verified in Vercel.
 
@@ -59,7 +61,7 @@ The repository CI runs:
 
 ## Smoke Validation
 
-The `Production Smoke` workflow is manual and accepts:
+The `smoke` job in `.github/workflows/ci.yml` is manual (triggered via `workflow_dispatch`) and accepts:
 
 ```text
 base_url
