@@ -213,3 +213,88 @@ test('cliques rápidos no ticker contam todos os passos (Next ×2 e Anterior ×2
   await prev.click();
   await expect.poll(() => readScroll(viewport), { timeout: 5000 }).toBe(Math.round(2 * step));
 });
+
+test('boundary do loop nunca deixa o viewport sem card visível (sem blank frame)', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  const next = carousel.getByRole('button', { name: 'Próximo slide' });
+  const prev = carousel.getByRole('button', { name: 'Slide anterior' });
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  // sampler rAF: registra, a cada frame, quantos slides com conteúdo estão visíveis
+  await page.evaluate(() => {
+    const win = window as unknown as {
+      __blankSamples?: number[];
+      __samplerOn?: boolean;
+    };
+    win.__blankSamples = [];
+    win.__samplerOn = true;
+    const sample = () => {
+      if (!win.__samplerOn) return;
+      const vp = document.querySelector('[data-testid="featured-products-carousel-viewport"]');
+      if (vp) {
+        const vr = vp.getBoundingClientRect();
+        const slides = Array.from(vp.querySelectorAll('[role="group"]'));
+        let visibleWithContent = 0;
+        for (const s of slides) {
+          const r = s.getBoundingClientRect();
+          const inter = Math.max(0, Math.min(r.right, vr.right) - Math.max(r.left, vr.left));
+          if (inter > 4 && (s.textContent || '').trim().length > 0) {
+            visibleWithContent++;
+          }
+        }
+        win.__blankSamples.push(visibleWithContent);
+      }
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  });
+
+  // 2 voltas completas para frente e 2 para trás, atravessando o boundary
+  for (let round = 0; round < 2; round++) {
+    for (let i = 0; i < 4; i++) {
+      await next.click();
+      await page.waitForTimeout(700);
+    }
+  }
+  for (let round = 0; round < 2; round++) {
+    for (let i = 0; i < 4; i++) {
+      await prev.click();
+      await page.waitForTimeout(700);
+    }
+  }
+
+  const result = await page.evaluate(() => {
+    const win = window as unknown as {
+      __blankSamples?: number[];
+      __samplerOn?: boolean;
+    };
+    win.__samplerOn = false;
+    const samples: number[] = win.__blankSamples ?? [];
+    return { total: samples.length, min: Math.min(...samples), blanks: samples.filter((s) => s === 0).length };
+  });
+  expect(result.total).toBeGreaterThan(50);
+  expect(result.blanks).toBe(0);
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+});
+
+test('autoplay atravessa o boundary do loop sem perder continuidade', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  // espera o autoplay percorrer um ciclo completo (4 itens × 2 s ≈ 8 s + folga)
+  const labels: string[] = [];
+  for (let i = 0; i < 14; i++) {
+    await page.waitForTimeout(700);
+    labels.push(await indicatorLabel(carousel));
+  }
+
+  // o ciclo completo foi atravessado: o primeiro card volta a aparecer
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 15000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
+});

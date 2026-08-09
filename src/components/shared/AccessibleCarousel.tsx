@@ -25,6 +25,7 @@ type AccessibleCarouselProps<T> = {
 };
 
 const PROGRAMMATIC_SCROLL_EPSILON = 4;
+const BOUNDARY_SETTLE_EPSILON = 40;
 const PROGRAMMATIC_SCROLL_FALLBACK_MS = 3000;
 const CONTINUOUS_SPEED_PX_PER_SECOND = 40;
 
@@ -797,9 +798,14 @@ export function AccessibleCarousel<T>({
 
     const onScrollEnd = () => {
       const state = programmaticScrollRef.current;
+      if (!state.active) {
+        return;
+      }
+      const isBoundaryClone =
+        isFeaturedStep && (state.targetIndex === 0 || state.targetIndex === items.length + 1);
       if (
-        state.active &&
-        Math.abs(viewport.scrollLeft - state.targetScrollLeft) <= PROGRAMMATIC_SCROLL_EPSILON
+        Math.abs(viewport.scrollLeft - state.targetScrollLeft) <=
+        (isBoundaryClone ? BOUNDARY_SETTLE_EPSILON : PROGRAMMATIC_SCROLL_EPSILON)
       ) {
         finalizeProgrammaticScroll();
       }
@@ -810,7 +816,7 @@ export function AccessibleCarousel<T>({
     return () => {
       viewport.removeEventListener('scrollend', onScrollEnd);
     };
-  }, [finalizeProgrammaticScroll]);
+  }, [finalizeProgrammaticScroll, isFeaturedStep, items.length]);
 
   useEffect(() => {
     return () => {
@@ -838,7 +844,11 @@ export function AccessibleCarousel<T>({
 
     if (state.active) {
       const distance = Math.abs(viewport.scrollLeft - state.targetScrollLeft);
-      if (distance <= PROGRAMMATIC_SCROLL_EPSILON) {
+      // No boundary (clone), o alvo pode ficar ligeiramente aquém por clamping/
+      // arredondamento; alargar o limite evita depender do fallback de 3000ms.
+      const isBoundaryClone =
+        isFeaturedStep && (state.targetIndex === 0 || state.targetIndex === items.length + 1);
+      if (distance <= (isBoundaryClone ? BOUNDARY_SETTLE_EPSILON : PROGRAMMATIC_SCROLL_EPSILON)) {
         finalizeProgrammaticScroll();
       }
       return;
