@@ -31,6 +31,8 @@ test('mobile catalog shows one-column cards and buttons stay inside viewport', a
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/produtos');
 
+  // Positional contract is intentional: this test verifies the stacking
+  // geometry of the first two catalog cards at 320px, not a specific product.
   const firstCard = page.getByTestId('product-card').first();
   const secondCard = page.getByTestId('product-card').nth(1);
   const firstBox = await firstCard.boundingBox();

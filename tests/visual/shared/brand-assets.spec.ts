@@ -326,13 +326,13 @@ test('gera screenshots da integração visual final', async ({ page }, testInfo)
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase4-header-desktop.png') });
-  await page.locator('#rede > div').screenshot({ path: testInfo.outputPath('phase4-network-desktop.png') });
+  await page.getByTestId('network-preview').screenshot({ path: testInfo.outputPath('phase4-network-desktop.png') });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase4-header-mobile.png') });
   await page.locator('#rede').scrollIntoViewIfNeeded();
-  await page.locator('#rede > div').screenshot({ path: testInfo.outputPath('phase4-network-mobile.png') });
+  await page.getByTestId('network-preview').screenshot({ path: testInfo.outputPath('phase4-network-mobile.png') });
 });
 
 test('gera screenshots específicas da logomarca transparente', async ({ page }, testInfo) => {
