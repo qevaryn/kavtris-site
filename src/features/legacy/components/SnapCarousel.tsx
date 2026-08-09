@@ -80,7 +80,7 @@ export function SnapCarousel({ label, testId, itemCount, children }: SnapCarouse
 
       <button
         type="button"
-        className="absolute left-0 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 shadow-lg transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+        className="absolute left-1 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
         aria-label="Anterior"
         onClick={() => navigate(-1)}
       >
@@ -89,7 +89,7 @@ export function SnapCarousel({ label, testId, itemCount, children }: SnapCarouse
 
       <button
         type="button"
-        className="absolute right-0 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 shadow-lg transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+        className="absolute right-1 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
         aria-label="Seguinte"
         onClick={() => navigate(1)}
       >

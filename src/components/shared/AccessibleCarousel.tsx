@@ -929,7 +929,7 @@ export function AccessibleCarousel<T>({
         <div
           ref={viewportRef}
           className={cn(
-            'overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
+            'overflow-x-auto py-4 sm:py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
             viewportClassName
           )}
           onScroll={onScroll}
@@ -956,7 +956,7 @@ export function AccessibleCarousel<T>({
 
         <button
           type="button"
-          className="absolute left-0 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 shadow-lg transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+          className="absolute -left-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:left-0"
           aria-label="Slide anterior"
           onClick={() => goToLogicalIndex(activeIndexRef.current - 1, { smooth: true, fromInteraction: true })}
         >
@@ -965,7 +965,7 @@ export function AccessibleCarousel<T>({
 
         <button
           type="button"
-          className="absolute right-0 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 shadow-lg transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+          className="absolute -right-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:right-0"
           aria-label="Próximo slide"
           onClick={() => goToLogicalIndex(activeIndexRef.current + 1, { smooth: true, fromInteraction: true })}
         >

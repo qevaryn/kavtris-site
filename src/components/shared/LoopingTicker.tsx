@@ -17,6 +17,7 @@ type LoopingTickerProps<T> = {
   trackClassName?: string;
   itemClassName?: string;
   testId?: string;
+  edgeFadeClassName?: string;
 };
 
 const INTERACTION_PAUSE_MS = 2000;
@@ -31,7 +32,8 @@ export function LoopingTicker<T>({
   viewportClassName,
   trackClassName,
   itemClassName,
-  testId
+  testId,
+  edgeFadeClassName
 }: LoopingTickerProps<T>) {
   const tickerRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -292,9 +294,22 @@ export function LoopingTicker<T>({
           </div>
         </div>
 
+        {edgeFadeClassName ? (
+          <>
+            <div
+              aria-hidden="true"
+              className={cn('pointer-events-none absolute inset-y-0 left-0 z-[5] w-10 bg-gradient-to-r to-transparent', edgeFadeClassName)}
+            />
+            <div
+              aria-hidden="true"
+              className={cn('pointer-events-none absolute inset-y-0 right-0 z-[5] w-10 bg-gradient-to-l to-transparent', edgeFadeClassName)}
+            />
+          </>
+        ) : null}
+
         <button
           type="button"
-          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white/95 text-navy-900 shadow-md transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
           aria-label="Anterior"
           onClick={() => stepManual(-1)}
         >
@@ -303,7 +318,7 @@ export function LoopingTicker<T>({
 
         <button
           type="button"
-          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-borderline bg-white/95 text-navy-900 shadow-md transition hover:border-gold-500 hover:text-gold-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
+          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
           aria-label="Seguinte"
           onClick={() => stepManual(1)}
         >
