@@ -22,6 +22,7 @@ type LoopingTickerProps<T> = {
 
 const INTERACTION_PAUSE_MS = 2000;
 const DEFAULT_SPEED_PX_PER_SECOND = 40;
+const STEP_TRANSITION_FALLBACK_MS = 800;
 
 export function LoopingTicker<T>({
   ariaLabel,
@@ -43,6 +44,12 @@ export function LoopingTicker<T>({
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
+  const stepQueueRef = useRef<Array<1 | -1>>([]);
+  const isStepTransitionRef = useRef(false);
+  const stepTransitionTimeoutRef = useRef<number | null>(null);
+  const processStepQueueRef = useRef<() => void>(() => {});
+  const finishCurrentStepRef = useRef<() => void>(() => {});
+  const scheduleInteractionResumeRef = useRef<() => void>(() => {});
   const [pausedByInteraction, setPausedByInteraction] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(true);
   const { inViewport: isInViewport, priority } = useInViewport(tickerRef, 0.35);
@@ -94,41 +101,126 @@ export function LoopingTicker<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
+      // O autoplay contínuo só retoma quando a fila de passos manuais está
+      // vazia e nenhuma transição de item está em curso.
+      if (stepQueueRef.current.length > 0 || isStepTransitionRef.current) {
+        scheduleInteractionResumeRef.current();
+        return;
+      }
       setPausedByInteraction(false);
     }, INTERACTION_PAUSE_MS);
   }, []);
 
-  // Avança/retrocede um item lógico (largura real de um item + gap), mantendo
-  // a posição dentro do ciclo do loop. O autoplay pausa durante a leitura e
-  // retoma depois da pausa de interação.
+  useEffect(() => {
+    scheduleInteractionResumeRef.current = scheduleInteractionResume;
+  }, [scheduleInteractionResume]);
+
+  // Avança/retrocede EXATAMENTE UM item lógico, terminando alinhado no início
+  // do próximo/anterior item. O autoplay pausa imediatamente; cada clique é
+  // enfileirado e executado em série (cliques rápidos não se perdem).
   const stepManual = useCallback(
     (direction: 1 | -1) => {
       const viewport = viewportRef.current;
-      const mainTrack = mainTrackRef.current;
-      if (!viewport || !mainTrack || mainTrack.children.length === 0) {
+      if (!viewport) {
         return;
       }
-
       beginInteractionPause();
-
-      const cycleWidth = getCycleWidth();
-      if (cycleWidth <= 0) {
-        return;
-      }
-
-      const firstItem = mainTrack.children[0] as HTMLElement;
-      const itemWidth = firstItem.getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(mainTrack).gap) || 0;
-      const step = itemWidth + gap;
-      const currentOffset = normalizeOffset(viewport.scrollLeft, cycleWidth);
-      const nextOffset = normalizeOffset(currentOffset + direction * step, cycleWidth);
-
-      offsetRef.current = nextOffset;
-      applyOffset(nextOffset);
+      stepQueueRef.current.push(direction);
       scheduleInteractionResume();
+      processStepQueueRef.current();
     },
-    [beginInteractionPause, scheduleInteractionResume, getCycleWidth, normalizeOffset, applyOffset]
+    [beginInteractionPause, scheduleInteractionResume]
   );
+
+  const processStepQueue = useCallback(() => {
+    const viewport = viewportRef.current;
+    const mainTrack = mainTrackRef.current;
+    if (!viewport || !mainTrack || mainTrack.children.length === 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+    if (isStepTransitionRef.current || stepQueueRef.current.length === 0) {
+      return;
+    }
+
+    const direction = stepQueueRef.current.shift() as 1 | -1;
+    isStepTransitionRef.current = true;
+
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth <= 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+
+    const firstItem = mainTrack.children[0] as HTMLElement;
+    const itemWidth = firstItem.getBoundingClientRect().width || 0;
+    const gap = parseFloat(getComputedStyle(mainTrack).gap) || 0;
+    const step = itemWidth + gap;
+    if (step <= 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+
+    const raw = viewport.scrollLeft;
+    const phase = ((raw % step) + step) % step;
+    const alignedCurrentStart = raw - phase;
+    const fullExtent = viewport.scrollWidth;
+    const target = Math.max(0, Math.min(fullExtent - 8, alignedCurrentStart + direction * step));
+
+    const finishStep = () => {
+      isStepTransitionRef.current = false;
+      if (stepTransitionTimeoutRef.current) {
+        window.clearTimeout(stepTransitionTimeoutRef.current);
+        stepTransitionTimeoutRef.current = null;
+      }
+      // Rebate para a região principal do ciclo (conteúdo idêntico → invisível).
+      const normalized = normalizeOffset(viewport.scrollLeft, cycleWidth);
+      offsetRef.current = normalized;
+      viewport.scrollLeft = normalized;
+      if (stepQueueRef.current.length > 0) {
+        processStepQueueRef.current();
+      }
+    };
+    finishCurrentStepRef.current = finishStep;
+
+    if (reducedMotion) {
+      applyOffset(target);
+      finishStep();
+      return;
+    }
+
+    if (stepTransitionTimeoutRef.current) {
+      window.clearTimeout(stepTransitionTimeoutRef.current);
+    }
+    stepTransitionTimeoutRef.current = window.setTimeout(() => {
+      stepTransitionTimeoutRef.current = null;
+      if (isStepTransitionRef.current) {
+        finishStep();
+      }
+    }, STEP_TRANSITION_FALLBACK_MS);
+
+    viewport.scrollTo({ left: target, behavior: 'smooth' });
+  }, [getCycleWidth, normalizeOffset, applyOffset, reducedMotion]);
+
+  useEffect(() => {
+    processStepQueueRef.current = processStepQueue;
+  }, [processStepQueue]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+    const onScrollEnd = () => {
+      if (isStepTransitionRef.current) {
+        finishCurrentStepRef.current();
+      }
+    };
+    viewport.addEventListener('scrollend', onScrollEnd);
+    return () => {
+      viewport.removeEventListener('scrollend', onScrollEnd);
+    };
+  }, [processStepQueue]);
 
   useEffect(() => {
     let lastVisible = document.visibilityState === 'visible';
@@ -191,6 +283,9 @@ export function LoopingTicker<T>({
     return () => {
       if (interactionTimeoutRef.current) {
         window.clearTimeout(interactionTimeoutRef.current);
+      }
+      if (stepTransitionTimeoutRef.current) {
+        window.clearTimeout(stepTransitionTimeoutRef.current);
       }
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);

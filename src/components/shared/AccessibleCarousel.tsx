@@ -70,6 +70,10 @@ export function AccessibleCarousel<T>({
   const advanceToNextRef = useRef<() => void>(() => {});
   const featuredStartSpacerRef = useRef<HTMLDivElement>(null);
   const featuredEndSpacerRef = useRef<HTMLDivElement>(null);
+  const manualQueueRef = useRef<Array<1 | -1>>([]);
+  const isManualTransitionRef = useRef(false);
+  const processManualQueueRef = useRef<() => void>(() => {});
+  const scheduleInteractionResumeRef = useRef<() => void>(() => {});
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
@@ -213,10 +217,20 @@ export function AccessibleCarousel<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
+      // O autoplay só retoma quando não existem comandos manuais pendentes nem
+      // transições em curso — cada clique reinicia (debounce) o temporizador.
+      if (manualQueueRef.current.length > 0 || isManualTransitionRef.current) {
+        scheduleInteractionResumeRef.current();
+        return;
+      }
       resumeWithImmediateAdvanceRef.current = true;
       setPausedByInteraction(false);
     }, interactionPauseMs);
   }, [interactionPauseMs]);
+
+  useEffect(() => {
+    scheduleInteractionResumeRef.current = scheduleInteractionResume;
+  }, [scheduleInteractionResume]);
 
   const registerInteractionPause = useCallback(() => {
     beginInteractionPause();
@@ -269,6 +283,10 @@ export function AccessibleCarousel<T>({
           scheduleFeaturedAdvance(autoplayMs);
         }
       }
+      isManualTransitionRef.current = false;
+      if (manualQueueRef.current.length > 0) {
+        processManualQueueRef.current();
+      }
       return;
     }
 
@@ -282,6 +300,11 @@ export function AccessibleCarousel<T>({
         offsetRef.current = normalizeOffset(state.targetScrollLeft, cycleWidth);
         viewport.scrollLeft = offsetRef.current;
       }
+    }
+
+    isManualTransitionRef.current = false;
+    if (manualQueueRef.current.length > 0) {
+      processManualQueueRef.current();
     }
   }, [isContinuous, isFeaturedStep, items.length, getCycleWidth, normalizeOffset, getSlideTargetScrollLeft, scheduleFeaturedAdvance, autoplayMs]);
 
@@ -435,6 +458,98 @@ export function AccessibleCarousel<T>({
       block: 'nearest'
     });
   }, [items.length, isContinuous, isFeaturedStep, reducedMotion, registerInteractionPause, getSlideOffset, getCycleWidth, normalizeOffset, getSlideTargetScrollLeft, finalizeProgrammaticScroll]);
+
+  // Fila de navegação manual serializada: cada clique conta como um passo
+  // lógico e as transições executam-se em sequência, sem perder comandos.
+  const processManualQueue = useCallback(() => {
+    if (!isFeaturedStep || items.length === 0) {
+      return;
+    }
+    if (isManualTransitionRef.current || manualQueueRef.current.length === 0) {
+      return;
+    }
+
+    const direction = manualQueueRef.current.shift() as 1 | -1;
+    isManualTransitionRef.current = true;
+
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) {
+      isManualTransitionRef.current = false;
+      return;
+    }
+
+    const N = items.length;
+    const currentLogical = activeIndexRef.current;
+    const nextLogical = (currentLogical + direction + N) % N;
+
+    let targetTrackIndex: number;
+    if (direction === 1 && nextLogical === 0) {
+      targetTrackIndex = N + 1; // next-clone (primeiro item) — avança no loop
+    } else if (direction === -1 && nextLogical === N - 1) {
+      targetTrackIndex = 0; // prev-clone (último item) — recua no loop
+    } else {
+      targetTrackIndex = nextLogical + 1;
+    }
+
+    // Estado lógico é a única fonte de verdade e avança imediatamente.
+    activeIndexRef.current = nextLogical;
+    setCurrentIndex(nextLogical);
+
+    const targetScrollLeft = getSlideTargetScrollLeft(targetTrackIndex);
+
+    programmaticScrollRef.current = {
+      active: true,
+      targetIndex: targetTrackIndex,
+      targetScrollLeft,
+      normalizedIndex: nextLogical,
+      fromAutoplay: false
+    };
+
+    if (programmaticScrollTimeoutRef.current) {
+      window.clearTimeout(programmaticScrollTimeoutRef.current);
+    }
+    programmaticScrollTimeoutRef.current = window.setTimeout(() => {
+      programmaticScrollTimeoutRef.current = null;
+      if (programmaticScrollRef.current.active) {
+        finalizeProgrammaticScroll();
+      }
+    }, PROGRAMMATIC_SCROLL_FALLBACK_MS);
+
+    if (reducedMotion) {
+      if (targetTrackIndex === N + 1) {
+        viewport.scrollLeft = getSlideTargetScrollLeft(1);
+      } else if (targetTrackIndex === 0) {
+        viewport.scrollLeft = getSlideTargetScrollLeft(N);
+      } else {
+        viewport.scrollLeft = targetScrollLeft;
+      }
+      programmaticScrollRef.current.active = false;
+      isManualTransitionRef.current = false;
+      if (manualQueueRef.current.length > 0) {
+        processManualQueueRef.current();
+      }
+      return;
+    }
+
+    viewport.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+  }, [isFeaturedStep, items.length, reducedMotion, getSlideTargetScrollLeft, finalizeProgrammaticScroll]);
+
+  useEffect(() => {
+    processManualQueueRef.current = processManualQueue;
+  }, [processManualQueue]);
+
+  const enqueueManual = useCallback(
+    (direction: 1 | -1) => {
+      if (items.length === 0) {
+        return;
+      }
+      registerInteractionPause();
+      manualQueueRef.current.push(direction);
+      processManualQueueRef.current();
+    },
+    [items.length, registerInteractionPause]
+  );
 
   useLayoutEffect(() => {
     advanceToNextRef.current = () => {
@@ -681,7 +796,13 @@ export function AccessibleCarousel<T>({
     }
 
     const onScrollEnd = () => {
-      finalizeProgrammaticScroll();
+      const state = programmaticScrollRef.current;
+      if (
+        state.active &&
+        Math.abs(viewport.scrollLeft - state.targetScrollLeft) <= PROGRAMMATIC_SCROLL_EPSILON
+      ) {
+        finalizeProgrammaticScroll();
+      }
     };
 
     viewport.addEventListener('scrollend', onScrollEnd);
@@ -773,6 +894,10 @@ export function AccessibleCarousel<T>({
     }
 
     event.preventDefault();
+    if (isFeaturedStep && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      enqueueManual(event.key === 'ArrowRight' ? 1 : -1);
+      return;
+    }
     if (isContinuous) {
       const nextIndex =
         event.key === 'Home'
@@ -958,7 +1083,7 @@ export function AccessibleCarousel<T>({
           type="button"
           className="absolute -left-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:left-0"
           aria-label="Slide anterior"
-          onClick={() => goToLogicalIndex(activeIndexRef.current - 1, { smooth: true, fromInteraction: true })}
+          onClick={() => enqueueManual(-1)}
         >
           <ChevronLeft className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -967,7 +1092,7 @@ export function AccessibleCarousel<T>({
           type="button"
           className="absolute -right-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:right-0"
           aria-label="Próximo slide"
-          onClick={() => goToLogicalIndex(activeIndexRef.current + 1, { smooth: true, fromInteraction: true })}
+          onClick={() => enqueueManual(1)}
         >
           <ChevronRight className="h-5 w-5" aria-hidden="true" />
         </button>

@@ -367,6 +367,8 @@ test('carrossel de produtos mobile suporta setas, indicadores, teclado e retoma 
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(before);
 
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+  // o índice lógico é atualizado de forma eager pela fila; aguarda o render
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).not.toBe(before);
   const selectedAfterInteraction = await readActiveIndicatorLabel(carousel);
 
   await page.waitForTimeout(600);
@@ -630,8 +632,10 @@ test('credibilidade mantém-se parada durante a pausa de interação e retoma ao
   });
   await waitForScrollChange(tickerViewport);
 
-  // seta seguinte pausa o autoplay durante a pausa de interação
+  // seta seguinte pausa o autoplay durante a pausa de interação;
+  // primeiro aguarda o passo animado terminar de estabilizar
   await ticker.getByRole('button', { name: 'Seguinte' }).click();
+  await page.waitForTimeout(600);
   const heldFirst = await readScroll();
   await page.waitForTimeout(1000);
   const heldSecond = await readScroll();
