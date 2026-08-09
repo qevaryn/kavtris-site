@@ -73,6 +73,8 @@ Future extraction is documented as conceptual. Extraction requires operational t
 
 Legacy components are retained under `src/features/legacy`. They are not treated as active route composition. No deletion was performed in Phase 8.
 
+**Post-readiness update (5I.1A):** six verified unused legacy components (`Experience`, `Founder`, `InteractiveProductDemo`, `Network`, `Problems`, `Services`) were subsequently removed from `src/features/legacy/components` after passing a full dead-code gate (no static/dynamic/barrel/route/test/runtime references). The Phase 8 statement above remains historically accurate for that phase.
+
 ## Known Limitations
 
 - FieldOps visual asset can be improved later.
