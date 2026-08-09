@@ -226,8 +226,8 @@ test('boundary do loop nunca deixa o viewport sem card visível (sem blank frame
   // sampler rAF: registra, a cada frame, quantos slides com conteúdo estão visíveis
   await page.evaluate(() => {
     const win = window as unknown as {
-      __blankSamples?: number[];
-      __samplerOn?: boolean;
+      __blankSamples: number[];
+      __samplerOn: boolean;
     };
     win.__blankSamples = [];
     win.__samplerOn = true;
@@ -268,11 +268,11 @@ test('boundary do loop nunca deixa o viewport sem card visível (sem blank frame
 
   const result = await page.evaluate(() => {
     const win = window as unknown as {
-      __blankSamples?: number[];
-      __samplerOn?: boolean;
+      __blankSamples: number[];
+      __samplerOn: boolean;
     };
     win.__samplerOn = false;
-    const samples: number[] = win.__blankSamples ?? [];
+    const samples: number[] = win.__blankSamples;
     return { total: samples.length, min: Math.min(...samples), blanks: samples.filter((s) => s === 0).length };
   });
   expect(result.total).toBeGreaterThan(50);
