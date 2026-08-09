@@ -1,5 +1,6 @@
 import { ProjectCard } from '@/components/shared/ProjectCard';
 import { SectionHeading } from '@/components/shared/SectionHeading';
+import { SnapCarousel } from '@/features/legacy/components/SnapCarousel';
 import { projects } from '@/data/projects';
 
 export function Experience() {
@@ -20,18 +21,13 @@ export function Experience() {
           </div>
 
           <div className="mt-10 md:hidden">
-            <div className="snap-row" data-testid="projects-carousel" tabIndex={0} aria-label="Carrossel de projetos profissionais">
+            <SnapCarousel label="Carrossel de projetos profissionais" testId="projects-carousel" itemCount={projects.length}>
               {projects.map((project) => (
                 <div key={project.title} className="snap-card">
                   <ProjectCard {...project} />
                 </div>
               ))}
-            </div>
-            <div className="mt-3 flex justify-center gap-2" aria-hidden="true">
-              {projects.map((project, index) => (
-                <span key={project.title} className={`h-1.5 rounded-full ${index === 0 ? 'w-6 bg-gold-600' : 'w-1.5 bg-navy-800/20'}`} />
-              ))}
-            </div>
+            </SnapCarousel>
           </div>
 
           <div className="mt-8 flex justify-center text-center">
