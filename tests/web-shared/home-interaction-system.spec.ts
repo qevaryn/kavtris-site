@@ -393,51 +393,39 @@ test('carrossel de produtos avança e recua com setas sem quebrar indicadores', 
   await expect.poll(() => readActiveIndicatorLabel(carousel)).toBe(startLabel);
 });
 
-test('arrastar com o rato encaixa no cartão vizinho nos dois sentidos sem abrir o CTA', async ({ page }) => {
+test('setas navegam em loop infinito sem dead-end nos dois sentidos', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 
-  const box = await viewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
+  // Previous no primeiro → último (loop)
+  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
 
-  // drag para a esquerda → próximo cartão
-  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2, { steps: 10 });
-  await page.mouse.up();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
-
-  // drag para a direita → cartão anterior
-  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height / 2, { steps: 10 });
-  await page.mouse.up();
+  // Next no último → primeiro (loop)
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
-
-  // um drag real sobre o CTA não abre o link e volta a encaixar no mesmo cartão
-  const urlBefore = page.url();
-  const ctaLink = carousel.locator('[data-active="true"]').getByRole('link', { name: 'Ver produto' });
-  const ctaBox = await ctaLink.boundingBox();
-  if (!ctaBox) {
-    throw new Error('CTA sem dimensões');
-  }
-
-  await page.mouse.move(ctaBox.x + ctaBox.width / 2, ctaBox.y + ctaBox.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(ctaBox.x + ctaBox.width / 2 - 120, ctaBox.y + ctaBox.height / 2, { steps: 8 });
-  await page.mouse.up();
-  await page.waitForTimeout(400);
-  expect(page.url()).toBe(urlBefore);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
 });
 
-test('clique sem arrastar no CTA do cartão abre o produto', async ({ page }) => {
+test('cliques rápidos nas setas mantêm um único card ativo e o dot sincronizado', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
+
+  const carousel = page.getByTestId('featured-products-carousel');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+
+  const next = carousel.getByRole('button', { name: 'Próximo slide' });
+  await next.click();
+  await next.click();
+  await next.click();
+
+  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
+});
+
+test('clique no CTA do cartão abre o produto', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
@@ -489,33 +477,30 @@ test('indicadores e teclado navegam entre cartões e o contador do processo acom
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
 });
 
-test('autoplay pausa durante pointerdown e retoma 2 s depois; nova interação reinicia o tempo', async ({ page }) => {
+test('autoplay pausa ao usar uma seta e retoma 2 s depois; nova interação reinicia o tempo', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
   await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
 
   const carousel = page.getByTestId('featured-products-carousel');
-  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 
-  const box = await viewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
+  // a seta avança um cartão e o autoplay fica pausado durante a leitura
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
 
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(2500);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
-  await page.mouse.up();
+  // sem double-step: não avança antes do fim da pausa de interação (2000 ms)
+  await page.waitForTimeout(1400);
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn Hotel Operations');
 
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Hotel Operations');
+  // retoma após 2000 ms → avança para o próximo cartão
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Stock & Orders');
 
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
   await page.waitForTimeout(1400);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn Stock & Orders');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3000 }).toBe('Ir para Solução personalizada para o seu contexto');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Solução personalizada para o seu contexto');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3000 }).toBe('Ir para Qevaryn FieldOps');
 });
 
 test('carrossel em destaque não avança com a página escondida e retoma ao voltar', async ({ page }) => {
@@ -631,9 +616,10 @@ test('credibilidade pausa por hover/foco e retoma aos 2s sem mouseleave ou blur'
   expect(focusResumed).toBeGreaterThanOrEqual(focusPausedSecond);
 });
 
-test('credibilidade mantém-se parada durante pointerdown e hidden e retoma aos 2s na mesma posição', async ({ page }) => {
+test('credibilidade mantém-se parada durante a pausa de interação e retoma aos 2 s; hidden pausa', async ({ page }) => {
   await page.goto('/');
 
+  const ticker = page.getByTestId('services-ticker');
   const tickerViewport = page.getByTestId('services-ticker-viewport');
   const readScroll = () => readScrollLeft(tickerViewport);
 
@@ -644,25 +630,16 @@ test('credibilidade mantém-se parada durante pointerdown e hidden e retoma aos 
   });
   await waitForScrollChange(tickerViewport);
 
-  const box = await tickerViewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
-
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
+  // seta seguinte pausa o autoplay durante a pausa de interação
+  await ticker.getByRole('button', { name: 'Seguinte' }).click();
   const heldFirst = await readScroll();
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(1000);
   const heldSecond = await readScroll();
   expect(heldSecond).toBe(heldFirst);
 
-  await page.mouse.up();
-  const releaseFirst = await readScroll();
-  await page.waitForTimeout(500);
-  const releaseSecond = await readScroll();
-  expect(releaseSecond).toBe(releaseFirst);
+  // o autoplay retoma sozinho após a pausa de interação
   await waitForScrollChange(tickerViewport);
-  expect(await readScroll()).toBeGreaterThanOrEqual(releaseSecond);
+  expect(await readScroll()).toBeGreaterThanOrEqual(heldSecond);
 
   await page.evaluate(() => {
     Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
