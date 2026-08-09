@@ -311,3 +311,94 @@ test('ticker mobile mantém posição estável no intervalo entre drags (left �
   // conteúdo acompanhou o gesto nos dois sentidos
   expect(afterRight).not.toBe(duringHold);
 });
+test('ticker mobile progride monotonicamente em pequenos incrementos (movimento contínuo)', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const box = await tickerViewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+  const client = await page.context().newCDPSession(page);
+  const y = box.y + box.height / 2;
+  const startX = box.x + box.width * 0.7;
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y }] });
+  await page.waitForTimeout(200);
+  const samples = [await readScroll()];
+
+  // muitos pequenos movimentos à esquerda, mantendo o dedo ativo
+  for (let i = 1; i <= 12; i += 1) {
+    const x = startX - i * 8;
+    await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(40);
+    samples.push(await readScroll());
+  }
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+
+  // sem retrocessos erráticos durante o gesto
+  const deltas = samples.slice(1).map((value, index) => value - samples[index]);
+  const regressions = deltas.filter((delta) => delta < -10).length;
+  expect(regressions).toBe(0);
+  // o conteúdo acompanhou o gesto
+  expect(samples[samples.length - 1]).not.toBe(samples[0]);
+});
+
+test('ticker mobile muda de direção imediatamente sem soltar o dedo', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const box = await tickerViewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+  const client = await page.context().newCDPSession(page);
+  const y = box.y + box.height / 2;
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+
+  // primeira fase: avança o ticker para garantir espaço dentro do ciclo antes
+  // de inverter a direção sem cruzar os limites do loop
+  const x1 = box.x + box.width * 0.7;
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: x1, y }] });
+  for (let i = 1; i <= 6; i += 1) {
+    await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x1 - i * 30, y }] });
+    await page.waitForTimeout(30);
+  }
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(300);
+  const base = await readScroll();
+  expect(base).toBeGreaterThan(0);
+
+  // segunda fase: drag lento para a esquerda e direção invertida sem soltar
+  const x2 = box.x + box.width * 0.7;
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: x2, y }] });
+  await page.waitForTimeout(150);
+
+  for (let i = 1; i <= 4; i += 1) {
+    await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x2 - i * 10, y }] });
+    await page.waitForTimeout(40);
+  }
+  const afterLeft = await readScroll();
+  expect(afterLeft).toBeGreaterThan(base);
+
+  for (let i = 1; i <= 4; i += 1) {
+    await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x2 - 40 + i * 10, y }] });
+    await page.waitForTimeout(40);
+  }
+  const afterRight = await readScroll();
+  expect(afterRight).toBeLessThan(afterLeft);
+
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(250);
+});

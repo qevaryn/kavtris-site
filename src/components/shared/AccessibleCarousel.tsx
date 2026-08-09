@@ -63,6 +63,7 @@ export function AccessibleCarousel<T>({
   const suppressClickRef = useRef(false);
   const isPointerActiveRef = useRef(false);
 const isTouchActiveRef = useRef(false);
+const pendingTouchSettleRef = useRef(false);
   const programmaticScrollRef = useRef<ProgrammaticScrollState>({
     active: false,
     targetIndex: 0,
@@ -79,8 +80,11 @@ const isTouchActiveRef = useRef(false);
     startX: 0,
     startY: 0,
     startScrollLeft: 0,
+    cycleWidth: 0,
     isDragging: false
   });
+  const dragRafRef = useRef<number | null>(null);
+  const latestDragTargetRef = useRef(0);
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
@@ -584,6 +588,10 @@ const isTouchActiveRef = useRef(false);
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
+      if (dragRafRef.current) {
+        window.cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
+      }
     };
   }, []);
 
@@ -598,6 +606,10 @@ const isTouchActiveRef = useRef(false);
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
+      }
+      if (dragRafRef.current) {
+        window.cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
       }
       lastFrameTimeRef.current = null;
       return;
@@ -633,6 +645,10 @@ const isTouchActiveRef = useRef(false);
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
+      }
+      if (dragRafRef.current) {
+        window.cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
       }
       lastFrameTimeRef.current = null;
     };
@@ -726,6 +742,10 @@ const isTouchActiveRef = useRef(false);
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
+      }
+      if (dragRafRef.current) {
+        window.cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
       }
     };
   }, []);
@@ -925,11 +945,14 @@ const isTouchActiveRef = useRef(false);
       offsetRef.current = viewport.scrollLeft;
     }
 
+    const cycleWidth = getCycleWidth();
+
     dragStateRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
       startScrollLeft: viewport.scrollLeft,
+      cycleWidth,
       isDragging: false
     };
   }
@@ -961,21 +984,42 @@ const isTouchActiveRef = useRef(false);
     }
 
     if (isContinuous) {
-      const cycleWidth = getCycleWidth();
       let nextOffset = dragState.startScrollLeft - deltaX;
-      if (cycleWidth > 0) {
-        nextOffset = normalizeOffset(nextOffset, cycleWidth);
+      if (dragState.cycleWidth > 0) {
+        nextOffset = normalizeOffset(nextOffset, dragState.cycleWidth);
       } else {
         nextOffset = Math.max(0, nextOffset);
       }
       offsetRef.current = nextOffset;
-      viewport.scrollLeft = nextOffset;
+      latestDragTargetRef.current = nextOffset;
     } else {
-      viewport.scrollLeft = dragState.startScrollLeft - deltaX;
+      latestDragTargetRef.current = dragState.startScrollLeft - deltaX;
+    }
+
+    // Um único write por frame, sincronizado com o paint.
+    if (dragRafRef.current === null) {
+      dragRafRef.current = window.requestAnimationFrame(() => {
+        dragRafRef.current = null;
+        const viewport = viewportRef.current;
+        if (viewport) {
+          viewport.scrollLeft = latestDragTargetRef.current;
+        }
+      });
     }
 
     if (event.cancelable) {
       event.preventDefault();
+    }
+  }
+
+  function flushDragWrite() {
+    if (dragRafRef.current !== null) {
+      window.cancelAnimationFrame(dragRafRef.current);
+      dragRafRef.current = null;
+    }
+    const viewport = viewportRef.current;
+    if (viewport) {
+      viewport.scrollLeft = latestDragTargetRef.current;
     }
   }
 
@@ -1014,11 +1058,14 @@ const isTouchActiveRef = useRef(false);
 
     // pointercancel durante toque: o dedo pode continuar sobre a tela. O snap
     // e a retomada ficam para o touchend/touchcancel, evitando escrita
-    // concorrente na posição durante o gesto.
+    // concorrente na posição durante o gesto. Preserva o estado de arrasto
+    // para que o touchend consiga decidir o settle.
     if (isTouchActiveRef.current) {
+      pendingTouchSettleRef.current = pendingTouchSettleRef.current || wasDragging;
       return;
     }
 
+    flushDragWrite();
     settlePosition(wasDragging);
     scheduleInteractionResume();
   }
@@ -1037,9 +1084,11 @@ const isTouchActiveRef = useRef(false);
 
     // lostpointercapture durante toque: mesmo tratamento do pointercancel.
     if (isTouchActiveRef.current) {
+      pendingTouchSettleRef.current = pendingTouchSettleRef.current || wasDragging;
       return;
     }
 
+    flushDragWrite();
     settlePosition(wasDragging);
     scheduleInteractionResume();
   }
@@ -1191,22 +1240,26 @@ const isTouchActiveRef = useRef(false);
         onTouchEnd={() => {
           isTouchActiveRef.current = false;
           const dragState = dragStateRef.current;
-          const wasDragging = dragState.isDragging;
+          const wasDragging = pendingTouchSettleRef.current || dragState.isDragging;
+          pendingTouchSettleRef.current = false;
           dragState.pointerId = -1;
           dragState.isDragging = false;
           isPointerActiveRef.current = false;
           setIsDragging(false);
+          flushDragWrite();
           settlePosition(wasDragging);
           scheduleInteractionResume();
         }}
         onTouchCancel={() => {
           isTouchActiveRef.current = false;
           const dragState = dragStateRef.current;
-          const wasDragging = dragState.isDragging;
+          const wasDragging = pendingTouchSettleRef.current || dragState.isDragging;
+          pendingTouchSettleRef.current = false;
           dragState.pointerId = -1;
           dragState.isDragging = false;
           isPointerActiveRef.current = false;
           setIsDragging(false);
+          flushDragWrite();
           settlePosition(wasDragging);
           scheduleInteractionResume();
         }}

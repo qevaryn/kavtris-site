@@ -43,11 +43,14 @@ export function LoopingTicker<T>({
   const offsetRef = useRef(0);
   const isPointerActiveRef = useRef(false);
   const isTouchActiveRef = useRef(false);
+  const dragRafRef = useRef<number | null>(null);
+  const latestDragTargetRef = useRef(0);
   const dragStateRef = useRef({
     pointerId: -1,
     startX: 0,
     startY: 0,
     startOffset: 0,
+    cycleWidth: 0,
     isDragging: false
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -92,6 +95,15 @@ export function LoopingTicker<T>({
       applyOffset(offsetRef.current);
     }
   }, [getCycleWidth, normalizeOffset, applyOffset]);
+
+  // Aplica o último alvo do arrasto pendente (um único write por frame).
+  const flushDragWrite = useCallback(() => {
+    if (dragRafRef.current !== null) {
+      window.cancelAnimationFrame(dragRafRef.current);
+      dragRafRef.current = null;
+    }
+    applyOffset(latestDragTargetRef.current);
+  }, [applyOffset]);
 
   const beginInteractionPause = useCallback(() => {
     if (interactionTimeoutRef.current) {
@@ -193,6 +205,10 @@ export function LoopingTicker<T>({
         window.cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = null;
       }
+      if (dragRafRef.current) {
+        window.cancelAnimationFrame(dragRafRef.current);
+        dragRafRef.current = null;
+      }
     };
   }, []);
 
@@ -258,6 +274,7 @@ export function LoopingTicker<T>({
       startX: event.clientX,
       startY: event.clientY,
       startOffset: currentOffset,
+      cycleWidth,
       isDragging: false
     };
 
@@ -288,17 +305,25 @@ export function LoopingTicker<T>({
       setIsDragging(true);
     }
 
-    const cycleWidth = getCycleWidth();
     let nextOffset = dragState.startOffset - deltaX;
 
-    if (cycleWidth > 0) {
-      nextOffset = normalizeOffset(nextOffset, cycleWidth);
+    if (dragState.cycleWidth > 0) {
+      nextOffset = normalizeOffset(nextOffset, dragState.cycleWidth);
     } else {
       nextOffset = Math.max(0, nextOffset);
     }
 
     offsetRef.current = nextOffset;
-    viewport.scrollLeft = nextOffset;
+    latestDragTargetRef.current = nextOffset;
+
+    // Um único write por frame, sincronizado com o paint: o pointermove apenas
+    // regista o alvo; o requestAnimationFrame aplica o scrollLeft.
+    if (dragRafRef.current === null) {
+      dragRafRef.current = window.requestAnimationFrame(() => {
+        dragRafRef.current = null;
+        applyOffset(latestDragTargetRef.current);
+      });
+    }
 
     if (event.cancelable) {
       event.preventDefault();
@@ -328,6 +353,7 @@ export function LoopingTicker<T>({
       return;
     }
 
+    flushDragWrite();
     finalizeDragPosition();
     scheduleInteractionResume();
   }
@@ -348,6 +374,7 @@ export function LoopingTicker<T>({
       return;
     }
 
+    flushDragWrite();
     finalizeDragPosition();
     scheduleInteractionResume();
   }
@@ -386,11 +413,13 @@ export function LoopingTicker<T>({
         }}
         onTouchEnd={() => {
           isTouchActiveRef.current = false;
+          flushDragWrite();
           finalizeDragPosition();
           scheduleInteractionResume();
         }}
         onTouchCancel={() => {
           isTouchActiveRef.current = false;
+          flushDragWrite();
           finalizeDragPosition();
           scheduleInteractionResume();
         }}
