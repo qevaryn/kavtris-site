@@ -33,7 +33,7 @@ All images are static. Color profile data was available as sRGB for the inspecte
 | Asset | Referenced by | Component or service | Route or output | Status |
 | --- | --- | --- | --- | --- |
 | `public/images/email-logo.png` | `src/services/email/resend.ts`, email tests | Resend email integration | `/api/contact` email output | email-critical |
-| `public/images/gabriel.webp` | `src/features/home/components/TrustAndCompany.tsx`, `src/features/legacy/components/Founder.tsx` | Founder card, legacy founder section | `/` and legacy only | active |
+| `public/images/gabriel.webp` | `src/features/about/AboutPageView.tsx` | About founder card | `/sobre` | active |
 | `public/images/insurance-project.jpg` | `src/data/projects.ts` | Legacy project data | legacy retained only | legacy-retained |
 | `public/images/logo-qualidade-e-vida-tech-transparent.png` | No current reference found by repository search | None confirmed | None confirmed | suspected-unused |
 | `public/images/products/qevaryn-customer-portal.webp` | `src/features/products/data/products.ts` | Product data rendered by catalog/detail components | `/produtos`, `/produtos/customer-portal` | active-indirect |
