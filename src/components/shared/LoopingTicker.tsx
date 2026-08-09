@@ -42,6 +42,7 @@ export function LoopingTicker<T>({
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
   const isPointerActiveRef = useRef(false);
+  const isTouchActiveRef = useRef(false);
   const dragStateRef = useRef({
     pointerId: -1,
     startX: 0,
@@ -79,6 +80,19 @@ export function LoopingTicker<T>({
     viewport.scrollLeft = offset;
   }, []);
 
+  // Normaliza a posição apenas quando a interação real terminou (dedo solto).
+  const finalizeDragPosition = useCallback(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth > 0) {
+      offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
+      applyOffset(offsetRef.current);
+    }
+  }, [getCycleWidth, normalizeOffset, applyOffset]);
+
   const beginInteractionPause = useCallback(() => {
     if (interactionTimeoutRef.current) {
       window.clearTimeout(interactionTimeoutRef.current);
@@ -101,7 +115,10 @@ export function LoopingTicker<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
-      if (isPointerActiveRef.current) {
+      // O autoplay só pode retomar quando nenhuma interação está ativa.
+      // No Safari, pointercancel/lostpointercapture podem ocorrer com o dedo
+      // ainda sobre a tela; isTouchActiveRef preserva esse estado.
+      if (isPointerActiveRef.current || isTouchActiveRef.current) {
         return;
       }
       setPausedByInteraction(false);
@@ -299,16 +316,19 @@ export function LoopingTicker<T>({
       viewport.releasePointerCapture(event.pointerId);
     }
 
-    const cycleWidth = getCycleWidth();
-    if (cycleWidth > 0) {
-      offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-      applyOffset(offsetRef.current);
-    }
-
     dragState.pointerId = -1;
     dragState.isDragging = false;
     isPointerActiveRef.current = false;
     setIsDragging(false);
+
+    // pointercancel durante toque: o dedo pode continuar sobre a tela. A
+    // normalização e a retomada ficam para o touchend/touchcancel, evitando
+    // escrita concorrente na posição durante o gesto.
+    if (isTouchActiveRef.current) {
+      return;
+    }
+
+    finalizeDragPosition();
     scheduleInteractionResume();
   }
 
@@ -318,16 +338,17 @@ export function LoopingTicker<T>({
       return;
     }
 
-    const cycleWidth = getCycleWidth();
-    if (cycleWidth > 0) {
-      offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
-      applyOffset(offsetRef.current);
-    }
-
     dragState.pointerId = -1;
     dragState.isDragging = false;
     isPointerActiveRef.current = false;
     setIsDragging(false);
+
+    // lostpointercapture durante toque: mesmo tratamento do pointercancel.
+    if (isTouchActiveRef.current) {
+      return;
+    }
+
+    finalizeDragPosition();
     scheduleInteractionResume();
   }
 
@@ -359,9 +380,20 @@ export function LoopingTicker<T>({
         onPointerUp={finishPointerInteraction}
         onPointerCancel={finishPointerInteraction}
         onLostPointerCapture={onLostPointerCapture}
-        onTouchStart={() => beginInteractionPause()}
-        onTouchEnd={() => scheduleInteractionResume()}
-        onTouchCancel={() => scheduleInteractionResume()}
+        onTouchStart={() => {
+          isTouchActiveRef.current = true;
+          beginInteractionPause();
+        }}
+        onTouchEnd={() => {
+          isTouchActiveRef.current = false;
+          finalizeDragPosition();
+          scheduleInteractionResume();
+        }}
+        onTouchCancel={() => {
+          isTouchActiveRef.current = false;
+          finalizeDragPosition();
+          scheduleInteractionResume();
+        }}
         onDragStart={(event) => event.preventDefault()}
         data-testid={testId ? `${testId}-viewport` : undefined}
       >

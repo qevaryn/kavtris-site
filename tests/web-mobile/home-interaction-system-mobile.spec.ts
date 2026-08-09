@@ -188,3 +188,126 @@ test('ticker mobile permite arrasto horizontal por touch, estabiliza e retoma au
   const stable = await readScroll();
   await expect.poll(() => readScroll(), { timeout: 5000 }).not.toBe(stable);
 });
+async function touchHold(page: import('@playwright/test').Page, viewport: Locator, durationMs: number) {
+  const box = await viewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+  const client = await page.context().newCDPSession(page);
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+  await page.waitForTimeout(durationMs);
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+}
+
+test('ticker mobile mantém posição estável durante hold (touch ativo bloqueia autoplay)', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const box = await tickerViewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+  const client = await page.context().newCDPSession(page);
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+
+  // touch down sem mover e manter durante um período superior ao resume delay (2000 ms)
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+  await page.waitForTimeout(200);
+  const heldFirst = await readScroll();
+  await page.waitForTimeout(3000);
+  const heldSecond = await readScroll();
+  // autoplay NÃO pode ter retomado sob o dedo
+  expect(heldSecond).toBe(heldFirst);
+
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+
+  // após soltar, o autoplay retoma normalmente
+  const released = await readScroll();
+  await expect.poll(() => readScroll(), { timeout: 5000 }).not.toBe(released);
+});
+
+test('ticker mobile segue drag lento nos dois sentidos sem movimento automático', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+
+  // drag lento para a esquerda (avança) com pausa intermédia
+  const afterLeft = await (async () => {
+    await touchSwipe(page, tickerViewport, 0.85, 0.15);
+    await page.waitForTimeout(250);
+    return readScroll();
+  })();
+
+  // enquanto o dedo segura após o primeiro drag, a posição permanece estável
+  await touchHold(page, tickerViewport, 1200);
+  const held = await readScroll();
+
+  // drag lento para a direita (recua)
+  const afterRight = await (async () => {
+    await touchSwipe(page, tickerViewport, 0.15, 0.85);
+    await page.waitForTimeout(250);
+    return readScroll();
+  })();
+
+  // o conteúdo respondeu ao input nos dois sentidos e estabilizou
+  expect(afterLeft).not.toBe(0);
+  expect(afterRight).not.toBe(held);
+});
+
+test('ticker mobile mantém posição estável no intervalo entre drags (left → hold → right)', async ({ page }) => {
+  await page.goto('/');
+
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const box = await tickerViewport.boundingBox();
+  if (!box) {
+    throw new Error('viewport sem dimensões');
+  }
+  const client = await page.context().newCDPSession(page);
+  const y = box.y + box.height / 2;
+
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+
+  // touch down → drag left → segurar (hold) → drag right → release
+  const startX = box.x + box.width * 0.85;
+  const midX = box.x + box.width * 0.5;
+  const endX = box.x + box.width * 0.85;
+
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y }] });
+  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: midX, y }] });
+  await page.waitForTimeout(400);
+  const afterLeft = await readScroll();
+  await page.waitForTimeout(2500);
+  const duringHold = await readScroll();
+  // sem autoplay/rebase durante o hold
+  expect(duringHold).toBe(afterLeft);
+
+  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: endX, y }] });
+  await page.waitForTimeout(200);
+  const afterRight = await readScroll();
+  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(250);
+
+  // conteúdo acompanhou o gesto nos dois sentidos
+  expect(afterRight).not.toBe(duringHold);
+});

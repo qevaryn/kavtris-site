@@ -62,6 +62,7 @@ export function AccessibleCarousel<T>({
   const resumeWithImmediateAdvanceRef = useRef(false);
   const suppressClickRef = useRef(false);
   const isPointerActiveRef = useRef(false);
+const isTouchActiveRef = useRef(false);
   const programmaticScrollRef = useRef<ProgrammaticScrollState>({
     active: false,
     targetIndex: 0,
@@ -224,7 +225,10 @@ export function AccessibleCarousel<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
-      if (isPointerActiveRef.current) {
+      // O autoplay só pode retomar quando nenhuma interação está ativa.
+      // No Safari, pointercancel/lostpointercapture podem ocorrer com o dedo
+      // ainda sobre a tela; isTouchActiveRef preserva esse estado.
+      if (isPointerActiveRef.current || isTouchActiveRef.current) {
         return;
       }
       resumeWithImmediateAdvanceRef.current = true;
@@ -975,6 +979,22 @@ export function AccessibleCarousel<T>({
     }
   }
 
+  function settlePosition(wasDragging: boolean) {
+    if (isContinuous) {
+      const viewport = viewportRef.current;
+      const cycleWidth = getCycleWidth();
+      if (viewport && cycleWidth > 0) {
+        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
+        viewport.scrollLeft = offsetRef.current;
+      }
+      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
+      activeIndexRef.current = logical;
+      setCurrentIndex(logical);
+    } else if (wasDragging) {
+      snapToNearest();
+    }
+  }
+
   function finishPointerInteraction(event: PointerEvent<HTMLDivElement>) {
     const viewport = viewportRef.current;
     const dragState = dragStateRef.current;
@@ -992,19 +1012,14 @@ export function AccessibleCarousel<T>({
     isPointerActiveRef.current = false;
     setIsDragging(false);
 
-    if (isContinuous) {
-      const cycleWidth = getCycleWidth();
-      if (cycleWidth > 0) {
-        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-        viewport.scrollLeft = offsetRef.current;
-      }
-      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
-      activeIndexRef.current = logical;
-      setCurrentIndex(logical);
-    } else if (wasDragging) {
-      snapToNearest();
+    // pointercancel durante toque: o dedo pode continuar sobre a tela. O snap
+    // e a retomada ficam para o touchend/touchcancel, evitando escrita
+    // concorrente na posição durante o gesto.
+    if (isTouchActiveRef.current) {
+      return;
     }
 
+    settlePosition(wasDragging);
     scheduleInteractionResume();
   }
 
@@ -1020,20 +1035,12 @@ export function AccessibleCarousel<T>({
     isPointerActiveRef.current = false;
     setIsDragging(false);
 
-    if (isContinuous) {
-      const viewport = viewportRef.current;
-      const cycleWidth = getCycleWidth();
-      if (viewport && cycleWidth > 0) {
-        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-        viewport.scrollLeft = offsetRef.current;
-      }
-      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
-      activeIndexRef.current = logical;
-      setCurrentIndex(logical);
-    } else if (wasDragging) {
-      snapToNearest();
+    // lostpointercapture durante toque: mesmo tratamento do pointercancel.
+    if (isTouchActiveRef.current) {
+      return;
     }
 
+    settlePosition(wasDragging);
     scheduleInteractionResume();
   }
 
@@ -1177,9 +1184,32 @@ export function AccessibleCarousel<T>({
         onPointerUp={finishPointerInteraction}
         onPointerCancel={finishPointerInteraction}
         onLostPointerCapture={onLostPointerCapture}
-        onTouchStart={() => beginInteractionPause()}
-        onTouchEnd={() => scheduleInteractionResume()}
-        onTouchCancel={() => scheduleInteractionResume()}
+        onTouchStart={() => {
+          isTouchActiveRef.current = true;
+          beginInteractionPause();
+        }}
+        onTouchEnd={() => {
+          isTouchActiveRef.current = false;
+          const dragState = dragStateRef.current;
+          const wasDragging = dragState.isDragging;
+          dragState.pointerId = -1;
+          dragState.isDragging = false;
+          isPointerActiveRef.current = false;
+          setIsDragging(false);
+          settlePosition(wasDragging);
+          scheduleInteractionResume();
+        }}
+        onTouchCancel={() => {
+          isTouchActiveRef.current = false;
+          const dragState = dragStateRef.current;
+          const wasDragging = dragState.isDragging;
+          dragState.pointerId = -1;
+          dragState.isDragging = false;
+          isPointerActiveRef.current = false;
+          setIsDragging(false);
+          settlePosition(wasDragging);
+          scheduleInteractionResume();
+        }}
         onDragStart={(event) => event.preventDefault()}
         onClickCapture={(event) => {
           if (!suppressClickRef.current) {
