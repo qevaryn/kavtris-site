@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/components/shared/cn';
 import { useInViewport } from '@/components/shared/useInViewport';
 import { useMotionBudget } from '@/components/shared/useMotionBudget';
@@ -16,11 +17,12 @@ type LoopingTickerProps<T> = {
   trackClassName?: string;
   itemClassName?: string;
   testId?: string;
+  edgeFadeClassName?: string;
 };
 
-const DRAG_THRESHOLD = 6;
 const INTERACTION_PAUSE_MS = 2000;
 const DEFAULT_SPEED_PX_PER_SECOND = 40;
+const STEP_TRANSITION_FALLBACK_MS = 800;
 
 export function LoopingTicker<T>({
   ariaLabel,
@@ -31,7 +33,8 @@ export function LoopingTicker<T>({
   viewportClassName,
   trackClassName,
   itemClassName,
-  testId
+  testId,
+  edgeFadeClassName
 }: LoopingTickerProps<T>) {
   const tickerRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -41,15 +44,12 @@ export function LoopingTicker<T>({
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
-  const isPointerActiveRef = useRef(false);
-  const dragStateRef = useRef({
-    pointerId: -1,
-    startX: 0,
-    startY: 0,
-    startOffset: 0,
-    isDragging: false
-  });
-  const [isDragging, setIsDragging] = useState(false);
+  const stepQueueRef = useRef<Array<1 | -1>>([]);
+  const isStepTransitionRef = useRef(false);
+  const stepTransitionTimeoutRef = useRef<number | null>(null);
+  const processStepQueueRef = useRef<() => void>(() => {});
+  const finishCurrentStepRef = useRef<() => void>(() => {});
+  const scheduleInteractionResumeRef = useRef<() => void>(() => {});
   const [pausedByInteraction, setPausedByInteraction] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(true);
   const { inViewport: isInViewport, priority } = useInViewport(tickerRef, 0.35);
@@ -101,12 +101,126 @@ export function LoopingTicker<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
-      if (isPointerActiveRef.current) {
+      // O autoplay contínuo só retoma quando a fila de passos manuais está
+      // vazia e nenhuma transição de item está em curso.
+      if (stepQueueRef.current.length > 0 || isStepTransitionRef.current) {
+        scheduleInteractionResumeRef.current();
         return;
       }
       setPausedByInteraction(false);
     }, INTERACTION_PAUSE_MS);
   }, []);
+
+  useEffect(() => {
+    scheduleInteractionResumeRef.current = scheduleInteractionResume;
+  }, [scheduleInteractionResume]);
+
+  // Avança/retrocede EXATAMENTE UM item lógico, terminando alinhado no início
+  // do próximo/anterior item. O autoplay pausa imediatamente; cada clique é
+  // enfileirado e executado em série (cliques rápidos não se perdem).
+  const stepManual = useCallback(
+    (direction: 1 | -1) => {
+      const viewport = viewportRef.current;
+      if (!viewport) {
+        return;
+      }
+      beginInteractionPause();
+      stepQueueRef.current.push(direction);
+      scheduleInteractionResume();
+      processStepQueueRef.current();
+    },
+    [beginInteractionPause, scheduleInteractionResume]
+  );
+
+  const processStepQueue = useCallback(() => {
+    const viewport = viewportRef.current;
+    const mainTrack = mainTrackRef.current;
+    if (!viewport || !mainTrack || mainTrack.children.length === 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+    if (isStepTransitionRef.current || stepQueueRef.current.length === 0) {
+      return;
+    }
+
+    const direction = stepQueueRef.current.shift() as 1 | -1;
+    isStepTransitionRef.current = true;
+
+    const cycleWidth = getCycleWidth();
+    if (cycleWidth <= 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+
+    const firstItem = mainTrack.children[0] as HTMLElement;
+    const itemWidth = firstItem.getBoundingClientRect().width || 0;
+    const gap = parseFloat(getComputedStyle(mainTrack).gap) || 0;
+    const step = itemWidth + gap;
+    if (step <= 0) {
+      isStepTransitionRef.current = false;
+      return;
+    }
+
+    const raw = viewport.scrollLeft;
+    const phase = ((raw % step) + step) % step;
+    const alignedCurrentStart = raw - phase;
+    const fullExtent = viewport.scrollWidth;
+    const target = Math.max(0, Math.min(fullExtent - 8, alignedCurrentStart + direction * step));
+
+    const finishStep = () => {
+      isStepTransitionRef.current = false;
+      if (stepTransitionTimeoutRef.current) {
+        window.clearTimeout(stepTransitionTimeoutRef.current);
+        stepTransitionTimeoutRef.current = null;
+      }
+      // Rebate para a região principal do ciclo (conteúdo idêntico → invisível).
+      const normalized = normalizeOffset(viewport.scrollLeft, cycleWidth);
+      offsetRef.current = normalized;
+      viewport.scrollLeft = normalized;
+      if (stepQueueRef.current.length > 0) {
+        processStepQueueRef.current();
+      }
+    };
+    finishCurrentStepRef.current = finishStep;
+
+    if (reducedMotion) {
+      applyOffset(target);
+      finishStep();
+      return;
+    }
+
+    if (stepTransitionTimeoutRef.current) {
+      window.clearTimeout(stepTransitionTimeoutRef.current);
+    }
+    stepTransitionTimeoutRef.current = window.setTimeout(() => {
+      stepTransitionTimeoutRef.current = null;
+      if (isStepTransitionRef.current) {
+        finishStep();
+      }
+    }, STEP_TRANSITION_FALLBACK_MS);
+
+    viewport.scrollTo({ left: target, behavior: 'smooth' });
+  }, [getCycleWidth, normalizeOffset, applyOffset, reducedMotion]);
+
+  useEffect(() => {
+    processStepQueueRef.current = processStepQueue;
+  }, [processStepQueue]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) {
+      return;
+    }
+    const onScrollEnd = () => {
+      if (isStepTransitionRef.current) {
+        finishCurrentStepRef.current();
+      }
+    };
+    viewport.addEventListener('scrollend', onScrollEnd);
+    return () => {
+      viewport.removeEventListener('scrollend', onScrollEnd);
+    };
+  }, [processStepQueue]);
 
   useEffect(() => {
     let lastVisible = document.visibilityState === 'visible';
@@ -123,9 +237,7 @@ export function LoopingTicker<T>({
         beginInteractionPause();
       } else {
         setIsPageVisible(true);
-        if (!isPointerActiveRef.current) {
-          scheduleInteractionResume();
-        }
+        scheduleInteractionResume();
       }
     }
 
@@ -171,6 +283,9 @@ export function LoopingTicker<T>({
     return () => {
       if (interactionTimeoutRef.current) {
         window.clearTimeout(interactionTimeoutRef.current);
+      }
+      if (stepTransitionTimeoutRef.current) {
+        window.clearTimeout(stepTransitionTimeoutRef.current);
       }
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);
@@ -222,110 +337,6 @@ export function LoopingTicker<T>({
     };
   }, [speedPxPerSecond, shouldAnimate, getCycleWidth, normalizeOffset, applyOffset]);
 
-  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    if (!viewport || event.button !== 0) {
-      return;
-    }
-
-    isPointerActiveRef.current = true;
-    beginInteractionPause();
-
-    const cycleWidth = getCycleWidth();
-    const currentOffset = cycleWidth > 0 ? normalizeOffset(viewport.scrollLeft, cycleWidth) : viewport.scrollLeft;
-
-    offsetRef.current = currentOffset;
-
-    dragStateRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      startOffset: currentOffset,
-      isDragging: false
-    };
-
-    viewport.setPointerCapture(event.pointerId);
-  }
-
-  function onPointerMove(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    const dragState = dragStateRef.current;
-    if (!viewport || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    const deltaX = event.clientX - dragState.startX;
-    const deltaY = event.clientY - dragState.startY;
-
-    if (!dragState.isDragging) {
-      if (Math.abs(deltaX) <= DRAG_THRESHOLD || Math.abs(deltaX) <= Math.abs(deltaY)) {
-        return;
-      }
-
-      dragState.isDragging = true;
-      setIsDragging(true);
-    }
-
-    const cycleWidth = getCycleWidth();
-    let nextOffset = dragState.startOffset - deltaX;
-
-    if (cycleWidth > 0) {
-      nextOffset = normalizeOffset(nextOffset, cycleWidth);
-    } else {
-      nextOffset = Math.max(0, nextOffset);
-    }
-
-    offsetRef.current = nextOffset;
-    viewport.scrollLeft = nextOffset;
-
-    if (event.cancelable) {
-      event.preventDefault();
-    }
-  }
-
-  function finishPointerInteraction(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    const dragState = dragStateRef.current;
-    if (!viewport || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    if (viewport.hasPointerCapture(event.pointerId)) {
-      viewport.releasePointerCapture(event.pointerId);
-    }
-
-    const cycleWidth = getCycleWidth();
-    if (cycleWidth > 0) {
-      offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-      applyOffset(offsetRef.current);
-    }
-
-    dragState.pointerId = -1;
-    dragState.isDragging = false;
-    isPointerActiveRef.current = false;
-    setIsDragging(false);
-    scheduleInteractionResume();
-  }
-
-  function onLostPointerCapture() {
-    const dragState = dragStateRef.current;
-    if (dragState.pointerId === -1) {
-      return;
-    }
-
-    const cycleWidth = getCycleWidth();
-    if (cycleWidth > 0) {
-      offsetRef.current = normalizeOffset(offsetRef.current, cycleWidth);
-      applyOffset(offsetRef.current);
-    }
-
-    dragState.pointerId = -1;
-    dragState.isDragging = false;
-    isPointerActiveRef.current = false;
-    setIsDragging(false);
-    scheduleInteractionResume();
-  }
-
   return (
     <section
       ref={tickerRef}
@@ -341,50 +352,73 @@ export function LoopingTicker<T>({
       }}
       data-testid={testId}
     >
-      <div
-        ref={viewportRef}
-        className={cn(
-          'overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
-          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab',
-          viewportClassName
-        )}
-        tabIndex={0}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={finishPointerInteraction}
-        onPointerCancel={finishPointerInteraction}
-        onLostPointerCapture={onLostPointerCapture}
-        onTouchStart={() => beginInteractionPause()}
-        onTouchEnd={() => scheduleInteractionResume()}
-        onTouchCancel={() => scheduleInteractionResume()}
-        onDragStart={(event) => event.preventDefault()}
-        data-testid={testId ? `${testId}-viewport` : undefined}
-      >
+      <div className="relative">
         <div
-          className={cn('flex w-max gap-3 sm:gap-4', trackClassName)}
-          data-testid={testId ? `${testId}-track` : undefined}
+          ref={viewportRef}
+          className={cn(
+            'overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
+            viewportClassName
+          )}
+          tabIndex={0}
+          data-testid={testId ? `${testId}-viewport` : undefined}
         >
-          <ul ref={mainTrackRef} className="flex shrink-0 gap-3 sm:gap-4" data-testid={testId ? `${testId}-main` : undefined}>
-            {items.map((item, index) => (
-              <li key={`main-${index}`} className={itemClassName}>
-                {renderItem(item, index)}
-              </li>
-            ))}
-          </ul>
-
-          <ul
-            ref={duplicateTrackRef}
-            className="flex shrink-0 gap-3 sm:gap-4"
-            aria-hidden="true"
-            data-testid={testId ? `${testId}-duplicate` : undefined}
+          <div
+            className={cn('flex w-max gap-3 sm:gap-4', trackClassName)}
+            data-testid={testId ? `${testId}-track` : undefined}
           >
-            {items.map((item, index) => (
-              <li key={`duplicate-${index}`} className={cn('pointer-events-none', itemClassName)}>
-                {renderItem(item, index)}
-              </li>
-            ))}
-          </ul>
+            <ul ref={mainTrackRef} className="flex shrink-0 gap-3 sm:gap-4" data-testid={testId ? `${testId}-main` : undefined}>
+              {items.map((item, index) => (
+                <li key={`main-${index}`} className={itemClassName}>
+                  {renderItem(item, index)}
+                </li>
+              ))}
+            </ul>
+
+            <ul
+              ref={duplicateTrackRef}
+              className="flex shrink-0 gap-3 sm:gap-4"
+              aria-hidden="true"
+              data-testid={testId ? `${testId}-duplicate` : undefined}
+            >
+              {items.map((item, index) => (
+                <li key={`duplicate-${index}`} className={cn('pointer-events-none', itemClassName)}>
+                  {renderItem(item, index)}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+
+        {edgeFadeClassName ? (
+          <>
+            <div
+              aria-hidden="true"
+              className={cn('pointer-events-none absolute inset-y-0 left-0 z-[5] w-10 bg-gradient-to-r to-transparent', edgeFadeClassName)}
+            />
+            <div
+              aria-hidden="true"
+              className={cn('pointer-events-none absolute inset-y-0 right-0 z-[5] w-10 bg-gradient-to-l to-transparent', edgeFadeClassName)}
+            />
+          </>
+        ) : null}
+
+        <button
+          type="button"
+          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+          aria-label="Anterior"
+          onClick={() => stepManual(-1)}
+        >
+          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+          aria-label="Seguinte"
+          onClick={() => stepManual(1)}
+        >
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
     </section>
   );

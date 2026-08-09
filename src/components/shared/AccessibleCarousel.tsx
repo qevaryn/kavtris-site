@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode, type UIEvent } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type UIEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/components/shared/cn';
 import { useInViewport } from '@/components/shared/useInViewport';
@@ -24,8 +24,8 @@ type AccessibleCarouselProps<T> = {
   motionMode?: 'default' | 'continuous' | 'featured-step';
 };
 
-const DRAG_THRESHOLD = 6;
 const PROGRAMMATIC_SCROLL_EPSILON = 4;
+const BOUNDARY_SETTLE_EPSILON = 40;
 const PROGRAMMATIC_SCROLL_FALLBACK_MS = 3000;
 const CONTINUOUS_SPEED_PX_PER_SECOND = 40;
 
@@ -60,8 +60,6 @@ export function AccessibleCarousel<T>({
   const activeIndexRef = useRef(0);
   const interactionTimeoutRef = useRef<number | null>(null);
   const resumeWithImmediateAdvanceRef = useRef(false);
-  const suppressClickRef = useRef(false);
-  const isPointerActiveRef = useRef(false);
   const programmaticScrollRef = useRef<ProgrammaticScrollState>({
     active: false,
     targetIndex: 0,
@@ -73,18 +71,14 @@ export function AccessibleCarousel<T>({
   const advanceToNextRef = useRef<() => void>(() => {});
   const featuredStartSpacerRef = useRef<HTMLDivElement>(null);
   const featuredEndSpacerRef = useRef<HTMLDivElement>(null);
-  const dragStateRef = useRef({
-    pointerId: -1,
-    startX: 0,
-    startY: 0,
-    startScrollLeft: 0,
-    isDragging: false
-  });
+  const manualQueueRef = useRef<Array<1 | -1>>([]);
+  const isManualTransitionRef = useRef(false);
+  const processManualQueueRef = useRef<() => void>(() => {});
+  const scheduleInteractionResumeRef = useRef<() => void>(() => {});
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const offsetRef = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [pausedByInteraction, setPausedByInteraction] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(true);
   const { inViewport: isInViewport, priority } = useInViewport(viewportRef, 0.35);
@@ -224,13 +218,20 @@ export function AccessibleCarousel<T>({
 
     interactionTimeoutRef.current = window.setTimeout(() => {
       interactionTimeoutRef.current = null;
-      if (isPointerActiveRef.current) {
+      // O autoplay só retoma quando não existem comandos manuais pendentes nem
+      // transições em curso — cada clique reinicia (debounce) o temporizador.
+      if (manualQueueRef.current.length > 0 || isManualTransitionRef.current) {
+        scheduleInteractionResumeRef.current();
         return;
       }
       resumeWithImmediateAdvanceRef.current = true;
       setPausedByInteraction(false);
     }, interactionPauseMs);
   }, [interactionPauseMs]);
+
+  useEffect(() => {
+    scheduleInteractionResumeRef.current = scheduleInteractionResume;
+  }, [scheduleInteractionResume]);
 
   const registerInteractionPause = useCallback(() => {
     beginInteractionPause();
@@ -283,6 +284,10 @@ export function AccessibleCarousel<T>({
           scheduleFeaturedAdvance(autoplayMs);
         }
       }
+      isManualTransitionRef.current = false;
+      if (manualQueueRef.current.length > 0) {
+        processManualQueueRef.current();
+      }
       return;
     }
 
@@ -296,6 +301,11 @@ export function AccessibleCarousel<T>({
         offsetRef.current = normalizeOffset(state.targetScrollLeft, cycleWidth);
         viewport.scrollLeft = offsetRef.current;
       }
+    }
+
+    isManualTransitionRef.current = false;
+    if (manualQueueRef.current.length > 0) {
+      processManualQueueRef.current();
     }
   }, [isContinuous, isFeaturedStep, items.length, getCycleWidth, normalizeOffset, getSlideTargetScrollLeft, scheduleFeaturedAdvance, autoplayMs]);
 
@@ -450,6 +460,98 @@ export function AccessibleCarousel<T>({
     });
   }, [items.length, isContinuous, isFeaturedStep, reducedMotion, registerInteractionPause, getSlideOffset, getCycleWidth, normalizeOffset, getSlideTargetScrollLeft, finalizeProgrammaticScroll]);
 
+  // Fila de navegação manual serializada: cada clique conta como um passo
+  // lógico e as transições executam-se em sequência, sem perder comandos.
+  const processManualQueue = useCallback(() => {
+    if (!isFeaturedStep || items.length === 0) {
+      return;
+    }
+    if (isManualTransitionRef.current || manualQueueRef.current.length === 0) {
+      return;
+    }
+
+    const direction = manualQueueRef.current.shift() as 1 | -1;
+    isManualTransitionRef.current = true;
+
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) {
+      isManualTransitionRef.current = false;
+      return;
+    }
+
+    const N = items.length;
+    const currentLogical = activeIndexRef.current;
+    const nextLogical = (currentLogical + direction + N) % N;
+
+    let targetTrackIndex: number;
+    if (direction === 1 && nextLogical === 0) {
+      targetTrackIndex = N + 1; // next-clone (primeiro item) — avança no loop
+    } else if (direction === -1 && nextLogical === N - 1) {
+      targetTrackIndex = 0; // prev-clone (último item) — recua no loop
+    } else {
+      targetTrackIndex = nextLogical + 1;
+    }
+
+    // Estado lógico é a única fonte de verdade e avança imediatamente.
+    activeIndexRef.current = nextLogical;
+    setCurrentIndex(nextLogical);
+
+    const targetScrollLeft = getSlideTargetScrollLeft(targetTrackIndex);
+
+    programmaticScrollRef.current = {
+      active: true,
+      targetIndex: targetTrackIndex,
+      targetScrollLeft,
+      normalizedIndex: nextLogical,
+      fromAutoplay: false
+    };
+
+    if (programmaticScrollTimeoutRef.current) {
+      window.clearTimeout(programmaticScrollTimeoutRef.current);
+    }
+    programmaticScrollTimeoutRef.current = window.setTimeout(() => {
+      programmaticScrollTimeoutRef.current = null;
+      if (programmaticScrollRef.current.active) {
+        finalizeProgrammaticScroll();
+      }
+    }, PROGRAMMATIC_SCROLL_FALLBACK_MS);
+
+    if (reducedMotion) {
+      if (targetTrackIndex === N + 1) {
+        viewport.scrollLeft = getSlideTargetScrollLeft(1);
+      } else if (targetTrackIndex === 0) {
+        viewport.scrollLeft = getSlideTargetScrollLeft(N);
+      } else {
+        viewport.scrollLeft = targetScrollLeft;
+      }
+      programmaticScrollRef.current.active = false;
+      isManualTransitionRef.current = false;
+      if (manualQueueRef.current.length > 0) {
+        processManualQueueRef.current();
+      }
+      return;
+    }
+
+    viewport.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
+  }, [isFeaturedStep, items.length, reducedMotion, getSlideTargetScrollLeft, finalizeProgrammaticScroll]);
+
+  useEffect(() => {
+    processManualQueueRef.current = processManualQueue;
+  }, [processManualQueue]);
+
+  const enqueueManual = useCallback(
+    (direction: 1 | -1) => {
+      if (items.length === 0) {
+        return;
+      }
+      registerInteractionPause();
+      manualQueueRef.current.push(direction);
+      processManualQueueRef.current();
+    },
+    [items.length, registerInteractionPause]
+  );
+
   useLayoutEffect(() => {
     advanceToNextRef.current = () => {
       if (shouldAutoplayRef.current && items.length > 1) {
@@ -473,9 +575,7 @@ export function AccessibleCarousel<T>({
         beginInteractionPause();
       } else {
         setIsPageVisible(true);
-        if (!isPointerActiveRef.current) {
-          scheduleInteractionResume();
-        }
+        scheduleInteractionResume();
       }
     }
 
@@ -697,7 +797,18 @@ export function AccessibleCarousel<T>({
     }
 
     const onScrollEnd = () => {
-      finalizeProgrammaticScroll();
+      const state = programmaticScrollRef.current;
+      if (!state.active) {
+        return;
+      }
+      const isBoundaryClone =
+        isFeaturedStep && (state.targetIndex === 0 || state.targetIndex === items.length + 1);
+      if (
+        Math.abs(viewport.scrollLeft - state.targetScrollLeft) <=
+        (isBoundaryClone ? BOUNDARY_SETTLE_EPSILON : PROGRAMMATIC_SCROLL_EPSILON)
+      ) {
+        finalizeProgrammaticScroll();
+      }
     };
 
     viewport.addEventListener('scrollend', onScrollEnd);
@@ -705,7 +816,7 @@ export function AccessibleCarousel<T>({
     return () => {
       viewport.removeEventListener('scrollend', onScrollEnd);
     };
-  }, [finalizeProgrammaticScroll]);
+  }, [finalizeProgrammaticScroll, isFeaturedStep, items.length]);
 
   useEffect(() => {
     return () => {
@@ -726,54 +837,6 @@ export function AccessibleCarousel<T>({
     };
   }, []);
 
-  const snapToNearest = useCallback(() => {
-    if (isContinuous) {
-      return;
-    }
-
-    const viewport = viewportRef.current;
-    if (!viewport || slideRefs.current.length === 0) {
-      return;
-    }
-
-    const viewportRect = viewport.getBoundingClientRect();
-    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
-    let nearestIndex = clampedIndex;
-    let shortestDistance = Number.POSITIVE_INFINITY;
-
-    slideRefs.current.forEach((slide, index) => {
-      if (!slide) {
-        return;
-      }
-
-      const slideRect = slide.getBoundingClientRect();
-      const slideCenter = viewport.scrollLeft + (slideRect.left - viewportRect.left) + slideRect.width / 2;
-      const distance = Math.abs(viewportCenter - slideCenter);
-      if (distance < shortestDistance) {
-        shortestDistance = distance;
-        nearestIndex = index;
-      }
-    });
-
-    if (isFeaturedStep) {
-      if (nearestIndex === 0) {
-        activeIndexRef.current = items.length - 1;
-        setCurrentIndex(items.length - 1);
-        viewport.scrollLeft = getSlideTargetScrollLeft(items.length);
-        return;
-      }
-      if (nearestIndex === items.length + 1) {
-        activeIndexRef.current = 0;
-        setCurrentIndex(0);
-        viewport.scrollLeft = getSlideTargetScrollLeft(1);
-        return;
-      }
-      goToLogicalIndex(Math.max(0, nearestIndex - 1), { smooth: true });
-      return;
-    }
-
-    goToLogicalIndex(nearestIndex, { smooth: true });
-  }, [clampedIndex, goToLogicalIndex, isContinuous, isFeaturedStep, items.length, getSlideTargetScrollLeft]);
 
   function onScroll(event: UIEvent<HTMLDivElement>) {
     const viewport = event.currentTarget;
@@ -781,7 +844,11 @@ export function AccessibleCarousel<T>({
 
     if (state.active) {
       const distance = Math.abs(viewport.scrollLeft - state.targetScrollLeft);
-      if (distance <= PROGRAMMATIC_SCROLL_EPSILON) {
+      // No boundary (clone), o alvo pode ficar ligeiramente aquém por clamping/
+      // arredondamento; alargar o limite evita depender do fallback de 3000ms.
+      const isBoundaryClone =
+        isFeaturedStep && (state.targetIndex === 0 || state.targetIndex === items.length + 1);
+      if (distance <= (isBoundaryClone ? BOUNDARY_SETTLE_EPSILON : PROGRAMMATIC_SCROLL_EPSILON)) {
         finalizeProgrammaticScroll();
       }
       return;
@@ -800,41 +867,9 @@ export function AccessibleCarousel<T>({
     }
 
     if (isFeaturedStep) {
-      if (!isPointerActiveRef.current) {
-        return;
-      }
-      const viewportRect = viewport.getBoundingClientRect();
-      const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
-      let nearestTrackIndex = -1;
-      let shortestDistance = Number.POSITIVE_INFINITY;
-
-      slideRefs.current.forEach((slide, trackIndex) => {
-        if (!slide) {
-          return;
-        }
-        const slideRect = slide.getBoundingClientRect();
-        const slideCenter = viewport.scrollLeft + (slideRect.left - viewportRect.left) + slideRect.width / 2;
-        const distance = Math.abs(viewportCenter - slideCenter);
-        if (distance < shortestDistance) {
-          shortestDistance = distance;
-          nearestTrackIndex = trackIndex;
-        }
-      });
-
-      if (nearestTrackIndex >= 0) {
-        let logical: number;
-        if (nearestTrackIndex === 0) {
-          logical = items.length - 1;
-        } else if (nearestTrackIndex === items.length + 1) {
-          logical = 0;
-        } else {
-          logical = nearestTrackIndex - 1;
-        }
-        if (logical !== clampedIndex) {
-          activeIndexRef.current = logical;
-          setCurrentIndex(logical);
-        }
-      }
+      // Sem drag, o card ativo é sempre definido por goToLogicalIndex /
+      // finalizeProgrammaticScroll. Scrolls incidentais (ex.: focus no track
+      // ou gestos nativos) não devem sobrescrever o índice ativo.
       return;
     }
 
@@ -869,6 +904,10 @@ export function AccessibleCarousel<T>({
     }
 
     event.preventDefault();
+    if (isFeaturedStep && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      enqueueManual(event.key === 'ArrowRight' ? 1 : -1);
+      return;
+    }
     if (isContinuous) {
       const nextIndex =
         event.key === 'Home'
@@ -892,143 +931,6 @@ export function AccessibleCarousel<T>({
             : (clampedIndex - 1 + items.length) % items.length;
 
     goToLogicalIndex(nextIndex, { smooth: true, fromInteraction: true });
-  }
-
-  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    if (!viewport || event.button !== 0) {
-      return;
-    }
-
-    isPointerActiveRef.current = true;
-    beginInteractionPause();
-
-    if (programmaticScrollRef.current.active) {
-      programmaticScrollRef.current.active = false;
-      if (programmaticScrollTimeoutRef.current) {
-        window.clearTimeout(programmaticScrollTimeoutRef.current);
-        programmaticScrollTimeoutRef.current = null;
-      }
-    }
-
-    if (isContinuous) {
-      offsetRef.current = viewport.scrollLeft;
-    }
-
-    dragStateRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-      startScrollLeft: viewport.scrollLeft,
-      isDragging: false
-    };
-  }
-
-  function onPointerMove(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    const dragState = dragStateRef.current;
-    if (!viewport || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    const deltaX = event.clientX - dragState.startX;
-    const deltaY = event.clientY - dragState.startY;
-
-    if (!dragState.isDragging) {
-      if (Math.abs(deltaX) <= DRAG_THRESHOLD || Math.abs(deltaX) <= Math.abs(deltaY)) {
-        return;
-      }
-
-      dragState.isDragging = true;
-      setIsDragging(true);
-      suppressClickRef.current = true;
-      // A captura de ponteiro do rato mantém o drag fora do viewport. No toque,
-      // a captura implícita reside num filho e a reatribuição dispararia
-      // lostpointercapture, interrompendo o drag.
-      if (event.pointerType === 'mouse') {
-        viewport.setPointerCapture(event.pointerId);
-      }
-    }
-
-    if (isContinuous) {
-      const cycleWidth = getCycleWidth();
-      let nextOffset = dragState.startScrollLeft - deltaX;
-      if (cycleWidth > 0) {
-        nextOffset = normalizeOffset(nextOffset, cycleWidth);
-      } else {
-        nextOffset = Math.max(0, nextOffset);
-      }
-      offsetRef.current = nextOffset;
-      viewport.scrollLeft = nextOffset;
-    } else {
-      viewport.scrollLeft = dragState.startScrollLeft - deltaX;
-    }
-
-    if (event.cancelable) {
-      event.preventDefault();
-    }
-  }
-
-  function finishPointerInteraction(event: PointerEvent<HTMLDivElement>) {
-    const viewport = viewportRef.current;
-    const dragState = dragStateRef.current;
-    if (!viewport || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    if (viewport.hasPointerCapture(event.pointerId)) {
-      viewport.releasePointerCapture(event.pointerId);
-    }
-
-    const wasDragging = dragState.isDragging;
-    dragState.pointerId = -1;
-    dragState.isDragging = false;
-    isPointerActiveRef.current = false;
-    setIsDragging(false);
-
-    if (isContinuous) {
-      const cycleWidth = getCycleWidth();
-      if (cycleWidth > 0) {
-        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-        viewport.scrollLeft = offsetRef.current;
-      }
-      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
-      activeIndexRef.current = logical;
-      setCurrentIndex(logical);
-    } else if (wasDragging) {
-      snapToNearest();
-    }
-
-    scheduleInteractionResume();
-  }
-
-  function onLostPointerCapture() {
-    const dragState = dragStateRef.current;
-    if (dragState.pointerId === -1) {
-      return;
-    }
-
-    const wasDragging = dragState.isDragging;
-    dragState.pointerId = -1;
-    dragState.isDragging = false;
-    isPointerActiveRef.current = false;
-    setIsDragging(false);
-
-    if (isContinuous) {
-      const viewport = viewportRef.current;
-      const cycleWidth = getCycleWidth();
-      if (viewport && cycleWidth > 0) {
-        offsetRef.current = normalizeOffset(viewport.scrollLeft, cycleWidth);
-        viewport.scrollLeft = offsetRef.current;
-      }
-      const logical = getLogicalIndexFromOffset(offsetRef.current, cycleWidth);
-      activeIndexRef.current = logical;
-      setCurrentIndex(logical);
-    } else if (wasDragging) {
-      snapToNearest();
-    }
-
-    scheduleInteractionResume();
   }
 
   const slides = useMemo(() => {
@@ -1061,7 +963,7 @@ export function AccessibleCarousel<T>({
               : clampedIndex === trackIndex - 1;
         return cn(
           'shrink-0 transition duration-500 motion-reduce:transition-none motion-reduce:duration-0',
-          active ? 'z-10 scale-100 saturate-100' : 'z-0 scale-[0.98] sm:scale-[0.95] lg:scale-[0.92] saturate-[0.85]',
+          active ? 'z-10 scale-[1.05] saturate-100 shadow-xl' : 'z-0 scale-[0.98] sm:scale-[0.95] lg:scale-[0.92] saturate-[0.85]',
           itemClassName
         );
       }
@@ -1158,88 +1060,68 @@ export function AccessibleCarousel<T>({
         scheduleInteractionResume();
       }}
     >
-      <div
-        ref={viewportRef}
-        className={cn(
-          'overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
-          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab',
-          viewportClassName
-        )}
-        onScroll={onScroll}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={finishPointerInteraction}
-        onPointerCancel={finishPointerInteraction}
-        onLostPointerCapture={onLostPointerCapture}
-        onTouchStart={() => beginInteractionPause()}
-        onTouchEnd={() => scheduleInteractionResume()}
-        onTouchCancel={() => scheduleInteractionResume()}
-        onDragStart={(event) => event.preventDefault()}
-        onClickCapture={(event) => {
-          if (!suppressClickRef.current) {
-            return;
-          }
-
-          event.preventDefault();
-          event.stopPropagation();
-          suppressClickRef.current = false;
-        }}
-        onWheel={(event) => {
-          if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
-            registerInteractionPause();
-          }
-        }}
-        data-testid={testId ? `${testId}-viewport` : undefined}
-      >
+      <div className="relative">
         <div
-          ref={trackRef}
-          className={cn('flex', isContinuous ? '' : 'gap-4', !hasClones ? 'snap-x snap-mandatory' : '', trackClassName)}
-          style={{ scrollSnapType: isDragging && !isContinuous ? 'none' : undefined }}
-          role="group"
-          aria-roledescription="carousel"
-          aria-label={ariaLabel}
-          tabIndex={0}
-          onKeyDown={onKeyboardNavigation}
-          data-testid={testId ? `${testId}-track` : undefined}
+          ref={viewportRef}
+          className={cn(
+            'overflow-x-auto py-4 sm:py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-y',
+            viewportClassName
+          )}
+          onScroll={onScroll}
+          onWheel={(event) => {
+            if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
+              registerInteractionPause();
+            }
+          }}
+          data-testid={testId ? `${testId}-viewport` : undefined}
         >
-          {slides}
+          <div
+            ref={trackRef}
+            className={cn('flex', isContinuous ? '' : 'gap-4', !hasClones ? 'snap-x snap-mandatory' : '', trackClassName)}
+            role="group"
+            aria-roledescription="carousel"
+            aria-label={ariaLabel}
+            tabIndex={0}
+            onKeyDown={onKeyboardNavigation}
+            data-testid={testId ? `${testId}-track` : undefined}
+          >
+            {slides}
+          </div>
         </div>
+
+        <button
+          type="button"
+          className="absolute -left-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:left-0"
+          aria-label="Slide anterior"
+          onClick={() => enqueueManual(-1)}
+        >
+          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="absolute -right-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:right-0"
+          aria-label="Próximo slide"
+          onClick={() => enqueueManual(1)}
+        >
+          <ChevronRight className="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-3">
-        <button
-          type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 transition hover:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
-          aria-label="Slide anterior"
-          onClick={() => goToLogicalIndex(clampedIndex - 1, { smooth: true, fromInteraction: true })}
-        >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-        </button>
-
-        <div className="flex items-center gap-2" aria-label="Indicadores de posição">
-          {items.map((item, index) => (
-            <button
-              key={`indicator-${index}`}
-              type="button"
-              className={cn(
-                'h-2 rounded-full transition',
-                index === clampedIndex ? 'w-6 bg-gold-600' : 'w-2 bg-navy-900/20 hover:bg-gold-500/60'
-              )}
-              aria-label={`Ir para ${getItemLabel(item, index)}`}
-              aria-pressed={index === clampedIndex}
-              onClick={() => goToLogicalIndex(index, { smooth: true, fromInteraction: true })}
-            />
-          ))}
-        </div>
-
-        <button
-          type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-borderline bg-white text-navy-900 transition hover:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
-          aria-label="Próximo slide"
-          onClick={() => goToLogicalIndex(clampedIndex + 1, { smooth: true, fromInteraction: true })}
-        >
-          <ChevronRight className="h-4 w-4" aria-hidden="true" />
-        </button>
+      <div className="mt-4 flex items-center justify-center gap-2" aria-label="Indicadores de posição">
+        {items.map((item, index) => (
+          <button
+            key={`indicator-${index}`}
+            type="button"
+            className={cn(
+              'h-2 rounded-full transition',
+              index === clampedIndex ? 'w-6 bg-gold-600' : 'w-2 bg-navy-900/20 hover:bg-gold-500/60'
+            )}
+            aria-label={`Ir para ${getItemLabel(item, index)}`}
+            aria-pressed={index === clampedIndex}
+            onClick={() => goToLogicalIndex(index, { smooth: true, fromInteraction: true })}
+          />
+        ))}
       </div>
 
       {showCounter ? (

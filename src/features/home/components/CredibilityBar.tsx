@@ -47,6 +47,7 @@ export function CredibilityBar() {
             testId="services-ticker"
             viewportClassName="py-1"
             itemClassName="min-w-[15.5rem] sm:min-w-[17rem]"
+            edgeFadeClassName="from-white"
             renderItem={(item) => {
               const Icon = item.icon;
 

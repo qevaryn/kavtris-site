@@ -8,21 +8,6 @@ async function readActiveLabel(carousel: Locator) {
     .getAttribute('aria-label');
 }
 
-async function touchSwipe(page: import('@playwright/test').Page, viewport: Locator, fromRatio: number, toRatio: number) {
-  const box = await viewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
-  const client = await page.context().newCDPSession(page);
-  const y = box.y + box.height / 2;
-  const startX = box.x + box.width * fromRatio;
-  const endX = box.x + box.width * toRatio;
-  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: (startX + endX) / 2, y }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: endX, y }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-}
-
 test('solution finder mobile expande inline com um único resultado aberto', async ({ page }) => {
   await page.goto('/');
 
@@ -50,7 +35,7 @@ test('solution finder mobile expande inline com um único resultado aberto', asy
   await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
 });
 
-test('carrossel de produtos mobile mostra um cartão em destaque e avança com swipe nos dois sentidos', async ({ page }) => {
+test('carrossel de produtos mobile mostra um cartão em destaque e navega com setas nos dois sentidos', async ({ page }) => {
   await page.goto('/');
 
   const carousel = page.getByTestId('featured-products-carousel');
@@ -92,12 +77,12 @@ test('carrossel de produtos mobile mostra um cartão em destaque e avança com s
   }
   expect(mobileNeighbors).toBeGreaterThanOrEqual(1);
 
-  // swipe para a esquerda → próximo cartão
-  await touchSwipe(page, viewport, 0.85, 0.15);
+  // seta seguinte → próximo cartão
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
 
-  // swipe para a direita → cartão anterior
-  await touchSwipe(page, viewport, 0.15, 0.85);
+  // seta anterior → cartão anterior
+  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 
   await track.focus();
@@ -126,15 +111,14 @@ test('processo mobile usa cartão em destaque com contador e controles manuais',
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
 });
 
-test('carrossel de produtos mobile retoma autoplay 2 s depois de um swipe e mantém scroll vertical', async ({ page }) => {
+test('carrossel de produtos mobile retoma autoplay 2 s depois de uma seta', async ({ page }) => {
   await page.goto('/');
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  const viewport = carousel.getByTestId('featured-products-carousel-viewport');
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
 
-  await touchSwipe(page, viewport, 0.85, 0.15);
+  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
 
   // pausa pós-interação: não avança antes de 2000 ms
@@ -144,18 +128,34 @@ test('carrossel de produtos mobile retoma autoplay 2 s depois de um swipe e mant
   // retoma após 2000 ms → avança para o próximo cartão
   await expect.poll(() => readActiveLabel(carousel), { timeout: 3000 }).toBe('Ir para Qevaryn Stock & Orders');
 
-  // swipe vertical mantém o scroll da página (pan-y)
-  const scrollBefore = await page.evaluate(() => window.scrollY);
-  const box = await viewport.boundingBox();
-  if (!box) {
-    throw new Error('viewport sem dimensões');
-  }
-  const client = await page.context().newCDPSession(page);
-  const startX = box.x + box.width / 2;
-  const startY = box.y + box.height / 2;
-  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y: startY }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: startX, y: startY - 120 }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: startX, y: startY - 240 }] });
-  await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5000 }).toBeGreaterThan(scrollBefore);
+});
+
+test('ticker mobile avança e recua com as setas e retoma autoplay', async ({ page }) => {
+  await page.goto('/');
+
+  const ticker = page.getByTestId('services-ticker');
+  const tickerViewport = page.getByTestId('services-ticker-viewport');
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' })
+  );
+  await page.waitForTimeout(600);
+
+  const readScroll = () => tickerViewport.evaluate((el) => Math.round(el.scrollLeft));
+  const before = await readScroll();
+
+  // seta seguinte → avança um item lógico
+  await ticker.getByRole('button', { name: 'Seguinte' }).click();
+  await page.waitForTimeout(150);
+  const afterNext = await readScroll();
+  expect(afterNext).not.toBe(before);
+
+  // seta anterior → retrocede um item lógico
+  await ticker.getByRole('button', { name: 'Anterior' }).click();
+  await page.waitForTimeout(150);
+  const afterPrev = await readScroll();
+  expect(afterPrev).not.toBe(afterNext);
+
+  // autoplay retoma após a pausa de interação: o scrollLeft volta a mover
+  const stable = await readScroll();
+  await expect.poll(() => readScroll(), { timeout: 5000 }).not.toBe(stable);
 });

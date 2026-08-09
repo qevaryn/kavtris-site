@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { EnterprisePageView } from '@/features/enterprise/EnterprisePageView';
 import { siteUrl } from '@/lib/constants';
 
-const title = 'Soluções para Empresas | Qevaryn Systems';
+const title = 'Soluções para Empresas';
 const description =
   'Soluções de software para operações que exigem requisitos claros, segurança, integrações, qualidade, documentação, suporte e continuidade.';
 const canonicalPath = '/empresas';

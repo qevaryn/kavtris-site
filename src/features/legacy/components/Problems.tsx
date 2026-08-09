@@ -1,6 +1,7 @@
 import { problems } from '@/data/problems';
 import { IconCard } from '@/components/shared/IconCard';
 import { SectionHeading } from '@/components/shared/SectionHeading';
+import { SnapCarousel } from '@/features/legacy/components/SnapCarousel';
 
 export function Problems() {
   return (
@@ -19,17 +20,12 @@ export function Problems() {
           ))}
         </div>
 
-        <div className="mt-10 sm:hidden" aria-label="Problemas frequentes">
-          <div className="snap-row" data-testid="problems-carousel" tabIndex={0} aria-label="Carrossel de problemas frequentes">
+        <div className="mt-10 sm:hidden">
+          <SnapCarousel label="Carrossel de problemas frequentes" testId="problems-carousel" itemCount={problems.length}>
             {problems.map((problem) => (
               <IconCard key={problem.title} icon={problem.icon} title={problem.title} description={problem.description} className="snap-card" />
             ))}
-          </div>
-          <div className="mt-3 flex items-center justify-center gap-2" aria-hidden="true">
-            {problems.map((problem, index) => (
-              <span key={problem.title} className={`h-1.5 rounded-full ${index === 0 ? 'w-6 bg-gold-600' : 'w-1.5 bg-navy-800/20'}`} />
-            ))}
-          </div>
+          </SnapCarousel>
         </div>
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-7 text-muted">
