@@ -62,6 +62,65 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
 
+  safe-contact-mock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start dev server (safe contact mock)
+        run: |
+          npx next dev --webpack -p 3100 > /tmp/next-dev.log 2>&1 &
+          echo $! > /tmp/next-dev.pid
+          for i in $(seq 1 120); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3100 || true)
+            if [ "$code" != "000" ]; then
+              echo "dev server responding (HTTP $code)"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "dev server did not become ready"
+          cat /tmp/next-dev.log
+          exit 1
+        env:
+          CONTACT_FORM_MOCK: "true"
+
+      - name: Run safe contact mock tests
+        run: npm run test:contact:mock
+        env:
+          BASE_URL: "http://127.0.0.1:3100"
+          CONTACT_FORM_MOCK: "true"
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-contact-playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-contact-test-results
+          path: test-results/
+          if-no-files-found: ignore
+
   smoke:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
