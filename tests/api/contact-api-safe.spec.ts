@@ -17,11 +17,16 @@ let mockActive = false;
 
 // Unique synthetic IP per execution + worker to keep the process-local rate
 // limiter isolated (the Map retains state while a dev server stays alive).
-const runSalt = Math.floor(Date.now() / 1000) % 200;
+// Two variable octets give a much larger address space so parallel workers /
+// repeated runs never collide on the same synthetic client key.
+let ipCounter = 0;
 
 function testIp(suffix: number) {
-  const octet = 1 + ((runSalt + test.info().workerIndex * 20 + suffix) % 254);
-  return `203.0.113.${octet}`;
+  ipCounter += 1;
+  const seed = Date.now() + ipCounter * 7919 + test.info().workerIndex * 1000003 + suffix;
+  const a = ((seed >> 8) % 253) + 1;
+  const b = (seed % 253) + 1;
+  return `203.0.${a}.${b}`;
 }
 
 test.beforeAll(async ({ request }) => {
