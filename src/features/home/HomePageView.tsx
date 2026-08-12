@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 import { Hero } from '@/features/home/components/Hero';
 import { CredibilityBar } from '@/features/home/components/CredibilityBar';
 import { ProcessTimeline } from '@/features/home/components/ProcessTimeline';
@@ -42,7 +43,10 @@ export function HomePageView() {
         <NetworkPreview />
         <Contact />
       </main>
-      <Footer />
+      {/* WEB.1D — one subtle whole-block footer reveal (FOOTER_WHOLE_REVEAL = YES). */}
+      <RevealOnce testId="reveal-footer">
+        <Footer />
+      </RevealOnce>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </>

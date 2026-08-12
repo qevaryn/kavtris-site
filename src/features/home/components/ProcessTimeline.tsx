@@ -2,6 +2,7 @@
 
 import { Lightbulb, Rocket, Search, TrendingUp, Users } from 'lucide-react';
 import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 
 const processSteps = [
@@ -42,15 +43,17 @@ export function ProcessTimeline() {
         data-testid="processo-dark-light-transition"
         className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-kavtris-dark/30 to-transparent"
       />
-      <div className="container-section">
-        <SectionHeading className="[&_h2]:font-sans"
-          eyebrow="Como trabalhamos"
-          title="Do diagnóstico à solução, sem complicação."
-          subtitle="Um processo consultivo e claro para entregar tecnologia que realmente faz a diferença — sem exigir que a sua empresa diagnostique o próprio problema."
-          align="center"
-        />
+      {/* WEB.1D — whole-section reveal once (HOW_WE_WORK_WHOLE_REVEAL = YES). */}
+      <RevealOnce testId="reveal-processo">
+        <div className="container-section">
+          <SectionHeading className="[&_h2]:font-sans"
+            eyebrow="Como trabalhamos"
+            title="Do diagnóstico à solução, sem complicação."
+            subtitle="Um processo consultivo e claro para entregar tecnologia que realmente faz a diferença — sem exigir que a sua empresa diagnostique o próprio problema."
+            align="center"
+          />
 
-        <AccessibleCarousel
+          <AccessibleCarousel
           ariaLabel="Passos do processo"
           testId="process-carousel"
           className="mt-10"
@@ -84,8 +87,9 @@ export function ProcessTimeline() {
               </article>
             );
           }}
-        />
-      </div>
+          />
+        </div>
+      </RevealOnce>
     </section>
   );
 }

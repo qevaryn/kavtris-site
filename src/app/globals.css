@@ -324,6 +324,61 @@ section[id] {
     0 18px 40px rgba(3, 20, 38, 0.06);
 }
 
+/* ------------------------------------------------------------------ */
+/* WEB.1D — one-time scroll reveal & purposeful motion system.         */
+/* Motion is progressive enhancement: SSR / JS-off output stays fully  */
+/* visible; the hidden state is applied on the client, after           */
+/* hydration, only to content strictly below the fold, and only once.  */
+/* ------------------------------------------------------------------ */
+:root {
+  --reveal-duration-fast: 250ms;
+  --reveal-duration: 350ms;
+  --reveal-delay-short: 80ms;
+  --reveal-distance: 14px;
+  --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kavtris-reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance, 14px));
+  transition:
+    opacity var(--reveal-duration, 350ms) var(--reveal-ease, ease-out),
+    transform var(--reveal-duration, 350ms) var(--reveal-ease, ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.kavtris-reveal--delay-short {
+  --reveal-delay: var(--reveal-delay-short, 80ms);
+}
+
+/* Staged two-column sections (Network / Contact) stack below the lg
+   breakpoint; the right column moves beneath the left, so no stagger. */
+@media (max-width: 1023px) {
+  .kavtris-reveal--delay-short {
+    --reveal-delay: 0ms;
+  }
+}
+
+.kavtris-reveal--revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Content waiting for reveal must not intercept pointers; once
+   revealed, interaction is immediate. */
+.kavtris-reveal:not(.kavtris-reveal--revealed) {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kavtris-reveal,
+  .kavtris-reveal--revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .panel-light-hover {
   transition:
     transform 180ms ease,

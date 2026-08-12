@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { qaViewports } from '../../shared/data/viewports';
 import { waitForTrustImages } from '../../shared/helpers/images';
+import { revealWholePage } from '../../shared/helpers/reveal';
 
 test('generates full-page visual audit screenshots', async ({ page }, testInfo) => {
   for (const viewport of [
@@ -18,7 +19,9 @@ test('generates full-page visual audit screenshots', async ({ page }, testInfo) 
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto('/');
     await waitForTrustImages(page);
-    await page.evaluate(() => window.scrollTo(0, 0));
+    // WEB.1D — reveal every section once before the full-page capture, so the
+    // audit screenshot reflects the final visible state, then return to top.
+    await revealWholePage(page);
     await page.screenshot({
       path: testInfo.outputPath(`phase6-full-${viewport.screenshotName}.png`),
       fullPage: true
@@ -29,6 +32,7 @@ test('generates full-page visual audit screenshots', async ({ page }, testInfo) 
 test('generates desktop and mobile section screenshots for visual audit', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: qaViewports.desktop.width, height: qaViewports.desktop.height });
   await page.goto('/');
+  await revealWholePage(page);
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-desktop.png') });
   await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
   await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-how-we-work-desktop.png') });
@@ -39,6 +43,7 @@ test('generates desktop and mobile section screenshots for visual audit', async 
 
   await page.setViewportSize({ width: qaViewports.mobileStandard.width, height: qaViewports.mobileStandard.height });
   await page.goto('/');
+  await revealWholePage(page);
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
   await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
   await page.getByTestId('hero-brand-visual').screenshot({ path: testInfo.outputPath('phase6-hero-brand-mobile.png') });

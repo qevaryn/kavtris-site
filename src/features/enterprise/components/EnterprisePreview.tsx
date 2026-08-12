@@ -2,6 +2,7 @@
 
 import { Code2, LifeBuoy, ShieldCheck, TestTube2, type LucideIcon } from 'lucide-react';
 import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Button } from '@/components/shared/Button';
 
@@ -56,7 +57,9 @@ function CapabilityCard({ pillar }: { pillar: (typeof enterprisePillars)[number]
 export function EnterpriseDetails() {
   return (
     <section id="empresas" className="kavtris-ambient-light border-y border-navy-900/10 bg-mist py-14 sm:py-16 lg:py-20">
-      <div className="container-section">
+      {/* WEB.1D — whole-section reveal once (ENGINEERING_WHOLE_REVEAL = YES). */}
+      <RevealOnce testId="reveal-empresas">
+        <div className="container-section">
         {/* Mobile / tablet — protected infinite carousel */}
         <div className="lg:hidden">
           <SectionHeading className="[&_h2]:font-sans"
@@ -108,7 +111,8 @@ export function EnterpriseDetails() {
             ))}
           </div>
         </div>
-      </div>
+        </div>
+      </RevealOnce>
     </section>
   );
 }

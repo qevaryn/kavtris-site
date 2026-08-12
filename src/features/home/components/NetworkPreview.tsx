@@ -1,13 +1,16 @@
 import { Button } from '@/components/shared/Button';
 import { Logo } from '@/components/layout/Logo';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 
 export function NetworkPreview() {
   return (
     <section id="rede" className="bg-white py-12 sm:py-14 lg:py-16">
       <div className="container-section">
         <article className="rounded-[1.45rem] border border-borderline bg-paper p-5 shadow-[0_2px_4px_rgba(3,20,38,0.05),0_24px_60px_rgba(3,20,38,0.10)] sm:p-7 lg:p-8" data-testid="network-preview">
+          {/* WEB.1D — two-part progression following reading direction: left
+              explanation first, then the network identity card (≤120ms). */}
           <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="max-w-3xl">
+            <RevealOnce className="max-w-3xl" testId="reveal-rede-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-kavtris-blue">Rede Qualidade é Vida</p>
               <h2 className="mt-3 font-sans text-[1.8rem] leading-tight text-navy-800 sm:text-[2.15rem]">
                 Tecnologia integrada a uma rede criada para servir melhor.
@@ -21,14 +24,18 @@ export function NetworkPreview() {
                   Conhecer a Rede
                 </Button>
               </div>
-            </div>
+            </RevealOnce>
 
-            <div className="rounded-2xl border border-kavtris-blue/20 bg-white px-4 py-3 lg:min-w-[15rem]">
+            <RevealOnce
+              className="rounded-2xl border border-kavtris-blue/20 bg-white px-4 py-3 lg:min-w-[15rem]"
+              delay="short"
+              testId="reveal-rede-right"
+            >
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-kavtris-blue">Rede Qualidade é Vida</p>
               <div className="mt-2">
                 <Logo variant="network" className="max-w-[150px]" />
               </div>
-            </div>
+            </RevealOnce>
           </div>
         </article>
       </div>

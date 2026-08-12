@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Send } from 'lucide-react';
 import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/domain/contact';
 import { Button } from '@/components/shared/Button';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Logo } from '@/components/layout/Logo';
 import { getProductBySlug, products } from '@/features/products/data/products';
@@ -101,7 +102,9 @@ export function Contact() {
   return (
     <section id="contacto" className="kavtris-ambient-light bg-kavtris-light py-16 sm:py-20 lg:py-24">
       <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
-        <div className="lg:sticky lg:top-28">
+        {/* WEB.1D — owner-approved staged reveal: left (heading + next steps)
+            first, then the form panel (≤120ms); stack resets the delay. */}
+        <RevealOnce className="lg:sticky lg:top-28" testId="reveal-contacto-left">
           <SectionHeading className="[&_h2]:font-sans"
             eyebrow="Contacto"
             title="Não precisa chegar com uma solução pronta."
@@ -118,9 +121,13 @@ export function Contact() {
           </div>
           {/* WEB.1B — Rede card stays in the left column on desktop only. */}
           <div className="mt-5 hidden lg:block">{redeContactCard}</div>
-        </div>
+        </RevealOnce>
 
-        <div className="panel-light rounded-[1.35rem] border border-navy-900/10 p-5 md:p-7 lg:p-8">
+        <RevealOnce
+          className="panel-light rounded-[1.35rem] border border-navy-900/10 p-5 md:p-7 lg:p-8"
+          delay="short"
+          testId="reveal-contacto-form"
+        >
           <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
               <label htmlFor="name" className="text-sm font-medium text-navy-800/85">
@@ -285,7 +292,7 @@ export function Contact() {
           {/* WEB.1B — mobile/tablet: Rede card renders after the form
               (heading → copy → "O que acontece depois?" → form → Rede). */}
           <div className="mt-5 lg:hidden">{redeContactCard}</div>
-        </div>
+        </RevealOnce>
       </div>
     </section>
   );

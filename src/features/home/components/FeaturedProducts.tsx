@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
 import { Button } from '@/components/shared/Button';
+import { RevealOnce } from '@/components/shared/RevealOnce';
 import { getProductBySlug } from '@/features/products/data/products';
 
 const featuredSlugs = ['fieldops', 'hotel-operations', 'stock-orders'] as const;
@@ -49,7 +50,9 @@ export function FeaturedProducts() {
 
   return (
     <section id="produtos-preview" className="kavtris-ambient-light bg-white py-14 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
+      {/* WEB.1D — whole-section reveal once (PRODUCTS_WHOLE_REVEAL = YES). */}
+      <RevealOnce testId="reveal-produtos">
+        <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Produtos e soluções</p>
@@ -121,7 +124,8 @@ export function FeaturedProducts() {
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>
         </div>
-      </div>
+        </div>
+      </RevealOnce>
     </section>
   );
 }
