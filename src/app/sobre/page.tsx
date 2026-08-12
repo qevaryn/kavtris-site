@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { AboutPageView } from '@/features/about/AboutPageView';
 import { siteUrl } from '@/lib/constants';
 
-const title = 'Sobre a Qevaryn Systems';
+const title = 'Sobre a KAVTRIS';
 const description =
-  'História da Qevaryn Systems: origem, percurso em qualidade de software, valores, fundador e relação institucional com a Rede Qualidade é Vida.';
+  'História da KAVTRIS: origem, percurso em qualidade de software, valores, fundador e relação institucional com a Rede Qualidade é Vida.';
 const canonicalPath = '/sobre';
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_PT',
     url: `${siteUrl}${canonicalPath}`,
-    siteName: 'Qevaryn Systems',
+    siteName: 'KAVTRIS',
     title,
     description,
     images: [
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
         url: '/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'Sobre a Qevaryn Systems'
+        alt: 'Sobre a KAVTRIS'
       }
     ]
   },

@@ -10,7 +10,7 @@ import { Footer } from '@/components/layout/Footer';
 import { siteUrl } from '@/lib/constants';
 
 const title = 'Rede Qualidade é Vida';
-const description = 'Visão institucional da Rede Qualidade é Vida e relação independente da Qevaryn Systems como operadora tecnológica.';
+const description = 'Visão institucional da Rede Qualidade é Vida e relação independente da KAVTRIS como operadora tecnológica.';
 const canonicalPath = '/rede-qualidade-e-vida';
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_PT',
     url: `${siteUrl}${canonicalPath}`,
-    siteName: 'Qevaryn Systems',
+    siteName: 'KAVTRIS',
     title,
     description,
     images: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         url: '/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'Rede Qualidade é Vida - ligação institucional da Qevaryn Systems'
+        alt: 'Rede Qualidade é Vida - ligação institucional da KAVTRIS'
       }
     ]
   },

@@ -4,15 +4,14 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 export const isDemoUrl = siteUrl.includes('localhost') || siteUrl.includes('.vercel.app');
 export const shouldIndexSite = !isDemoUrl;
 
-export const companyName = 'Qevaryn Systems';
+export const companyName = 'KAVTRIS';
 /**
- * BRAND.2D — narrowly scoped public display brand value.
- * `companyName` is intentionally left unchanged because it also feeds
- * email identity (contact-notification.ts) and Open Graph `siteName`
- * (layout.tsx), both governed by BRAND.2E. This constant isolates the
- * visible corporate display brand without touching SEO/email surfaces.
- * BRAND_2E_DEPENDENCY: later phases should decide whether `companyName`
- * itself converges to KAVTRIS.
+ * BRAND.2E — `companyName` converged to the public corporate brand KAVTRIS.
+ * It now feeds the Open Graph `siteName` (layout.tsx) and the email display
+ * header/footer (contact-notification.ts), both migrated in BRAND.2E.
+ * `publicBrandName` remains as the explicit display-brand constant used by
+ * the site footer; both equal KAVTRIS. Product names, technical identifiers,
+ * legal entity data and domains are not routed through this constant.
  */
 export const publicBrandName = 'KAVTRIS';
 export const brandTagline = 'Software • Automation • Quality • Innovation';
