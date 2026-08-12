@@ -32,14 +32,14 @@ function CapabilityCard({ pillar }: { pillar: (typeof enterprisePillars)[number]
   const Icon = pillar.icon;
 
   return (
-    <article className="panel-dark panel-dark-hover h-full rounded-[1.1rem] border border-white/10 p-4 sm:p-5">
+    <article className="panel-light panel-light-hover h-full rounded-[1.1rem] border border-navy-900/10 p-4 sm:p-5">
       <div className="flex items-center gap-3 text-left">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-kavtris-blue/30 bg-white/[0.04] text-kavtris-blueLight">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-kavtris-blue/25 bg-kavtris-blue/5 text-kavtris-blue">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
-        <span className="text-sm font-semibold text-white">{pillar.title}</span>
+        <span className="text-sm font-semibold text-navy-800">{pillar.title}</span>
       </div>
-      <p className="mt-3 text-sm leading-6 text-white/60">{pillar.description}</p>
+      <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
     </article>
   );
 }
@@ -55,12 +55,11 @@ function CapabilityCard({ pillar }: { pillar: (typeof enterprisePillars)[number]
  */
 export function EnterpriseDetails() {
   return (
-    <section id="empresas" className="kavtris-ambient border-y border-white/5 bg-[#030A1A] py-14 sm:py-16 lg:py-20">
+    <section id="empresas" className="kavtris-ambient-light border-y border-navy-900/10 bg-mist py-14 sm:py-16 lg:py-20">
       <div className="container-section">
         {/* Mobile / tablet — protected infinite carousel */}
         <div className="lg:hidden">
           <SectionHeading className="[&_h2]:font-sans"
-            tone="dark"
             eyebrow="Engenharia por trás"
             title="Simples para usar. Engenharia por trás."
             subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
@@ -72,6 +71,7 @@ export function EnterpriseDetails() {
             testId="enterprise-capabilities-carousel"
             className="mt-8"
             motionMode="featured-step"
+            tone="light"
             items={enterprisePillars}
             itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%]"
             autoplayMs={2000}
@@ -81,7 +81,7 @@ export function EnterpriseDetails() {
           />
 
           <div className="mt-8 flex justify-center">
-            <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
+            <Button href="/empresas" variant="outline">
               Ver capacidades técnicas
             </Button>
           </div>
@@ -91,13 +91,12 @@ export function EnterpriseDetails() {
         <div className="hidden items-start gap-14 lg:grid lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <SectionHeading className="[&_h2]:font-sans"
-              tone="dark"
               eyebrow="Engenharia por trás"
               title="Simples para usar. Engenharia por trás."
               subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
             />
             <div className="mt-8">
-              <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
+              <Button href="/empresas" variant="outline">
                 Ver capacidades técnicas
               </Button>
             </div>

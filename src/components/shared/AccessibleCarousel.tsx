@@ -22,6 +22,7 @@ type AccessibleCarouselProps<T> = {
   counterClassName?: string;
   testId?: string;
   motionMode?: 'default' | 'continuous' | 'featured-step';
+  tone?: 'dark' | 'light';
 };
 
 const PROGRAMMATIC_SCROLL_EPSILON = 4;
@@ -51,7 +52,8 @@ export function AccessibleCarousel<T>({
   showCounter = false,
   counterClassName,
   testId,
-  motionMode = 'default'
+  motionMode = 'default',
+  tone = 'dark'
 }: AccessibleCarouselProps<T>) {
   const carouselId = useId();
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -1115,7 +1117,13 @@ export function AccessibleCarousel<T>({
             type="button"
             className={cn(
               'h-2 rounded-full transition',
-              index === clampedIndex ? 'w-6 bg-kavtris-blueLight' : 'w-2 bg-white/25 hover:bg-kavtris-blueLight/60'
+              index === clampedIndex
+                ? tone === 'light'
+                  ? 'w-6 bg-kavtris-blue'
+                  : 'w-6 bg-kavtris-blueLight'
+                : tone === 'light'
+                  ? 'w-2 bg-navy-900/20 hover:bg-kavtris-blue/60'
+                  : 'w-2 bg-white/25 hover:bg-kavtris-blueLight/60'
             )}
             aria-label={`Ir para ${getItemLabel(item, index)}`}
             aria-pressed={index === clampedIndex}

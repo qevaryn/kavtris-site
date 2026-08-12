@@ -48,20 +48,20 @@ export function FeaturedProducts() {
   ];
 
   return (
-    <section id="produtos-preview" className="kavtris-ambient bg-kavtris-dark py-14 sm:py-16 lg:py-20">
+    <section id="produtos-preview" className="kavtris-ambient-light bg-white py-14 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blueLight">Produtos e soluções</p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Produtos e soluções</p>
+            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-navy-800 sm:text-4xl">
               Tecnologias que adaptamos para o seu negócio.
             </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/60 sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">
               As soluções existentes são pontos de partida adaptáveis à sua operação. Não precisa escolher sozinho o
               software perfeito — analisamos o contexto e propomos o melhor caminho.
             </p>
           </div>
-          <Button href="/produtos" className="hidden w-full border border-kavtris-blue/50 bg-transparent text-white hover:bg-kavtris-blue/10 sm:w-auto md:inline-flex">
+          <Button href="/produtos" variant="outline" className="hidden w-full sm:w-auto md:inline-flex">
             Ver todos os produtos
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>
@@ -72,6 +72,7 @@ export function FeaturedProducts() {
           testId="featured-products-carousel"
           className="mt-8"
           motionMode="featured-step"
+          tone="light"
           items={carouselItems}
           itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
           viewportClassName="-mx-1 px-1"
@@ -80,18 +81,18 @@ export function FeaturedProducts() {
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (
-              <article className="panel-dark panel-dark-hover flex h-full overflow-hidden rounded-[1.35rem] border border-white/10">
+              <article className="panel-light panel-light-hover flex h-full overflow-hidden rounded-[1.35rem] border border-navy-900/10">
                 <div className="flex w-full flex-col">
                   <div className="relative aspect-[16/10] bg-[#040B1C]">
                     <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">{item.categoryLabel}</p>
-                    <h3 className="mt-3 text-xl font-semibold text-white">{item.name}</h3>
-                    <p className="mt-3 text-sm leading-6 text-white/60">{item.shortDescription}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">{item.categoryLabel}</p>
+                    <h3 className="mt-3 text-xl font-semibold text-navy-800">{item.name}</h3>
+                    <p className="mt-3 text-sm leading-6 text-muted">{item.shortDescription}</p>
                     <Link
                       href={`/produtos/${item.slug}`}
-                      className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full border border-kavtris-blue/50 px-5 py-3 text-sm font-semibold text-white transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blueLight focus-visible:ring-offset-2 focus-visible:ring-offset-kavtris-dark"
+                      className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full border border-kavtris-blue/40 px-5 py-3 text-sm font-semibold text-kavtris-blue transition hover:bg-kavtris-blue hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2"
                     >
                       Ver produto
                       <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
@@ -100,11 +101,11 @@ export function FeaturedProducts() {
                 </div>
               </article>
             ) : (
-              <article className="panel-dark flex h-full rounded-[1.35rem] border border-kavtris-blue/30 p-5 text-white">
+              <article className="panel-light flex h-full rounded-[1.35rem] border border-kavtris-blue/30 p-5 text-navy-800">
                 <div className="flex w-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">Solução personalizada</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Solução personalizada</p>
                   <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
-                  <p className="mt-4 text-sm leading-7 text-white/70">{item.description}</p>
+                  <p className="mt-4 text-sm leading-7 text-muted">{item.description}</p>
                   <Button href="#contacto" className="mt-auto w-full">
                     Explique o seu problema
                   </Button>
@@ -115,7 +116,7 @@ export function FeaturedProducts() {
         />
 
         <div className="mt-5 flex flex-col gap-3 md:hidden">
-          <Button href="/produtos" className="w-full">
+          <Button href="/produtos" variant="outline" className="w-full">
             Ver todos os produtos
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>

@@ -89,31 +89,30 @@ export function Contact() {
   };
 
   const redeContactCard = (
-    <div className="flex items-center gap-4 rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 panel-dark">
+    <div className="panel-light flex items-center gap-4 rounded-[1.35rem] border border-navy-900/10 p-4">
       <Logo variant="seal" />
       <div>
-        <p className="text-sm font-semibold text-white">Integrante da Rede Qualidade é Vida</p>
-        <p className="mt-1 text-sm leading-6 text-white/55">Compromisso com responsabilidade, clareza e qualidade.</p>
+        <p className="text-sm font-semibold text-navy-800">Integrante da Rede Qualidade é Vida</p>
+        <p className="mt-1 text-sm leading-6 text-muted">Compromisso com responsabilidade, clareza e qualidade.</p>
       </div>
     </div>
   );
 
   return (
-    <section id="contacto" className="kavtris-ambient bg-kavtris-dark py-16 sm:py-20 lg:py-24">
+    <section id="contacto" className="kavtris-ambient-light bg-kavtris-light py-16 sm:py-20 lg:py-24">
       <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
         <div className="lg:sticky lg:top-28">
           <SectionHeading className="[&_h2]:font-sans"
-            tone="dark"
             eyebrow="Contacto"
             title="Não precisa chegar com uma solução pronta."
             subtitle="Explique o que está a dificultar o trabalho. Nós ajudamos a organizar a ideia e identificar o primeiro passo."
           />
-          <div className="panel-dark mt-8 rounded-[1.35rem] border border-white/10 p-5">
-            <p className="text-sm font-semibold text-white/90">O que acontece depois?</p>
-            <p className="mt-2 text-sm leading-7 text-white/60">
+          <div className="panel-light mt-8 rounded-[1.35rem] border border-navy-900/10 p-5">
+            <p className="text-sm font-semibold text-navy-800/90">O que acontece depois?</p>
+            <p className="mt-2 text-sm leading-7 text-muted">
               Lemos a explicação, fazemos perguntas simples e ajudamos a transformar o problema num primeiro passo viável.
             </p>
-            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-white/[0.05] text-kavtris-blueLight">
+            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl border border-kavtris-blue/15 bg-kavtris-blue/5 text-kavtris-blue">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
@@ -121,16 +120,16 @@ export function Contact() {
           <div className="mt-5 hidden lg:block">{redeContactCard}</div>
         </div>
 
-        <div className="panel-dark rounded-[1.35rem] border border-white/10 p-5 md:p-7 lg:p-8">
+        <div className="panel-light rounded-[1.35rem] border border-navy-900/10 p-5 md:p-7 lg:p-8">
           <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
-              <label htmlFor="name" className="text-sm font-medium text-white/85">
+              <label htmlFor="name" className="text-sm font-medium text-navy-800/85">
                 Nome
               </label>
               <input
                 id="name"
                 {...register('name')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition placeholder:text-white/40 focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-navy-900/40 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.name ? 'true' : 'false'}
                 aria-describedby={errors.name ? 'name-error' : undefined}
               />
@@ -138,13 +137,13 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="company" className="text-sm font-medium text-white/85">
+              <label htmlFor="company" className="text-sm font-medium text-navy-800/85">
                 Empresa
               </label>
               <input
                 id="company"
                 {...register('company')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition placeholder:text-white/40 focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-navy-900/40 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.company ? 'true' : 'false'}
                 aria-describedby={errors.company ? 'company-error' : undefined}
               />
@@ -152,14 +151,14 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="email" className="text-sm font-medium text-white/85">
+              <label htmlFor="email" className="text-sm font-medium text-navy-800/85">
                 Email
               </label>
               <input
                 id="email"
                 type="email"
                 {...register('email')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition placeholder:text-white/40 focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-navy-900/40 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.email ? 'true' : 'false'}
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
@@ -167,14 +166,14 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="text-sm font-medium text-white/85">
-                Telefone ou contacto <span className="font-normal text-white/45">(opcional)</span>
+              <label htmlFor="phone" className="text-sm font-medium text-navy-800/85">
+                Telefone ou contacto <span className="font-normal text-navy-900/45">(opcional)</span>
               </label>
               <input
                 id="phone"
                 type="tel"
                 {...register('phone')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.phone ? 'true' : 'false'}
                 aria-describedby={errors.phone ? 'phone-error' : undefined}
               />
@@ -182,13 +181,13 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="service" className="text-sm font-medium text-white/85">
+              <label htmlFor="service" className="text-sm font-medium text-navy-800/85">
                 Produto ou problema
               </label>
               <select
                 id="service"
                 {...register('service')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.service ? 'true' : 'false'}
                 aria-describedby={errors.service ? 'service-error' : undefined}
               >
@@ -203,13 +202,13 @@ export function Contact() {
             </div>
 
             <div>
-              <label htmlFor="productInterest" className="text-sm font-medium text-white/85">
-                Produto de interesse <span className="font-normal text-white/45">(opcional)</span>
+              <label htmlFor="productInterest" className="text-sm font-medium text-navy-800/85">
+                Produto de interesse <span className="font-normal text-navy-900/45">(opcional)</span>
               </label>
               <select
                 id="productInterest"
                 {...register('productInterest')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.productInterest ? 'true' : 'false'}
                 aria-describedby={errors.productInterest ? 'productInterest-error' : undefined}
               >
@@ -222,18 +221,18 @@ export function Contact() {
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="message" className="text-sm font-medium text-white/85">
+              <label htmlFor="message" className="text-sm font-medium text-navy-800/85">
                 Breve explicação
               </label>
               <textarea
                 id="message"
                 rows={5}
                 {...register('message')}
-                className="mt-2 min-h-32 w-full rounded-2xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white outline-none transition placeholder:text-white/40 focus:border-kavtris-blueLight focus:ring-2 focus:ring-kavtris-blueLight/25 md:text-sm"
+                className="mt-2 min-h-32 w-full rounded-2xl border border-navy-900/15 bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-navy-900/40 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/25 md:text-sm"
                 aria-invalid={errors.message ? 'true' : 'false'}
                 aria-describedby={errors.message ? 'message-error' : 'message-hint'}
               />
-              <div className="mt-2 flex items-center justify-between gap-3 text-xs text-white/45">
+              <div className="mt-2 flex items-center justify-between gap-3 text-xs text-navy-900/45">
                 <span>{errors.message ? <span id="message-error" className="text-red-600" role="alert">{errors.message.message}</span> : <span id="message-hint">Máximo de 1200 caracteres.</span>}</span>
                 <span>Não precisa usar termos técnicos.</span>
               </div>
@@ -245,16 +244,16 @@ export function Contact() {
             <input type="hidden" {...register('contactPreference')} />
 
             <div className="md:col-span-2">
-              <label className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/85">
+              <label className="flex items-start gap-3 rounded-2xl border border-navy-900/10 bg-white px-4 py-3 text-sm text-navy-800/85 shadow-sm">
                 <input
                   type="checkbox"
                   {...register('privacyConsent')}
-                  className="mt-1 h-4 w-4 rounded border-white/20 bg-white/[0.06] text-kavtris-blueLight focus:ring-kavtris-blueLight"
+                  className="mt-1 h-4 w-4 rounded border-navy-900/25 bg-white text-kavtris-blue focus:ring-kavtris-blue"
                   aria-invalid={errors.privacyConsent ? 'true' : 'false'}
                   aria-describedby={errors.privacyConsent ? 'privacyConsent-error' : undefined}
                 />
                 <span>
-                  Li e aceito a <a href="/privacy" className="font-medium text-kavtris-blueLight underline-offset-4 hover:underline">Política de Privacidade</a>.
+                  Li e aceito a <a href="/privacy" className="font-medium text-kavtris-blue underline-offset-4 hover:underline">Política de Privacidade</a>.
                 </span>
               </label>
               {errors.privacyConsent ? <p id="privacyConsent-error" className="mt-2 text-sm text-red-600" role="alert">{errors.privacyConsent.message}</p> : null}
@@ -268,7 +267,7 @@ export function Contact() {
                   {message.text}
                 </p>
               ) : (
-                <p className="text-sm text-white/55">Analisaremos a explicação e entraremos em contacto.</p>
+                <p className="text-sm text-muted">Analisaremos a explicação e entraremos em contacto.</p>
               )}
 
               <Button type="submit" disabled={isPending} className="w-full sm:ml-auto sm:w-auto">

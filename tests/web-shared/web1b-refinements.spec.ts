@@ -208,20 +208,28 @@ test('hero mobile: ordem preferida, descritor legível e visual sem clipping/ove
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });
 
-test('background depth: secções escuras usam ambiente em camadas (não fundo plano)', async ({ page }) => {
+test('background depth: secções usam ambiente em camadas (dark e light, não fundo plano)', async ({ page }) => {
   await page.goto('/');
 
-  for (const id of ['inicio', 'processo', 'produtos-preview', 'empresas', 'contacto']) {
+  // WEB.1C — hybrid architecture: dark sections keep the dark ambient layer;
+  // light body sections use the restrained light ambient layer.
+  for (const id of ['inicio']) {
     const section = page.locator(`#${id}`);
     await expect(section).toHaveClass(/kavtris-ambient/);
   }
+  for (const id of ['processo', 'produtos-preview', 'empresas', 'contacto']) {
+    const section = page.locator(`#${id}`);
+    await expect(section).toHaveClass(/kavtris-ambient-light/);
+  }
 
-  // The pseudo-element layer actually renders a gradient (depth, not flat).
-  const background = await page
-    .locator('#processo')
-    .evaluate((node) => getComputedStyle(node, '::before').backgroundImage);
-  expect(background).toContain('radial-gradient');
-  expect(background).not.toBe('none');
+  // Both pseudo-element layers actually render a gradient (depth, not flat).
+  for (const id of ['inicio', 'processo']) {
+    const background = await page
+      .locator(`#${id}`)
+      .evaluate((node) => getComputedStyle(node, '::before').backgroundImage);
+    expect(background).toContain('radial-gradient');
+    expect(background).not.toBe('none');
+  }
 });
 
 test('contacto mobile: ordem preferida heading → próximo passo → formulário → Rede', async ({ page }) => {
