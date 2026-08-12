@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('homepage usa uma jornada curta de descoberta, produtos, processo e confiança', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByAltText('Qevaryn Systems').first()).toBeVisible();
+  await expect(page.getByAltText('KAVTRIS').first()).toBeVisible();
   await expect(page.getByText('Qualidade é Vida Tech')).toHaveCount(0);
 
   await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toBeVisible();

@@ -102,11 +102,11 @@ export function Contact() {
             <p className="mt-2 text-sm leading-7 text-slate-600">
               Lemos a explicação, fazemos perguntas simples e ajudamos a transformar o problema num primeiro passo viável.
             </p>
-            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-gold-500">
+            <div className="mt-6 flex h-24 items-center justify-center rounded-2xl bg-navy-900 text-kavtris-blueLight">
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
-          <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-gold-600/20 bg-white p-4 shadow-sm">
+          <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-4 shadow-sm">
             <Logo variant="seal" />
             <div>
               <p className="text-sm font-semibold text-navy-900">Integrante da Rede Qualidade é Vida</p>
@@ -124,7 +124,7 @@ export function Contact() {
               <input
                 id="name"
                 {...register('name')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.name ? 'true' : 'false'}
                 aria-describedby={errors.name ? 'name-error' : undefined}
               />
@@ -138,7 +138,7 @@ export function Contact() {
               <input
                 id="company"
                 {...register('company')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.company ? 'true' : 'false'}
                 aria-describedby={errors.company ? 'company-error' : undefined}
               />
@@ -153,7 +153,7 @@ export function Contact() {
                 id="email"
                 type="email"
                 {...register('email')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.email ? 'true' : 'false'}
                 aria-describedby={errors.email ? 'email-error' : undefined}
               />
@@ -168,7 +168,7 @@ export function Contact() {
                 id="phone"
                 type="tel"
                 {...register('phone')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.phone ? 'true' : 'false'}
                 aria-describedby={errors.phone ? 'phone-error' : undefined}
               />
@@ -182,7 +182,7 @@ export function Contact() {
               <select
                 id="service"
                 {...register('service')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.service ? 'true' : 'false'}
                 aria-describedby={errors.service ? 'service-error' : undefined}
               >
@@ -203,7 +203,7 @@ export function Contact() {
               <select
                 id="productInterest"
                 {...register('productInterest')}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.productInterest ? 'true' : 'false'}
                 aria-describedby={errors.productInterest ? 'productInterest-error' : undefined}
               >
@@ -223,7 +223,7 @@ export function Contact() {
                 id="message"
                 rows={5}
                 {...register('message')}
-                className="mt-2 min-h-32 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-gold-600 focus:ring-2 focus:ring-gold-600/15 md:text-sm"
+                className="mt-2 min-h-32 w-full rounded-2xl border border-borderline bg-white px-4 py-2.5 text-base text-navy-800 outline-none transition placeholder:text-slate-400 focus:border-kavtris-blue focus:ring-2 focus:ring-kavtris-blue/15 md:text-sm"
                 aria-invalid={errors.message ? 'true' : 'false'}
                 aria-describedby={errors.message ? 'message-error' : 'message-hint'}
               />
@@ -243,12 +243,12 @@ export function Contact() {
                 <input
                   type="checkbox"
                   {...register('privacyConsent')}
-                  className="mt-1 h-4 w-4 rounded border-borderline text-gold-600 focus:ring-gold-600"
+                  className="mt-1 h-4 w-4 rounded border-borderline text-kavtris-blue focus:ring-kavtris-blue"
                   aria-invalid={errors.privacyConsent ? 'true' : 'false'}
                   aria-describedby={errors.privacyConsent ? 'privacyConsent-error' : undefined}
                 />
                 <span>
-                  Li e aceito a <a href="/privacy" className="font-medium text-gold-600 underline-offset-4 hover:underline">Política de Privacidade</a>.
+                  Li e aceito a <a href="/privacy" className="font-medium text-kavtris-blue underline-offset-4 hover:underline">Política de Privacidade</a>.
                 </span>
               </label>
               {errors.privacyConsent ? <p id="privacyConsent-error" className="mt-2 text-sm text-red-600" role="alert">{errors.privacyConsent.message}</p> : null}

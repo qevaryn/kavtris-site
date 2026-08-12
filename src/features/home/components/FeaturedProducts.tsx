@@ -52,7 +52,7 @@ export function FeaturedProducts() {
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Soluções por setor</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Soluções por setor</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Veja exemplos de software que podem ser adaptados ao funcionamento da sua empresa.
             </h2>
@@ -82,10 +82,10 @@ export function FeaturedProducts() {
                     <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">{item.categoryLabel}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">{item.categoryLabel}</p>
                     <h3 className="mt-3 text-xl font-semibold text-navy-950">{item.name}</h3>
                     <p className="mt-3 text-sm leading-6 text-muted">{item.shortDescription}</p>
-                    <Link href={`/produtos/${item.slug}`} className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full bg-gold-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2">
+                    <Link href={`/produtos/${item.slug}`} className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full bg-kavtris-blue px-5 py-3 text-sm font-semibold text-white transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2">
                       Ver produto
                       <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                     </Link>
@@ -93,9 +93,9 @@ export function FeaturedProducts() {
                 </div>
               </article>
             ) : (
-              <article className="flex h-full rounded-[1.35rem] border border-gold-600/25 bg-navy-950 p-5 text-white shadow-sm">
+              <article className="flex h-full rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-5 text-white shadow-sm">
                 <div className="flex w-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-500">Solução personalizada</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">Solução personalizada</p>
                   <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-white/70">{item.description}</p>
                   <Button href="#contacto" className="mt-auto w-full text-navy-950">

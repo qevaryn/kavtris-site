@@ -30,12 +30,12 @@ export function FieldOpsPage() {
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="container-section grid gap-9 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
             <div>
-              <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-gold-300 underline-offset-4 hover:underline">
+              <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-kavtris-blueLight underline-offset-4 hover:underline">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Voltar aos produtos
               </Link>
-              <p className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-gold-500">Qevaryn FieldOps</p>
-              <p className="mt-3 inline-flex rounded-full bg-gold-500/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-gold-200">
+              <p className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">Qevaryn FieldOps</p>
+              <p className="mt-3 inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 Conceito de solução adaptável
               </p>
               <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -47,7 +47,7 @@ export function FieldOpsPage() {
               <p className="mt-4 text-sm leading-7 text-white/64">
                 A solução pode começar com o essencial e crescer de acordo com a operação da empresa.
               </p>
-              <p className="mt-4 rounded-2xl border border-gold-500/20 bg-white/5 p-4 text-sm leading-7 text-white/70">
+              <p className="mt-4 rounded-2xl border border-kavtris-blue/20 bg-white/5 p-4 text-sm leading-7 text-white/70">
                 Esta apresentação mostra uma possível configuração. As funcionalidades finais dependem do levantamento e das necessidades de cada empresa.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -72,7 +72,7 @@ export function FieldOpsPage() {
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Equipamentos opcionais</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Equipamentos opcionais</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950">Confirmação simples no local</h2>
               <p className="mt-4 text-base leading-8 text-slate-600">
                 O software funciona sem equipamento especial. Dispositivos simples podem ser adicionados quando trouxerem valor prático.
@@ -84,12 +84,12 @@ export function FieldOpsPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               {equipmentItems.map(({ icon: Icon, label }) => (
                 <div key={label} className="rounded-[1.35rem] border border-borderline bg-paper p-5">
-                  <Icon className="h-7 w-7 text-gold-600" aria-hidden="true" />
+                  <Icon className="h-7 w-7 text-kavtris-blue" aria-hidden="true" />
                   <p className="mt-4 text-sm font-semibold text-navy-900">{label}</p>
                 </div>
               ))}
-              <div className="sm:col-span-2 rounded-[1.35rem] border border-gold-600/25 bg-navy-950 p-5 text-sm leading-7 text-white/72">
-                A utilização deve ser proporcional, transparente e limitada ao processo necessário. O objetivo não é vigilância permanente, e a Qevaryn não fabrica estes dispositivos.
+              <div className="sm:col-span-2 rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-5 text-sm leading-7 text-white/72">
+                A utilização deve ser proporcional, transparente e limitada ao processo necessário. O objetivo não é vigilância permanente, e a KAVTRIS não fabrica estes dispositivos.
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export function FieldOpsPage() {
             <div className="mt-8 grid gap-4">
               {fieldOpsTechnicalGroups.map((group) => (
                 <details key={group.title} className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
-                  <summary className="cursor-pointer text-xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2">
+                  <summary className="cursor-pointer text-xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2">
                     {group.title}
                   </summary>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{group.description}</p>
@@ -149,7 +149,7 @@ export function FieldOpsPage() {
 function HeroVisual({ image, imageAlt }: { image: string; imageAlt: string }) {
   return (
     <div className="relative min-w-0">
-      <div className="absolute inset-8 rounded-full bg-gold-500/14 blur-3xl" aria-hidden="true" />
+      <div className="absolute inset-8 rounded-full bg-kavtris-blue/14 blur-3xl" aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-4 shadow-2xl">
         <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-navy-900">
           <Image
@@ -160,7 +160,7 @@ function HeroVisual({ image, imageAlt }: { image: string; imageAlt: string }) {
             sizes="(min-width: 1024px) 46vw, 92vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-navy-950/35 via-transparent to-gold-500/10" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-navy-950/35 via-transparent to-kavtris-blue/10" aria-hidden="true" />
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {[
@@ -169,7 +169,7 @@ function HeroVisual({ image, imageAlt }: { image: string; imageAlt: string }) {
             ['Relatório', 'histórico organizado']
           ].map(([label, text]) => (
             <div key={label} className="rounded-2xl bg-navy-950/80 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-gold-400">{label}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-kavtris-blueLight">{label}</p>
               <p className="mt-1 text-sm text-white/72">{text}</p>
             </div>
           ))}

@@ -100,7 +100,7 @@ test('equipamentos opcionais preservam foco em software e privacidade', async ({
   await expect(page.getByText(/O software funciona sem equipamento especial/i)).toBeVisible();
   await expect(page.getByText(/QR Code ou uma etiqueta NFC pode abrir a tarefa correta/i)).toBeVisible();
   await expect(page.getByText(/não é vigilância permanente/i)).toBeVisible();
-  await expect(page.getByText(/a Qevaryn não fabrica estes dispositivos/i)).toBeVisible();
+  await expect(page.getByText(/a KAVTRIS não fabrica estes dispositivos/i)).toBeVisible();
 });
 
 test('detalhes técnicos começam fechados e abrem por accordion', async ({ page }) => {

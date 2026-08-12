@@ -1,7 +1,7 @@
 import type { ContactFormValues } from '@/domain/contact';
 import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
-const emailSubjectPrefix = 'Re: Pedido — Qevaryn Systems';
+const emailSubjectPrefix = 'Re: Pedido — KAVTRIS';
 
 export type ContactNotificationInput = ContactFormValues & {
   submittedAt?: Date;
@@ -78,15 +78,15 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
           <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;">
             <tr>
               <td style="background:#031426;padding:28px 32px 22px 32px;border-radius:18px 18px 0 0;">
-                <img src="cid:qevaryn-systems-logo" width="280" alt="Qevaryn Systems" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
-                <div style="height:2px;width:96px;background:#D99A16;margin:20px 0 14px 0;"></div>
-                <p style="margin:0;color:#F2B632;font-size:12px;line-height:18px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;">Novo contacto através do site</p>
+                <img src="cid:qevaryn-systems-logo" width="280" alt="KAVTRIS" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
+                <div style="height:2px;width:96px;background:#065AFD;margin:20px 0 14px 0;"></div>
+                <p style="margin:0;color:#3D7BFF;font-size:12px;line-height:18px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;">Novo contacto através do site</p>
               </td>
             </tr>
             <tr>
               <td style="background:#FFFFFF;padding:32px;border-left:1px solid #E6E7E8;border-right:1px solid #E6E7E8;">
                 <h1 style="margin:0 0 10px 0;color:#0A1B30;font-size:26px;line-height:34px;font-family:Georgia,'Times New Roman',serif;">Novo pedido comercial</h1>
-                <p style="margin:0 0 24px 0;color:#4B5563;font-size:15px;line-height:24px;">Um potencial cliente enviou um pedido através do formulário da Qevaryn Systems.</p>
+                <p style="margin:0 0 24px 0;color:#4B5563;font-size:15px;line-height:24px;">Um potencial cliente enviou um pedido através do formulário da KAVTRIS.</p>
 
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:0 0 28px 0;">
                   <tr>
@@ -154,12 +154,12 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
 
                 <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:26px;">
                   <tr>
-                    <td style="border-radius:999px;background:#D99A16;">
-                      <a href="${safe.mailto}" style="display:inline-block;padding:13px 20px;color:#0A1B30;font-size:14px;font-weight:700;text-decoration:none;border-radius:999px;">Responder ao potencial cliente</a>
+                    <td style="border-radius:999px;background:#065AFD;">
+                      <a href="${safe.mailto}" style="display:inline-block;padding:13px 20px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:999px;">Responder ao potencial cliente</a>
                     </td>
                   </tr>
                 </table>
-                <p style="margin:0 0 28px 0;color:#4B5563;font-size:13px;line-height:20px;">Se o botão não funcionar, responda para: <a href="mailto:${safe.email}" style="color:#7A4E00;text-decoration:underline;">${safe.email}</a></p>
+                <p style="margin:0 0 28px 0;color:#4B5563;font-size:13px;line-height:20px;">Se o botão não funcionar, responda para: <a href="mailto:${safe.email}" style="color:#065AFD;text-decoration:underline;">${safe.email}</a></p>
 
                 <h2 style="margin:0 0 12px 0;color:#0A1B30;font-size:16px;line-height:24px;">Informações do pedido</h2>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;background:#F8F8F6;border:1px solid #E6E7E8;">
@@ -174,7 +174,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
               <td style="background:#031426;padding:24px 32px;border-radius:0 0 18px 18px;color:#FFFFFF;">
                 <p style="margin:0 0 6px 0;font-size:16px;line-height:24px;font-weight:700;">${companyName}</p>
                 <p style="margin:0 0 12px 0;color:#D1D5DB;font-size:13px;line-height:20px;">${brandTagline}</p>
-                <p style="margin:0 0 14px 0;color:#F2B632;font-size:13px;line-height:20px;">Integrante da Rede Qualidade é Vida</p>
+                <p style="margin:0 0 14px 0;color:#3D7BFF;font-size:13px;line-height:20px;">Integrante da Rede Qualidade é Vida</p>
                 <p style="margin:0;color:#9CA3AF;font-size:12px;line-height:18px;">Esta mensagem foi gerada automaticamente através do formulário de contacto do site.</p>
               </td>
             </tr>
@@ -188,7 +188,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
   const text = [
     'Novo pedido comercial',
     '',
-    'Um potencial cliente enviou um pedido através do formulário da Qevaryn Systems.',
+    'Um potencial cliente enviou um pedido através do formulário da KAVTRIS.',
     '',
     `Nome: ${input.name}`,
     `Empresa: ${company}`,

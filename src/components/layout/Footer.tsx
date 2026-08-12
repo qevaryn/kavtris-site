@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { Logo } from '@/components/layout/Logo';
-import { brandTagline, companyName } from '@/lib/constants';
+import { brandTagline, publicBrandName } from '@/lib/constants';
 
 export function Footer() {
   return (
-    <footer className="border-t-2 border-gold-600 bg-navy-950 text-white">
+    <footer className="border-t-2 border-kavtris-blue bg-navy-950 text-white">
       <div className="container-section py-9">
         <div className="grid gap-8 border-b border-white/10 pb-8 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
@@ -18,13 +18,13 @@ export function Footer() {
               <Logo variant="seal" />
               <div>
                 <p className="text-sm font-semibold text-white">Integrante da Rede Qualidade é Vida</p>
-                <Link href="/rede-qualidade-e-vida" className="mt-1 inline-flex text-sm font-semibold text-gold-500 underline-offset-4 hover:underline">
+                <Link href="/rede-qualidade-e-vida" className="mt-1 inline-flex text-sm font-semibold text-kavtris-blueLight underline-offset-4 hover:underline">
                   Conhecer a Rede
                 </Link>
               </div>
             </div>
             <p className="mt-5 text-sm leading-7 text-white/58">
-              A Qevaryn Systems atua como operadora independente, com gestão, contratos e responsabilidades próprias.
+              A KAVTRIS atua como operadora independente, com gestão, contratos e responsabilidades próprias.
             </p>
           </div>
 
@@ -46,7 +46,7 @@ export function Footer() {
 
         <div className="mt-6 grid gap-3 text-sm text-white/65 md:grid-cols-[1fr_auto] md:items-center">
           <p>Duas marcas. Um propósito. Tecnologia que conecta. Qualidade que transforma.</p>
-          <p>© {new Date().getFullYear()} {companyName}. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} {publicBrandName}. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

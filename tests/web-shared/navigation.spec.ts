@@ -35,7 +35,7 @@ test('páginas legais, rede e empresas abrem corretamente', async ({ page }) => 
 test('logotipo do header volta para a homepage a partir de páginas internas', async ({ page }) => {
   await page.goto('/empresas');
 
-  const homeLink = page.getByLabel('Qevaryn Systems - início');
+  const homeLink = page.getByLabel('KAVTRIS - início');
   await expect(homeLink).toHaveAttribute('href', '/#inicio');
   await homeLink.click();
   await expect(page).toHaveURL(/\/#inicio$/);

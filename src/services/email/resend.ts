@@ -6,12 +6,16 @@ import { getContactEmailEnv } from '@/config/server-env';
 import type { ContactFormValues } from '@/domain/contact';
 import type { ContactEmailProvider } from '@/services/email/email-provider';
 
+// The CID identifier remains the legacy technical id (fully internal; shared
+// only with the email HTML template and tests). It is intentionally not
+// renamed for cosmetic namespace cleanliness (BRAND.2E §21 option A). The
+// visible asset content is now the KAVTRIS wordmark.
 const logoContentId = 'qevaryn-systems-logo';
-const logoFilename = 'qevaryn-systems-white.png';
+const logoFilename = 'kavtris-wordmark-dark.png';
 type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
 
 async function readEmailLogo() {
-  const logoPath = path.join(process.cwd(), 'public', 'images', 'qevaryn-systems-white.png');
+  const logoPath = path.join(process.cwd(), 'public', 'brand', 'kavtris', 'kavtris-wordmark-dark.png');
 
   try {
     return await readFile(logoPath);

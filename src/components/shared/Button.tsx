@@ -14,10 +14,10 @@ type ButtonProps = {
 
 export function Button({ href, variant = 'primary', className, children, ...props }: ButtonProps) {
   const baseClasses =
-    'inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 disabled:opacity-60 disabled:pointer-events-none';
+    'inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 disabled:opacity-60 disabled:pointer-events-none';
 
   const variantClasses: Record<ButtonVariant, string> = {
-    primary: 'bg-gold-600 text-white shadow-glow hover:bg-gold-500',
+    primary: 'bg-kavtris-blue text-white shadow-glow hover:bg-[#0B5EFF]',
     secondary: 'bg-white/10 text-white ring-1 ring-inset ring-white/15 hover:bg-white/15',
     ghost: 'bg-transparent text-navy-800 hover:bg-navy-950/5'
   };

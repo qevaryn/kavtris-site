@@ -22,12 +22,12 @@ export function EnterprisePageView() {
         <section className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.58fr_0.42fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-500">Para empresas</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">Para empresas</p>
               <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-6xl">
                 Software claro para operações que exigem controlo, integração e continuidade.
               </h1>
               <p className="mt-6 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
-                A Qevaryn combina entendimento do negócio, desenvolvimento, qualidade e acompanhamento para criar soluções ajustadas ao risco e à dimensão de cada operação.
+                A KAVTRIS combina entendimento do negócio, desenvolvimento, qualidade e acompanhamento para criar soluções ajustadas ao risco e à dimensão de cada operação.
               </p>
               <p className="mt-4 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
                 A comunicação começa pelo problema da empresa. Arquitetura, segurança e integrações são aprofundadas quando o projeto exige.
@@ -43,7 +43,7 @@ export function EnterprisePageView() {
             </div>
 
             <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-6 shadow-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-gold-300">Tecnologia forte por trás</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">Tecnologia forte por trás</p>
               <div className="mt-6 grid gap-3">
                 {[
                   ['Requisitos', 'fluxos, regras e critérios'],
@@ -64,9 +64,9 @@ export function EnterprisePageView() {
         <section className="py-16 sm:py-20">
           <div className="container-section">
             <div className="max-w-3xl">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Quando faz sentido</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Quando faz sentido</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-                Quando faz sentido falar com a Qevaryn?
+                Quando faz sentido falar com a KAVTRIS?
               </h2>
               <p className="mt-4 text-base leading-8 text-slate-600">
                 A conversa é útil quando há complexidade operacional suficiente para justificar software adaptado, integração ou evolução controlada.
@@ -75,7 +75,7 @@ export function EnterprisePageView() {
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {enterpriseFitScenarios.map((scenario) => (
                 <article key={scenario} className="rounded-[1.25rem] border border-borderline bg-white p-5 shadow-sm">
-                  <CheckCircle2 className="h-5 w-5 text-gold-600" aria-hidden="true" />
+                  <CheckCircle2 className="h-5 w-5 text-kavtris-blue" aria-hidden="true" />
                   <p className="mt-3 text-sm leading-6 text-navy-800">{scenario}</p>
                 </article>
               ))}
@@ -86,7 +86,7 @@ export function EnterprisePageView() {
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section">
             <div className="max-w-3xl">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Base do projeto</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Base do projeto</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
                 Fundamentos antes da construção
               </h2>
@@ -97,7 +97,7 @@ export function EnterprisePageView() {
 
                 return (
                   <article key={pillar.id} className="rounded-[1.35rem] border border-borderline bg-paper p-6">
-                    <Icon className="h-7 w-7 text-gold-600" aria-hidden="true" />
+                    <Icon className="h-7 w-7 text-kavtris-blue" aria-hidden="true" />
                     <h3 className="mt-4 text-lg font-semibold text-navy-950">{pillar.title}</h3>
                     <p className="mt-3 text-sm leading-6 text-slate-600">{pillar.description}</p>
                   </article>
@@ -111,7 +111,7 @@ export function EnterprisePageView() {
           <div className="container-section">
             <div className="grid gap-8 lg:grid-cols-[0.36fr_0.64fr] lg:items-start">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Capacidades técnicas</p>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Capacidades técnicas</p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
                   Detalhe técnico quando o projeto exige
                 </h2>
@@ -122,7 +122,7 @@ export function EnterprisePageView() {
               <div className="grid gap-4">
                 {enterpriseCapabilities.map((group) => (
                   <details key={group.id} className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
-                    <summary className="cursor-pointer text-xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2">
+                    <summary className="cursor-pointer text-xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2">
                       {group.title}
                     </summary>
                     <p className="mt-3 text-sm leading-6 text-slate-600">{group.description}</p>
@@ -143,7 +143,7 @@ export function EnterprisePageView() {
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section">
             <div className="max-w-3xl">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Entrega e governança</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Entrega e governança</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
                 Projeto controlado do início à evolução
               </h2>
@@ -154,7 +154,7 @@ export function EnterprisePageView() {
             <div className="mt-8 grid gap-5 lg:grid-cols-4">
               {enterpriseDeliveryStages.map((stage, index) => (
                 <article key={stage.id} className="rounded-[1.35rem] border border-borderline bg-paper p-6">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-600 text-sm font-bold text-white">{index + 1}</span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-kavtris-blue text-sm font-bold text-white">{index + 1}</span>
                   <h3 className="mt-4 text-lg font-semibold text-navy-950">{stage.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{stage.description}</p>
                 </article>
@@ -162,7 +162,7 @@ export function EnterprisePageView() {
             </div>
             <div className="mt-8 rounded-[1.35rem] border border-borderline bg-paper p-6">
               <div className="flex items-center gap-3">
-                <GitBranch className="h-6 w-6 text-gold-600" aria-hidden="true" />
+                <GitBranch className="h-6 w-6 text-kavtris-blue" aria-hidden="true" />
                 <h3 className="text-xl font-semibold text-navy-950">Governança compacta</h3>
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
@@ -180,7 +180,7 @@ export function EnterprisePageView() {
           <div className="container-section">
             <div className="grid gap-8 lg:grid-cols-[0.34fr_0.66fr] lg:items-start">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Clareza comercial</p>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Clareza comercial</p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
                   Clareza antes de começar
                 </h2>
@@ -197,7 +197,7 @@ export function EnterprisePageView() {
                 ))}
               </div>
             </div>
-            <div className="mt-8 rounded-[1.35rem] border border-gold-600/25 bg-white p-6 text-sm leading-7 text-slate-600 shadow-sm">
+            <div className="mt-8 rounded-[1.35rem] border border-kavtris-blue/25 bg-white p-6 text-sm leading-7 text-slate-600 shadow-sm">
               <p>
                 Não são apresentadas certificações, tempos fixos de resposta, garantias de disponibilidade ou promessas de conformidade universal. Esses pontos devem ser definidos conforme o escopo, o risco e o contrato.
               </p>
@@ -208,7 +208,7 @@ export function EnterprisePageView() {
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Confiança realista</p>
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Confiança realista</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
                 Experiência aplicada, sem promessas inventadas
               </h2>
@@ -245,7 +245,7 @@ export function EnterprisePageView() {
               </Button>
             </div>
             <div className="mt-6">
-              <Link href="/" className="text-sm font-semibold text-gold-300 underline-offset-4 hover:underline">
+              <Link href="/" className="text-sm font-semibold text-kavtris-blueLight underline-offset-4 hover:underline">
                 Voltar à página inicial
               </Link>
             </div>

@@ -8,10 +8,10 @@ test('carrega a homepage', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Encontrar uma solução' })).toHaveAttribute('href', '#problemas');
   await expect(page.getByRole('link', { name: 'Ver produtos' })).toHaveAttribute('href', '/produtos');
   await expect(page.getByText('Painel Operacional')).toHaveCount(0);
-  await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo Qevaryn Systems')).toBeVisible();
+  await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo KAVTRIS')).toBeVisible();
   await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
   await expect(page.getByTestId('services-ticker').getByText('Automação inteligente').first()).toBeVisible();
-  await expect(page).toHaveTitle(/Qevaryn Systems \| Sistemas Web, Automação e Qualidade de Software/);
+  await expect(page).toHaveTitle(/KAVTRIS \| Sistemas Web, Automação e Qualidade de Software/);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Desenvolvimento de sistemas web/);
   await expect(page.getByLabel('Assinatura institucional')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toBeVisible();

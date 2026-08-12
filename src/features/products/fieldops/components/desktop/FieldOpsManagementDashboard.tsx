@@ -25,7 +25,7 @@ export function FieldOpsManagementDashboard({ sectorName, dashboardState }: Fiel
     <article className="min-w-0 rounded-[1.8rem] border border-borderline bg-white p-5 shadow-card">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold-600">Painel de gestão</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Painel de gestão</p>
           <h3 className="mt-2 text-2xl font-semibold text-navy-950">{dashboardState}</h3>
         </div>
         <span className="rounded-full bg-paper px-3 py-1 text-sm font-semibold text-navy-800">{sectorName}</span>
@@ -41,7 +41,7 @@ export function FieldOpsManagementDashboard({ sectorName, dashboardState }: Fiel
       <div className="mt-5 grid gap-3 md:grid-cols-2">
         {dashboardRows.map(([title, status, Icon]) => (
           <div key={title} className="flex items-center gap-3 rounded-2xl border border-borderline p-4">
-            <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
+            <Icon className="h-5 w-5 shrink-0 text-kavtris-blue" aria-hidden="true" />
             <div>
               <p className="text-sm font-semibold text-navy-900">{title}</p>
               <p className="text-sm text-slate-600">{status}</p>

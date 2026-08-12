@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
       type: 'website',
       locale: 'pt_PT',
       url: `${siteUrl}${canonicalPath}`,
-      siteName: 'Qevaryn Systems',
+      siteName: 'KAVTRIS',
       title,
       description,
       images: [

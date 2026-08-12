@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pt_PT',
     url: `${siteUrl}${canonicalPath}`,
-    siteName: 'Qevaryn Systems',
+    siteName: 'KAVTRIS',
     title,
     description,
     images: [
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
         url: '/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'Catálogo de produtos Qevaryn Systems'
+        alt: 'Catálogo de produtos KAVTRIS'
       }
     ]
   },

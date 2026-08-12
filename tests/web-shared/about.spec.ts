@@ -13,9 +13,9 @@ test('página sobre carrega com narrativa completa e H1 único', async ({ page }
   await expect(page.getByRole('heading', { name: 'Gabriel Dias de Souza' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Não construímos sozinhos.' })).toBeVisible();
 
-  await expect(page.getByText('A Qevaryn trabalha com clientes, profissionais e parceiros de diferentes histórias e crenças')).toBeVisible();
+  await expect(page.getByText('A KAVTRIS trabalha com clientes, profissionais e parceiros de diferentes histórias e crenças')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Conhecer os produtos' })).toHaveAttribute('href', '/produtos');
-  await expect(page.getByRole('link', { name: 'Falar com a Qevaryn' })).toHaveAttribute('href', '/#contacto');
+  await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toHaveAttribute('href', '/#contacto');
 });
 
 test('LinkedIn pessoal aparece apenas no bloco do fundador em /sobre', async ({ page }) => {
@@ -58,7 +58,7 @@ test('página sobre mantém layout utilizável em 320 px e imagens reais carrega
 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 
-  const founderImage = page.getByTestId('about-founder-card').getByAltText('Gabriel Dias de Souza, Fundador e QA Engineer da Qevaryn Systems');
+  const founderImage = page.getByTestId('about-founder-card').getByAltText('Gabriel Dias de Souza, Fundador e QA Engineer da KAVTRIS');
   await founderImage.scrollIntoViewIfNeeded();
   await expect(founderImage).toBeVisible();
   await expect.poll(() => founderImage.evaluate((img) => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

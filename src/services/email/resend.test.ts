@@ -41,7 +41,7 @@ describe('sendContactEmail', () => {
       ...originalEnv,
       NODE_ENV: 'test',
       RESEND_API_KEY: 'test-api-key',
-      RESEND_FROM_EMAIL: 'Qevaryn Systems <from@example.com>',
+      RESEND_FROM_EMAIL: 'KAVTRIS <from@example.com>',
       RESEND_TO_EMAIL: 'destinatario@example.com',
       CONTACT_FORM_MOCK: 'false'
     };
@@ -52,7 +52,7 @@ describe('sendContactEmail', () => {
   });
 
   it('mantém a logomarca do email disponível no repositório', () => {
-    expect(existsSync(path.join(process.cwd(), 'public', 'images', 'qevaryn-systems-white.png'))).toBe(true);
+    expect(existsSync(path.join(process.cwd(), 'public', 'brand', 'kavtris', 'kavtris-wordmark-dark.png'))).toBe(true);
   });
 
   it('envia para RESEND_TO_EMAIL, usa replyTo do cliente e attachment inline', async () => {
@@ -70,7 +70,7 @@ describe('sendContactEmail', () => {
     expect(payload.text).toContain('Responder diretamente ao email do cliente');
     expect(payload.attachments).toEqual([
       expect.objectContaining({
-        filename: 'qevaryn-systems-white.png',
+        filename: 'kavtris-wordmark-dark.png',
         contentType: 'image/png',
         contentId: 'qevaryn-systems-logo',
         inlineContentId: 'qevaryn-systems-logo'

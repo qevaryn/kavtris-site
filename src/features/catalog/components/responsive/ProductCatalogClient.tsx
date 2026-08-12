@@ -23,7 +23,7 @@ export function ProductCatalogClient() {
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Catálogo visual</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Catálogo visual</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Exemplos de software por setor
             </h2>
@@ -46,10 +46,10 @@ export function ProductCatalogClient() {
                 type="button"
                 aria-pressed={isActive}
                 onClick={() => setActiveFilter(filter.value)}
-                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 ${
+                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 ${
                   isActive
-                    ? 'border-gold-600 bg-gold-600 text-white'
-                    : 'border-borderline bg-white text-navy-800 hover:border-gold-500 hover:text-gold-700'
+                    ? 'border-kavtris-blue bg-kavtris-blue text-white'
+                    : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
                 }`}
               >
                 {filter.label}
@@ -65,13 +65,13 @@ export function ProductCatalogClient() {
           {activeFilter === 'all' ? (
             <article
               data-testid="custom-solution-card"
-              className="flex min-h-[26rem] flex-col justify-between rounded-[1.35rem] border border-gold-500/30 bg-navy-950 p-6 text-white shadow-card"
+              className="flex min-h-[26rem] flex-col justify-between rounded-[1.35rem] border border-kavtris-blue/30 bg-navy-950 p-6 text-white shadow-card"
             >
               <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-500/15 text-gold-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-kavtris-blue/15 text-kavtris-blueLight">
                   <Sparkles className="h-6 w-6" aria-hidden="true" />
                 </div>
-                <p className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-gold-300">Solução personalizada</p>
+                <p className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">Solução personalizada</p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight">Não encontrou uma solução parecida?</h3>
                 <p className="mt-4 text-sm leading-7 text-white/72">
                   Explique-nos o problema. A solução pode ser criada a partir do funcionamento real da sua empresa.
@@ -79,7 +79,7 @@ export function ProductCatalogClient() {
               </div>
               <Link
                 href="/?tipo=personalizada#contacto"
-                className="mt-8 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold-600 px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+                className="mt-8 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-kavtris-blue px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
               >
                 Falar sobre uma solução personalizada
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -90,7 +90,7 @@ export function ProductCatalogClient() {
 
         <section className="mt-12 rounded-[1.5rem] border border-borderline bg-white p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold-600">Próximo passo</p>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Próximo passo</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Ainda não sabe qual solução escolher?</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
               Conte-nos como a empresa trabalha e onde estão as principais dificuldades.
