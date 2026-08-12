@@ -28,7 +28,7 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 text-sm text-white/70 lg:items-end">
+          <div className="grid gap-x-6 gap-y-3 text-sm text-white/70 sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
             <Link href="/sobre" className="transition hover:text-white">
               Sobre
             </Link>

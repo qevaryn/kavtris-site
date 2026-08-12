@@ -169,6 +169,7 @@ test('motion budget permite autoplay por seção conforme visibilidade', async (
 });
 
 test('ticker e carrosséis respeitam reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
 

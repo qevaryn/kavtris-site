@@ -88,8 +88,18 @@ export function Contact() {
     });
   };
 
+  const redeContactCard = (
+    <div className="flex items-center gap-4 rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 panel-dark">
+      <Logo variant="seal" />
+      <div>
+        <p className="text-sm font-semibold text-white">Integrante da Rede Qualidade é Vida</p>
+        <p className="mt-1 text-sm leading-6 text-white/55">Compromisso com responsabilidade, clareza e qualidade.</p>
+      </div>
+    </div>
+  );
+
   return (
-    <section id="contacto" className="bg-kavtris-dark py-16 sm:py-20 lg:py-24">
+    <section id="contacto" className="kavtris-ambient bg-kavtris-dark py-16 sm:py-20 lg:py-24">
       <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
         <div className="lg:sticky lg:top-28">
           <SectionHeading className="[&_h2]:font-sans"
@@ -98,7 +108,7 @@ export function Contact() {
             title="Não precisa chegar com uma solução pronta."
             subtitle="Explique o que está a dificultar o trabalho. Nós ajudamos a organizar a ideia e identificar o primeiro passo."
           />
-          <div className="mt-8 rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+          <div className="panel-dark mt-8 rounded-[1.35rem] border border-white/10 p-5">
             <p className="text-sm font-semibold text-white/90">O que acontece depois?</p>
             <p className="mt-2 text-sm leading-7 text-white/60">
               Lemos a explicação, fazemos perguntas simples e ajudamos a transformar o problema num primeiro passo viável.
@@ -107,16 +117,11 @@ export function Contact() {
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
-          <div className="mt-5 flex items-center gap-4 rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 shadow-sm">
-            <Logo variant="seal" />
-            <div>
-              <p className="text-sm font-semibold text-white">Integrante da Rede Qualidade é Vida</p>
-              <p className="mt-1 text-sm leading-6 text-white/55">Compromisso com responsabilidade, clareza e qualidade.</p>
-            </div>
-          </div>
+          {/* WEB.1B — Rede card stays in the left column on desktop only. */}
+          <div className="mt-5 hidden lg:block">{redeContactCard}</div>
         </div>
 
-        <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-5 shadow-card md:p-7 lg:p-8">
+        <div className="panel-dark rounded-[1.35rem] border border-white/10 p-5 md:p-7 lg:p-8">
           <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit(onSubmit)} noValidate>
             <div>
               <label htmlFor="name" className="text-sm font-medium text-white/85">
@@ -278,6 +283,9 @@ export function Contact() {
               </Button>
             </div>
           </form>
+          {/* WEB.1B — mobile/tablet: Rede card renders after the form
+              (heading → copy → "O que acontece depois?" → form → Rede). */}
+          <div className="mt-5 lg:hidden">{redeContactCard}</div>
         </div>
       </div>
     </section>

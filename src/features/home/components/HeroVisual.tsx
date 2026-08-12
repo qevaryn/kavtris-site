@@ -19,13 +19,13 @@ export function HeroVisual() {
 
   return (
     <div
-      className="relative min-h-[200px] sm:min-h-[260px] lg:min-h-[380px]"
+      className="relative mx-auto min-h-[190px] w-full max-w-[22rem] sm:min-h-[250px] sm:max-w-[28rem] lg:min-h-[380px] lg:max-w-none"
       data-testid="hero-brand-visual"
       aria-hidden="true"
     >
       <div
         className={cn(
-          'absolute left-1/2 top-1/2 h-[min(72vw,24rem)] w-[min(72vw,24rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06]',
+          'absolute left-1/2 top-1/2 h-[min(64vw,20rem)] w-[min(64vw,20rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06] sm:h-[min(72vw,24rem)] sm:w-[min(72vw,24rem)]',
           !reducedMotion && 'hero-inner-ring'
         )}
       />

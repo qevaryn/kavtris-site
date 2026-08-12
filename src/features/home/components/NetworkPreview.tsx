@@ -5,7 +5,7 @@ export function NetworkPreview() {
   return (
     <section id="rede" className="bg-white py-12 sm:py-14 lg:py-16">
       <div className="container-section">
-        <article className="rounded-[1.45rem] border border-borderline bg-paper p-5 shadow-sm sm:p-7 lg:p-8" data-testid="network-preview">
+        <article className="rounded-[1.45rem] border border-borderline bg-paper p-5 shadow-[0_2px_4px_rgba(3,20,38,0.05),0_24px_60px_rgba(3,20,38,0.10)] sm:p-7 lg:p-8" data-testid="network-preview">
           <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-kavtris-blue">Rede Qualidade é Vida</p>

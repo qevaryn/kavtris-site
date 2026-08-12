@@ -34,7 +34,7 @@ const processSteps = [
 
 export function ProcessTimeline() {
   return (
-    <section id="processo" className="bg-[#030A1A] py-14 sm:py-16 lg:py-20">
+    <section id="processo" className="kavtris-ambient bg-[#030A1A] py-14 sm:py-16 lg:py-20">
       <div className="container-section">
         <SectionHeading className="[&_h2]:font-sans"
           tone="dark"
@@ -60,7 +60,7 @@ export function ProcessTimeline() {
             const Icon = step.icon;
 
             return (
-              <article className="h-full rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5 text-left shadow-sm">
+              <article className="panel-dark panel-dark-hover h-full rounded-[1.25rem] border border-white/10 p-5 text-left">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-kavtris-blueLight">0{context.index + 1}</p>
                 <span className="mt-3 grid h-14 w-14 place-items-center rounded-lg border border-kavtris-blue/35 bg-white/[0.04] text-kavtris-blueLight">
                   <Icon className="h-5 w-5" aria-hidden="true" />

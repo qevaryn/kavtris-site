@@ -48,7 +48,7 @@ export function FeaturedProducts() {
   ];
 
   return (
-    <section id="produtos-preview" className="bg-kavtris-dark py-14 sm:py-16 lg:py-20">
+    <section id="produtos-preview" className="kavtris-ambient bg-kavtris-dark py-14 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -80,7 +80,7 @@ export function FeaturedProducts() {
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (
-              <article className="flex h-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.04] shadow-sm transition hover:-translate-y-1 hover:border-kavtris-blue/40 hover:bg-white/[0.06]">
+              <article className="panel-dark panel-dark-hover flex h-full overflow-hidden rounded-[1.35rem] border border-white/10">
                 <div className="flex w-full flex-col">
                   <div className="relative aspect-[16/10] bg-[#040B1C]">
                     <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
@@ -100,7 +100,7 @@ export function FeaturedProducts() {
                 </div>
               </article>
             ) : (
-              <article className="flex h-full rounded-[1.35rem] border border-kavtris-blue/30 bg-[#050D20] p-5 text-white shadow-sm">
+              <article className="panel-dark flex h-full rounded-[1.35rem] border border-kavtris-blue/30 p-5 text-white">
                 <div className="flex w-full flex-col">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">Solução personalizada</p>
                   <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>

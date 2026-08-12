@@ -1,11 +1,11 @@
 "use client";
 
-import { Code2, LifeBuoy, ShieldCheck, TestTube2 } from 'lucide-react';
+import { Code2, LifeBuoy, ShieldCheck, TestTube2, type LucideIcon } from 'lucide-react';
 import { AccessibleCarousel } from '@/components/shared/AccessibleCarousel';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Button } from '@/components/shared/Button';
 
-const enterprisePillars = [
+const enterprisePillars: Array<{ title: string; description: string; icon: LucideIcon }> = [
   {
     title: 'Segurança e acessos',
     description: 'Perfis, permissões e proteção de dados conforme o risco do projeto.',
@@ -28,47 +28,86 @@ const enterprisePillars = [
   }
 ];
 
+function CapabilityCard({ pillar }: { pillar: (typeof enterprisePillars)[number] }) {
+  const Icon = pillar.icon;
+
+  return (
+    <article className="panel-dark panel-dark-hover h-full rounded-[1.1rem] border border-white/10 p-4 sm:p-5">
+      <div className="flex items-center gap-3 text-left">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-kavtris-blue/30 bg-white/[0.04] text-kavtris-blueLight">
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <span className="text-sm font-semibold text-white">{pillar.title}</span>
+      </div>
+      <p className="mt-3 text-sm leading-6 text-white/60">{pillar.description}</p>
+    </article>
+  );
+}
+
+/**
+ * WEB.1B — Engineering behind it.
+ *
+ * Desktop (lg+): the owner-approved structured presentation — left column with
+ * title + supporting copy + CTA, right column with a capability grid.
+ * Mobile/tablet (<lg): the protected infinite carousel is preserved
+ * (ENGINEERING_MOBILE_CAROUSEL_PRESERVED). Both variants consume the SAME
+ * `enterprisePillars` data source — no duplicated business content.
+ */
 export function EnterpriseDetails() {
   return (
-    <section id="empresas" className="border-y border-white/5 bg-[#030A1A] py-14 sm:py-16 lg:py-20">
+    <section id="empresas" className="kavtris-ambient border-y border-white/5 bg-[#030A1A] py-14 sm:py-16 lg:py-20">
       <div className="container-section">
-        <SectionHeading className="[&_h2]:font-sans"
-          tone="dark"
-          eyebrow="Engenharia por trás"
-          title="Simples para usar. Engenharia por trás."
-          subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
-          align="center"
-        />
+        {/* Mobile / tablet — protected infinite carousel */}
+        <div className="lg:hidden">
+          <SectionHeading className="[&_h2]:font-sans"
+            tone="dark"
+            eyebrow="Engenharia por trás"
+            title="Simples para usar. Engenharia por trás."
+            subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
+            align="center"
+          />
 
-        <AccessibleCarousel
-          ariaLabel="Capacidades técnicas para empresas"
-          testId="enterprise-capabilities-carousel"
-          className="mt-8"
-          motionMode="featured-step"
-          items={enterprisePillars}
-          itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%] lg:basis-[34%] xl:basis-[32%]"
-          autoplayMs={2000}
-          interactionPauseMs={2000}
-          getItemLabel={(pillar) => pillar.title}
-          renderItem={(pillar) => {
-            const Icon = pillar.icon;
+          <AccessibleCarousel
+            ariaLabel="Capacidades técnicas para empresas"
+            testId="enterprise-capabilities-carousel"
+            className="mt-8"
+            motionMode="featured-step"
+            items={enterprisePillars}
+            itemClassName="basis-[89%] sm:basis-[72%] md:basis-[54%]"
+            autoplayMs={2000}
+            interactionPauseMs={2000}
+            getItemLabel={(pillar) => pillar.title}
+            renderItem={(pillar) => <CapabilityCard pillar={pillar} />}
+          />
 
-            return (
-              <article className="rounded-[1.1rem] border border-white/10 bg-white/[0.035] p-4">
-                <div className="flex items-center gap-3 text-left">
-                  <Icon className="h-5 w-5 shrink-0 text-kavtris-blueLight" aria-hidden="true" />
-                  <span className="text-sm font-semibold text-white">{pillar.title}</span>
-                </div>
-                <p className="mt-3 text-sm leading-6 text-white/60">{pillar.description}</p>
-              </article>
-            );
-          }}
-        />
+          <div className="mt-8 flex justify-center">
+            <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
+              Ver capacidades técnicas
+            </Button>
+          </div>
+        </div>
 
-        <div className="mt-8 flex justify-center">
-          <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
-            Ver capacidades técnicas
-          </Button>
+        {/* Desktop — approved structured grid */}
+        <div className="hidden items-start gap-14 lg:grid lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <SectionHeading className="[&_h2]:font-sans"
+              tone="dark"
+              eyebrow="Engenharia por trás"
+              title="Simples para usar. Engenharia por trás."
+              subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
+            />
+            <div className="mt-8">
+              <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
+                Ver capacidades técnicas
+              </Button>
+            </div>
+          </div>
+
+          <div data-testid="enterprise-capabilities-grid" className="grid gap-4 sm:grid-cols-2">
+            {enterprisePillars.map((pillar) => (
+              <CapabilityCard key={pillar.title} pillar={pillar} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

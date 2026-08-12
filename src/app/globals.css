@@ -220,3 +220,67 @@ section[id] {
     box-shadow: 0 18px 45px rgba(3, 20, 38, 0.12);
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* WEB.1B — Controlled background depth (KAVTRIS_DARK = #010619 base). */
+/* Layered static radial gradients + diffused section-local light.     */
+/* No portal / eye / glow-halo / glassmorphism / full-page blur.       */
+/* The ::before layer sits below content (z-index: -1) and above the   */
+/* section's own background, so the effect is DEPTH, not CONTENT BLUR. */
+/* ------------------------------------------------------------------ */
+.kavtris-ambient {
+  position: relative;
+  isolation: isolate;
+}
+
+.kavtris-ambient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 42% at 14% 6%, rgba(6, 90, 253, 0.08), transparent 62%),
+    radial-gradient(46% 38% at 88% 82%, rgba(61, 123, 255, 0.05), transparent 60%),
+    radial-gradient(64% 46% at 50% 112%, rgba(255, 255, 255, 0.03), transparent 68%);
+}
+
+/* WEB.1B — engineered floating panel (precision panel, not glass). */
+/* Restrained tonal surface + 1px separation + soft ambient shadow.  */
+/* Border colour is left to per-card Tailwind utilities.             */
+.panel-dark {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.018) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 2px rgba(1, 6, 25, 0.4),
+    0 20px 46px rgba(1, 6, 25, 0.45);
+}
+
+.panel-dark-hover {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel-dark-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(61, 123, 255, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 2px 4px rgba(1, 6, 25, 0.4),
+      0 26px 54px rgba(1, 6, 25, 0.55);
+  }
+}
+
+/* Mobile pays for depth with static gradients only (no backdrop-filter,  */
+/* no extra blur) — smoothness is not traded for desktop decoration.      */
+@media (max-width: 767px) {
+  .kavtris-ambient::before {
+    background:
+      radial-gradient(50% 34% at 18% 0%, rgba(6, 90, 253, 0.055), transparent 60%),
+      radial-gradient(42% 30% at 82% 100%, rgba(61, 123, 255, 0.04), transparent 62%);
+  }
+}

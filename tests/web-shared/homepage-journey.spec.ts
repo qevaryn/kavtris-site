@@ -36,12 +36,14 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
 
   const enterprise = page.locator('#empresas');
   await expect(enterprise.getByRole('heading', { name: 'Simples para usar. Engenharia por trás.' })).toBeVisible();
-  const enterpriseCarousel = enterprise.getByTestId('enterprise-capabilities-carousel');
-  await expect(enterpriseCarousel).toBeVisible();
-  await expect(enterpriseCarousel.locator('[data-active="true"]').getByText('Segurança e acessos')).toBeVisible();
-  await expect(enterpriseCarousel.getByText('Qualidade e testes').first()).toBeAttached();
-  await expect(enterpriseCarousel.getByText('Integrações e arquitetura').first()).toBeAttached();
-  await expect(enterpriseCarousel.getByText('Suporte e continuidade').first()).toBeAttached();
+  // WEB.1B — desktop renders the approved structured capability grid
+  // (ENGINEERING_DESKTOP_GRID = YES); the carousel is the mobile/tablet variant.
+  const enterpriseGrid = enterprise.getByTestId('enterprise-capabilities-grid');
+  await expect(enterpriseGrid).toBeVisible();
+  for (const title of ['Segurança e acessos', 'Qualidade e testes', 'Integrações e arquitetura', 'Suporte e continuidade']) {
+    await expect(enterpriseGrid.getByText(title)).toBeVisible();
+  }
+  await expect(enterprise.getByTestId('enterprise-capabilities-carousel')).toBeHidden();
   await expect(enterprise.getByRole('link', { name: 'Ver capacidades técnicas' })).toHaveAttribute('href', '/empresas');
 
   const networkPreview = page.locator('#rede');
