@@ -21,13 +21,13 @@ export function CredibilityBar() {
         const Icon = item.icon;
 
         return (
-          <article key={item.title} className="flex min-h-[4.25rem] items-center gap-2.5 rounded-2xl border border-borderline bg-white px-4 py-3 shadow-sm">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blue">
+          <article key={item.title} className="flex min-h-[4.25rem] items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 shadow-sm">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
               <Icon className="h-5 w-5 stroke-[1.7]" aria-hidden="true" />
             </span>
-            <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-navy-900">
+            <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-white">
               {item.title}
-              <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case tracking-normal text-muted">{item.subtitle}</span>
+              <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case tracking-normal text-white/55">{item.subtitle}</span>
             </p>
           </article>
         );
@@ -36,7 +36,7 @@ export function CredibilityBar() {
   );
 
   return (
-    <section className="border-y border-borderline bg-white py-2" aria-label="Serviços principais">
+    <section className="border-y border-white/5 bg-kavtris-dark py-2" aria-label="Serviços principais">
       <div className="mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-10">
         {reducedMotion ? (
           <div data-testid="services-static-reduced">{staticContent}</div>
@@ -47,18 +47,18 @@ export function CredibilityBar() {
             testId="services-ticker"
             viewportClassName="py-1"
             itemClassName="min-w-[15.5rem] sm:min-w-[17rem]"
-            edgeFadeClassName="from-white"
+            edgeFadeClassName="from-[#010619]"
             renderItem={(item) => {
               const Icon = item.icon;
 
               return (
-                <article className="flex min-h-[4.25rem] items-center gap-2.5 rounded-2xl border border-borderline bg-white px-4 py-3 shadow-sm">
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blue">
+                <article className="flex min-h-[4.25rem] items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 shadow-sm">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
                     <Icon className="h-5 w-5 stroke-[1.7]" aria-hidden="true" />
                   </span>
-                  <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-navy-900">
+                  <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-white">
                     {item.title}
-                    <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case tracking-normal text-muted">{item.subtitle}</span>
+                    <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case tracking-normal text-white/55">{item.subtitle}</span>
                   </p>
                 </article>
               );

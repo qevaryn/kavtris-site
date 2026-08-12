@@ -9,7 +9,7 @@ export function NetworkPreview() {
           <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-kavtris-blue">Rede Qualidade é Vida</p>
-              <h2 className="mt-3 font-display text-[1.8rem] leading-tight text-navy-800 sm:text-[2.15rem]">
+              <h2 className="mt-3 font-sans text-[1.8rem] leading-tight text-navy-800 sm:text-[2.15rem]">
                 Tecnologia integrada a uma rede criada para servir melhor.
               </h2>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">

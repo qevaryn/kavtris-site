@@ -30,12 +30,13 @@ const enterprisePillars = [
 
 export function EnterpriseDetails() {
   return (
-    <section id="empresas" className="soft-section-line bg-mist py-14 sm:py-16 lg:py-20">
+    <section id="empresas" className="border-y border-white/5 bg-[#030A1A] py-14 sm:py-16 lg:py-20">
       <div className="container-section">
-        <SectionHeading
-          eyebrow="Para empresas e equipas técnicas"
-          title="Interface simples, processo técnico por trás."
-          subtitle="A homepage mostra o essencial. Quando o projeto exige mais rigor, organizamos segurança, integrações, qualidade, suporte e documentação com mais detalhe."
+        <SectionHeading className="[&_h2]:font-sans"
+          tone="dark"
+          eyebrow="Engenharia por trás"
+          title="Simples para usar. Engenharia por trás."
+          subtitle="O cliente sente simplicidade; nós tratamos da complexidade. Segurança, integrações, qualidade, suporte e documentação organizam o rigor técnico de cada projeto."
           align="center"
         />
 
@@ -53,19 +54,19 @@ export function EnterpriseDetails() {
             const Icon = pillar.icon;
 
             return (
-              <article className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
+              <article className="rounded-[1.1rem] border border-white/10 bg-white/[0.035] p-4">
                 <div className="flex items-center gap-3 text-left">
-                  <Icon className="h-5 w-5 shrink-0 text-kavtris-blue" aria-hidden="true" />
-                  <span className="text-sm font-semibold text-navy-900">{pillar.title}</span>
+                  <Icon className="h-5 w-5 shrink-0 text-kavtris-blueLight" aria-hidden="true" />
+                  <span className="text-sm font-semibold text-white">{pillar.title}</span>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
+                <p className="mt-3 text-sm leading-6 text-white/60">{pillar.description}</p>
               </article>
             );
           }}
         />
 
         <div className="mt-8 flex justify-center">
-          <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-kavtris-blue/10">
+          <Button href="/empresas" variant="secondary" className="border border-white/15 bg-transparent text-white hover:bg-kavtris-blue/10">
             Ver capacidades técnicas
           </Button>
         </div>

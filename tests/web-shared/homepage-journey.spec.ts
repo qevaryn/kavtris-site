@@ -6,24 +6,16 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(page.getByAltText('KAVTRIS').first()).toBeVisible();
   await expect(page.getByText('Qualidade é Vida Tech')).toHaveCount(0);
 
-  await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Centralizar operações' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Organizar equipas externas' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Controlar stock e pedidos' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Melhorar atendimento ao cliente' })).toBeVisible();
+  // WEB.1A — the Solution Finder ("Descobrir solução") is no longer rendered on the homepage.
+  await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toHaveCount(0);
+  await expect(page.locator('#problemas')).toHaveCount(0);
 
-  const finder = page.locator('#problemas');
-  const desktopResult = finder.getByTestId('solution-desktop-result');
-  await expect(desktopResult.getByRole('heading', { name: 'Escolha uma opção para ver a recomendação.' })).toBeVisible();
-
-  await page.getByRole('button', { name: 'Organizar equipas externas' }).click();
-  await expect(desktopResult.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(desktopResult.getByText('Organize serviços, visitas, checklists, evidências e relatórios num único sistema.')).toBeVisible();
-  await expect(desktopResult.getByRole('link', { name: /Ver como funciona/ })).toHaveAttribute('href', '/produtos/fieldops');
-  await expect(desktopResult.getByRole('link', { name: 'Falar sobre esta solução' })).toHaveAttribute('href', '/?produto=fieldops#contacto');
-
-  await expect(finder.getByText('Ainda não sabe o que precisa?')).toHaveCount(2);
-  await expect(finder.getByRole('link', { name: 'Explique o seu problema' }).first()).toHaveAttribute('href', '#contacto');
+  // How we work / diagnosis carousel now sits directly after the hero.
+  const howWeWork = page.locator('#processo');
+  await expect(howWeWork.getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
+  const processCarousel = howWeWork.getByTestId('process-carousel');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
+  await expect(processCarousel.getByRole('heading', { name: 'Identificar' })).toBeVisible();
 
   const preview = page.locator('#produtos-preview');
   const productsCarousel = preview.getByTestId('featured-products-carousel');
@@ -35,14 +27,15 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
 
-  await expect(page.getByRole('heading', { name: 'Um processo simples para chegar à solução certa.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Entender' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Prototipar' })).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Construir e testar' })).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: 'Lançar e acompanhar' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Identificar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Entender' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Propor' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Implementar' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Evoluir' })).toHaveCount(1);
 
   const enterprise = page.locator('#empresas');
-  await expect(enterprise.getByRole('heading', { name: 'Interface simples, processo técnico por trás.' })).toBeVisible();
+  await expect(enterprise.getByRole('heading', { name: 'Simples para usar. Engenharia por trás.' })).toBeVisible();
   const enterpriseCarousel = enterprise.getByTestId('enterprise-capabilities-carousel');
   await expect(enterpriseCarousel).toBeVisible();
   await expect(enterpriseCarousel.locator('[data-active="true"]').getByText('Segurança e acessos')).toBeVisible();

@@ -95,6 +95,112 @@ section[id] {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* WEB.1A — Hero engineering visual (CSS/SVG, SSR-safe, no WebGL).     */
+/* Sequence: light point → angular path → circuits → converge → K.     */
+/* ------------------------------------------------------------------ */
+@keyframes hero-draw-line {
+  from {
+    stroke-dashoffset: 640;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hero-light-travel {
+  0% {
+    opacity: 0;
+    transform: translate(58px, 366px);
+  }
+  10% {
+    opacity: 1;
+  }
+  38% {
+    transform: translate(252px, 218px);
+  }
+  66% {
+    transform: translate(462px, 148px);
+  }
+  84% {
+    transform: translate(470px, 214px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(470px, 214px);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-node-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-k-symbol-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-inner-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.28;
+  }
+}
+
+.hero-draw {
+  stroke-dasharray: 640;
+  stroke-dashoffset: 640;
+  animation: hero-draw-line 1.7s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+
+.hero-light-point {
+  opacity: 0;
+  animation: hero-light-travel 6.2s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+
+.hero-node {
+  opacity: 0;
+  animation: hero-node-pop 0.5s ease-out forwards;
+}
+
+.hero-k-symbol {
+  opacity: 0;
+  animation: hero-k-symbol-in 0.8s cubic-bezier(0.45, 0, 0.25, 1) 5.2s forwards;
+}
+
+.hero-inner-ring {
+  opacity: 0;
+  animation: hero-inner-pulse 2.4s ease-in-out 6s infinite;
+}
+
+.hero-reduced .hero-draw,
+.hero-reduced .hero-light-point,
+.hero-reduced .hero-node,
+.hero-reduced .hero-k-symbol,
+.hero-reduced .hero-inner-ring {
+  animation: none !important;
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transform: none;
+}
+
 @media (min-width: 768px) {
   section[id] {
     scroll-margin-top: 6.25rem;

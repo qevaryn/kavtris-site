@@ -48,16 +48,20 @@ export function FeaturedProducts() {
   ];
 
   return (
-    <section id="produtos-preview" className="bg-white py-14 sm:py-16 lg:py-20">
+    <section id="produtos-preview" className="bg-kavtris-dark py-14 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Soluções por setor</p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-              Veja exemplos de software que podem ser adaptados ao funcionamento da sua empresa.
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blueLight">Produtos e soluções</p>
+            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Tecnologias que adaptamos para o seu negócio.
             </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/60 sm:text-base">
+              As soluções existentes são pontos de partida adaptáveis à sua operação. Não precisa escolher sozinho o
+              software perfeito — analisamos o contexto e propomos o melhor caminho.
+            </p>
           </div>
-          <Button href="/produtos" className="hidden w-full sm:w-auto md:inline-flex">
+          <Button href="/produtos" className="hidden w-full border border-kavtris-blue/50 bg-transparent text-white hover:bg-kavtris-blue/10 sm:w-auto md:inline-flex">
             Ver todos os produtos
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
           </Button>
@@ -76,16 +80,19 @@ export function FeaturedProducts() {
           getItemLabel={(item) => (item.type === 'product' ? item.name : item.title)}
           renderItem={(item) =>
             item.type === 'product' ? (
-              <article className="flex h-full overflow-hidden rounded-[1.35rem] border border-borderline bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-card">
+              <article className="flex h-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.04] shadow-sm transition hover:-translate-y-1 hover:border-kavtris-blue/40 hover:bg-white/[0.06]">
                 <div className="flex w-full flex-col">
-                  <div className="relative aspect-[16/10] bg-navy-950">
+                  <div className="relative aspect-[16/10] bg-[#040B1C]">
                     <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">{item.categoryLabel}</p>
-                    <h3 className="mt-3 text-xl font-semibold text-navy-950">{item.name}</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted">{item.shortDescription}</p>
-                    <Link href={`/produtos/${item.slug}`} className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full bg-kavtris-blue px-5 py-3 text-sm font-semibold text-white transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">{item.categoryLabel}</p>
+                    <h3 className="mt-3 text-xl font-semibold text-white">{item.name}</h3>
+                    <p className="mt-3 text-sm leading-6 text-white/60">{item.shortDescription}</p>
+                    <Link
+                      href={`/produtos/${item.slug}`}
+                      className="mt-auto inline-flex min-h-11 items-center justify-center rounded-full border border-kavtris-blue/50 px-5 py-3 text-sm font-semibold text-white transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blueLight focus-visible:ring-offset-2 focus-visible:ring-offset-kavtris-dark"
+                    >
                       Ver produto
                       <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                     </Link>
@@ -93,12 +100,12 @@ export function FeaturedProducts() {
                 </div>
               </article>
             ) : (
-              <article className="flex h-full rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-5 text-white shadow-sm">
+              <article className="flex h-full rounded-[1.35rem] border border-kavtris-blue/30 bg-[#050D20] p-5 text-white shadow-sm">
                 <div className="flex w-full flex-col">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blueLight">Solução personalizada</p>
                   <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-white/70">{item.description}</p>
-                  <Button href="#contacto" className="mt-auto w-full text-navy-950">
+                  <Button href="#contacto" className="mt-auto w-full">
                     Explique o seu problema
                   </Button>
                 </div>

@@ -2,9 +2,8 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/features/home/components/Hero';
 import { CredibilityBar } from '@/features/home/components/CredibilityBar';
-import { SolutionFinder } from '@/features/home/components/SolutionFinder';
-import { FeaturedProducts } from '@/features/home/components/FeaturedProducts';
 import { ProcessTimeline } from '@/features/home/components/ProcessTimeline';
+import { FeaturedProducts } from '@/features/home/components/FeaturedProducts';
 import { EnterpriseDetails } from '@/features/enterprise/components/EnterprisePreview';
 import { NetworkPreview } from '@/features/home/components/NetworkPreview';
 import { Contact } from '@/features/contact/components/ContactForm';
@@ -21,6 +20,15 @@ const schema = {
   areaServed: 'PT'
 };
 
+/**
+ * WEB.1A — approved homepage structure:
+ * Header · Hero · How we work (diagnosis → solution) · Products & Solutions ·
+ * Engineering · Rede Qualidade é Vida · Contact · Footer.
+ *
+ * The Solution Finder ("Descobrir solução") is intentionally NOT rendered on the
+ * homepage (SOLUTION_FINDER_HOMEPAGE_RENDERED = NO). Its component, data and tests
+ * are preserved for reuse (SOLUTION_FINDER_CODE_DELETED = NO).
+ */
 export function HomePageView() {
   return (
     <>
@@ -28,9 +36,8 @@ export function HomePageView() {
       <main>
         <Hero />
         <CredibilityBar />
-        <SolutionFinder />
-        <FeaturedProducts />
         <ProcessTimeline />
+        <FeaturedProducts />
         <EnterpriseDetails />
         <NetworkPreview />
         <Contact />

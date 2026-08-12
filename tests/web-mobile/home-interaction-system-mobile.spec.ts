@@ -8,31 +8,19 @@ async function readActiveLabel(carousel: Locator) {
     .getAttribute('aria-label');
 }
 
-test('solution finder mobile expande inline com um único resultado aberto', async ({ page }) => {
+test('homepage já não renderiza o Solution Finder e o processo mantém-se um carrossel mobile', async ({ page }) => {
   await page.goto('/');
 
-  const problems = page.locator('#problemas');
-  const manualButton = problems.getByRole('button', { name: 'Centralizar operações' });
-  const fieldButton = problems.getByRole('button', { name: 'Organizar equipas externas' });
+  // WEB.1A — the Solution Finder is no longer rendered on the homepage.
+  await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toHaveCount(0);
+  await expect(page.locator('#problemas')).toHaveCount(0);
 
-  await expect(manualButton).toHaveAttribute('aria-expanded', 'false');
-  await expect(fieldButton).toHaveAttribute('aria-expanded', 'false');
-  await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
-
-  await manualButton.click();
-  await expect(manualButton).toHaveAttribute('aria-expanded', 'true');
-  await expect(problems.locator('[data-testid="solution-option-panel-manual-work"]')).toBeVisible();
-
-  await fieldButton.click();
-  await expect(fieldButton).toHaveAttribute('aria-expanded', 'true');
-  await expect(manualButton).toHaveAttribute('aria-expanded', 'false');
-  await expect(problems.locator('[data-testid="solution-option-panel-manual-work"]')).toBeHidden();
-
-  await fieldButton.focus();
-  await page.keyboard.press('Enter');
-  await expect(fieldButton).toHaveAttribute('aria-expanded', 'false');
-
-  await expect(problems.locator('[data-testid^="solution-option-panel-"]:not([hidden])')).toHaveCount(0);
+  // How we work remains a carousel on mobile.
+  const processCarousel = page.getByTestId('process-carousel');
+  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
+  await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
 });
 
 test('carrossel de produtos mobile mostra um cartão em destaque e navega com setas nos dois sentidos', async ({ page }) => {
@@ -98,17 +86,17 @@ test('processo mobile usa cartão em destaque com contador e controles manuais',
   await page.locator('#processo').scrollIntoViewIfNeeded();
 
   const processCarousel = page.getByTestId('process-carousel');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
 
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
 
   const track = page.getByTestId('process-carousel-track');
   await track.focus();
   await page.keyboard.press('ArrowRight');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('3 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('3 de 5');
   await page.keyboard.press('ArrowLeft');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
 });
 
 test('carrossel de produtos mobile retoma autoplay 2 s depois de uma seta', async ({ page }) => {

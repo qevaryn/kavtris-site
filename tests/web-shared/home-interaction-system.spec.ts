@@ -472,11 +472,11 @@ test('indicadores e teclado navegam entre cartões e o contador do processo acom
 
   await page.locator('#processo').scrollIntoViewIfNeeded();
   const processCarousel = page.getByTestId('process-carousel');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
   await processCarousel.getByRole('button', { name: 'Slide anterior' }).click();
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 4');
+  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
 });
 
 test('autoplay pausa ao usar uma seta e retoma 2 s depois; nova interação reinicia o tempo', async ({ page }) => {
@@ -668,7 +668,7 @@ test('hero mantém CTAs principais e sem overflow em 320', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');
 
-  await expect(page.locator('#inicio').getByRole('link', { name: 'Encontrar uma solução' })).toBeVisible();
-  await expect(page.locator('#inicio').getByRole('link', { name: 'Ver produtos' })).toBeVisible();
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Conhecer soluções' })).toBeVisible();
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Falar com a KAVTRIS' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });

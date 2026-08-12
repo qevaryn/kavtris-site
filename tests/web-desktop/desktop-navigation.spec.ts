@@ -6,7 +6,7 @@ test('desktop navigation opens homepage anchors', async ({ page }) => {
   const desktopNav = page.getByRole('navigation', { name: 'Navegação principal' });
 
   await desktopNav.getByRole('link', { name: 'Soluções', exact: true }).click();
-  await expect(page.locator('#problemas')).toBeInViewport();
+  await expect(page.locator('#processo')).toBeInViewport();
 
   await expect(desktopNav.getByRole('link', { name: 'Produtos', exact: true })).toHaveAttribute('href', '/produtos');
   await expect(desktopNav.getByRole('link', { name: 'Para empresas', exact: true })).toHaveAttribute('href', '/#empresas');

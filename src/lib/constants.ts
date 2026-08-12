@@ -18,7 +18,9 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  { label: 'Soluções', href: '/#problemas' },
+  // WEB.1A: "Soluções" now anchors to the "Como trabalhamos" section (the
+  // homepage Solution Finder is no longer rendered).
+  { label: 'Soluções', href: '/#processo' },
   { label: 'Produtos', href: '/produtos' },
   { label: 'Para empresas', href: '/#empresas' },
   { label: 'Sobre', href: '/sobre' },

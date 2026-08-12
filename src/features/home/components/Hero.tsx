@@ -1,67 +1,62 @@
-import Image from 'next/image';
 import { Button } from '@/components/shared/Button';
+import { HeroVisual } from '@/features/home/components/HeroVisual';
+
+const microPillars = [
+  { title: 'Consultoria ativa', detail: 'Identificamos oportunidades antes de vender software.' },
+  { title: 'Tecnologia adaptável', detail: 'Partimos do que já funciona e ajustamos à sua operação.' },
+  { title: 'Resultados reais', detail: 'Medimos o impacto e evoluímos com a sua empresa.' }
+];
 
 export function Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-[#03182B] text-white">
-      <div className="absolute inset-0 bg-hero-grid bg-[size:70px_70px] opacity-[0.12]" aria-hidden="true" />
-      <div className="absolute inset-y-0 right-0 w-3/5 bg-[radial-gradient(circle_at_66%_46%,rgba(6,90,253,0.27),transparent_45%)]" aria-hidden="true" />
-      <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(3,24,43,0.98),rgba(3,24,43,0))]" aria-hidden="true" />
+    <section id="inicio" className="relative overflow-hidden bg-kavtris-dark text-white">
+      <div className="absolute inset-0 bg-hero-grid bg-[size:72px_72px] opacity-[0.07]" aria-hidden="true" />
+      <div
+        className="absolute inset-y-0 right-0 w-2/5 bg-[radial-gradient(circle_at_70%_45%,rgba(6,90,253,0.16),transparent_55%)]"
+        aria-hidden="true"
+      />
+      <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(1,6,25,0.98),rgba(1,6,25,0))]" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-[1180px] items-start gap-6 px-5 py-7 sm:gap-8 sm:px-8 sm:py-9 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-10 lg:py-10 xl:gap-12">
+      <div className="relative mx-auto grid max-w-[1180px] items-start gap-6 px-5 py-9 sm:px-8 sm:py-12 lg:grid-cols-[0.55fr_0.45fr] lg:items-center lg:gap-10 lg:py-16 xl:gap-14">
         <div className="max-w-[42rem]">
-          <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.28em] text-kavtris-blueLight">KAVTRIS</p>
-          <p className="mt-2 text-xs font-semibold text-white/64 sm:text-sm">Software • Automation • Quality • Innovation</p>
-
-          <h1 className="mt-5 max-w-[38rem] font-display text-[clamp(1.9rem,7vw,3rem)] font-extrabold leading-[1.01] tracking-tight text-white sm:text-[clamp(2.15rem,6vw,3.15rem)] lg:text-[2.75rem]">
-            Sistemas simples para organizar e automatizar a sua empresa.
-          </h1>
-
-          <p className="mt-4 max-w-lg text-sm leading-7 text-white/78 sm:text-base">
-            Escolha um produto por assinatura ou fale connosco sobre uma solução personalizada para o funcionamento da sua equipa.
+          <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.3em] text-kavtris-blueLight">KAVTRIS</p>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/50 sm:text-sm">
+            Software · Automação · Engenharia · Qualidade
           </p>
 
-          <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-            <Button href="#problemas" className="min-h-11 w-full border border-kavtris-blueLight/80 bg-kavtris-blue px-6 text-white shadow-[0_14px_30px_rgba(6,90,253,0.24)] hover:bg-[#0B5EFF] sm:w-auto">
-              Encontrar uma solução
+          <h1 className="mt-6 font-sans text-[clamp(1.85rem,6.6vw,2.95rem)] font-extrabold leading-[1.06] tracking-tight text-white sm:text-[clamp(2.1rem,5.4vw,3.1rem)]">
+            Tecnologia que
+            <span className="mt-2 block">encontra oportunidades.</span>
+            <span className="mt-2 block">Simplifica operações.</span>
+            <span className="mt-2 block text-kavtris-blueLight">Gera resultados.</span>
+          </h1>
+
+          <p className="mt-5 max-w-lg text-sm leading-7 text-white/70 sm:text-base">
+            A KAVTRIS combina consultoria, engenharia e tecnologia para identificar oportunidades, adaptar soluções e
+            tornar processos mais eficientes — em empresas de diferentes dimensões.
+          </p>
+
+          <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
+            <Button href="#processo" className="min-h-11 w-full bg-kavtris-blue px-6 text-white shadow-[0_14px_30px_rgba(6,90,253,0.28)] hover:bg-[#0B5EFF] sm:w-auto">
+              Conhecer soluções
             </Button>
-            <Button href="/produtos" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-kavtris-blueLight hover:bg-kavtris-blue/10 sm:w-auto">
-              Ver produtos
+            <Button href="#contacto" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-kavtris-blueLight hover:bg-kavtris-blue/10 sm:w-auto">
+              Falar com a KAVTRIS
             </Button>
           </div>
+
+          <ul className="mt-8 grid gap-3 border-t border-white/10 pt-6 sm:grid-cols-3 sm:gap-4">
+            {microPillars.map((pillar) => (
+              <li key={pillar.title} className="text-left">
+                <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">{pillar.title}</p>
+                <p className="mt-1 text-xs leading-5 text-white/55">{pillar.detail}</p>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="relative min-h-[175px] sm:min-h-[215px] lg:min-h-[340px]" data-testid="hero-brand-visual">
-          <div className="absolute left-1/2 top-[45%] h-[min(63vw,21rem)] w-[min(63vw,21rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-kavtris-blue/16 blur-3xl lg:left-[61%] lg:top-1/2 lg:h-[min(76vw,29rem)] lg:w-[min(76vw,29rem)]" aria-hidden="true" />
-          <svg className="absolute inset-y-0 right-0 h-full w-full text-kavtris-blueLight/68" viewBox="0 0 720 460" fill="none" aria-hidden="true">
-            <path d="M24 118H188L232 162H336" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M68 200H240L292 148H484" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M44 318H214L262 366H544" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M370 70H500L552 122H704" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M380 156H512L560 204H708" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M392 248H538L590 196H716" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M382 382H536L590 430H714" stroke="currentColor" strokeWidth="1.35" />
-            {[336, 484, 544, 704, 708, 716, 714].map((x, index) => (
-              <circle key={x + index} cx={x} cy={[162, 148, 366, 122, 204, 196, 430][index]} r="4.2" fill="currentColor" />
-            ))}
-            {[116, 648, 672].map((x, index) => (
-              <circle key={`glow-${x}`} cx={x} cy={[346, 88, 314][index]} r="3.2" fill="currentColor" opacity="0.95" />
-            ))}
-          </svg>
-
-          <div className="absolute left-1/2 top-[46%] w-[min(44vw,9.6rem)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(41vw,11rem)] lg:left-[61%] lg:top-1/2 lg:w-[26rem] xl:w-[30rem]">
-            <Image
-              src="/brand/kavtris/kavtris-symbol-dark.png"
-              alt="Símbolo KAVTRIS"
-              width={760}
-              height={760}
-              priority
-              sizes="(max-width: 430px) 144px, (max-width: 768px) 176px, (max-width: 1280px) 400px, 464px"
-              className="h-auto w-full object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)]"
-            />
-          </div>
-          <div className="absolute right-8 top-14 h-2 w-2 rounded-full bg-kavtris-blueLight shadow-[0_0_24px_rgba(6,90,253,0.9)]" aria-hidden="true" />
-          <div className="absolute bottom-20 left-8 h-1.5 w-1.5 rounded-full bg-kavtris-blueLight shadow-[0_0_20px_rgba(6,90,253,0.85)]" aria-hidden="true" />
+        <div className="relative">
+          <HeroVisual />
         </div>
       </div>
     </section>
