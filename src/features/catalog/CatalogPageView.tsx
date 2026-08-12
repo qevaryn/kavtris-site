@@ -11,7 +11,7 @@ export function CatalogPageView() {
         <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-gold-500">Produtos Qevaryn</p>
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-kavtris-blueLight">Produtos Qevaryn</p>
               <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
                 Encontre uma solução próxima da realidade da sua empresa.
               </h1>

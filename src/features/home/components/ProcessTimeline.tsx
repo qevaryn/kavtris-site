@@ -54,8 +54,8 @@ export function ProcessTimeline() {
 
             return (
               <article className="h-full rounded-[1.25rem] border border-borderline bg-paper p-5 text-center shadow-sm">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">0{context.index + 1}</p>
-                <span className="mx-auto mt-3 grid h-14 w-14 place-items-center rounded-full border border-gold-600/30 bg-white text-gold-600">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-kavtris-blue">0{context.index + 1}</p>
+                <span className="mx-auto mt-3 grid h-14 w-14 place-items-center rounded-full border border-kavtris-blue/30 bg-white text-kavtris-blue">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <h3 className="mt-4 text-base font-semibold text-navy-900">{step.title}</h3>

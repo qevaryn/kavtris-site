@@ -37,13 +37,13 @@ export function SolutionFinder() {
                     aria-controls={panelId}
                     onClick={() => setSelectedId((currentId) => (currentId === option.id ? null : option.id))}
                     className={
-                      `flex min-h-14 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
-                        isSelected ? 'bg-navy-950 text-white' : 'text-navy-900 hover:bg-gold-500/10'
+                      `flex min-h-14 w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue ${
+                        isSelected ? 'bg-navy-950 text-white' : 'text-navy-900 hover:bg-kavtris-blue/10'
                       }`
                     }
                   >
                     <span>{option.label}</span>
-                    <span className={`inline-flex h-2.5 w-2.5 rounded-full ${isSelected ? 'bg-gold-500' : 'bg-navy-900/20'}`} aria-hidden="true" />
+                    <span className={`inline-flex h-2.5 w-2.5 rounded-full ${isSelected ? 'bg-kavtris-blue' : 'bg-navy-900/20'}`} aria-hidden="true" />
                   </button>
 
                   <div
@@ -65,7 +65,7 @@ export function SolutionFinder() {
 
           <div className="mt-4 rounded-[1.25rem] border border-borderline bg-white px-4 py-4 shadow-sm">
             <p className="text-sm font-semibold text-navy-900">Ainda não sabe o que precisa?</p>
-            <Button href="#contacto" variant="ghost" className="mt-3 min-h-11 w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10">
+            <Button href="#contacto" variant="ghost" className="mt-3 min-h-11 w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-kavtris-blue/10">
               Explique o seu problema
             </Button>
           </div>
@@ -83,10 +83,10 @@ export function SolutionFinder() {
                     type="button"
                     aria-pressed={isSelected}
                     onClick={() => setSelectedId((currentId) => (currentId === option.id ? null : option.id))}
-                    className={`min-h-14 rounded-2xl border px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
+                    className={`min-h-14 rounded-2xl border px-4 py-3 text-left text-sm font-semibold leading-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue ${
                       isSelected
-                        ? 'border-gold-600 bg-navy-950 text-white shadow-card'
-                        : 'border-borderline bg-white text-navy-800 hover:border-gold-600/60'
+                        ? 'border-kavtris-blue bg-navy-950 text-white shadow-card'
+                        : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue/60'
                     }`}
                   >
                     {option.label}
@@ -97,7 +97,7 @@ export function SolutionFinder() {
 
             <div className="mt-5 rounded-[1.25rem] border border-borderline bg-white px-4 py-4 shadow-sm">
               <p className="text-sm font-semibold text-navy-900">Ainda não sabe o que precisa?</p>
-              <Button href="#contacto" variant="ghost" className="mt-3 min-h-11 w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10 sm:w-auto">
+              <Button href="#contacto" variant="ghost" className="mt-3 min-h-11 w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-kavtris-blue/10 sm:w-auto">
                 Explique o seu problema
               </Button>
             </div>
@@ -115,7 +115,7 @@ export function SolutionFinder() {
 function NeutralRecommendationContent() {
   return (
     <>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-600">Descobrir solução</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-kavtris-blue">Descobrir solução</p>
       <h3 className="mt-3 text-xl font-semibold text-navy-900 sm:text-2xl">Escolha uma opção para ver a recomendação.</h3>
       <p className="mt-3 text-sm leading-7 text-muted">
         Selecione uma intenção ao lado para ver um produto sugerido e o melhor próximo passo para a sua equipa.
@@ -140,14 +140,14 @@ function RecommendationContent({ option, compact = false }: { option: SolutionFi
 
   return (
     <>
-      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-600">Solução sugerida</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-kavtris-blue">Solução sugerida</p>
       <h3 className="mt-3 text-xl font-semibold text-navy-900 sm:text-2xl">{option.recommendationTitle}</h3>
       <p className="mt-3 text-sm leading-7 text-muted">{option.recommendationDescription}</p>
 
       <div className="mt-4 flex gap-3 rounded-2xl border border-borderline bg-white p-4">
-        <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
+        <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-kavtris-blue" aria-hidden="true" />
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-700">Produto relacionado</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Produto relacionado</p>
           {product ? (
             <>
               <p className="mt-2 text-base font-semibold text-navy-900">{product.name}</p>
@@ -165,7 +165,7 @@ function RecommendationContent({ option, compact = false }: { option: SolutionFi
           <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
         </Button>
         {option.secondaryCtaHref && option.secondaryCtaLabel ? (
-          <Button href={option.secondaryCtaHref} variant="ghost" className="w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10 sm:w-auto">
+          <Button href={option.secondaryCtaHref} variant="ghost" className="w-full border border-navy-950/10 bg-white text-navy-900 hover:bg-kavtris-blue/10 sm:w-auto">
             {option.secondaryCtaLabel}
           </Button>
         ) : null}

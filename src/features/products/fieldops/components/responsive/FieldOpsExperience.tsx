@@ -39,7 +39,7 @@ export function FieldOpsExperience() {
       <section id="fieldops-experience" className="bg-paper py-16 sm:py-20">
         <div className="container-section">
           <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Demonstração visual</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Demonstração visual</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Veja o FieldOps em funcionamento
             </h2>
@@ -64,10 +64,10 @@ export function FieldOpsExperience() {
                 aria-controls={`experience-panel-${item.id}`}
                 tabIndex={experience.id === item.id ? 0 : -1}
                 onClick={() => setExperienceId(item.id)}
-                className={`min-h-11 shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 ${
+                className={`min-h-11 shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 ${
                   experience.id === item.id
-                    ? 'border-gold-600 bg-gold-600 text-white'
-                    : 'border-borderline bg-white text-navy-800 hover:border-gold-500 hover:text-gold-700'
+                    ? 'border-kavtris-blue bg-kavtris-blue text-white'
+                    : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
                 }`}
               >
                 {item.label}
@@ -92,7 +92,7 @@ export function FieldOpsExperience() {
       <section id="fieldops-setores" className="bg-white py-16 sm:py-20">
         <div className="container-section">
           <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Adaptação por setor</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Adaptação por setor</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Veja como o FieldOps se adapta à sua operação
             </h2>
@@ -117,10 +117,10 @@ export function FieldOpsExperience() {
                 aria-controls={`sector-panel-${item.id}`}
                 tabIndex={sector.id === item.id ? 0 : -1}
                 onClick={() => setSectorId(item.id)}
-                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 ${
+                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 ${
                   sector.id === item.id
-                    ? 'border-gold-600 bg-gold-600 text-white'
-                    : 'border-borderline bg-white text-navy-800 hover:border-gold-500 hover:text-gold-700'
+                    ? 'border-kavtris-blue bg-kavtris-blue text-white'
+                    : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
                 }`}
               >
                 {item.name}
@@ -147,7 +147,7 @@ export function FieldOpsExperience() {
             <ol className="grid gap-3 sm:grid-cols-2">
               {sector.workflow.map((step, index) => (
                 <li key={step} className="rounded-2xl border border-borderline bg-white p-4 shadow-sm">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-600 text-sm font-bold text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-kavtris-blue text-sm font-bold text-white">
                     {index + 1}
                   </span>
                   <p className="mt-3 text-sm font-semibold leading-6 text-navy-900">{step}</p>
@@ -161,7 +161,7 @@ export function FieldOpsExperience() {
       <section id="fieldops-evolucao" className="bg-paper py-16 sm:py-20">
         <div className="container-section">
           <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-gold-600">Evolução por fases</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Evolução por fases</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Comece com o essencial e evolua
             </h2>
@@ -186,10 +186,10 @@ export function FieldOpsExperience() {
                 aria-controls={`config-panel-${item.id}`}
                 tabIndex={configuration.id === item.id ? 0 : -1}
                 onClick={() => setConfigId(item.id)}
-                className={`min-h-11 shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 ${
+                className={`min-h-11 shrink-0 rounded-full border px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 ${
                   configuration.id === item.id
-                    ? 'border-gold-600 bg-navy-950 text-white'
-                    : 'border-borderline bg-white text-navy-800 hover:border-gold-500 hover:text-gold-700'
+                    ? 'border-kavtris-blue bg-navy-950 text-white'
+                    : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
                 }`}
               >
                 {item.name}
@@ -204,7 +204,7 @@ export function FieldOpsExperience() {
               <ul className="mt-3 grid gap-2">
                 {configuration.audience.map((item) => (
                   <li key={item} className="flex gap-2 text-sm leading-6 text-slate-700">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" aria-hidden="true" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
                     {item}
                   </li>
                 ))}
@@ -226,7 +226,7 @@ export function FieldOpsExperience() {
                 <ol className="mt-4 grid gap-3 sm:grid-cols-2">
                   {['Entender a operação', 'Prototipar o primeiro fluxo', 'Desenvolver e testar', 'Lançar e evoluir'].map((step, index) => (
                     <li key={step} className="rounded-2xl bg-paper p-4 text-sm font-semibold text-navy-900">
-                      <span className="mr-2 text-gold-700">{index + 1}.</span>
+                      <span className="mr-2 text-kavtris-blue">{index + 1}.</span>
                       {step}
                     </li>
                   ))}

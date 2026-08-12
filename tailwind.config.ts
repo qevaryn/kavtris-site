@@ -20,6 +20,16 @@ const config: Config = {
           600: '#8A5A00',
           500: '#F2B632'
         },
+        // KAVTRIS frozen brand palette (BRAND.1C/BRAND.2B source-of-truth).
+        // kavtris-blueLight is a same-family light render variant used only
+        // for text/focus on dark surfaces where base blue fails WCAG AA.
+        kavtris: {
+          blue: '#065AFD',
+          blueLight: '#3D7BFF',
+          dark: '#010619',
+          light: '#F8FAFD',
+          navy: '#030714'
+        },
         paper: '#F8F6F1',
         mist: '#F1F5F8',
         stone: '#F5F5F3',

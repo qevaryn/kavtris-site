@@ -55,7 +55,7 @@ export function EnterpriseDetails() {
             return (
               <article className="rounded-[1.1rem] border border-borderline bg-white p-4 shadow-sm">
                 <div className="flex items-center gap-3 text-left">
-                  <Icon className="h-5 w-5 shrink-0 text-gold-600" aria-hidden="true" />
+                  <Icon className="h-5 w-5 shrink-0 text-kavtris-blue" aria-hidden="true" />
                   <span className="text-sm font-semibold text-navy-900">{pillar.title}</span>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-muted">{pillar.description}</p>
@@ -65,7 +65,7 @@ export function EnterpriseDetails() {
         />
 
         <div className="mt-8 flex justify-center">
-          <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-gold-500/10">
+          <Button href="/empresas" variant="ghost" className="border border-navy-950/10 bg-white text-navy-900 hover:bg-kavtris-blue/10">
             Ver capacidades técnicas
           </Button>
         </div>

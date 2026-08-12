@@ -18,11 +18,11 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
             <div>
-              <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-gold-300 underline-offset-4 hover:underline">
+              <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-kavtris-blueLight underline-offset-4 hover:underline">
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Voltar aos produtos
               </Link>
-              <p className="mt-6 inline-flex rounded-full bg-gold-500/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-gold-300">
+              <p className="mt-6 inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 {product.label}
               </p>
               <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">{product.name}</h1>
@@ -50,7 +50,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
               <ul className="mt-4 grid gap-2 text-sm leading-6 text-slate-600">
                 {product.audience.map((item) => (
                   <li key={item} className="flex gap-2">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" aria-hidden="true" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
                     {item}
                   </li>
                 ))}
@@ -79,7 +79,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                   {product.benefits.map((benefit) => (
                     <li key={benefit} className="flex gap-2 text-sm leading-6 text-slate-600">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-600" aria-hidden="true" />
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-kavtris-blue" aria-hidden="true" />
                       {benefit}
                     </li>
                   ))}
@@ -94,7 +94,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                   </p>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {product.optionalEquipment.map((item) => (
-                      <span key={item} className="rounded-full border border-gold-500/30 bg-gold-500/10 px-3 py-1 text-sm font-medium text-gold-800">
+                      <span key={item} className="rounded-full border border-kavtris-blue/30 bg-kavtris-blue/10 px-3 py-1 text-sm font-medium text-kavtris-blue">
                         {item}
                       </span>
                     ))}
@@ -103,7 +103,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
               ) : null}
 
               <details id="detalhes" className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm">
-                <summary className="cursor-pointer text-2xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2">
+                <summary className="cursor-pointer text-2xl font-semibold text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2">
                   Ver detalhes técnicos
                 </summary>
                 <ul className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -115,7 +115,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 </ul>
               </details>
 
-              <article className="rounded-[1.35rem] border border-gold-600/25 bg-navy-950 p-6 text-white shadow-sm">
+              <article className="rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-6 text-white shadow-sm">
                 <h2 className="text-2xl font-semibold">Próximo passo</h2>
                 <p className="mt-4 text-sm leading-7 text-white/70">
                   Começamos por entender o processo atual, definir o essencial e adaptar a solução por fases. Não há preço automático nem promessa de prazo sem levantamento.

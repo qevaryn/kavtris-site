@@ -47,7 +47,7 @@ export function AboutPageView() {
       <main className="bg-paper">
         <section className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gold-500">A nossa história</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">A nossa história</p>
             <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-6xl">
               Construída com propósito, qualidade e vontade de servir.
             </h1>
@@ -90,7 +90,7 @@ export function AboutPageView() {
                 se constrói apenas com uma boa ideia, mas também com paciência, responsabilidade, aprendizagem e disposição para ouvir.
               </p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
-                A Qevaryn continua a crescer dessa forma: avançando com convicção, mas sem deixar de aprender com as pessoas que fazem parte da
+                A KAVTRIS continua a crescer dessa forma: avançando com convicção, mas sem deixar de aprender com as pessoas que fazem parte da
                 caminhada.
               </p>
             </article>
@@ -107,19 +107,19 @@ export function AboutPageView() {
                 responsabilidade de acompanhar o que foi construído.
               </p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
-                A Qevaryn nasceu para aplicar essa visão completa: desenvolver soluções que não sejam apenas tecnicamente funcionais, mas que façam
+                A KAVTRIS nasceu para aplicar essa visão completa: desenvolver soluções que não sejam apenas tecnicamente funcionais, mas que façam
                 sentido para as empresas e para as pessoas.
               </p>
             </article>
 
-            <article className="rounded-[1.35rem] border border-gold-600/20 bg-white p-5 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-5 shadow-sm sm:p-7">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Valores que orientam a forma de trabalhar</h2>
               <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
                 A fé cristã faz parte da história do fundador e inspira valores como serviço, honestidade, responsabilidade, cuidado e respeito
                 pelas pessoas.
               </p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
-                A Qevaryn trabalha com clientes, profissionais e parceiros de diferentes histórias e crenças, tratando todos com o mesmo respeito e
+                A KAVTRIS trabalha com clientes, profissionais e parceiros de diferentes histórias e crenças, tratando todos com o mesmo respeito e
                 compromisso.
               </p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
@@ -137,7 +137,7 @@ export function AboutPageView() {
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-borderline bg-navy-950">
                   <Image
                     src="/images/gabriel.webp"
-                    alt="Gabriel Dias de Souza, Fundador e QA Engineer da Qevaryn Systems"
+                    alt="Gabriel Dias de Souza, Fundador e QA Engineer da KAVTRIS"
                     fill
                     sizes="80px"
                     className="object-cover object-[50%_28%]"
@@ -145,7 +145,7 @@ export function AboutPageView() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-semibold text-navy-900">Gabriel Dias de Souza</h2>
-                  <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-gold-600">Fundador e QA Engineer</p>
+                  <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Fundador e QA Engineer</p>
                 </div>
               </div>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
@@ -162,17 +162,17 @@ export function AboutPageView() {
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="ghost"
-                  className="border border-navy-950/15 bg-white text-navy-900 hover:bg-gold-500/10"
+                  className="border border-navy-950/15 bg-white text-navy-900 hover:bg-kavtris-blue/10"
                 >
                   Ver perfil profissional no LinkedIn
                 </Button>
               </div>
             </article>
 
-            <article className="rounded-[1.35rem] border border-gold-600/20 bg-white p-6 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-6 shadow-sm sm:p-7">
               <h2 className="text-2xl font-semibold text-navy-900">Não construímos sozinhos.</h2>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-                A Qevaryn Systems faz parte da Rede Qualidade e Vida, uma iniciativa formada por pessoas e projetos que procuram servir com
+                A KAVTRIS faz parte da Rede Qualidade e Vida, uma iniciativa formada por pessoas e projetos que procuram servir com
                 responsabilidade em diferentes áreas.
               </p>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
@@ -205,7 +205,7 @@ export function AboutPageView() {
               <ul className="mt-6 grid gap-3 md:grid-cols-2">
                 {timelineSteps.map((step) => (
                   <li key={step} className="rounded-2xl border border-borderline bg-white px-4 py-3 text-sm font-medium text-navy-900">
-                    <CheckCircle2 className="mr-2 inline-block h-4 w-4 text-gold-600" aria-hidden="true" />
+                    <CheckCircle2 className="mr-2 inline-block h-4 w-4 text-kavtris-blue" aria-hidden="true" />
                     {step}
                   </li>
                 ))}
@@ -230,7 +230,7 @@ export function AboutPageView() {
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
               <Button href="/#contacto" variant="secondary">
-                Falar com a Qevaryn
+                Falar com a KAVTRIS
               </Button>
             </div>
           </div>

@@ -16,7 +16,7 @@ body {
 }
 
 ::selection {
-  background: rgba(242, 182, 50, 0.28);
+  background: rgba(6, 90, 253, 0.28);
 }
 
 section[id] {
@@ -61,7 +61,7 @@ section[id] {
   }
 
   :focus-visible {
-    outline: 2px solid #d99a16;
+    outline: 2px solid #065afd;
     outline-offset: 2px;
   }
 }
