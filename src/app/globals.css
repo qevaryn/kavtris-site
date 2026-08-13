@@ -458,6 +458,12 @@ section[id] {
   --reveal-duration: var(--reveal-duration-short, 800ms);
 }
 
+/* WEB.1E — a faster whole-block reveal variant for the brand-meaning
+   signature section (the internal letter stagger drives the choreography). */
+.kavtris-reveal--duration-short {
+  --reveal-duration: var(--reveal-duration-short, 800ms);
+}
+
 /* Staged two-column sections (Network / Contact) stack below the lg
    breakpoint; the right column moves beneath the left, so no stagger. */
 @media (max-width: 1023px) {
@@ -502,3 +508,39 @@ section[id] {
       0 22px 44px rgba(3, 20, 38, 0.09);
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* WEB.1E — KAVTRIS brand meaning (institutional signature section).   */
+/* Seven symbolic brand principles, one engineered system. Letters     */
+/* resolve left-to-right quickly after the section's one-time reveal.  */
+/* ------------------------------------------------------------------ */
+@keyframes kavtris-principle-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fail-open: principles are visible in raw SSR output; they only hide
+   while the parent one-time reveal is in its pending (hidden) state. */
+.kavtris-reveal:not(.kavtris-reveal--revealed) .kavtris-principle {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.kavtris-reveal--revealed .kavtris-principle {
+  animation: kavtris-principle-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kavtris-principle {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BrandDescriptor } from '@/components/shared/BrandDescriptor';
 import { Logo } from '@/components/layout/Logo';
 import { brandTagline, publicBrandName } from '@/lib/constants';
 
@@ -8,7 +9,11 @@ export function Footer() {
       <div className="container-section py-10">
         <div className="grid gap-10 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
-            <Logo variant="qevarynWhite" />
+            <span className="flex flex-col">
+              <Logo variant="qevarynWhite" />
+              {/* WEB.1E — same semantic descriptor family as the Header. */}
+              <BrandDescriptor className="mt-1.5 text-[0.6rem] sm:text-[0.65rem]" />
+            </span>
             <p className="text-sm text-white/72">{brandTagline}</p>
             <p className="max-w-md text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
           </div>

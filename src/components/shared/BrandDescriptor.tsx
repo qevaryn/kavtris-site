@@ -1,0 +1,25 @@
+import { cn } from '@/components/shared/cn';
+
+/**
+ * WEB.1E — contextual brand descriptor.
+ *
+ * MASTER BRAND = KAVTRIS (the logo asset). This descriptor is deliberately
+ * HTML/CSS contextual copy — it is NOT baked into any SVG/raster lockup and
+ * must not become part of the canonical logo geometry.
+ *
+ * Same text / capitalization / tracking philosophy is reused in the Header and
+ * the Footer; only the font-size may differ by context.
+ */
+export function BrandDescriptor({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        'block whitespace-nowrap text-[0.56rem] font-semibold uppercase leading-none tracking-[0.2em] text-white/55 sm:text-[0.65rem]',
+        className
+      )}
+      data-testid="brand-descriptor"
+    >
+      Technology &amp; Consulting
+    </span>
+  );
+}

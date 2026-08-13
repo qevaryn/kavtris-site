@@ -19,7 +19,7 @@ test('hero: copy e CTAs imediatamente visíveis e interativos durante a animaç�
 
   // Headline + descriptor + CTAs must be readable right away.
   await expect(page.getByRole('heading', { name: /Tecnologia que/ })).toBeVisible();
-  await expect(page.getByText('TECHNOLOGY & CONSULTING')).toBeVisible();
+  await expect(page.locator('#inicio').getByText(/TECHNOLOGY\s*&\s*CONSULTING/i)).toBeVisible();
   await expect(page.getByRole('link', { name: 'Conhecer soluções' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toBeVisible();
 

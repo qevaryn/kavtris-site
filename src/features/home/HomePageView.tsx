@@ -8,6 +8,7 @@ import { FeaturedProducts } from '@/features/home/components/FeaturedProducts';
 import { EnterpriseDetails } from '@/features/enterprise/components/EnterprisePreview';
 import { NetworkPreview } from '@/features/home/components/NetworkPreview';
 import { Contact } from '@/features/contact/components/ContactForm';
+import { MeaningBehindKavtris } from '@/features/home/components/MeaningBehindKavtris';
 import { brandTagline, companyName, siteUrl } from '@/lib/constants';
 
 const schema = {
@@ -42,6 +43,8 @@ export function HomePageView() {
         <EnterpriseDetails />
         <NetworkPreview />
         <Contact />
+        {/* WEB.1E — institutional/signature closing before the Footer. */}
+        <MeaningBehindKavtris />
       </main>
       {/* WEB.1D — one subtle whole-block footer reveal (FOOTER_WHOLE_REVEAL = YES). */}
       <RevealOnce testId="reveal-footer">
