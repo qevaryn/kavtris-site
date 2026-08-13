@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
 
   const isFieldOps = product.slug === 'fieldops';
   const title = isFieldOps
-    ? 'Qevaryn FieldOps | Gestão de Equipas e Serviços Externos'
+    ? 'FieldOps | Gestão de Equipas e Serviços Externos'
     : `${product.name} | Produto adaptável`;
   const description = isFieldOps
     ? 'Conheça um conceito de software para organizar equipas externas, serviços, visitas, checklists, evidências e relatórios.'

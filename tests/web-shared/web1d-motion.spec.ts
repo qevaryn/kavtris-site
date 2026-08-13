@@ -181,17 +181,17 @@ test('carrossel de produtos mantém-se funcional após reveal e durante scroll (
 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
   await expect(page.getByTestId('reveal-produtos')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // Manual navigation works immediately after reveal.
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 
   // Scroll away and back: carousel state is preserved (no reset by reveal).
   await scrollToTop(page);
   await carousel.scrollIntoViewIfNeeded();
   await expect(page.getByTestId('reveal-produtos')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 });
 
 test('deep link para #contacto não deixa a secção invisível', async ({ page }) => {

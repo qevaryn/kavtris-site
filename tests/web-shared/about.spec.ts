@@ -14,7 +14,7 @@ test('página sobre carrega com narrativa completa e H1 único', async ({ page }
   await expect(page.getByRole('heading', { name: 'Não construímos sozinhos.' })).toBeVisible();
 
   await expect(page.getByText('A KAVTRIS trabalha com clientes, profissionais e parceiros de diferentes histórias e crenças')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Conhecer os produtos' })).toHaveAttribute('href', '/produtos');
+  await expect(page.getByRole('link', { name: 'Ver como trabalhamos' })).toHaveAttribute('href', '/#como-trabalhamos');
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toHaveAttribute('href', '/#contacto');
 });
 

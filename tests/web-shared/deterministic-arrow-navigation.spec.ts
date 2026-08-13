@@ -1,9 +1,9 @@
 import { expect, test, type Locator } from '@playwright/test';
 
 const PRODUCT_LABELS = [
-  'Ir para Qevaryn FieldOps',
-  'Ir para Qevaryn Hotel Operations',
-  'Ir para Qevaryn Stock & Orders',
+  'Ir para FieldOps',
+  'Ir para Hotel Operations',
+  'Ir para Stock & Orders',
   'Ir para Solução personalizada para o seu contexto'
 ] as const;
 
@@ -39,7 +39,7 @@ test('cliques rápidos Next no carrossel de produtos contam todos os passos (fil
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   const next = carousel.getByRole('button', { name: 'Próximo slide' });
   for (let i = 0; i < 5; i++) {
@@ -56,7 +56,7 @@ test('direções mistas rápidas preservam a ordem no carrossel de produtos', as
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   const next = carousel.getByRole('button', { name: 'Próximo slide' });
   const prev = carousel.getByRole('button', { name: 'Slide anterior' });
@@ -70,7 +70,7 @@ test('direções mistas rápidas preservam a ordem no carrossel de produtos', as
   await prev.click();
   await next.click();
 
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 8000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 8000 }).toBe('Ir para Hotel Operations');
   await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 });
 
@@ -84,7 +84,7 @@ test('atravessar o limite do loop rapidamente não perde cliques', async ({ page
   const prev = carousel.getByRole('button', { name: 'Slide anterior' });
 
   // vai para o último (índice 3)
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
   await prev.click();
   await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe(PRODUCT_LABELS[3]);
 
@@ -92,7 +92,7 @@ test('atravessar o limite do loop rapidamente não perde cliques', async ({ page
   for (let i = 0; i < 3; i++) {
     await next.click();
   }
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 8000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 8000 }).toBe('Ir para Stock & Orders');
 
   // Previous ×3 rápido: 2 → 1 → 0 → 3 (último)
   for (let i = 0; i < 3; i++) {
@@ -108,7 +108,7 @@ test('dez cliques rápidos terminam no índice correto e o card ativo acompanha 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   const next = carousel.getByRole('button', { name: 'Próximo slide' });
   for (let i = 0; i < 10; i++) {
@@ -221,7 +221,7 @@ test('boundary do loop nunca deixa o viewport sem card visível (sem blank frame
   const carousel = page.getByTestId('featured-products-carousel');
   const next = carousel.getByRole('button', { name: 'Próximo slide' });
   const prev = carousel.getByRole('button', { name: 'Slide anterior' });
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // sampler rAF: registra, a cada frame, quantos slides com conteúdo estão visíveis
   await page.evaluate(() => {
@@ -277,7 +277,7 @@ test('boundary do loop nunca deixa o viewport sem card visível (sem blank frame
   });
   expect(result.total).toBeGreaterThan(50);
   expect(result.blanks).toBe(0);
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 });
 
 test('autoplay atravessa o boundary do loop sem perder continuidade', async ({ page }) => {
@@ -285,7 +285,7 @@ test('autoplay atravessa o boundary do loop sem perder continuidade', async ({ p
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // espera o autoplay percorrer um ciclo completo (4 itens × 2 s ≈ 8 s + folga)
   const labels: string[] = [];
@@ -295,6 +295,6 @@ test('autoplay atravessa o boundary do loop sem perder continuidade', async ({ p
   }
 
   // o ciclo completo foi atravessado: o primeiro card volta a aparecer
-  await expect.poll(() => indicatorLabel(carousel), { timeout: 15000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => indicatorLabel(carousel), { timeout: 15000 }).toBe('Ir para FieldOps');
   await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 });

@@ -3,14 +3,14 @@ import type { CommercialClarityItem, EnterpriseCapabilityGroup, EnterprisePillar
 export type { CommercialClarityItem, EnterpriseCapabilityGroup, EnterprisePillar } from '@/domain/enterprise/types';
 
 export const enterpriseFitScenarios = [
-  'Várias equipas usam ferramentas desligadas entre si.',
-  'A informação operacional está espalhada por sistemas, ficheiros e mensagens.',
-  'A empresa precisa de uma plataforma interna ou área de cliente.',
-  'O processo exige permissões, histórico e rastreabilidade.',
-  'Sistemas existentes precisam comunicar entre si.',
-  'Qualidade, testes e validação precisam de maior estrutura.',
-  'O projeto deve começar por um piloto controlado.',
-  'A solução precisa de manutenção e evolução depois do lançamento.'
+  'Ainda usa várias folhas de Excel para controlar a operação.',
+  'Os sistemas da empresa não comunicam entre si.',
+  'A equipa repete tarefas manuais todos os dias.',
+  'O software existente não acompanha o processo real.',
+  'Precisa integrar sistemas diferentes.',
+  'A empresa cresceu e o processo atual já não acompanha.',
+  'Falta visibilidade sobre o que acontece na operação.',
+  'Existe muito retrabalho ou informação duplicada.'
 ] as const;
 
 export const enterpriseFoundations: EnterprisePillar[] = [

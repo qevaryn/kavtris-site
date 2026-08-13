@@ -21,7 +21,7 @@ test('hero: copy e CTAs imediatamente visíveis; eyebrow redundante removido', a
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: /Tecnologia que/ })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Conhecer soluções' })).toBeVisible();
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toBeVisible();
 
   // Scoped to the Hero: the redundant brand eyebrow must be gone.

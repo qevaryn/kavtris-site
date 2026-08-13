@@ -69,6 +69,9 @@ export function Contact() {
       setValue('service', 'Projeto empresarial / requisitos e integrações', { shouldDirty: true });
     } else if (intent.type === 'custom-solution') {
       setValue('service', 'Solução personalizada / outro problema', { shouldDirty: true });
+    } else if (intent.type === 'discovery') {
+      // WEB.1F.3 — "Explicar o meu negócio" reaches the honest discovery state.
+      setValue('service', 'Ainda não sei qual solução preciso', { shouldDirty: true });
     }
   }, [setValue]);
 

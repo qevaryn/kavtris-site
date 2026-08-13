@@ -66,9 +66,9 @@ test('navegação por âncora: destino revela durante a aproximação (sem chega
   await page.goto('/');
 
   await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'pending');
-  await page.getByRole('link', { name: 'Conhecer soluções' }).click();
+  await page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' }).click();
   await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect(page.locator('#processo').getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
+  await expect(page.locator('#como-trabalhamos').getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
 
   // Contact CTA (deep section) — reveals during the smooth approach.
   await page.getByRole('link', { name: 'Falar com a KAVTRIS' }).click();

@@ -17,7 +17,7 @@ test('homepage já não renderiza o Solution Finder e o processo mantém-se um c
 
   // How we work remains a carousel on mobile.
   const processCarousel = page.getByTestId('process-carousel');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
@@ -33,10 +33,10 @@ test('carrossel de produtos mobile mostra um cartão em destaque e navega com se
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
 
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
   await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 
-  await expect(carousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
+  await expect(carousel.getByRole('heading', { name: 'FieldOps' })).toBeVisible();
 
   // largura real do cartão conforme a main (base 89%) e vizinhos visíveis
   const viewportBox = await viewport.boundingBox();
@@ -67,15 +67,15 @@ test('carrossel de produtos mobile mostra um cartão em destaque e navega com se
 
   // seta seguinte → próximo cartão
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 
   // seta anterior → cartão anterior
   await carousel.getByRole('button', { name: 'Slide anterior' }).click();
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   await track.focus();
   await page.keyboard.press('ArrowRight');
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 
   await expect(page.getByRole('link', { name: 'Ver todos os produtos' })).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');
@@ -83,7 +83,7 @@ test('carrossel de produtos mobile mostra um cartão em destaque e navega com se
 
 test('processo mobile usa cartão em destaque com contador e controles manuais', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
 
   const processCarousel = page.getByTestId('process-carousel');
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
@@ -104,17 +104,17 @@ test('carrossel de produtos mobile retoma autoplay 2 s depois de uma seta', asyn
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 
   // pausa pós-interação: não avança antes de 2000 ms
   await page.waitForTimeout(1400);
-  expect(await readActiveLabel(carousel)).toBe('Ir para Qevaryn Hotel Operations');
+  expect(await readActiveLabel(carousel)).toBe('Ir para Hotel Operations');
 
   // retoma após 2000 ms → avança para o próximo cartão
-  await expect.poll(() => readActiveLabel(carousel), { timeout: 3000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveLabel(carousel), { timeout: 3000 }).toBe('Ir para Stock & Orders');
 
 });
 

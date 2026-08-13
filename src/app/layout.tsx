@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { companyName, shouldIndexSite, siteUrl } from '@/lib/constants';
+import { SamePageAnchorHandler } from '@/components/shared/SamePageAnchorHandler';
 import './globals.css';
 
 const display = Playfair_Display({ subsets: ['latin'], variable: '--font-display' });
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="pt-PT" data-scroll-behavior="smooth" className={`${display.variable} ${sans.variable}`}>
       <body className="bg-paper font-sans text-navy-800 antialiased">
+        <SamePageAnchorHandler />
         {children}
       </body>
     </html>

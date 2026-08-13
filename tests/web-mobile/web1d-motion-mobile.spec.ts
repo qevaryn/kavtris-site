@@ -83,7 +83,7 @@ test('mobile: carrossel do processo funciona após reveal (seta avança o contad
   await page.goto('/');
 
   const processCarousel = page.getByTestId('process-carousel');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
   await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'revealed');
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
 

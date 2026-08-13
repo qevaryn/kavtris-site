@@ -55,7 +55,7 @@ test('arquitetura híbrida: temas dark/light por secção conforme aprovado', as
     '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]',
     'footer'
   ];
-  const light = ['#processo', '#produtos-preview', '#empresas', '#contacto'];
+  const light = ['#como-trabalhamos', '#produtos-preview', '#empresas', '#contacto'];
   const warmLight = ['#rede'];
 
   for (const selector of dark) {
@@ -77,7 +77,7 @@ test('dark-area share mantém-se restrito (SITE_TOO_DARK = NO)', async ({ page }
   await page.goto('/');
 
   const result = await page.evaluate(() => {
-    const sections = ['header', '#inicio', '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]', '#processo', '#produtos-preview', '#empresas', '#rede', '#contacto', 'footer'];
+    const sections = ['header', '#inicio', '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]', '#como-trabalhamos', '#produtos-preview', '#empresas', '#rede', '#contacto', 'footer'];
     const parseColor = (color: string) => {
       const rgbMatch = color.trim().match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
       if (rgbMatch) {
@@ -127,7 +127,7 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
 
   // Muted paragraph inside a light process card.
   const muted = await page.evaluate(() => {
-    const paragraph = Array.from(document.querySelectorAll('#processo article p')).find((p) =>
+    const paragraph = Array.from(document.querySelectorAll('#como-trabalhamos article p')).find((p) =>
       p.textContent?.includes('Encontramos oportunidades')
     );
     const color = paragraph ? getComputedStyle(paragraph).color : 'rgb(0,0,0)';
@@ -140,7 +140,7 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
 
   // Blue accent text (kavtris-blue) on white card.
   const blue = await page.evaluate(() => {
-    const label = document.querySelector('#processo article p');
+    const label = document.querySelector('#como-trabalhamos article p');
     const color = label ? getComputedStyle(label).color : 'rgb(6,90,253)';
     const card = label?.closest('article');
     const bg = card ? getComputedStyle(card).backgroundColor : 'rgb(255,255,255)';
@@ -151,7 +151,7 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
 
   // Navy heading on light section.
   const heading = await page.evaluate(() => {
-    const node = document.querySelector('#processo h2');
+    const node = document.querySelector('#como-trabalhamos h2');
     const color = node ? getComputedStyle(node).color : 'rgb(10,27,48)';
     const section = node?.closest('section');
     const bg = section ? getComputedStyle(section).backgroundColor : 'rgb(248,250,253)';
@@ -174,7 +174,7 @@ test('transição dark→light é deliberada e sem espectáculo decorativo', asy
 test('carrossel em superfície clara: dot ativo usa azul KAVTRIS base', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
 
   const activeDot = page
     .getByTestId('process-carousel')

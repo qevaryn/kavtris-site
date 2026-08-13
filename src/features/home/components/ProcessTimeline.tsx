@@ -35,7 +35,7 @@ const processSteps = [
 
 export function ProcessTimeline() {
   return (
-    <section id="processo" className="kavtris-ambient-light relative bg-kavtris-light pb-14 pt-16 sm:pb-16 sm:pt-20 lg:pb-20 lg:pt-24">
+    <section id="como-trabalhamos" className="kavtris-ambient-light relative bg-kavtris-light pb-14 pt-16 sm:pb-16 sm:pt-20 lg:pb-20 lg:pt-24">
       {/* WEB.1C — deliberate dark → light transition (soft tonal fade from the
           CredibilityBar above; architectural, no wave/blob/glow). */}
       <div

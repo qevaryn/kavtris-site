@@ -40,7 +40,7 @@ test('generates desktop and mobile section screenshots for visual audit', async 
   await revealWholePage(page);
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-desktop.png') });
   await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-desktop.png') });
-  await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-how-we-work-desktop.png') });
+  await page.locator('#como-trabalhamos').screenshot({ path: testInfo.outputPath('phase6-how-we-work-desktop.png') });
   await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-desktop.png') });
   await waitForTrustImages(page);
   await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-trust-desktop.png') });
@@ -52,9 +52,9 @@ test('generates desktop and mobile section screenshots for visual audit', async 
   await page.getByRole('banner').screenshot({ path: testInfo.outputPath('phase6-header-mobile.png') });
   await page.locator('#inicio').screenshot({ path: testInfo.outputPath('phase6-hero-mobile.png') });
   await page.getByTestId('hero-brand-visual').screenshot({ path: testInfo.outputPath('phase6-hero-brand-mobile.png') });
-  await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-how-we-work-mobile.png') });
+  await page.locator('#como-trabalhamos').screenshot({ path: testInfo.outputPath('phase6-how-we-work-mobile.png') });
   await page.locator('#produtos-preview').screenshot({ path: testInfo.outputPath('phase6-products-preview-mobile.png') });
-  await page.locator('#processo').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
+  await page.locator('#como-trabalhamos').screenshot({ path: testInfo.outputPath('phase6-process-mobile.png') });
   await waitForTrustImages(page);
   await page.locator('#rede').screenshot({ path: testInfo.outputPath('phase6-trust-mobile.png') });
   await page.locator('#contacto').screenshot({ path: testInfo.outputPath('phase6-contact-mobile.png') });

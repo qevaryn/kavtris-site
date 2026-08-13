@@ -7,9 +7,9 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
   await expectNoHorizontalOverflow(page);
   await expect(page.getByRole('button', { name: 'Todos' })).toBeVisible();
 
-  const fieldOpsCard = page.getByTestId('product-card').filter({ hasText: 'Qevaryn FieldOps' });
+  const fieldOpsCard = page.getByTestId('product-card').filter({ hasText: 'FieldOps' });
   await fieldOpsCard.scrollIntoViewIfNeeded();
-  const fieldOpsImage = fieldOpsCard.getByRole('img', { name: /Interface do Qevaryn FieldOps com agenda de serviços/i });
+  const fieldOpsImage = fieldOpsCard.getByRole('img', { name: /Interface do FieldOps com agenda de serviços/i });
   await expect(fieldOpsImage).toBeVisible();
   await expect.poll(async () => fieldOpsImage.evaluate((image: HTMLImageElement) => (
     image.complete &&
@@ -18,9 +18,9 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
     image.currentSrc.includes('fieldops-catalog-v1.webp')
   ))).toBe(true);
 
-  const opsCard = page.getByTestId('product-card').filter({ hasText: 'Qevaryn Ops' });
+  const opsCard = page.getByTestId('product-card').filter({ has: page.getByRole('heading', { name: 'Ops', exact: true }) });
   await opsCard.scrollIntoViewIfNeeded();
-  await expect(opsCard.getByRole('img', { name: /Interface do Qevaryn Ops num portátil/i })).toBeVisible();
+  await expect(opsCard.getByRole('img', { name: /Interface do Ops num portátil/i })).toBeVisible();
   const visualBox = await opsCard.getByTestId('product-card-visual').boundingBox();
   expect(visualBox).not.toBeNull();
   expect(Math.round((visualBox!.width / visualBox!.height) * 10) / 10).toBe(1.6);

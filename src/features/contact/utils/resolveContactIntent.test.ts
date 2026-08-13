@@ -31,4 +31,12 @@ describe('resolveContactIntent', () => {
       productSlug: 'fieldops'
     });
   });
+
+  it('resolves discovery contact ("ainda não sei qual solução preciso")', () => {
+    expect(resolveContactIntent(params('tipo=descobrir'))).toEqual({ type: 'discovery' });
+    expect(resolveContactIntent(params('tipo=descobrir&produto=fieldops'))).toEqual({
+      type: 'discovery',
+      productSlug: 'fieldops'
+    });
+  });
 });

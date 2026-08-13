@@ -6,7 +6,7 @@ test('carrega a homepage', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /Tecnologia que/ })).toBeVisible();
   await expect(page.getByRole('heading', { name: /Gera resultados\./ })).toBeVisible();
   await expect(page.getByText(/A KAVTRIS combina consultoria, engenharia e tecnologia/i)).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Conhecer soluções' })).toHaveAttribute('href', '#processo');
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' })).toHaveAttribute('href', '#como-trabalhamos');
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toHaveAttribute('href', '#contacto');
   await expect(page.getByText('Painel Operacional')).toHaveCount(0);
   await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo KAVTRIS')).toBeVisible();
@@ -18,7 +18,7 @@ test('carrega a homepage', async ({ page }) => {
   // WEB.1A — the Solution Finder is no longer rendered on the homepage.
   await expect(page.getByRole('heading', { name: 'O que pretende melhorar?' })).toHaveCount(0);
   // WEB.1A — "Como trabalhamos" (diagnosis carousel) sits directly after the hero.
-  await expect(page.locator('#processo').getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
+  await expect(page.locator('#como-trabalhamos').getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
   await expect(page.locator('#rede').getByText('Rede Qualidade é Vida').first()).toBeVisible();
   await expect(page.locator('#rede').getByRole('heading', { name: 'Tecnologia integrada a uma rede criada para servir melhor.' })).toBeVisible();
   await expect(page.locator('#rede').getByRole('link', { name: 'Conhecer a Rede' })).toHaveAttribute('href', '/rede-qualidade-e-vida');

@@ -20,9 +20,9 @@ async function waitForScrollChange(viewport: Locator, timeout = 4000) {
 }
 
 const PRODUCT_LABELS = [
-  'Ir para Qevaryn FieldOps',
-  'Ir para Qevaryn Hotel Operations',
-  'Ir para Qevaryn Stock & Orders',
+  'Ir para FieldOps',
+  'Ir para Hotel Operations',
+  'Ir para Stock & Orders',
   'Ir para Solução personalizada para o seu contexto'
 ];
 
@@ -156,8 +156,8 @@ test('motion budget permite autoplay por seção conforme visibilidade', async (
     .poll(() => readScrollLeft(processCarousel.getByTestId('process-carousel-viewport')), { timeout: 5000 })
     .toBe(processInitialScroll);
 
-  await page.locator('#processo').scrollIntoViewIfNeeded();
-  await page.locator('#processo').evaluate((node) => node.scrollIntoView({ block: 'center' }));
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').evaluate((node) => node.scrollIntoView({ block: 'center' }));
   await page.waitForTimeout(500);
   await expect
     .poll(() => readScrollLeft(processCarousel.getByTestId('process-carousel-viewport')), { timeout: 13000 })
@@ -207,7 +207,7 @@ test('produtos em destaque exibem um cartão central e vizinhos parcialmente vis
   const viewport = carousel.getByTestId('featured-products-carousel-viewport');
   await expect(carousel).toBeVisible();
 
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
   await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
 
   const viewportBox = await viewport.boundingBox();
@@ -266,17 +266,17 @@ test('autoplay em destaque troca a cada 2000 ms sem acumular avanços', async ({
   await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   await page.waitForTimeout(1500);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para FieldOps');
 
   const secondStart = Date.now();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3500 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3500 }).toBe('Ir para Hotel Operations');
   const secondElapsed = Date.now() - secondStart;
 
   const thirdStart = Date.now();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Stock & Orders');
   const thirdElapsed = Date.now() - thirdStart;
 
   expect(secondElapsed).toBeGreaterThanOrEqual(400);
@@ -294,7 +294,7 @@ test('seta seguinte após o último cartão volta ao primeiro sem retorno visual
 
   const carousel = page.getByTestId('featured-products-carousel');
   const viewport = carousel.getByTestId('featured-products-carousel-viewport');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   for (const target of PRODUCT_LABELS.slice(1)) {
     await carousel.getByRole('button', { name: 'Próximo slide' }).click();
@@ -312,7 +312,7 @@ test('seta seguinte após o último cartão volta ao primeiro sem retorno visual
     await page.waitForTimeout(50);
   }
 
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para FieldOps');
   const finalScroll = samples[samples.length - 1];
   const anomalous = samples.filter((sample) => sample < lastScroll - 60 && Math.abs(sample - finalScroll) > 60);
   expect(anomalous).toEqual([]);
@@ -324,7 +324,7 @@ test('seta anterior no primeiro cartão vai ao último sem retorno visual', asyn
 
   const carousel = page.getByTestId('featured-products-carousel');
   const viewport = carousel.getByTestId('featured-products-carousel-viewport');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // garante que a hidratação terminou para medir o scroll inicial de forma fiável
   const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
@@ -405,7 +405,7 @@ test('setas navegam em loop infinito sem dead-end nos dois sentidos', async ({ p
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // Previous no primeiro → último (loop)
   await carousel.getByRole('button', { name: 'Slide anterior' }).click();
@@ -413,7 +413,7 @@ test('setas navegam em loop infinito sem dead-end nos dois sentidos', async ({ p
 
   // Next no último → primeiro (loop)
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 });
 
 test('cliques rápidos nas setas mantêm um único card ativo e o dot sincronizado', async ({ page }) => {
@@ -421,7 +421,7 @@ test('cliques rápidos nas setas mantêm um único card ativo e o dot sincroniza
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   const next = carousel.getByRole('button', { name: 'Próximo slide' });
   await next.click();
@@ -438,7 +438,7 @@ test('clique no CTA do cartão abre o produto', async ({ page }) => {
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   await carousel.locator('[data-active="true"]').getByRole('link', { name: 'Ver produto' }).click();
   await expect(page).toHaveURL(/\/produtos\/fieldops$/);
@@ -450,7 +450,7 @@ test('indicadores e teclado navegam entre cartões e o contador do processo acom
 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
   await expect.poll(() => clonePrev.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
@@ -459,9 +459,9 @@ test('indicadores e teclado navegam entre cartões e o contador do processo acom
 
   await carousel
     .getByLabel('Indicadores de posição')
-    .getByRole('button', { name: 'Ir para Qevaryn Stock & Orders' })
+    .getByRole('button', { name: 'Ir para Stock & Orders' })
     .click();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Stock & Orders');
 
   const track = carousel.getByTestId('featured-products-carousel-track');
   await track.focus();
@@ -469,13 +469,13 @@ test('indicadores e teclado navegam entre cartões e o contador do processo acom
   await page.keyboard.press('ArrowRight');
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
   await page.keyboard.press('ArrowLeft');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Stock & Orders');
   await page.keyboard.press('Home');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
   await page.keyboard.press('End');
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
 
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
   const processCarousel = page.getByTestId('process-carousel');
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
   await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
@@ -490,24 +490,24 @@ test('autoplay pausa ao usar uma seta e retoma 2 s depois; nova interação rein
   await page.locator('#produtos-preview').evaluate((node) => node.scrollIntoView({ block: 'center' }));
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // a seta avança um cartão e o autoplay fica pausado durante a leitura
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Hotel Operations');
 
   // sem double-step: não avança antes do fim da pausa de interação (2000 ms)
   await page.waitForTimeout(1400);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn Hotel Operations');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Hotel Operations');
 
   // retoma após 2000 ms → avança para o próximo cartão
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Stock & Orders');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Stock & Orders');
 
   await carousel.getByRole('button', { name: 'Próximo slide' }).click();
   await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Solução personalizada para o seu contexto');
   await page.waitForTimeout(1400);
   expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Solução personalizada para o seu contexto');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 3000 }).toBe('Ir para FieldOps');
 });
 
 test('carrossel em destaque não avança com a página escondida e retoma ao voltar', async ({ page }) => {
@@ -515,7 +515,7 @@ test('carrossel em destaque não avança com a página escondida e retoma ao vol
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   // garante que a hidratação terminou (o inert dos clones só é aplicado no cliente)
   const clonePrev = carousel.getByTestId('featured-products-carousel-slide-clone-prev');
@@ -533,13 +533,13 @@ test('carrossel em destaque não avança com a página escondida e retoma ao vol
 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
   await page.waitForTimeout(2500);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para FieldOps');
 
   await page.evaluate(() => {
     Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true });
     document.dispatchEvent(new Event('visibilitychange'));
   });
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Qevaryn Hotel Operations');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 4500 }).toBe('Ir para Hotel Operations');
 });
 
 test('carrossel em destaque não avança fora do viewport', async ({ page }) => {
@@ -547,11 +547,11 @@ test('carrossel em destaque não avança fora do viewport', async ({ page }) => 
   await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('featured-products-carousel');
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Qevaryn FieldOps');
+  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para FieldOps');
 
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(2500);
-  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para Qevaryn FieldOps');
+  expect(await readActiveIndicatorLabel(carousel)).toBe('Ir para FieldOps');
 });
 
 test('clones são aria-hidden e inert e não duplicam links acessíveis', async ({ page }) => {
@@ -580,7 +580,7 @@ test('carrosséis em destaque não causam overflow horizontal em 320 px', async 
   await page.waitForTimeout(300);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 
@@ -673,7 +673,7 @@ test('hero mantém CTAs principais e sem overflow em 320', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');
 
-  await expect(page.locator('#inicio').getByRole('link', { name: 'Conhecer soluções' })).toBeVisible();
+  await expect(page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' })).toBeVisible();
   await expect(page.locator('#inicio').getByRole('link', { name: 'Falar com a KAVTRIS' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 });

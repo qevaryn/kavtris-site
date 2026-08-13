@@ -23,14 +23,19 @@ export function ProductCatalogClient() {
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Catálogo visual</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Catálogo de sistemas</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
               Exemplos de software por setor
             </h2>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-slate-600">
-            Filtre por área para ver conceitos que podem começar simples e evoluir para uma plataforma mais completa.
-          </p>
+          <div className="max-w-xl">
+            <p className="text-sm leading-7 text-slate-600">
+              Estes filtros organizam os sistemas por área técnica. Para descobrir pelo seu tipo de negócio, use a secção acima.
+            </p>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              Filtre por área para ver conceitos que podem começar simples e evoluir para uma plataforma mais completa.
+            </p>
+          </div>
         </div>
 
         <div
@@ -74,7 +79,7 @@ export function ProductCatalogClient() {
                 <p className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">Solução personalizada</p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight">Não encontrou uma solução parecida?</h3>
                 <p className="mt-4 text-sm leading-7 text-white/72">
-                  Explique-nos o problema. A solução pode ser criada a partir do funcionamento real da sua empresa.
+                  Os nossos sistemas são pontos de partida. Podemos adaptá-los, combiná-los ou desenvolver algo mais específico de acordo com o funcionamento real da sua empresa.
                 </p>
               </div>
               <Link
@@ -91,13 +96,13 @@ export function ProductCatalogClient() {
         <section className="mt-12 rounded-[1.5rem] border border-borderline bg-white p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Próximo passo</p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Ainda não sabe qual solução escolher?</h2>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Ainda não encontrou o que precisa?</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-              Conte-nos como a empresa trabalha e onde estão as principais dificuldades.
+              Explique como a sua empresa trabalha. A KAVTRIS ajuda a identificar o melhor ponto de partida.
             </p>
           </div>
-          <Button href="/#contacto" className="mt-6 text-navy-950 lg:mt-0">
-            Explique o seu problema
+          <Button href="/?tipo=descobrir#contacto" className="mt-6 text-navy-950 lg:mt-0">
+            Explicar o meu negócio
           </Button>
         </section>
       </div>

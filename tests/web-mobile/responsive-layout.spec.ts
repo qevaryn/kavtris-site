@@ -33,7 +33,7 @@ test('mobile fields, buttons and anchored sections remain accessible', async ({ 
   const submitBox = await submit.boundingBox();
   expect(submitBox?.height).toBeGreaterThanOrEqual(44);
 
-  for (const href of ['#processo', '#produtos-preview', '#empresas', '#rede', '#contacto']) {
+  for (const href of ['#como-trabalhamos', '#produtos-preview', '#empresas', '#rede', '#contacto']) {
     await page.goto(`/${href}`);
     const top = await page.locator(href).boundingBox();
     expect(top?.y).toBeGreaterThanOrEqual(68);

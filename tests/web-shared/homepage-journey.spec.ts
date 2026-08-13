@@ -11,7 +11,7 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   await expect(page.locator('#problemas')).toHaveCount(0);
 
   // How we work / diagnosis carousel now sits directly after the hero.
-  const howWeWork = page.locator('#processo');
+  const howWeWork = page.locator('#como-trabalhamos');
   await expect(howWeWork.getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
   const processCarousel = howWeWork.getByTestId('process-carousel');
   await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
@@ -20,9 +20,9 @@ test('homepage usa uma jornada curta de descoberta, produtos, processo e confian
   const preview = page.locator('#produtos-preview');
   const productsCarousel = preview.getByTestId('featured-products-carousel');
   await expect(productsCarousel).toBeVisible();
-  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn FieldOps' })).toBeVisible();
-  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Hotel Operations' })).toHaveCount(1);
-  await expect(productsCarousel.getByRole('heading', { name: 'Qevaryn Stock & Orders' })).toHaveCount(1);
+  await expect(productsCarousel.getByRole('heading', { name: 'FieldOps' })).toBeVisible();
+  await expect(productsCarousel.getByRole('heading', { name: 'Hotel Operations' })).toHaveCount(1);
+  await expect(productsCarousel.getByRole('heading', { name: 'Stock & Orders' })).toHaveCount(1);
   await expect(productsCarousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toHaveCount(1);
   await expect(preview.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
   await expect(preview.getByRole('link', { name: 'Ver todos os produtos' })).toHaveAttribute('href', '/produtos');

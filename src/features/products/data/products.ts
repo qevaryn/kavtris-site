@@ -16,7 +16,7 @@ export const sectorFilters: Array<{ label: string; value: ProductSector | 'all' 
 export const products: ProductConcept[] = [
   {
     slug: 'fieldops',
-    name: 'Qevaryn FieldOps',
+    name: 'FieldOps',
     categoryLabel: 'Equipas externas',
     label: 'Solução adaptável',
     sectors: ['field', 'services', 'business'],
@@ -32,12 +32,12 @@ export const products: ProductConcept[] = [
     description: 'Organize funcionários, serviços, horários, visitas, fotografias, checklists e relatórios num único lugar.',
     shortDescription: 'Organize equipas, serviços, visitas, checklists e relatórios num único sistema.',
     image: '/images/products/qevaryn-fieldops.webp',
-    imageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
+    imageAlt: 'Mockup visual do FieldOps com agenda mobile, check-in e estado de serviços externos',
     catalogImage: '/images/products/fieldops/fieldops-catalog-v1.webp',
     catalogImageAlt:
-      'Interface do Qevaryn FieldOps com agenda de serviços, profissionais, locais e estados num computador, acompanhada por check-in, checklist e evidências num telemóvel.',
+      'Interface do FieldOps com agenda de serviços, profissionais, locais e estados num computador, acompanhada por check-in, checklist e evidências num telemóvel.',
     heroImage: '/images/products/qevaryn-fieldops.webp',
-    heroImageAlt: 'Mockup visual do Qevaryn FieldOps com agenda mobile, check-in e estado de serviços externos',
+    heroImageAlt: 'Mockup visual do FieldOps com agenda mobile, check-in e estado de serviços externos',
     benefits: ['Serviços acompanhados', 'Evidências centralizadas', 'Menos chamadas', 'Relatórios por cliente'],
     features: [
       'escala de funcionários',
@@ -68,7 +68,7 @@ export const products: ProductConcept[] = [
   },
   {
     slug: 'stock-orders',
-    name: 'Qevaryn Stock & Orders',
+    name: 'Stock & Orders',
     categoryLabel: 'Retalho',
     label: 'Conceito de solução',
     sectors: ['retail', 'restaurant', 'business'],
@@ -77,7 +77,7 @@ export const products: ProductConcept[] = [
     description: 'Controle produtos, fornecedores, encomendas, quantidades e alertas de reposição num só sistema.',
     shortDescription: 'Controle produtos, fornecedores, encomendas e alertas de stock num só lugar.',
     image: '/images/products/qevaryn-stock-orders.webp',
-    imageAlt: 'Mockup visual do Qevaryn Stock & Orders com produtos, alertas de stock e pedido a fornecedor',
+    imageAlt: 'Mockup visual do Stock & Orders com produtos, alertas de stock e pedido a fornecedor',
     benefits: ['Stock visível', 'Reposição mais organizada', 'Histórico de preços', 'Menos ruturas'],
     features: [
       'catálogo de produtos',
@@ -105,7 +105,7 @@ export const products: ProductConcept[] = [
   },
   {
     slug: 'hotel-operations',
-    name: 'Qevaryn Hotel Operations',
+    name: 'Hotel Operations',
     categoryLabel: 'Hotelaria',
     label: 'Solução adaptável',
     sectors: ['hospitality', 'services', 'business'],
@@ -114,7 +114,7 @@ export const products: ProductConcept[] = [
     description: 'Organize quartos, limpeza, manutenção, pedidos de hóspedes e tarefas da equipa num único sistema.',
     shortDescription: 'Ligue receção, limpeza e manutenção através de uma operação organizada.',
     image: '/images/products/qevaryn-hotel-operations.webp',
-    imageAlt: 'Mockup visual do Qevaryn Hotel Operations com estado de quartos, limpeza e manutenção',
+    imageAlt: 'Mockup visual do Hotel Operations com estado de quartos, limpeza e manutenção',
     benefits: ['Estado dos quartos claro', 'Pedidos internos acompanhados', 'Prioridades visíveis', 'Histórico operacional'],
     features: [
       'estado dos quartos',
@@ -141,7 +141,7 @@ export const products: ProductConcept[] = [
   },
   {
     slug: 'kitchen-sync',
-    name: 'Qevaryn KitchenSync',
+    name: 'KitchenSync',
     categoryLabel: 'Restauração',
     label: 'Conceito de solução',
     sectors: ['restaurant', 'retail', 'services'],
@@ -150,7 +150,7 @@ export const products: ProductConcept[] = [
     description: 'Ligue atendimento, cozinha e preparação para que todos acompanhem o estado de cada pedido.',
     shortDescription: 'Acompanhe pedidos entre atendimento, cozinha, preparação e entrega.',
     image: '/images/products/qevaryn-kitchen-sync.webp',
-    imageAlt: 'Mockup visual do Qevaryn KitchenSync com fila de pedidos e estados de preparação',
+    imageAlt: 'Mockup visual do KitchenSync com fila de pedidos e estados de preparação',
     benefits: ['Fila de pedidos visível', 'Menos informação perdida', 'Prioridades claras', 'Atrasos identificados'],
     features: [
       'fila de pedidos',
@@ -178,7 +178,7 @@ export const products: ProductConcept[] = [
   },
   {
     slug: 'qevaryn-ops',
-    name: 'Qevaryn Ops',
+    name: 'Ops',
     categoryLabel: 'Gestão empresarial',
     label: 'Solução adaptável',
     sectors: ['business', 'services', 'field'],
@@ -188,7 +188,7 @@ export const products: ProductConcept[] = [
     shortDescription: 'Organize tarefas, aprovações, documentos e processos internos.',
     image: '/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp',
     imageAlt:
-      'Interface do Qevaryn Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
+      'Interface do Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
     benefits: ['Responsáveis definidos', 'Aprovações acompanhadas', 'Documentos organizados', 'Indicadores visíveis'],
     features: [
       'tarefas',
@@ -217,7 +217,7 @@ export const products: ProductConcept[] = [
   },
   {
     slug: 'customer-portal',
-    name: 'Qevaryn Customer Portal',
+    name: 'Customer Portal',
     categoryLabel: 'Área de cliente',
     label: 'Conceito de solução',
     sectors: ['customer', 'services', 'business'],
@@ -226,7 +226,7 @@ export const products: ProductConcept[] = [
     description: 'Dê aos clientes uma área protegida para acompanhar pedidos, documentos, pagamentos, mensagens e estado de serviços.',
     shortDescription: 'Dê aos clientes uma área simples para acompanhar pedidos, documentos e mensagens.',
     image: '/images/products/qevaryn-customer-portal.webp',
-    imageAlt: 'Mockup visual do Qevaryn Customer Portal com pedidos, documentos e mensagens para clientes',
+    imageAlt: 'Mockup visual do Customer Portal com pedidos, documentos e mensagens para clientes',
     benefits: ['Menos contactos repetidos', 'Cliente informado', 'Documentos acessíveis', 'Histórico centralizado'],
     features: [
       'login de cliente',

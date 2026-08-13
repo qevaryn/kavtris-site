@@ -96,7 +96,7 @@ test('creedibilidade reduzida mantém grelha estática acessível (sem loop vazi
 test('loop da How We Work dá a volta sem dead-end (5 passos)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await page.locator('#processo').scrollIntoViewIfNeeded();
+  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
 
   const carousel = page.getByTestId('process-carousel');
   const startLabel = await readActiveIndicatorLabel(carousel);
@@ -122,7 +122,7 @@ test('loop de produtos dá a volta sem dead-end (4 itens) no mobile', async ({ p
 
   const carousel = page.getByTestId('featured-products-carousel');
   const startLabel = await readActiveIndicatorLabel(carousel);
-  expect(startLabel).toBe('Ir para Qevaryn FieldOps');
+  expect(startLabel).toBe('Ir para FieldOps');
 
   for (let i = 0; i < 4; i += 1) {
     await carousel.getByRole('button', { name: 'Próximo slide' }).click();
@@ -185,7 +185,7 @@ test('hero mobile: headline primeiro, sem eyebrow redundante, visual sem clippin
     [
       hero.getByRole('heading', { name: /Tecnologia que/ }),
       hero.getByText(/A KAVTRIS combina consultoria/i),
-      hero.getByRole('link', { name: 'Conhecer soluções' }),
+      hero.getByRole('link', { name: 'Como trabalhamos' }),
       hero.getByRole('link', { name: 'Falar com a KAVTRIS' }),
       page.getByTestId('hero-brand-visual'),
       page.getByTestId('services-ticker')
@@ -218,13 +218,13 @@ test('background depth: secções usam ambiente em camadas (dark e light, não f
     const section = page.locator(`#${id}`);
     await expect(section).toHaveClass(/kavtris-ambient/);
   }
-  for (const id of ['processo', 'produtos-preview', 'empresas', 'contacto']) {
+  for (const id of ['como-trabalhamos', 'produtos-preview', 'empresas', 'contacto']) {
     const section = page.locator(`#${id}`);
     await expect(section).toHaveClass(/kavtris-ambient-light/);
   }
 
   // Both pseudo-element layers actually render a gradient (depth, not flat).
-  for (const id of ['inicio', 'processo']) {
+  for (const id of ['inicio', 'como-trabalhamos']) {
     const background = await page
       .locator(`#${id}`)
       .evaluate((node) => getComputedStyle(node, '::before').backgroundImage);

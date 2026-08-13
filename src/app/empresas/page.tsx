@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { EnterprisePageView } from '@/features/enterprise/EnterprisePageView';
 import { siteUrl } from '@/lib/constants';
 
-const title = 'Soluções para Empresas';
+const title = 'Serviços para Empresas';
 const description =
-  'Soluções de software para operações que exigem requisitos claros, segurança, integrações, qualidade, documentação, suporte e continuidade.';
+  'Tecnologia adaptada à realidade da sua empresa. A KAVTRIS identifica oportunidades, adapta soluções existentes ou desenvolve a tecnologia necessária para melhorar processos reais.';
 const canonicalPath = '/empresas';
 
 export const metadata: Metadata = {

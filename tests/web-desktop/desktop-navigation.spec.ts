@@ -5,11 +5,11 @@ test('desktop navigation opens homepage anchors', async ({ page }) => {
 
   const desktopNav = page.getByRole('navigation', { name: 'Navegação principal' });
 
-  await desktopNav.getByRole('link', { name: 'Soluções', exact: true }).click();
-  await expect(page.locator('#processo')).toBeInViewport();
+  await desktopNav.getByRole('link', { name: 'Como trabalhamos', exact: true }).click();
+  await expect(page.locator('#como-trabalhamos')).toBeInViewport();
 
   await expect(desktopNav.getByRole('link', { name: 'Produtos', exact: true })).toHaveAttribute('href', '/produtos');
-  await expect(desktopNav.getByRole('link', { name: 'Para empresas', exact: true })).toHaveAttribute('href', '/#empresas');
+  await expect(desktopNav.getByRole('link', { name: 'Serviços', exact: true })).toHaveAttribute('href', '/empresas');
   await expect(desktopNav.getByRole('link', { name: 'Sobre', exact: true })).toHaveAttribute('href', '/sobre');
   await expect(desktopNav.getByRole('link', { name: 'Contacto', exact: true })).toHaveAttribute('href', '/#contacto');
 
@@ -17,4 +17,13 @@ test('desktop navigation opens homepage anchors', async ({ page }) => {
   await expect(desktopNav.getByRole('link', { name: 'Exemplos', exact: true })).toHaveCount(0);
   await expect(desktopNav.getByRole('link', { name: 'Como funciona', exact: true })).toHaveCount(0);
   await expect(desktopNav.getByRole('link', { name: 'Descobrir solução', exact: true })).toHaveCount(0);
+});
+
+test('desktop navigation Services item opens the /empresas page', async ({ page }) => {
+  await page.goto('/');
+
+  const desktopNav = page.getByRole('navigation', { name: 'Navegação principal' });
+  await desktopNav.getByRole('link', { name: 'Serviços', exact: true }).click();
+  await expect(page).toHaveURL(/\/empresas$/);
+  await expect(page.getByRole('heading', { name: /Tecnologia adaptada à realidade/i })).toBeVisible();
 });

@@ -43,12 +43,17 @@ test.beforeAll(async ({ request }) => {
 });
 
 async function fillContactForm(page: import('@playwright/test').Page) {
-  // WEB.1F — robustness: wait for client hydration before filling. Under
-  // parallel load the dev server can be slow to hydrate; filling the raw SSR
-  // DOM lets the subsequent hydration render overwrite the values (react-hook-form
-  // initial state), which would make the submit invalid and never fire a POST.
+  // WEB.1F — robustness: wait for the CONTACT section itself to hydrate before
+  // filling. Under parallel load the dev server can stream chunks out of order;
+  // waiting for any reveal-state (e.g. the products section near the top) can
+  // resolve before the bottom contact chunk has hydrated, and filling the raw
+  // SSR DOM lets the later hydration render overwrite the values
+  // (react-hook-form initial state), making the submit invalid and never firing
+  // a POST. The contact reveal-state only appears after that subtree commits.
   await page.waitForFunction(() => {
-    const node = document.querySelector('[data-reveal-state="pending"], [data-reveal-state="revealed"]');
+    const node = document.querySelector(
+      '#contacto [data-reveal-state="pending"], #contacto [data-reveal-state="revealed"]'
+    );
     return Boolean(node);
   });
 

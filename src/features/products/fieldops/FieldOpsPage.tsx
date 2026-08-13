@@ -34,7 +34,7 @@ export function FieldOpsPage() {
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Voltar aos produtos
               </Link>
-              <p className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">Qevaryn FieldOps</p>
+              <p className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">FieldOps</p>
               <p className="mt-3 inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 Conceito de solução adaptável
               </p>

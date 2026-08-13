@@ -26,7 +26,7 @@ test('mobile menu moves focus inside on open and keeps it within the menu (Tab c
   await expect(nav).toBeVisible();
 
   // Foco inicial: primeiro link navegável.
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  await expect(nav.getByRole('link', { name: 'Como trabalhamos', exact: true })).toBeFocused();
 
   // Tab até ao último elemento do menu.
   for (let i = 0; i < 5; i += 1) {
@@ -36,7 +36,7 @@ test('mobile menu moves focus inside on open and keeps it within the menu (Tab c
 
   // Tab no último elemento volta ao primeiro (focus trap).
   await page.keyboard.press('Tab');
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  await expect(nav.getByRole('link', { name: 'Como trabalhamos', exact: true })).toBeFocused();
 });
 
 test('mobile menu supports Shift+Tab backwards cycle', async ({ page }) => {
@@ -46,7 +46,7 @@ test('mobile menu supports Shift+Tab backwards cycle', async ({ page }) => {
   const dialog = page.getByRole('dialog', { name: 'Menu de navegação' });
   const nav = page.getByRole('navigation', { name: 'Menu móvel' });
   await expect(nav).toBeVisible();
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  await expect(nav.getByRole('link', { name: 'Como trabalhamos', exact: true })).toBeFocused();
 
   // Shift+Tab no primeiro elemento vai para o último (focus trap reverso).
   await page.keyboard.press('Shift+Tab');

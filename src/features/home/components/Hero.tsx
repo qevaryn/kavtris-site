@@ -28,8 +28,9 @@ export function Hero() {
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-            <Button href="#processo" className="min-h-11 w-full bg-kavtris-blue px-6 text-white shadow-[0_14px_30px_rgba(6,90,253,0.28)] hover:bg-[#0B5EFF] sm:w-auto">
-              Conhecer soluções
+            {/* WEB.1F.3 — main journey now emphasizes HOW KAVTRIS works. */}
+            <Button href="#como-trabalhamos" className="min-h-11 w-full bg-kavtris-blue px-6 text-white shadow-[0_14px_30px_rgba(6,90,253,0.28)] hover:bg-[#0B5EFF] sm:w-auto">
+              Como trabalhamos
             </Button>
             <Button href="#contacto" variant="secondary" className="min-h-11 w-full border border-white/25 bg-transparent px-6 hover:border-kavtris-blueLight hover:bg-kavtris-blue/10 sm:w-auto">
               Falar com a KAVTRIS

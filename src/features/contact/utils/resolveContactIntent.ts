@@ -16,6 +16,12 @@ export function resolveContactIntent(searchParams: URLSearchParams): ContactInte
     return { type: 'custom-solution', productSlug };
   }
 
+  // WEB.1F.3 — "Explicar o meu negócio": the visitor knows their business but
+  // not which system they need ("Ainda não sei qual solução preciso").
+  if (selectedType === 'descobrir') {
+    return { type: 'discovery', productSlug };
+  }
+
   if (productSlug) {
     return { type: 'product', productSlug };
   }

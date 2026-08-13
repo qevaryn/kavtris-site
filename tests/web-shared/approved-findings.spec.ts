@@ -4,10 +4,10 @@ test.describe('F001: page titles do not duplicate the brand suffix', () => {
   const routes = [
     { path: '/', title: /^KAVTRIS \| Sistemas Web, Automação e Qualidade de Software$/ },
     { path: '/produtos', title: /^Produtos e Soluções de Software \| KAVTRIS$/ },
-    { path: '/empresas', title: /^Soluções para Empresas \| KAVTRIS$/ },
+    { path: '/empresas', title: /^Serviços para Empresas \| KAVTRIS$/ },
     { path: '/sobre', title: /^Sobre a KAVTRIS \| KAVTRIS$/ },
-    { path: '/produtos/fieldops', title: /^Qevaryn FieldOps \| Gestão de Equipas e Serviços Externos \| KAVTRIS$/ },
-    { path: '/produtos/kitchen-sync', title: /^Qevaryn KitchenSync \| Produto adaptável \| KAVTRIS$/ }
+    { path: '/produtos/fieldops', title: /^FieldOps \| Gestão de Equipas e Serviços Externos \| KAVTRIS$/ },
+    { path: '/produtos/kitchen-sync', title: /^KitchenSync \| Produto adaptável \| KAVTRIS$/ }
   ];
 
   for (const route of routes) {

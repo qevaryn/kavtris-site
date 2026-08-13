@@ -18,14 +18,14 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  // WEB.1A: "Soluções" now anchors to the "Como trabalhamos" section (the
-  // homepage Solution Finder is no longer rendered).
-  { label: 'Soluções', href: '/#processo' },
+  // WEB.1F.3: owner-approved public navigation — business-first labels.
+  // "Como trabalhamos" anchors to the homepage process section;
+  // "Serviços" now routes to the dedicated /empresas services page.
+  { label: 'Como trabalhamos', href: '/#como-trabalhamos' },
   { label: 'Produtos', href: '/produtos' },
-  { label: 'Para empresas', href: '/#empresas' },
+  { label: 'Serviços', href: '/empresas' },
   { label: 'Sobre', href: '/sobre' },
   { label: 'Contacto', href: '/#contacto' }
-  // O link "Planos" (/#planos) entra apenas no PR 3, quando a secção existir.
 ];
 
 export const contactEmail = process.env.RESEND_TO_EMAIL || '';

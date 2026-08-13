@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/shared/Button';
 import { MobileMenu } from '@/components/layout/MobileMenu';
-import { navigationLinks } from '@/lib/constants';
+import { HeaderNav } from '@/components/layout/HeaderNav';
 
 export function Header() {
   return (
@@ -30,13 +30,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav aria-label="Navegação principal" className="hidden items-center gap-4 min-[1180px]:flex 2xl:gap-5">
-          {navigationLinks.map((link) => (
-            <Link key={`${link.href}-${link.label}`} href={link.href} className="rounded-sm px-0.5 text-[13px] font-semibold text-white/84 transition hover:text-kavtris-blueLight focus-visible:text-kavtris-blueLight 2xl:text-sm">
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <HeaderNav />
 
         <div className="flex items-center gap-2.5">
           <Button

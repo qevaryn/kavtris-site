@@ -6,7 +6,7 @@ test('FieldOps carrega como conceito com CTAs e aviso honesto', async ({ page })
   await expect(page.getByRole('heading', { name: /Organize equipas externas/i })).toBeVisible();
   await expect(page.getByText('Conceito de solução adaptável')).toBeVisible();
   await expect(page.getByText(/Esta apresentação mostra uma possível configuração/i)).toBeVisible();
-  await expect(page).toHaveTitle(/Qevaryn FieldOps \| Gestão de Equipas e Serviços Externos/);
+  await expect(page).toHaveTitle(/FieldOps \| Gestão de Equipas e Serviços Externos/);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /organizar equipas externas/i);
   await expect(page.getByText(/clientes reais|app stores|SaaS completo|99,9%|garantido|Comprar agora|checkout|carrinho/i)).toHaveCount(0);
 
@@ -121,7 +121,7 @@ test('CTAs de contacto mantêm FieldOps selecionado ou contacto geral', async ({
 
   await page.getByRole('link', { name: /Adaptar o FieldOps à minha empresa/i }).click();
   await expect(page).toHaveURL(/\/\?produto=fieldops#contacto$/);
-  await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('Qevaryn FieldOps');
+  await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('FieldOps');
 
   await page.goto('/produtos/fieldops');
   await page.getByRole('link', { name: 'Ainda não sei qual solução preciso' }).click();
