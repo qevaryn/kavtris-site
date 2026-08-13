@@ -7,15 +7,17 @@ export function Footer() {
   return (
     <footer className="border-t-2 border-kavtris-blue bg-navy-950 text-white">
       <div className="container-section py-10">
-        <div className="grid gap-10 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
+        {/* WEB.1F — tighter column relationships (gap-8) and a compact identity
+            block; keeps breathing room without loosening the footer. */}
+        <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
-            <span className="flex flex-col">
+            <span className="flex flex-col items-start">
               <Logo variant="qevarynWhite" />
               {/* WEB.1E — same semantic descriptor family as the Header. */}
               <BrandDescriptor className="mt-1.5 text-[0.6rem] sm:text-[0.65rem]" />
             </span>
             <p className="text-sm text-white/72">{brandTagline}</p>
-            <p className="max-w-md text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
+            <p className="max-w-sm text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
           </div>
 
           <div className="rounded-[1.35rem] border border-white/10 bg-white/5 p-5 lg:border-l lg:border-y-0 lg:border-r-0 lg:bg-transparent lg:pl-8">

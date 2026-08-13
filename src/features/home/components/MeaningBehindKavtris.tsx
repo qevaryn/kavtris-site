@@ -29,7 +29,7 @@ export function MeaningBehindKavtris() {
   return (
     <section
       id="significado"
-      className="kavtris-ambient border-y border-white/5 bg-kavtris-dark py-16 sm:py-20 lg:py-24"
+      className="kavtris-ambient border-y border-white/5 bg-kavtris-dark py-16 sm:py-20 lg:py-28"
       aria-labelledby="significado-titulo"
     >
       <RevealOnce testId="reveal-significado" className="kavtris-reveal--duration-short container-section">
@@ -37,19 +37,19 @@ export function MeaningBehindKavtris() {
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-kavtris-blueLight">A marca</p>
           <h2
             id="significado-titulo"
-            className="mt-3 font-display text-[2rem] leading-tight text-white uppercase md:text-[2.65rem]"
+            className="mt-4 font-display text-[2rem] leading-tight text-white uppercase md:text-[2.65rem]"
           >
             The meaning behind KAVTRIS
           </h2>
           <span className="mx-auto mt-4 block h-1 w-14 rounded-full bg-kavtris-blue" aria-hidden="true" />
-          <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-white/65 md:text-lg">
+          <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-white/65 md:text-lg">
             Sete princípios que representam a forma como criamos tecnologia.
           </p>
         </div>
 
         {/* Mobile / tablet — horizontal snap track (no autoplay; swipe + keyboard). */}
         <div
-          className="snap-row mt-10 lg:hidden"
+          className="snap-row mt-12 lg:hidden"
           role="region"
           aria-label="Princípios da marca KAVTRIS"
           tabIndex={0}
@@ -69,7 +69,7 @@ export function MeaningBehindKavtris() {
         </div>
 
         {/* Desktop — one engineered horizontal brand system. */}
-        <div className="relative mt-12 hidden lg:block" data-testid="kavtris-principles-grid">
+        <div className="relative mt-16 hidden lg:block" data-testid="kavtris-principles-grid">
           {/* Restrained connecting line echoing the Hero's directed path. */}
           <div
             className="pointer-events-none absolute inset-x-0 top-7 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
@@ -81,8 +81,10 @@ export function MeaningBehindKavtris() {
                 <span className="relative mx-auto grid h-14 w-14 place-items-center rounded-full border border-white/10 bg-white/[0.03] font-sans text-2xl font-bold text-kavtris-blueLight">
                   {principle.letter}
                 </span>
-                <p className="mt-3 text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-white">{principle.english}</p>
-                <p className="mx-auto mt-1.5 max-w-[11rem] text-xs leading-5 text-white/50">{principle.pt}</p>
+                {/* WEB.1F — readability: English principle + Portuguese support
+                    enlarged ~10-15% to read comfortably at desktop distance. */}
+                <p className="mt-3 text-[0.9rem] font-semibold uppercase tracking-[0.14em] text-white">{principle.english}</p>
+                <p className="mx-auto mt-1.5 max-w-[11rem] text-[0.85rem] leading-5 text-white/50">{principle.pt}</p>
               </li>
             ))}
           </ol>

@@ -43,6 +43,15 @@ test.beforeAll(async ({ request }) => {
 });
 
 async function fillContactForm(page: import('@playwright/test').Page) {
+  // WEB.1F — robustness: wait for client hydration before filling. Under
+  // parallel load the dev server can be slow to hydrate; filling the raw SSR
+  // DOM lets the subsequent hydration render overwrite the values (react-hook-form
+  // initial state), which would make the submit invalid and never fire a POST.
+  await page.waitForFunction(() => {
+    const node = document.querySelector('[data-reveal-state="pending"], [data-reveal-state="revealed"]');
+    return Boolean(node);
+  });
+
   await page.getByRole('textbox', { name: 'Nome' }).fill('Utilizador QA');
   await page.getByRole('textbox', { name: 'Empresa' }).fill('Empresa QA');
   await page.getByRole('textbox', { name: 'Email' }).fill('contact-browser@example.test');

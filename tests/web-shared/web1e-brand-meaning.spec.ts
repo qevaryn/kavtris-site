@@ -27,8 +27,8 @@ test('header: KAVTRIS mestre + descriptor contextual alinhado abaixo do logo', a
   await expect(descriptor).toContainText(DESCRIPTOR);
 
   // Descriptor sits directly below the wordmark (logo geometry, not viewport).
-  const logoBox = (await logo.boundingBox()) ?? { y: 0, height: 0 };
-  const descBox = (await descriptor.boundingBox()) ?? { y: 0 };
+  const logoBox = (await logo.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
+  const descBox = (await descriptor.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
   expect(descBox.y).toBeGreaterThan(logoBox.y + logoBox.height - 2);
   expect(descBox.x).toBeGreaterThanOrEqual(logoBox.x);
   expect(descBox.x + descBox.width).toBeLessThanOrEqual(logoBox.x + logoBox.width + 6);
@@ -46,6 +46,11 @@ test('footer: KAVTRIS mestre + descriptor contextual presente', async ({ page })
   await expect(footer.getByTestId('brand-logo').first()).toBeVisible();
   await expect(descriptor).toBeVisible();
   await expect(descriptor).toContainText(DESCRIPTOR);
+
+  // WEB.1F — the identity block is compact: the descriptor does not stretch
+  // across the whole footer column (tight group, not detached).
+  const descBox = (await descriptor.boundingBox()) ?? { width: 0 };
+  expect(descBox.width).toBeLessThan(260);
 });
 
 test('meaning: heading + exatamente 7 princípios com ordem e valores corretos', async ({ page }) => {
@@ -79,6 +84,24 @@ test('meaning: heading + exatamente 7 princípios com ordem e valores corretos',
   // Exactly 7 principles per variant (mobile track + desktop system).
   await expect(grid.locator('ol li')).toHaveCount(7);
   await expect(page.getByTestId('kavtris-principles-track').locator('article')).toHaveCount(7);
+});
+
+test('meaning: princípios legíveis a distância normal de leitura (EN ≥14px, PT ≥13px)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  await page.locator('#significado').scrollIntoViewIfNeeded();
+
+  const sizes = await page.evaluate(() => {
+    const li = document.querySelector('#significado ol li');
+    const en = li?.querySelector('p:first-of-type');
+    const pt = li?.querySelector('p:last-of-type');
+    return {
+      en: en ? Number.parseFloat(getComputedStyle(en).fontSize) : 0,
+      pt: pt ? Number.parseFloat(getComputedStyle(pt).fontSize) : 0
+    };
+  });
+  expect(sizes.en).toBeGreaterThanOrEqual(14);
+  expect(sizes.pt).toBeGreaterThanOrEqual(13);
 });
 
 test('governance: KAVTRIS não é apresentado como acrónimo', async ({ page }) => {
