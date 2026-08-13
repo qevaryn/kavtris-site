@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import { ProductMockup } from '@/features/products/shared/ProductMockup';
 import type { ProductConcept } from '@/domain/products/types';
 
@@ -15,6 +16,12 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
     <>
       <Header />
       <main className="bg-paper">
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Produtos for product detail). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="mx-auto max-w-[1200px] px-5 py-3 sm:px-8 lg:px-16">
+            <ContextBackForwardControls fallbackHref="/produtos" />
+          </div>
+        </div>
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
             <div>

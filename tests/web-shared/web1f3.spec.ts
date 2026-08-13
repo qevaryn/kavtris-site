@@ -82,20 +82,28 @@ test.describe('WEB.1F.3', () => {
     await expect(page.locator('#como-trabalhamos')).toBeInViewport();
   });
 
-  test('/produtos: dois perfis, descoberta por negócio e catálogo preservado', async ({ page }) => {
+  test('/produtos: descoberta por negócio é PRIMÁRIA, catálogo secundário, honestidade preservada', async ({ page }) => {
     await page.goto('/produtos');
 
     // Sem branding ativo antigo; eyebrow KAVTRIS-consistente.
     await expect(page.getByText('PRODUTOS QEVARYN')).toHaveCount(0);
     await expect(page.getByText('Produtos e Soluções')).toBeVisible();
 
+    // WEB.1F.4 — Hero: descoberta por negócio é o caminho primário.
     const hero = page.locator('main > section:first-of-type');
+    await expect(hero.getByRole('link', { name: 'Começar pelo meu negócio' })).toHaveAttribute('href', '#negocio');
     await expect(hero.getByRole('link', { name: 'Ver todos os sistemas' })).toHaveAttribute('href', '#catalogo');
-    await expect(hero.getByRole('link', { name: 'Não sei o que preciso' })).toHaveAttribute('href', '#negocio');
 
-    // Modelo de dois caminhos.
-    await expect(page.getByRole('heading', { name: 'Veja os nossos sistemas.' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Comece pelo seu tipo de negócio.' })).toBeVisible();
+    // WEB.1F.4 — Dois caminhos: negócio primeiro (primário), catálogo segundo.
+    const twoPaths = page.locator('#negocio');
+    await expect(twoPaths.getByRole('heading', { name: 'Comece pelo seu tipo de negócio.' })).toBeVisible();
+    await expect(twoPaths.getByRole('heading', { name: 'Veja os nossos sistemas.' })).toBeVisible();
+    const pathOrder = await twoPaths.locator('.grid > article').evaluateAll((articles) =>
+      articles.map((article) => article.getAttribute('data-testid'))
+    );
+    expect(pathOrder).toEqual(['path-business-primary', 'path-catalog-secondary']);
+    await expect(twoPaths.getByTestId('path-business-primary').getByRole('link', { name: 'Começar pelo meu negócio' })).toBeVisible();
+    await expect(twoPaths.getByTestId('path-catalog-secondary').getByRole('link', { name: 'Ver todos os sistemas' })).toBeVisible();
 
     // Cartões de descoberta por negócio.
     for (const label of [

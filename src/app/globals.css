@@ -414,6 +414,19 @@ section[id] {
   }
 }
 
+/* WEB.1F.4 — subtle contextual discovery panel entrance (~220ms, no drama).
+   The `motion-safe:` variant keeps it instant under prefers-reduced-motion. */
+@keyframes discovery-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* WEB.1E — KAVTRIS brand meaning (institutional signature section).   */
 /* Seven symbolic brand principles, one engineered system. Letters     */

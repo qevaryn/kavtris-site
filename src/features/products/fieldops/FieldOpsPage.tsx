@@ -5,6 +5,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import { FieldOpsExperience } from '@/features/products/fieldops/components/responsive/FieldOpsExperience';
 import { getProductBySlug } from '@/features/products/data/products';
 import { fieldOpsTechnicalGroups } from '@/features/products/fieldops/data/fieldops';
@@ -27,6 +28,12 @@ export function FieldOpsPage() {
     <>
       <Header />
       <main className="bg-paper">
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Produtos for product detail). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="container-section py-3">
+            <ContextBackForwardControls fallbackHref="/produtos" />
+          </div>
+        </div>
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="container-section grid gap-9 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
             <div>

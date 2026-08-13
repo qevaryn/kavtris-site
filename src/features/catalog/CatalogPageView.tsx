@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import { BusinessDiscovery } from '@/features/catalog/components/responsive/BusinessDiscovery';
 import { ProductCatalogClient } from '@/features/catalog/components/responsive/ProductCatalogClient';
 
@@ -9,6 +10,12 @@ export function CatalogPageView() {
     <>
       <Header />
       <main>
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Início on direct entry). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="mx-auto max-w-[1200px] px-5 py-3 sm:px-8 lg:px-16">
+            <ContextBackForwardControls fallbackHref="/" />
+          </div>
+        </div>
         <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div>
@@ -24,11 +31,11 @@ export function CatalogPageView() {
                 As soluções apresentadas são pontos de partida adaptáveis. O escopo final depende do levantamento de cada empresa.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="#catalogo" className="text-navy-950">
-                  Ver todos os sistemas
+                <Button href="#negocio" className="text-navy-950">
+                  Começar pelo meu negócio
                 </Button>
-                <Button href="#negocio" variant="secondary">
-                  Não sei o que preciso
+                <Button href="#catalogo" variant="secondary">
+                  Ver todos os sistemas
                 </Button>
               </div>
             </div>

@@ -6,14 +6,17 @@ import { navigationLinks } from '@/lib/constants';
 import { cn } from '@/components/shared/cn';
 
 /**
- * WEB.1F.3 — desktop header navigation with route-aware active state.
- * Same-page anchor items (homepage sections) are never marked active: route
- * pages own the active signal (/produtos, /empresas, /sobre).
+ * WEB.1F.4 — desktop header navigation with route-aware active state.
+ * Route pages own the active signal; the homepage owns "Início" (/ and
+ * same-page Home anchors never create a second page-active state).
  */
 export function HeaderNav() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
+    if (href === '/#inicio') {
+      return pathname === '/';
+    }
     if (href === '/produtos') {
       return pathname === '/produtos' || pathname.startsWith('/produtos/');
     }

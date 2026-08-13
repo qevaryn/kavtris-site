@@ -1,23 +1,26 @@
 "use client";
 
 import { useEffect } from 'react';
+import { useKavtrisNavigation } from '@/components/shared/NavigationHistoryProvider';
 
 /**
- * WEB.1F.3 — global same-page anchor navigation.
+ * WEB.1F.4 — global same-page anchor navigation (replaces WEB.1F.3 handler).
  *
- * Native browser behavior does not scroll when a link to the current URL hash
- * is clicked again (the URL hash is already unchanged). This handler owns
- * same-page hash navigation centrally:
+ * The owner's navigation-memory requirement supersedes the earlier
+ * "replaceState, no anchor history" preference: meaningful internal navigation
+ * now creates a real chronological browser-history entry. Repeated clicks on
+ * the SAME destination keep scrolling every time without spamming history.
  *
- *   - click → preventDefault → scrollIntoView (smooth, or instant under
- *     prefers-reduced-motion) → history.replaceState hash sync (no history
- *     pollution; back/forward remain sensible);
- *   - repeated clicks on the same anchor ALWAYS scroll again;
+ *   - destination differs from the current URL → pushNavigation (new entry) +
+ *     scrollIntoView (smooth, or instant under prefers-reduced-motion);
+ *   - same destination clicked again → scroll only (REPEATED_SAME_HASH_CLICK_WORKS);
  *   - links that leave the current pathname are left to Next's router;
  *   - keyboard activation works (anchors click on Enter);
  *   - `scroll-margin-top` on `section[id]` keeps sticky-header clearance.
  */
 export function SamePageAnchorHandler() {
+  const { pushNavigation } = useKavtrisNavigation();
+
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (
@@ -67,14 +70,14 @@ export function SamePageAnchorHandler() {
       section.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
 
       const nextUrl = `${window.location.pathname}${window.location.search}${hash}`;
-      if (window.location.hash !== hash) {
-        window.history.replaceState(window.history.state, '', nextUrl);
+      if (window.location.href !== nextUrl) {
+        pushNavigation({ url: nextUrl, kind: 'anchor' });
       }
     };
 
     document.addEventListener('click', handleClick, true);
     return () => document.removeEventListener('click', handleClick, true);
-  }, []);
+  }, [pushNavigation]);
 
   return null;
 }

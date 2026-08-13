@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/shared/Button';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import {
   commercialClarityItems,
   enterpriseCapabilities,
@@ -61,6 +62,12 @@ export function EnterprisePageView() {
     <>
       <Header />
       <main className="bg-paper">
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Início on direct entry). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="container-section py-3">
+            <ContextBackForwardControls fallbackHref="/" />
+          </div>
+        </div>
         {/* 1 — Hero (business-first) */}
         <section className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.58fr_0.42fr] lg:items-center">

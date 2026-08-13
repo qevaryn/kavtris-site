@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
 import { Logo } from '@/components/layout/Logo';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import { companyName, siteUrl } from '@/lib/constants';
 
 const founderLinkedIn = 'https://www.linkedin.com/in/gabrielsouza80/';
@@ -46,6 +47,12 @@ export function AboutPageView() {
     <>
       <Header />
       <main className="bg-paper">
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Início on direct entry). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="container-section py-3">
+            <ContextBackForwardControls fallbackHref="/" />
+          </div>
+        </div>
         <section id="historia" className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">A nossa história</p>

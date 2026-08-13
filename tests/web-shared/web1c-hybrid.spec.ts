@@ -160,15 +160,18 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
   expect(contrastRatio(heading.color, heading.bg)).toBeGreaterThanOrEqual(4.5);
 });
 
-test('transição dark→light é deliberada e sem espectáculo decorativo', async ({ page }) => {
+test('transição dark→light é limpa, sem véu escuro pesado (WEB.1F.4)', async ({ page }) => {
   await page.goto('/');
 
-  const transition = page.getByTestId('processo-dark-light-transition');
-  await expect(transition).toBeVisible();
-  await expect(transition).toHaveAttribute('aria-hidden', 'true');
+  // WEB.1F.4 — the previous `from-kavtris-dark/30` tonal veil (which read as a
+  // heavy black stripe) was removed.
+  await expect(page.getByTestId('processo-dark-light-transition')).toHaveCount(0);
 
-  const gradient = await transition.evaluate((node) => getComputedStyle(node).backgroundImage);
-  expect(gradient).toContain('linear-gradient');
+  // The light section starts on the clean light surface.
+  const bg = await page
+    .locator('#como-trabalhamos')
+    .evaluate((node) => getComputedStyle(node).backgroundColor);
+  expect(relativeLuminance(bg)).toBeGreaterThan(0.85);
 });
 
 test('carrossel em superfície clara: dot ativo usa azul KAVTRIS base', async ({ page }) => {

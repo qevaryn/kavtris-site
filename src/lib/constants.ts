@@ -18,9 +18,9 @@ export const brandTagline = 'Software • Automation • Quality • Innovation'
 export const networkName = 'Rede Qualidade é Vida';
 
 export const navigationLinks = [
-  // WEB.1F.3: owner-approved public navigation — business-first labels.
-  // "Como trabalhamos" anchors to the homepage process section;
-  // "Serviços" now routes to the dedicated /empresas services page.
+  // WEB.1F.4: explicit "Início" as the first navigation item — clicking the logo
+  // may already return Home, but that should not be an implicit assumption.
+  { label: 'Início', href: '/#inicio' },
   { label: 'Como trabalhamos', href: '/#como-trabalhamos' },
   { label: 'Produtos', href: '/produtos' },
   { label: 'Serviços', href: '/empresas' },

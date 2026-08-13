@@ -127,8 +127,10 @@ export function Contact() {
           </div>
           {/* WEB.1B — Rede card stays in the left column on desktop only.
               WEB.1D.1 — pinned to the column bottom (mt-auto) so both columns
-              share the same bottom edge on desktop. */}
-          <div className="mt-5 hidden lg:mt-auto lg:block">{redeContactCard}</div>
+              share the same bottom edge on desktop.
+              WEB.1F.4 — minimum visual separation from the "O que acontece
+              depois?" block (pt-6 ≈ 24px) even when the column is short. */}
+          <div data-testid="rede-contact-card-desktop" className="mt-5 hidden lg:mt-auto lg:block lg:pt-6">{redeContactCard}</div>
         </RevealOnce>
 
         <RevealOnce

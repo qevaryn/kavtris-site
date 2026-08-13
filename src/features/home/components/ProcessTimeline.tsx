@@ -35,14 +35,14 @@ const processSteps = [
 
 export function ProcessTimeline() {
   return (
-    <section id="como-trabalhamos" className="kavtris-ambient-light relative bg-kavtris-light pb-14 pt-16 sm:pb-16 sm:pt-20 lg:pb-20 lg:pt-24">
-      {/* WEB.1C — deliberate dark → light transition (soft tonal fade from the
-          CredibilityBar above; architectural, no wave/blob/glow). */}
-      <div
-        aria-hidden="true"
-        data-testid="processo-dark-light-transition"
-        className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-kavtris-dark/30 to-transparent"
-      />
+    <section
+      id="como-trabalhamos"
+      className="kavtris-ambient-light relative border-t border-navy-900/[0.06] bg-kavtris-light pb-14 pt-16 sm:pb-16 sm:pt-20 lg:pb-20 lg:pt-24"
+    >
+      {/* WEB.1F.4 — the previous `from-kavtris-dark/30` tonal veil read as a
+          heavy black stripe between the dark credibility strip and this light
+          section; it was removed in favour of a clean 1px neutral separation
+          (HOME_HEAVY_BLACK_SECTION_SHADOW = REMOVED). */}
       {/* WEB.1D — whole-section reveal once (HOW_WE_WORK_WHOLE_REVEAL = YES). */}
       <RevealOnce testId="reveal-processo">
         <div className="container-section">
