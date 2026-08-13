@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { EnterprisePageView } from '@/features/enterprise/EnterprisePageView';
 import { siteUrl } from '@/lib/constants';
 
-const title = 'Serviços para Empresas';
+const title = 'Engenharia e Tecnologia para Empresas';
 const description =
   'Tecnologia adaptada à realidade da sua empresa. A KAVTRIS identifica oportunidades, adapta soluções existentes ou desenvolve a tecnologia necessária para melhorar processos reais.';
 const canonicalPath = '/empresas';

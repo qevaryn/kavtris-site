@@ -6,8 +6,8 @@ import { expectNoHorizontalOverflow } from '../shared/helpers/overflow';
  * WEB.1F.3 — KAVTRIS Product Discovery, Services Navigation & Internal Pages UX.
  *
  *  - same-hash anchor regression (repeated clicks always scroll again)
- *  - Header: "Como trabalhamos" / "Produtos" / "Serviços" / "Sobre" / "Contacto"
- *    with route-aware active state; Serviços opens /empresas
+ *  - Header: "Como funciona" / "Produtos" / "Engenharia" / "Sobre" / "Contacto"
+ *    with route-aware active state; Engenharia opens /empresas
  *  - /produtos: two-profile model, business discovery, honest adaptable
  *    starting points, catalog preserved
  *  - /empresas: business-first hero, problem recognition, technical depth kept
@@ -15,13 +15,13 @@ import { expectNoHorizontalOverflow } from '../shared/helpers/overflow';
  *  - mobile: no overflow, mobile menu routes to /empresas
  */
 test.describe('WEB.1F.3', () => {
-  test('header: Serviços abre /empresas e o estado ativo reflete a rota', async ({ page }) => {
+  test('header: Engenharia abre /empresas e o estado ativo reflete a rota', async ({ page }) => {
     await page.goto('/empresas');
 
     const nav = page.getByRole('navigation', { name: 'Navegação principal' });
-    const servicesLink = nav.getByRole('link', { name: 'Serviços', exact: true });
-    await expect(servicesLink).toHaveAttribute('href', '/empresas');
-    await expect(servicesLink).toHaveAttribute('aria-current', 'page');
+    const engineeringLink = nav.getByRole('link', { name: 'Engenharia', exact: true });
+    await expect(engineeringLink).toHaveAttribute('href', '/empresas');
+    await expect(engineeringLink).toHaveAttribute('aria-current', 'page');
     await expect(nav.getByRole('link', { name: 'Produtos', exact: true })).not.toHaveAttribute('aria-current', 'page');
 
     await page.goto('/produtos');
@@ -31,17 +31,17 @@ test.describe('WEB.1F.3', () => {
     await expect(nav.getByRole('link', { name: 'Sobre', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
-  test('âncora repetida: clicar duas vezes em "Como trabalhamos" volta a rolar', async ({ page }) => {
+  test('âncora repetida: clicar duas vezes em "Como funciona" volta a rolar', async ({ page }) => {
     await page.goto('/');
 
-    const section = page.locator('#como-trabalhamos');
+    const section = page.locator('#como-funciona');
     const headerLink = page
       .getByRole('navigation', { name: 'Navegação principal' })
-      .getByRole('link', { name: 'Como trabalhamos', exact: true });
+      .getByRole('link', { name: 'Como funciona', exact: true });
 
     await headerLink.click();
     await expect(section).toBeInViewport();
-    await expect(page).toHaveURL(/#como-trabalhamos$/);
+    await expect(page).toHaveURL(/#como-funciona$/);
 
     // Deixa o scroll suave terminar antes de sair da secção manualmente.
     await page.waitForTimeout(1200);
@@ -73,39 +73,32 @@ test.describe('WEB.1F.3', () => {
     await expect(contactSection).toBeInViewport();
   });
 
-  test('hero: CTA principal é "Como trabalhamos" e navega para #como-trabalhamos', async ({ page }) => {
+  test('hero: CTA principal é "Ver como funciona" e navega para #como-funciona', async ({ page }) => {
     await page.goto('/');
 
-    const heroCta = page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' });
-    await expect(heroCta).toHaveAttribute('href', '#como-trabalhamos');
+    const heroCta = page.locator('#inicio').getByRole('link', { name: 'Ver como funciona' });
+    await expect(heroCta).toHaveAttribute('href', '#como-funciona');
     await heroCta.click();
-    await expect(page.locator('#como-trabalhamos')).toBeInViewport();
+    await expect(page.locator('#como-funciona')).toBeInViewport();
   });
 
-  test('/produtos: descoberta por negócio é PRIMÁRIA, catálogo secundário, honestidade preservada', async ({ page }) => {
+  test('/produtos: seletor de modo por defeito; modo negócio com pontos de partida honestos', async ({ page }) => {
     await page.goto('/produtos');
 
     // Sem branding ativo antigo; eyebrow KAVTRIS-consistente.
     await expect(page.getByText('PRODUTOS QEVARYN')).toHaveCount(0);
     await expect(page.getByText('Produtos e Soluções')).toBeVisible();
 
-    // WEB.1F.4 — Hero: descoberta por negócio é o caminho primário.
-    const hero = page.locator('main > section:first-of-type');
-    await expect(hero.getByRole('link', { name: 'Começar pelo meu negócio' })).toHaveAttribute('href', '#negocio');
-    await expect(hero.getByRole('link', { name: 'Ver todos os sistemas' })).toHaveAttribute('href', '#catalogo');
+    // WEB.1F.5 — entrada por defeito: escolha de modo primeiro (sem conteúdo).
+    const selector = page.locator('main');
+    await expect(selector.getByRole('heading', { name: 'Como prefere começar?' })).toBeVisible();
+    await expect(page.getByTestId('products-mode-business-primary')).toBeVisible();
+    await expect(page.getByTestId('products-mode-systems-secondary')).toBeVisible();
+    await expect(page.getByTestId('business-card-barbearias')).toHaveCount(0);
+    await expect(page.getByTestId('product-card')).toHaveCount(0);
 
-    // WEB.1F.4 — Dois caminhos: negócio primeiro (primário), catálogo segundo.
-    const twoPaths = page.locator('#negocio');
-    await expect(twoPaths.getByRole('heading', { name: 'Comece pelo seu tipo de negócio.' })).toBeVisible();
-    await expect(twoPaths.getByRole('heading', { name: 'Veja os nossos sistemas.' })).toBeVisible();
-    const pathOrder = await twoPaths.locator('.grid > article').evaluateAll((articles) =>
-      articles.map((article) => article.getAttribute('data-testid'))
-    );
-    expect(pathOrder).toEqual(['path-business-primary', 'path-catalog-secondary']);
-    await expect(twoPaths.getByTestId('path-business-primary').getByRole('link', { name: 'Começar pelo meu negócio' })).toBeVisible();
-    await expect(twoPaths.getByTestId('path-catalog-secondary').getByRole('link', { name: 'Ver todos os sistemas' })).toBeVisible();
-
-    // Cartões de descoberta por negócio.
+    // Modo negócio: cartões de descoberta por negócio.
+    await page.goto('/produtos?modo=negocio');
     for (const label of [
       'Barbearias e salões',
       'Restaurantes',
@@ -123,39 +116,31 @@ test.describe('WEB.1F.3', () => {
     const results = page.getByTestId('discovery-results');
     await expect(results).toBeVisible();
     await expect(
-      results.getByRole('heading', { name: /Soluções que podem fazer sentido para barbearias e salões/ })
+      results.getByRole('heading', { name: /Ponto de partida para [Bb]arbearias e salões/ })
     ).toBeVisible();
     await expect(results.getByText('Pode ser adaptado').first()).toBeVisible();
     await expect(page.getByText(/Barbearia System|Barber System|Sistema para Barbearias/i)).toHaveCount(0);
+  });
 
-    // Catálogo de sistemas continua acessível.
+  test('/produtos?modo=sistemas: catálogo com filtros funcionais e ajuda de consultor', async ({ page }) => {
+    await page.goto('/produtos?modo=sistemas');
+
+    // Catálogo de sistemas com filtros funcionais.
     await expect(page.getByTestId('product-card')).toHaveCount(6);
-    await expect(page.getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#catalogo').getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
+
+    // Ajuda de consultor: o catálogo nunca é um beco sem saída.
+    const consultant = page.getByTestId('systems-consultant');
+    await expect(consultant.getByRole('heading', { name: 'Não encontrou o sistema que procura?' })).toBeVisible();
+    await expect(consultant.getByRole('link', { name: 'Falar com um consultor' })).toHaveAttribute('href', '/#contacto');
   });
 
-  test('/produtos: solução personalizada, CTA final e garantia de não-precisar-saber', async ({ page }) => {
-    await page.goto('/produtos');
-
-    const customCard = page.getByTestId('custom-solution-card');
-    await expect(customCard.getByRole('heading', { name: 'Não encontrou uma solução parecida?' })).toBeVisible();
-    await expect(customCard.getByRole('link', { name: /Falar sobre uma solução personalizada/ })).toHaveAttribute(
-      'href',
-      '/?tipo=personalizada#contacto'
-    );
-
-    const explainLinks = page.getByRole('link', { name: 'Explicar o meu negócio' });
-    await expect(explainLinks.first()).toHaveAttribute('href', '/?tipo=descobrir#contacto');
-    await expect(explainLinks.last()).toHaveAttribute('href', '/?tipo=descobrir#contacto');
-
-    await expect(page.getByText(/Não precisa saber qual sistema precisa antes de falar connosco/i)).toBeVisible();
-  });
-
-  test('/produtos?negocio=restaurantes pré-seleciona a categoria (query estável)', async ({ page }) => {
-    await page.goto('/produtos?negocio=restaurantes');
+  test('/produtos?modo=negocio&negocio=restaurantes pré-seleciona a categoria (query estável)', async ({ page }) => {
+    await page.goto('/produtos?modo=negocio&negocio=restaurantes');
 
     await expect(page.getByTestId('business-card-restaurantes')).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByTestId('discovery-results')).toBeVisible();
-    await expect(page).toHaveURL(/negocio=restaurantes/);
+    await expect(page).toHaveURL(/modo=negocio&negocio=restaurantes/);
   });
 
 
@@ -194,22 +179,22 @@ test.describe('WEB.1F.3', () => {
     await expect(page.locator('main').getByText(/Qevaryn/i)).toHaveCount(0);
     await expect(page.getByText('Evolução da marca para KAVTRIS')).toBeVisible();
 
-    await expect(page.getByRole('link', { name: 'Ver como trabalhamos' })).toHaveAttribute('href', '/#como-trabalhamos');
+    await expect(page.getByRole('link', { name: 'Ver como funciona' })).toHaveAttribute('href', '/#como-funciona');
     await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toHaveAttribute('href', '/#contacto');
   });
 
-  test('mobile: /produtos sem overflow e menu móvel com Serviços a abrir /empresas', async ({ page }) => {
+  test('mobile: /produtos sem overflow e menu móvel com Engenharia a abrir /empresas', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 780 });
     await page.goto('/produtos');
     await expectNoHorizontalOverflow(page);
-    await expect(page.getByTestId('business-card-barbearias')).toBeVisible();
+    await expect(page.getByTestId('products-mode-business-primary')).toBeVisible();
 
     await page.goto('/');
     await page.getByRole('button', { name: 'Abrir menu' }).click();
     const mobileNav = page.getByRole('navigation', { name: 'Menu móvel' });
-    const servicesLink = mobileNav.getByRole('link', { name: 'Serviços', exact: true });
-    await expect(servicesLink).toHaveAttribute('href', '/empresas');
-    await servicesLink.click();
+    const engineeringLink = mobileNav.getByRole('link', { name: 'Engenharia', exact: true });
+    await expect(engineeringLink).toHaveAttribute('href', '/empresas');
+    await engineeringLink.click();
     await expect(page).toHaveURL(/\/empresas$/);
     await expect(page.getByRole('heading', { name: /Tecnologia adaptada à realidade/i })).toBeVisible();
   });

@@ -19,9 +19,7 @@ import { revealWholePage, scrollThroughPage, scrollToTop } from '../shared/helpe
 
 const DESKTOP = { width: 1440, height: 900 };
 const REVEAL_WRAPPERS = [
-  'reveal-processo',
-  'reveal-produtos',
-  'reveal-empresas',
+  'reveal-como-funciona',
   'reveal-rede-left',
   'reveal-rede-right',
   'reveal-contacto-left',
@@ -33,7 +31,7 @@ test('reveal acontece uma vez: pending → revealed → persiste ao subir → n�
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
-  const wrapper = page.getByTestId('reveal-produtos');
+  const wrapper = page.getByTestId('reveal-como-funciona');
   // Eligible pre-reveal state: hydrated, pending, hidden but laid out.
   await expect(wrapper).toHaveAttribute('data-reveal-state', 'pending');
   await expect.poll(() => wrapper.evaluate((node) => getComputedStyle(node).opacity)).toBe('0');
@@ -149,7 +147,7 @@ test('subir ao topo mantém tudo revelado; segunda descida não repete', async (
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
-  const processo = page.getByTestId('reveal-processo');
+  const processo = page.getByTestId('reveal-como-funciona');
   await processo.scrollIntoViewIfNeeded();
   await expect(processo).toHaveAttribute('data-reveal-state', 'revealed');
 
@@ -167,31 +165,21 @@ test('subir ao topo mantém tudo revelado; segunda descida não repete', async (
   await expect.poll(() => processo.evaluate((node) => getComputedStyle(node).opacity)).toBe('1');
 });
 
-test('carrossel de produtos mantém-se funcional após reveal e durante scroll (sem reset)', async ({ page }) => {
+test('como funciona revela uma vez e permanece funcional durante scroll (sem reset)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const carousel = page.getByTestId('featured-products-carousel');
-  const readActiveLabel = () =>
-    carousel
-      .getByLabel('Indicadores de posição')
-      .locator('button[aria-pressed="true"]')
-      .first()
-      .getAttribute('aria-label');
+  const wrapper = page.getByTestId('reveal-como-funciona');
+  await page.locator('#como-funciona').scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-reveal-state', 'revealed');
 
-  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
-  await expect(page.getByTestId('reveal-produtos')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para FieldOps');
+  // Os carrosséis antigos já não existem na Home (WEB.1F.5).
+  await expect(page.getByTestId('featured-products-carousel')).toHaveCount(0);
 
-  // Manual navigation works immediately after reveal.
-  await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Hotel Operations');
-
-  // Scroll away and back: carousel state is preserved (no reset by reveal).
+  // Scroll away and back: the reveal stays revealed (one-time).
   await scrollToTop(page);
-  await carousel.scrollIntoViewIfNeeded();
-  await expect(page.getByTestId('reveal-produtos')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect.poll(() => readActiveLabel(), { timeout: 5000 }).toBe('Ir para Hotel Operations');
+  await wrapper.scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-reveal-state', 'revealed');
 });
 
 test('deep link para #contacto não deixa a secção invisível', async ({ page }) => {
@@ -240,14 +228,12 @@ test('tablet 768/820: reveal funciona com layout empilhado (sem stagger oculto)'
   }
 });
 
-test('1024: breakpoint de engenharia mantém grid desktop e reveal único', async ({ page }) => {
+test('1024: reveal de Como funciona funciona no breakpoint desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 768 });
   await page.goto('/');
 
-  const engineering = page.locator('#empresas');
-  await engineering.scrollIntoViewIfNeeded();
-  await expect(page.getByTestId('reveal-empresas')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect(engineering.getByTestId('enterprise-capabilities-grid')).toBeVisible();
-  await expect(engineering.getByTestId('enterprise-capabilities-carousel')).toBeHidden();
+  const wrapper = page.getByTestId('reveal-como-funciona');
+  await wrapper.scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-reveal-state', 'revealed');
 });
 

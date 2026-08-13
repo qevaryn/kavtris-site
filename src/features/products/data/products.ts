@@ -1,17 +1,34 @@
-import type { ProductConcept, ProductSector } from '@/domain/products/types';
+import type { ProductConcept } from '@/domain/products/types';
 
 export type { ProductConcept, ProductSector } from '@/domain/products/types';
 
-export const sectorFilters: Array<{ label: string; value: ProductSector | 'all' }> = [
+/**
+ * WEB.1F.5 — SYSTEM filter taxonomy (system/function-oriented).
+ *
+ * Filters describe WHAT THE SYSTEM DOES, never the customer's business sector
+ * (BUSINESS_SECTOR_FILTERS_IN_SYSTEM_MODE = NO). The mapping below is derived
+ * only from the current product definitions — no invented capability fits.
+ */
+export type ProductFunctionId = 'operations' | 'management' | 'stock' | 'teams' | 'customers';
+
+export const functionalFilters: Array<{ label: string; value: ProductFunctionId | 'all' }> = [
   { label: 'Todos', value: 'all' },
-  { label: 'Hotelaria', value: 'hospitality' },
-  { label: 'Restauração', value: 'restaurant' },
-  { label: 'Retalho', value: 'retail' },
-  { label: 'Serviços', value: 'services' },
-  { label: 'Equipas externas', value: 'field' },
-  { label: 'Gestão', value: 'business' },
-  { label: 'Clientes', value: 'customer' }
+  { label: 'Operações', value: 'operations' },
+  { label: 'Gestão', value: 'management' },
+  { label: 'Stock e pedidos', value: 'stock' },
+  { label: 'Equipas', value: 'teams' },
+  { label: 'Clientes', value: 'customers' }
 ];
+
+/** Maps each existing product slug to the functional categories its description supports. */
+export const productFunctionMap: Record<string, ProductFunctionId[]> = {
+  fieldops: ['operations', 'teams'],
+  'stock-orders': ['stock'],
+  'hotel-operations': ['operations', 'teams'],
+  'kitchen-sync': ['operations'],
+  'qevaryn-ops': ['management'],
+  'customer-portal': ['customers']
+};
 
 export const products: ProductConcept[] = [
   {

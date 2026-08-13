@@ -42,6 +42,20 @@ export function Footer() {
           </div>
 
           <div className="grid gap-x-6 gap-y-3.5 text-sm text-white/70 sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
+            {/* WEB.1F.5 — Footer public terminology matches the Header:
+                "Engenharia" points to /empresas (HEADER_FOOTER_ENGINEERING_TERMINOLOGY_MATCH). */}
+            <Link href="/#inicio" className="transition hover:text-white">
+              Início
+            </Link>
+            <Link href="/#como-funciona" className="transition hover:text-white">
+              Como funciona
+            </Link>
+            <Link href="/produtos" className="transition hover:text-white">
+              Produtos
+            </Link>
+            <Link href="/empresas" className="transition hover:text-white">
+              Engenharia
+            </Link>
             <Link href="/sobre" className="transition hover:text-white">
               Sobre
             </Link>

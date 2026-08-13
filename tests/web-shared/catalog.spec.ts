@@ -21,52 +21,47 @@ async function expectImageToLoad(
 }
 
 test('catálogo de produtos carrega sem linguagem de loja tradicional', async ({ page }) => {
-  await page.goto('/produtos');
+  await page.goto('/produtos?modo=sistemas');
 
-  await expect(page.getByRole('heading', { name: /Encontre uma solução próxima/i })).toBeVisible();
-  await expect(page.getByText(/As soluções apresentadas são pontos de partida adaptáveis/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Explore diretamente os sistemas disponíveis/i })).toBeVisible();
   await expect(page.getByText('Como usar o catálogo')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByTestId('product-card')).toHaveCount(6);
   await expect(page.getByTestId('product-card-visual')).toHaveCount(6);
-  await expect(page.getByTestId('custom-solution-card')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Ainda não encontrou o que precisa?' })).toBeVisible();
+  await expect(page.getByTestId('systems-consultant')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Não encontrou o sistema que procura?' })).toBeVisible();
   await expect(page.getByText(/Comprar agora|Adicionar ao carrinho|checkout|carrinho/i)).toHaveCount(0);
 });
 
-test('filtros de setor atualizam cartões visíveis', async ({ page }) => {
-  await page.goto('/produtos');
+test('filtros funcionais atualizam cartões visíveis', async ({ page }) => {
+  await page.goto('/produtos?modo=sistemas');
 
   const filterExpectations = [
-    { filter: 'Hotelaria', visible: 'Hotel Operations', hidden: 'KitchenSync' },
-    { filter: 'Restauração', visible: 'KitchenSync', hidden: 'FieldOps' },
-    { filter: 'Retalho', visible: 'Stock & Orders', hidden: 'FieldOps' },
-    { filter: 'Serviços', visible: 'FieldOps', hidden: 'Stock & Orders' },
-    { filter: 'Equipas externas', visible: 'FieldOps', hidden: 'Hotel Operations' },
+    { filter: 'Operações', visible: 'FieldOps', hidden: 'Stock & Orders' },
     { filter: 'Gestão', visible: 'Ops', hidden: 'KitchenSync' },
-    { filter: 'Clientes', visible: 'Customer Portal', hidden: 'Hotel Operations' }
+    { filter: 'Stock e pedidos', visible: 'Stock & Orders', hidden: 'FieldOps' },
+    { filter: 'Equipas', visible: 'FieldOps', hidden: 'Ops' },
+    { filter: 'Clientes', visible: 'Customer Portal', hidden: 'FieldOps' }
   ];
 
   for (const item of filterExpectations) {
-    // Filtros de setor de sistema (escopo #catalogo): distingue-se dos cartões
-    // de tipo de negócio (Profile B) por design.
+    // Filtros funcionais (escopo #catalogo): descrevem o sistema/função,
+    // nunca o setor de negócio do cliente.
     const catalog = page.locator('#catalogo');
     await catalog.getByRole('button', { name: item.filter }).click();
     await expect(catalog.getByRole('button', { name: item.filter })).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('heading', { name: item.visible, exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: item.hidden, exact: true })).toHaveCount(0);
-    await expect(page.getByTestId('custom-solution-card')).toHaveCount(0);
   }
 
   await page.locator('#catalogo').getByRole('button', { name: 'Todos' }).click();
   await expect(page.locator('#catalogo').getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByTestId('product-card')).toHaveCount(6);
-  await expect(page.getByTestId('custom-solution-card')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'KitchenSync' })).toBeVisible();
 });
 
 test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos', async ({ page }) => {
-  await page.goto('/produtos');
+  await page.goto('/produtos?modo=sistemas');
 
   const cards = page.getByTestId('product-card');
   await expect(cards).toHaveCount(6);
@@ -93,18 +88,12 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
   await expect(opsImage).toHaveAttribute('src', /qevaryn-ops-catalog-v1\.webp/);
 });
 
-test('card de solução personalizada e CTA final apontam para contacto', async ({ page }) => {
-  await page.goto('/produtos');
+test('card de consultor do catálogo aponta para o contacto', async ({ page }) => {
+  await page.goto('/produtos?modo=sistemas');
 
-  const customCard = page.getByTestId('custom-solution-card');
-  await expect(customCard.getByRole('heading', { name: 'Não encontrou uma solução parecida?' })).toBeVisible();
-  await expect(customCard.getByRole('link', { name: /Falar sobre uma solução personalizada/ })).toHaveAttribute('href', '/?tipo=personalizada#contacto');
-
-  // WEB.1F.3 — "Explicar o meu negócio" (discovery results + final CTA) reaches
-  // contact with the "ainda não sei qual solução preciso" intent.
-  const explainLinks = page.getByRole('link', { name: 'Explicar o meu negócio' });
-  await expect(explainLinks.first()).toHaveAttribute('href', '/?tipo=descobrir#contacto');
-  await expect(explainLinks.last()).toHaveAttribute('href', '/?tipo=descobrir#contacto');
+  const consultant = page.getByTestId('systems-consultant');
+  await expect(consultant.getByRole('heading', { name: 'Não encontrou o sistema que procura?' })).toBeVisible();
+  await expect(consultant.getByRole('link', { name: 'Falar com um consultor' })).toHaveAttribute('href', '/#contacto');
 });
 
 test('rotas de produto carregam com detalhes técnicos progressivos', async ({ page }) => {
@@ -141,20 +130,12 @@ test('pedido de adaptação leva ao contacto com produto selecionado', async ({ 
   await expect(page.getByLabel(/Produto de interesse/)).toContainText('Ainda não sei qual solução preciso');
 });
 
-test('preview da homepage usa cards visuais simplificados', async ({ page }) => {
+test('homepage não repete o carrossel de produtos nem categorias de negócio', async ({ page }) => {
   await page.goto('/');
 
-  const preview = page.locator('#produtos-preview');
-  const carousel = preview.getByTestId('featured-products-carousel');
-  await expect(carousel).toBeVisible();
-
-  await expect(carousel.getByRole('heading', { name: 'FieldOps' })).toBeVisible();
-  await expect(carousel.getByRole('heading', { name: 'Hotel Operations' })).toHaveCount(1);
-  await expect(carousel.getByRole('heading', { name: 'Stock & Orders' })).toHaveCount(1);
-  await expect(carousel.getByRole('heading', { name: 'Solução personalizada para o seu contexto' })).toHaveCount(1);
-
-  const fieldOpsPreviewImage = carousel.getByRole('img', { name: /Interface do FieldOps com agenda de serviços/i });
-  await expectImageToLoad(fieldOpsPreviewImage, 'fieldops-catalog-v1.webp');
-  await expect(carousel.getByRole('link', { name: 'Ver produto' })).toHaveCount(3);
-  await expect(preview.getByText(/Problema que resolve|Ver detalhes técnicos|histórico de auditoria/i)).toHaveCount(0);
+  // HOME_PRODUCT_CAROUSEL_PRESENT = NO / HOME_BUSINESS_CAROUSEL_PRESENT = NO.
+  await expect(page.locator('#produtos-preview')).toHaveCount(0);
+  await expect(page.getByTestId('featured-products-carousel')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'FieldOps', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Barbearias e salões/i })).toHaveCount(0);
 });

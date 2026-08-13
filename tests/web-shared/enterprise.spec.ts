@@ -19,7 +19,7 @@ test('fundamentos empresariais aparecem sem claims de certificação ou SLA fixo
     await expect(page.getByRole('heading', { name: heading })).toBeVisible();
   }
 
-  await expect(page.getByText(/ISO|SOC|24\/7|99,9%|uptime|garantia de segurança|garantido/i)).toHaveCount(0);
+  await expect(page.getByText(/\bISO\b|\bSOC\b|\b24\/7\b|99,9%|uptime|garantia de segurança|garantido/i)).toHaveCount(0);
   await expect(page.getByText(/não são apresentadas certificações/i)).toBeVisible();
 });
 

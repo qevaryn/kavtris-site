@@ -1,11 +1,40 @@
+import type { ReactNode } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Button } from '@/components/shared/Button';
 import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
+import { ProductsModeSelector } from '@/features/catalog/components/responsive/ProductsModeSelector';
 import { BusinessDiscovery } from '@/features/catalog/components/responsive/BusinessDiscovery';
 import { ProductCatalogClient } from '@/features/catalog/components/responsive/ProductCatalogClient';
 
-export function CatalogPageView() {
+type CatalogPageViewProps = {
+  searchParams: { modo?: string };
+};
+
+/**
+ * WEB.1F.5 — /produtos mode architecture.
+ *
+ * The URL query is the canonical shareable representation of the chosen path:
+ *
+ *   /produtos                 → STATE 1: mode selector (the customer chooses first)
+ *   /produtos?modo=negocio    → STATE 2: business-based discovery ONLY
+ *   /produtos?modo=sistemas   → STATE 3: system catalog ONLY
+ *
+ * This is an onboarding gate, not a lock: Header/Footer/Back remain fully
+ * available. Invalid/unknown `?modo=` values fall back to the selector.
+ */
+export function CatalogPageView({ searchParams }: CatalogPageViewProps) {
+  const mode = searchParams.modo;
+
+  let content: ReactNode;
+  if (mode === 'negocio') {
+    content = <BusinessDiscovery />;
+  } else if (mode === 'sistemas') {
+    content = <ProductCatalogClient />;
+  } else {
+    // Default entry (and invalid-mode fallback): the two-choice selector.
+    content = <ProductsModeSelector />;
+  }
+
   return (
     <>
       <Header />
@@ -16,35 +45,10 @@ export function CatalogPageView() {
             <ContextBackForwardControls fallbackHref="/" />
           </div>
         </div>
-        <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
-          <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-            <div>
-              {/* WEB.1F.3 — no active-company prefix; KAVTRIS master brand only. */}
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-kavtris-blueLight">Produtos e Soluções</p>
-              <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-                Encontre uma solução próxima da realidade da sua empresa.
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
-                Já sabe o que procura? Veja os sistemas. Ainda não sabe? Comece pelo seu tipo de negócio.
-              </p>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/62">
-                As soluções apresentadas são pontos de partida adaptáveis. O escopo final depende do levantamento de cada empresa.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="#negocio" className="text-navy-950">
-                  Começar pelo meu negócio
-                </Button>
-                <Button href="#catalogo" variant="secondary">
-                  Ver todos os sistemas
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-        <BusinessDiscovery />
-        <ProductCatalogClient />
+        {content}
       </main>
       <Footer />
     </>
   );
 }
+

@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { expectNoHorizontalOverflow } from '../shared/helpers/overflow';
 
 test('mobile catalog has no horizontal overflow', async ({ page }) => {
-  await page.goto('/produtos');
+  await page.goto('/produtos?modo=sistemas');
 
   await expectNoHorizontalOverflow(page);
   await expect(page.getByRole('button', { name: 'Todos' })).toBeVisible();
@@ -29,7 +29,7 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
 
 test('mobile catalog shows one-column cards and buttons stay inside viewport', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 780 });
-  await page.goto('/produtos');
+  await page.goto('/produtos?modo=sistemas');
 
   // Positional contract is intentional: this test verifies the stacking
   // geometry of the first two catalog cards at 320px, not a specific product.

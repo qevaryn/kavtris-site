@@ -18,18 +18,21 @@ import { getProductBySlug } from '@/features/products/data/products';
 type SelectedId = BusinessCategory['id'] | null;
 
 /**
- * WEB.1F.4 — /produtos business discovery with contextual panel UX.
+ * WEB.1F.5 — /produtos BUSINESS MODE (`?modo=negocio`).
  *
- *  - Two-path priority inverted (owner decision): "Não sabe qual solução
- *    precisa?" is PRIMARY; "Já sabe o que procura?" is SECONDARY.
- *  - The discovery result is a CONTEXTUAL PANEL (not a separate tab): it has an
- *    explicit `✕ Fechar`, an explicit `← Voltar aos tipos de negócio`, and
- *    closes on Escape — always restoring the originating business card
- *    (scroll + focus) and cleaning the `?negocio=` URL state.
- *  - Only one panel at a time; switching category replaces the same panel
- *    (replaceState — DISCOVERY_HISTORY_NOT_SPAMMED).
- *  - Deep-link support preserved: /produtos?negocio=barbearias.
- *  - Subtle open animation (~220ms), immediate under reduced motion.
+ * This mode renders ONLY business-based discovery — never the system catalog.
+ * The old two-path choice section moved to the /produtos default selector.
+ *
+ *  - Canonical state: /produtos?modo=negocio#tipos-de-negocio
+ *  - Starting point:  /produtos?modo=negocio&negocio=<id>
+ *  - `✕ Fechar` and `← Voltar aos tipos de negócio` share ONE behavior
+ *    (DISCOVERY_CLOSE_ACTION = DISCOVERY_BACK_TO_BUSINESS_ACTION): close the
+ *    panel, clear the selected business, KEEP `modo=negocio`, land back at
+ *    #tipos-de-negocio and restore the originating card (scroll + focus).
+ *    Closing never leaves Products (DISCOVERY_CLOSE_RETURNS_HOME = NO).
+ *  - Category switching replaces the same contextual session (no history spam).
+ *  - Deep links / refresh stay consistent (URL is the source of truth).
+ *  - Consultant help exists both on the business grid and inside the panel.
  */
 export function BusinessDiscovery() {
   const reducedMotion = useReducedMotion();
@@ -38,7 +41,7 @@ export function BusinessDiscovery() {
   const [selectedId, setSelectedId] = useState<SelectedId>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  // Direct deep-link state (refresh-safe): /produtos?negocio=barbearias.
+  // Direct deep-link state (refresh-safe): /produtos?modo=negocio&negocio=barbearias.
   useEffect(() => {
     const timer = window.setTimeout(() => {
       const fromUrl = new URLSearchParams(window.location.search).get('negocio');
@@ -83,8 +86,13 @@ export function BusinessDiscovery() {
       }
 
       // First open: record the origin card on the current (grid) entry so that
-      // back/X restores it, then push ONE discovery history entry.
-      replaceNavigation({ url: window.location.href, focusKey: `business-card-${id}` });
+      // back/X restores it, then push ONE discovery history entry. The grid
+      // entry is normalized to the canonical business URL
+      // (/produtos?modo=negocio#tipos-de-negocio) so the contextual close
+      // always lands on the same stable state.
+      const gridUrl = new URL(window.location.href);
+      gridUrl.hash = 'tipos-de-negocio';
+      replaceNavigation({ url: gridUrl.toString(), focusKey: `business-card-${id}` });
       pushNavigation({ url: url.toString(), kind: 'discovery', focusKey: `business-card-${id}` });
       setSelectedId(id);
 
@@ -98,24 +106,25 @@ export function BusinessDiscovery() {
     [selectedId, pushNavigation, replaceNavigation, reducedMotion]
   );
 
+
   const closeDiscovery = useCallback(() => {
     const id = selectedId;
     if (!id) {
       return;
     }
 
-    // The previous journal entry is the recorded products grid (regardless of
-    // how this panel was re-opened — click, forward, or refresh): pop it.
+    // The previous journal entry is the recorded products business grid: pop it
+    // (the provider restores the origin card scroll + focus).
     if (canBackToProductsGrid() && canGoBack) {
-      // Popping the discovery entry returns to the recorded grid entry; the
-      // provider restores the origin card (scroll + focus).
       back();
       return;
     }
 
-    // Deep-link / no grid entry: replace in place and restore manually.
+    // Deep-link / no grid entry: replace in place and restore manually. The
+    // URL keeps `modo=negocio` and lands back on the canonical business anchor.
     const url = new URL(window.location.href);
     url.searchParams.delete('negocio');
+    url.hash = 'tipos-de-negocio';
     replaceNavigation({ url: url.toString(), focusKey: `business-card-${id}` });
     setSelectedId(null);
     restoreFocus(`business-card-${id}`, { scroll: true });
@@ -138,60 +147,45 @@ export function BusinessDiscovery() {
 
   return (
     <>
-      {/* Step 2 — two-path choice (WEB.1F.4: business discovery PRIMARY) */}
-      <section id="negocio" className="bg-white py-14 sm:py-16 lg:py-20">
+      {/* Business mode hero — business-first, no technical language. */}
+      <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
         <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-          <SectionHeading
-            className="[&_h2]:font-sans"
-            eyebrow="Dois caminhos"
-            title="Comece por onde for mais fácil para si."
-            subtitle="A maioria dos negócios começa pelo tipo de atividade. Se já sabe exatamente o que procura, também pode ir direto aos sistemas."
-          />
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {/* PRIMARY — business discovery */}
-            <article
-              data-testid="path-business-primary"
-              className="flex flex-col rounded-[1.35rem] border border-kavtris-blue/40 bg-navy-950 p-6 text-white shadow-card sm:p-7"
-            >
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blueLight">Não sabe qual solução precisa?</p>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight">Comece pelo seu tipo de negócio.</h3>
-              <p className="mt-3 text-sm leading-7 text-white/72">
-                Escolha o contexto da sua empresa e veja pontos de partida que podem fazer sentido.
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-kavtris-blueLight">
+                Produtos e soluções
               </p>
-              <Button href="#negocio-cards" className="mt-auto w-full sm:w-auto">
-                Começar pelo meu negócio
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Button>
-            </article>
-
-            {/* SECONDARY — system catalog */}
-            <article
-              data-testid="path-catalog-secondary"
-              className="flex flex-col rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-7"
-            >
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Já sabe o que procura?</p>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Veja os nossos sistemas.</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Explore os conceitos de software por setor, diretamente no catálogo de sistemas.
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                Descubra sistemas a partir do contexto da sua empresa.
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
+                Não precisa saber qual sistema precisa antes de falar connosco. Comece pelo tipo de negócio mais próximo e veja soluções que podem fazer sentido.
               </p>
-              <Button href="#catalogo" variant="outline" className="mt-auto w-full sm:w-auto">
-                Ver todos os sistemas
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Button>
-            </article>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Step 3 — business discovery */}
-      <section id="negocio-cards" className="bg-mist py-14 sm:py-16 lg:py-20">
+      {/* Business discovery grid */}
+      <section id="tipos-de-negocio" className="bg-white py-14 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-          <SectionHeading
-            className="[&_h2]:font-sans"
-            eyebrow="Qual é o seu negócio?"
-            title="Descubra sistemas a partir do contexto da sua empresa."
-            subtitle="Não precisa saber qual sistema precisa antes de falar connosco. Comece pelo tipo de negócio mais próximo e veja soluções que podem fazer sentido."
-          />
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              className="[&_h2]:font-sans"
+              eyebrow="Qual é o seu negócio?"
+              title="Descubra sistemas a partir do contexto da sua empresa."
+              subtitle="Escolha o tipo de negócio mais próximo e veja sistemas que podem servir como ponto de partida."
+            />
+            <Link
+              href="/produtos"
+              data-testid="business-change-search-method"
+              className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-navy-900/15 bg-white px-4 py-2 text-sm font-semibold text-navy-800 shadow-sm transition hover:border-kavtris-blue hover:text-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Escolher outra forma de procurar
+            </Link>
+          </div>
+
 
           <div className="snap-row mt-8 md:grid md:snap-none md:grid-cols-2 xl:grid-cols-3">
             {businessCategories.map((category) => {
@@ -234,7 +228,7 @@ export function BusinessDiscovery() {
                         isSelected ? 'text-kavtris-blue' : 'text-kavtris-blue group-hover:text-kavtris-blueLight'
                       )}
                     >
-                      Ver soluções
+                      Ver ponto de partida
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </span>
                   </span>
@@ -243,6 +237,23 @@ export function BusinessDiscovery() {
             })}
           </div>
 
+          {/* Business-grid consultant help (never a dead end). */}
+          <div
+            data-testid="business-help-consultant"
+            className="mt-10 flex flex-col gap-4 rounded-[1.5rem] border border-kavtris-blue/30 bg-paper p-6 shadow-sm sm:p-8 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div className="max-w-2xl">
+              <h3 className="text-2xl font-semibold tracking-tight text-navy-950">
+                Não encontrou o seu tipo de negócio?
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+                Não precisa escolher sozinho. Conte-nos como a sua empresa funciona e ajudamos a encontrar um bom ponto de partida.
+              </p>
+            </div>
+            <Button href="/#contacto" className="shrink-0 text-navy-950">
+              Falar com um consultor
+            </Button>
+          </div>
 
           {selected ? (
             <div
@@ -256,7 +267,7 @@ export function BusinessDiscovery() {
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#A5C9FF]">Ponto de partida</p>
                   <h3 id="discovery-panel-title" className="mt-2 max-w-3xl text-2xl font-semibold tracking-tight sm:text-3xl">
-                    Soluções que podem fazer sentido para {selected.label.toLowerCase()}.
+                    Ponto de partida para {selected.label}.
                   </h3>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -284,7 +295,7 @@ export function BusinessDiscovery() {
               </div>
 
               <p className="mt-4 max-w-3xl text-sm leading-7 text-white/72">
-                Estas soluções podem ser bons pontos de partida. A configuração final depende da realidade da sua empresa.
+                Estas soluções podem servir como ponto de partida e ser adaptadas à realidade da sua empresa.
               </p>
 
               <div className="mt-7 grid gap-4 md:grid-cols-3">
@@ -316,15 +327,19 @@ export function BusinessDiscovery() {
                 })}
               </div>
 
-              <div className="mt-7 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-5 sm:flex-row sm:items-center sm:justify-between">
+              {/* Starting-point consultant help (the panel is never a dead end). */}
+              <div
+                data-testid="starting-point-consultant"
+                className="mt-7 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-5 sm:flex-row sm:items-center sm:justify-between"
+              >
                 <div>
-                  <p className="text-base font-semibold text-white">Não encontrou algo exatamente igual?</p>
+                  <p className="text-base font-semibold text-white">Nenhuma destas opções parece certa?</p>
                   <p className="mt-1 text-sm leading-6 text-white/70">
-                    Não há problema. Explique como o seu negócio funciona e ajudamos a encontrar o melhor ponto de partida.
+                    Um consultor pode conhecer melhor a sua operação e orientar o próximo passo.
                   </p>
                 </div>
-                <Button href="/?tipo=descobrir#contacto" className="shrink-0">
-                  Explicar o meu negócio
+                <Button href="/#contacto" className="shrink-0">
+                  Falar com um consultor
                 </Button>
               </div>
             </div>

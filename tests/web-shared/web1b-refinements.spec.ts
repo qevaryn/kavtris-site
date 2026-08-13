@@ -1,22 +1,13 @@
-import { expect, test, type Locator } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 /**
- * WEB.1B — validation suite for the refined homepage:
+ * WEB.1B + WEB.1F.5 — validation suite for the refined homepage:
  *  - infinite credibility loop (seamless, accessible, bounded)
- *  - protected loops wrap-around (How We Work / Products / Engineering mobile)
- *  - Engineering desktop grid vs mobile carousel (single data source)
  *  - mobile Hero adaptation (order, descriptor, no clipping/overflow)
  *  - background depth gate (not flat, not portal-like)
  *  - Contact mobile order and Footer legibility
+ *  - WEB.1F.5: old process/products/engineering home sections removed
  */
-
-async function readActiveIndicatorLabel(carousel: Locator) {
-  return carousel
-    .getByLabel('Indicadores de posição')
-    .locator('button[aria-pressed="true"]')
-    .first()
-    .getAttribute('aria-label');
-}
 
 async function collectConsoleErrors(page: import('@playwright/test').Page) {
   const errors: string[] = [];
@@ -93,84 +84,6 @@ test('creedibilidade reduzida mantém grelha estática acessível (sem loop vazi
   }
 });
 
-test('loop da How We Work dá a volta sem dead-end (5 passos)', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
-
-  const carousel = page.getByTestId('process-carousel');
-  const startLabel = await readActiveIndicatorLabel(carousel);
-  expect(startLabel).toBe('Ir para Passo 1: Identificar');
-
-  // 5 steps forward → wraps back to the first step with valid indicator state.
-  for (let i = 0; i < 5; i += 1) {
-    await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  }
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(startLabel);
-  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
-  await expect(carousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
-
-  // Previous on the first step goes to the last without dead-end.
-  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe('Ir para Passo 5: Evoluir');
-});
-
-test('loop de produtos dá a volta sem dead-end (4 itens) no mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.locator('#produtos-preview').scrollIntoViewIfNeeded();
-
-  const carousel = page.getByTestId('featured-products-carousel');
-  const startLabel = await readActiveIndicatorLabel(carousel);
-  expect(startLabel).toBe('Ir para FieldOps');
-
-  for (let i = 0; i < 4; i += 1) {
-    await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  }
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(startLabel);
-  await expect(carousel.locator('[data-active="true"]')).toHaveCount(1);
-
-  // Previous wrap also works.
-  await carousel.getByRole('button', { name: 'Slide anterior' }).click();
-  await expect
-    .poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 })
-    .toBe('Ir para Solução personalizada para o seu contexto');
-});
-
-test('engineering: desktop grid e mobile carousel partilham o mesmo conteúdo', async ({ page }) => {
-  const pillarTitles = ['Segurança e acessos', 'Qualidade e testes', 'Integrações e arquitetura', 'Suporte e continuidade'];
-
-  // Desktop → approved structured grid; no carousel.
-  await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('/');
-  await page.locator('#empresas').scrollIntoViewIfNeeded();
-  const grid = page.getByTestId('enterprise-capabilities-grid');
-  await expect(grid).toBeVisible();
-  await expect(page.getByTestId('enterprise-capabilities-carousel')).toBeHidden();
-  for (const title of pillarTitles) {
-    await expect(grid.getByText(title)).toBeVisible();
-  }
-
-  // Mobile → protected infinite carousel; no grid.
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.locator('#empresas').scrollIntoViewIfNeeded();
-  const carousel = page.getByTestId('enterprise-capabilities-carousel');
-  await expect(carousel).toBeVisible();
-  await expect(page.getByTestId('enterprise-capabilities-grid')).toBeHidden();
-  for (const title of pillarTitles) {
-    await expect(carousel.getByText(title).first()).toBeVisible();
-  }
-
-  // Mobile loop wraps (4 items).
-  const startLabel = await readActiveIndicatorLabel(carousel);
-  for (let i = 0; i < 4; i += 1) {
-    await carousel.getByRole('button', { name: 'Próximo slide' }).click();
-  }
-  await expect.poll(() => readActiveIndicatorLabel(carousel), { timeout: 5000 }).toBe(startLabel);
-});
-
-
 test('hero mobile: headline primeiro, sem eyebrow redundante, visual sem clipping/overflow', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/');
@@ -185,7 +98,7 @@ test('hero mobile: headline primeiro, sem eyebrow redundante, visual sem clippin
     [
       hero.getByRole('heading', { name: /Tecnologia que/ }),
       hero.getByText(/A KAVTRIS combina consultoria/i),
-      hero.getByRole('link', { name: 'Como trabalhamos' }),
+      hero.getByRole('link', { name: 'Ver como funciona' }),
       hero.getByRole('link', { name: 'Falar com a KAVTRIS' }),
       page.getByTestId('hero-brand-visual'),
       page.getByTestId('services-ticker')
@@ -218,13 +131,13 @@ test('background depth: secções usam ambiente em camadas (dark e light, não f
     const section = page.locator(`#${id}`);
     await expect(section).toHaveClass(/kavtris-ambient/);
   }
-  for (const id of ['como-trabalhamos', 'produtos-preview', 'empresas', 'contacto']) {
+  for (const id of ['como-funciona', 'contacto']) {
     const section = page.locator(`#${id}`);
     await expect(section).toHaveClass(/kavtris-ambient-light/);
   }
 
   // Both pseudo-element layers actually render a gradient (depth, not flat).
-  for (const id of ['inicio', 'como-trabalhamos']) {
+  for (const id of ['inicio', 'como-funciona']) {
     const background = await page
       .locator(`#${id}`)
       .evaluate((node) => getComputedStyle(node, '::before').backgroundImage);

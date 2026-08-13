@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import {
   ArrowRight,
   Cable,
@@ -72,7 +71,7 @@ export function EnterprisePageView() {
         <section className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.58fr_0.42fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">Serviços</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">Engenharia</p>
               <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-6xl">
                 Tecnologia adaptada à realidade da sua empresa.
               </h1>
@@ -299,26 +298,87 @@ export function EnterprisePageView() {
           </div>
         </section>
 
-        {/* 9 — Final CTA */}
+        {/* 9 — Final next-step section (three paths) */}
         <section className="bg-navy-950 py-16 text-white sm:py-20">
-          <div className="container-section rounded-[1.6rem] border border-white/10 bg-white/5 p-6 sm:p-8">
-            <h2 className="max-w-3xl text-3xl font-semibold tracking-tight">Vamos entender o que a sua empresa precisa?</h2>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-white/72">
-              Conte-nos como a sua operação funciona. A primeira conversa ajuda a definir um ponto de partida realista — sem a obrigação de saber qual sistema precisa.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/?tipo=empresa#contacto" className="text-navy-950">
-                Falar sobre a minha empresa
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Button>
-              <Button href="/produtos" variant="secondary">
-                Ver produtos
-              </Button>
+          <div className="container-section">
+            <div className="max-w-3xl">
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blueLight">Próximo passo</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Qual é o próximo passo para a sua empresa?
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-white/72">
+                Escolha como prefere continuar. Se ainda não souber qual caminho faz mais sentido, podemos ajudar.
+              </p>
             </div>
-            <div className="mt-6">
-              <Link href="/" className="text-sm font-semibold text-[#7FA8FF] underline-offset-4 hover:underline">
-                Voltar à página inicial
-              </Link>
+
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              {/* PRIMARY — consultant (strongest CTA on this page). */}
+              <article
+                data-testid="engineering-final-consultant"
+                className="flex flex-col rounded-[1.5rem] border border-kavtris-blueLight/60 bg-navy-950 p-6 text-white shadow-glow sm:p-8"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#A5C9FF]">
+                  Quero falar sobre a minha necessidade
+                </p>
+                <h3 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                  Falar com um consultor
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-white/72 sm:text-base">
+                  Conte-nos o que pretende melhorar e ajudamos a definir o próximo passo.
+                </p>
+                <Button href="/#contacto" className="mt-auto sm:mt-8">
+                  Falar com um consultor
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+              </article>
+
+              {/* SECONDARY — business discovery. */}
+              <article
+                data-testid="engineering-final-business"
+                className="flex flex-col rounded-[1.5rem] border border-white/10 bg-white/5 p-6 sm:p-8"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#A5C9FF]">
+                  Não sei qual sistema preciso
+                </p>
+                <h3 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                  Começar pelo meu negócio
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-white/72 sm:text-base">
+                  Escolha o tipo de empresa que mais se aproxima da sua e veja sistemas que podem servir como ponto de partida.
+                </p>
+                <Button
+                  href="/produtos?modo=negocio#tipos-de-negocio"
+                  variant="secondary"
+                  className="mt-auto sm:mt-8"
+                >
+                  Encontrar pelo meu negócio
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+              </article>
+
+              {/* SECONDARY — system catalog. */}
+              <article
+                data-testid="engineering-final-systems"
+                className="flex flex-col rounded-[1.5rem] border border-white/10 bg-white/5 p-6 sm:p-8"
+              >
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#A5C9FF]">
+                  Já sei o que procuro
+                </p>
+                <h3 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                  Ver os sistemas
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-white/72 sm:text-base">
+                  Explore diretamente os sistemas e soluções da KAVTRIS.
+                </p>
+                <Button
+                  href="/produtos?modo=sistemas#catalogo"
+                  variant="secondary"
+                  className="mt-auto sm:mt-8"
+                >
+                  Ver todos os sistemas
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+              </article>
             </div>
           </div>
         </section>

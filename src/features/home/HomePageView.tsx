@@ -3,9 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { RevealOnce } from '@/components/shared/RevealOnce';
 import { Hero } from '@/features/home/components/Hero';
 import { CredibilityBar } from '@/features/home/components/CredibilityBar';
-import { ProcessTimeline } from '@/features/home/components/ProcessTimeline';
-import { FeaturedProducts } from '@/features/home/components/FeaturedProducts';
-import { EnterpriseDetails } from '@/features/enterprise/components/EnterprisePreview';
+import { CustomerPathSelector } from '@/features/home/components/CustomerPathSelector';
 import { NetworkPreview } from '@/features/home/components/NetworkPreview';
 import { Contact } from '@/features/contact/components/ContactForm';
 import { MeaningBehindKavtris } from '@/features/home/components/MeaningBehindKavtris';
@@ -23,13 +21,15 @@ const schema = {
 };
 
 /**
- * WEB.1A — approved homepage structure:
- * Header · Hero · How we work (diagnosis → solution) · Products & Solutions ·
- * Engineering · Rede Qualidade é Vida · Contact · Footer.
+ * WEB.1F.5 — approved simplified homepage architecture:
+ * Header · Hero · Credibility strip · Como funciona (customer-path selector) ·
+ * Rede Qualidade é Vida · Contacto · The Meaning Behind KAVTRIS · Footer.
  *
- * The Solution Finder ("Descobrir solução") is intentionally NOT rendered on the
- * homepage (SOLUTION_FINDER_HOMEPAGE_RENDERED = NO). Its component, data and tests
- * are preserved for reuse (SOLUTION_FINDER_CODE_DELETED = NO).
+ * The old homepage sections are intentionally removed by owner decision:
+ * full business-discovery carousel, products carousel, old "Como trabalhamos"
+ * process section and old "Engenharia por trás" section (see
+ * OLD_HOME_*_REMOVED_BY_OWNER = YES). Their purpose now lives on /produtos
+ * (business/system modes) and /empresas. Home orients; Products explores.
  */
 export function HomePageView() {
   return (
@@ -38,9 +38,7 @@ export function HomePageView() {
       <main>
         <Hero />
         <CredibilityBar />
-        <ProcessTimeline />
-        <FeaturedProducts />
-        <EnterpriseDetails />
+        <CustomerPathSelector />
         <NetworkPreview />
         <Contact />
         {/* WEB.1E — institutional/signature closing before the Footer. */}

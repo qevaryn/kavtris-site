@@ -233,10 +233,10 @@ export function AboutPageView() {
               Mais do que criar software, queremos construir relações de confiança e sistemas que tenham valor na vida de quem os utiliza.
             </p>
             <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-              {/* WEB.1F.3 — after reading who KAVTRIS is, the natural next step
-                  is understanding how KAVTRIS works. */}
-              <Button href="/#como-trabalhamos" className="text-navy-950">
-                Ver como trabalhamos
+              {/* WEB.1F.5 — the public homepage label is now "Como funciona"; the
+                  About final CTA follows the same terminology. */}
+              <Button href="/#como-funciona" className="text-navy-950">
+                Ver como funciona
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
               <Button href="/#contacto" variant="secondary">

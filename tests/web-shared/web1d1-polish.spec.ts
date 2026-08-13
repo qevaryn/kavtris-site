@@ -21,7 +21,7 @@ test('reveal timing: duração padrão ~1s, delay 0 e trigger não demasiado ced
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
-  const wrapper = page.getByTestId('reveal-produtos');
+  const wrapper = page.getByTestId('reveal-como-funciona');
   await expect(wrapper).toHaveAttribute('data-reveal-state', 'pending');
 
   // Place the section top at ~92% of the viewport height — above the governed
@@ -48,27 +48,27 @@ test('ecrã grande (1920×1200): secções já visíveis na carga não escondem;
   await page.setViewportSize({ width: 1920, height: 1200 });
   await page.goto('/');
 
-  // How We Work is meaningfully visible in the initial viewport (≥30%) → stays
-  // visible, never enters pending (LARGE_SCREEN_INITIAL_VIEWPORT_VISIBLE).
-  const processo = page.getByTestId('reveal-processo');
-  await expect(processo).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect.poll(() => processo.evaluate((node) => getComputedStyle(node).opacity)).toBe('1');
+  // Como funciona fica visível na carga (dentro do trigger zone) — nunca fica
+  // escondida (LARGE_SCREEN_INITIAL_VIEWPORT_VISIBLE).
+  const comoFunciona = page.getByTestId('reveal-como-funciona');
+  await expect(comoFunciona).toHaveAttribute('data-reveal-state', 'revealed');
+  await expect.poll(() => comoFunciona.evaluate((node) => getComputedStyle(node).opacity)).toBe('1');
 
-  // Products is below the fold → eligible and reveals on approach.
-  const produtos = page.getByTestId('reveal-produtos');
-  await expect(produtos).toHaveAttribute('data-reveal-state', 'pending');
+  // A Rede está abaixo da dobra → elegível e revela na aproximação.
+  const rede = page.getByTestId('reveal-rede-left');
+  await expect(rede).toHaveAttribute('data-reveal-state', 'pending');
   await scrollThroughPage(page, 0.5, 40);
-  await expect(produtos).toHaveAttribute('data-reveal-state', 'revealed');
+  await expect(rede).toHaveAttribute('data-reveal-state', 'revealed');
 });
 
 test('navegação por âncora: destino revela durante a aproximação (sem chegada invisível)', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
-  await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'pending');
-  await page.locator('#inicio').getByRole('link', { name: 'Como trabalhamos' }).click();
-  await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect(page.locator('#como-trabalhamos').getByRole('heading', { name: 'Do diagnóstico à solução, sem complicação.' })).toBeVisible();
+  await expect(page.getByTestId('reveal-como-funciona')).toHaveAttribute('data-reveal-state', 'pending');
+  await page.locator('#inicio').getByRole('link', { name: 'Ver como funciona' }).click();
+  await expect(page.getByTestId('reveal-como-funciona')).toHaveAttribute('data-reveal-state', 'revealed');
+  await expect(page.locator('#como-funciona').getByRole('heading', { name: 'Comece pelo caminho mais simples para a sua empresa.' })).toBeVisible();
 
   // Contact CTA (deep section) — reveals during the smooth approach.
   await page.getByRole('link', { name: 'Falar com a KAVTRIS' }).click();
@@ -152,7 +152,6 @@ test('microtexto: textos-chave legíveis sem zoom (header, hero, credibilidade, 
       heroCopy: fontSize('#inicio p'),
       credibilityTitle: fontSize('[data-testid="services-ticker"] article p'),
       credibilitySubtitle: fontSize('[data-testid="services-ticker"] article p span'),
-      productsCategory: fontSize('#produtos-preview article p'),
       footerLink: fontSize('footer a')
     };
   });
@@ -161,7 +160,6 @@ test('microtexto: textos-chave legíveis sem zoom (header, hero, credibilidade, 
   expect(sizes.heroCopy).toBeGreaterThanOrEqual(12);
   expect(sizes.credibilityTitle).toBeGreaterThanOrEqual(12);
   expect(sizes.credibilitySubtitle).toBeGreaterThanOrEqual(11);
-  expect(sizes.productsCategory).toBeGreaterThanOrEqual(13);
   expect(sizes.footerLink).toBeGreaterThanOrEqual(14);
 });
 
@@ -212,9 +210,7 @@ test('desktop: scroll lento revela cada secção de forma percetível (sem gaps)
   );
 
   const wrappers = [
-    'reveal-processo',
-    'reveal-produtos',
-    'reveal-empresas',
+    'reveal-como-funciona',
     'reveal-rede-left',
     'reveal-rede-right',
     'reveal-contacto-left',

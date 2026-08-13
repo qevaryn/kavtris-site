@@ -55,7 +55,7 @@ test('arquitetura híbrida: temas dark/light por secção conforme aprovado', as
     '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]',
     'footer'
   ];
-  const light = ['#como-trabalhamos', '#produtos-preview', '#empresas', '#contacto'];
+  const light = ['#como-funciona', '#contacto'];
   const warmLight = ['#rede'];
 
   for (const selector of dark) {
@@ -77,7 +77,7 @@ test('dark-area share mantém-se restrito (SITE_TOO_DARK = NO)', async ({ page }
   await page.goto('/');
 
   const result = await page.evaluate(() => {
-    const sections = ['header', '#inicio', '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]', '#como-trabalhamos', '#produtos-preview', '#empresas', '#rede', '#contacto', 'footer'];
+    const sections = ['header', '#inicio', '[aria-label="Como a KAVTRIS trabalha e no que pode confiar"]', '#como-funciona', '#rede', '#contacto', 'footer'];
     const parseColor = (color: string) => {
       const rgbMatch = color.trim().match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
       if (rgbMatch) {
@@ -125,10 +125,10 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
-  // Muted paragraph inside a light process card.
+  // Muted paragraph inside a light path card (secondary systems card).
   const muted = await page.evaluate(() => {
-    const paragraph = Array.from(document.querySelectorAll('#como-trabalhamos article p')).find((p) =>
-      p.textContent?.includes('Encontramos oportunidades')
+    const paragraph = Array.from(document.querySelectorAll('#como-funciona article p')).find((p) =>
+      p.textContent?.includes('Explore diretamente os sistemas')
     );
     const color = paragraph ? getComputedStyle(paragraph).color : 'rgb(0,0,0)';
     const card = paragraph?.closest('article');
@@ -138,9 +138,11 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
   const mutedRatio = contrastRatio(muted.color, muted.bg);
   expect(mutedRatio).toBeGreaterThanOrEqual(4.5);
 
-  // Blue accent text (kavtris-blue) on white card.
+  // Blue accent text (kavtris-blue) on the light path card.
   const blue = await page.evaluate(() => {
-    const label = document.querySelector('#como-trabalhamos article p');
+    const label = Array.from(document.querySelectorAll('#como-funciona article p')).find((p) =>
+      p.textContent?.includes('Já sei o que procuro')
+    );
     const color = label ? getComputedStyle(label).color : 'rgb(6,90,253)';
     const card = label?.closest('article');
     const bg = card ? getComputedStyle(card).backgroundColor : 'rgb(255,255,255)';
@@ -151,7 +153,7 @@ test('light body: contraste WCAG em cores reais (texto e azul KAVTRIS)', async (
 
   // Navy heading on light section.
   const heading = await page.evaluate(() => {
-    const node = document.querySelector('#como-trabalhamos h2');
+    const node = document.querySelector('#como-funciona h2');
     const color = node ? getComputedStyle(node).color : 'rgb(10,27,48)';
     const section = node?.closest('section');
     const bg = section ? getComputedStyle(section).backgroundColor : 'rgb(248,250,253)';
@@ -169,26 +171,9 @@ test('transição dark→light é limpa, sem véu escuro pesado (WEB.1F.4)', asy
 
   // The light section starts on the clean light surface.
   const bg = await page
-    .locator('#como-trabalhamos')
+    .locator('#como-funciona')
     .evaluate((node) => getComputedStyle(node).backgroundColor);
   expect(relativeLuminance(bg)).toBeGreaterThan(0.85);
-});
-
-test('carrossel em superfície clara: dot ativo usa azul KAVTRIS base', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
-
-  const activeDot = page
-    .getByTestId('process-carousel')
-    .getByLabel('Indicadores de posição')
-    .locator('button[aria-pressed="true"]')
-    .first();
-  await expect(activeDot).toBeVisible();
-
-  const color = await activeDot.evaluate((node) => getComputedStyle(node).backgroundColor);
-  // kavtris-blue base #065AFD on light surfaces (not blueLight #3D7BFF).
-  expect(color).toBe('rgb(6, 90, 253)');
 });
 
 test('hybrid homepage mantém-se sem overflow horizontal em 320/390/1024/1440', async ({ page }) => {

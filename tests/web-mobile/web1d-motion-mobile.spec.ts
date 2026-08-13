@@ -10,9 +10,7 @@ import { scrollThroughPage, scrollToTop } from '../shared/helpers/reveal';
  */
 
 const REVEAL_WRAPPERS = [
-  'reveal-processo',
-  'reveal-produtos',
-  'reveal-empresas',
+  'reveal-como-funciona',
   'reveal-rede-left',
   'reveal-rede-right',
   'reveal-contacto-left',
@@ -78,15 +76,13 @@ test('small mobile 320: sem overflow nem clipping de transform', async ({ page }
   }
 });
 
-test('mobile: carrossel do processo funciona após reveal (seta avança o contador)', async ({ page }) => {
+test('mobile: Como funciona funciona após reveal (sem carrossel antigo)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const processCarousel = page.getByTestId('process-carousel');
-  await page.locator('#como-trabalhamos').scrollIntoViewIfNeeded();
-  await expect(page.getByTestId('reveal-processo')).toHaveAttribute('data-reveal-state', 'revealed');
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('1 de 5');
-
-  await processCarousel.getByRole('button', { name: 'Próximo slide' }).click();
-  await expect(processCarousel.getByTestId('process-carousel-counter')).toHaveText('2 de 5');
+  const wrapper = page.getByTestId('reveal-como-funciona');
+  await page.locator('#como-funciona').scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-reveal-state', 'revealed');
+  await expect(page.locator('#como-funciona').getByTestId('home-path-business-primary')).toBeVisible();
+  await expect(page.getByTestId('process-carousel')).toHaveCount(0);
 });
