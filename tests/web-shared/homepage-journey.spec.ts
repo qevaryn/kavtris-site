@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('homepage usa uma jornada curta de descoberta, produtos, processo e confiança', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByText('KAVTRIS', { exact: true }).first()).toBeVisible();
+  await expect(page.getByRole('banner').getByLabel(/KAVTRIS — Technology & Consulting/i)).toBeVisible();
   await expect(page.getByText('Qualidade é Vida Tech')).toHaveCount(0);
 
   // WEB.1A — the Solution Finder ("Descobrir solução") is no longer rendered on the homepage.

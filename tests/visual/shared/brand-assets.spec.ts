@@ -65,17 +65,17 @@ test('logomarca KAVTRIS aparece no header e no footer sem caixa clara ou quadrad
   expect(logoFileSize.height).toBe(180);
   expect([3, 6]).toContain(logoFileSize.colorType);
 
-  // WEB.1F.1 — semantic brand lockup in Header/Footer: decorative symbol
-  // (same canonical white K) + textual lockup (KAVTRIS + descriptor). The
-  // canonical wordmark asset remains in the repo and is still served.
+  // WEB.1F.2 — the Header/Footer visible brand is the owner-approved web lockup
+  // PNG (symbol + KAVTRIS + TECHNOLOGY & CONSULTING). The canonical wordmark
+  // asset remains in the repo and is still served.
   const logoResponse = await request.get('/brand/kavtris/kavtris-wordmark-dark.png');
   expect(logoResponse.status()).toBe(200);
 
   const header = page.getByRole('banner');
-  const headerLockup = header.getByTestId('brand-lockup');
+  const headerLockup = header.locator('img[src*="kavtris-technology-consulting-lockup"]');
   await expect(headerLockup).toBeVisible();
-  await expect(headerLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
-  await expect(headerLockup.getByTestId('brand-descriptor')).toBeVisible();
+  await expect(headerLockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(headerLockup).toHaveAttribute('alt', '');
   await expect(page.getByText('QV', { exact: true })).toHaveCount(0);
   if (!viewport || viewport.width < 1360) {
     await expect(page.getByTestId('header-network-signature')).toBeHidden();
@@ -115,10 +115,10 @@ test('logomarca KAVTRIS aparece no header e no footer sem caixa clara ou quadrad
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport?.width || 1440);
 
   await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
-  const footerLockup = page.getByRole('contentinfo').getByTestId('brand-lockup');
+  const footerLockup = page.getByRole('contentinfo').locator('img[src*="kavtris-technology-consulting-lockup"]');
   await expect(footerLockup).toBeVisible();
-  await expect(footerLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
-  await expect(footerLockup.getByTestId('brand-descriptor')).toBeVisible();
+  await expect(footerLockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(footerLockup).toHaveAttribute('alt', /Technology & Consulting/i);
   await expect(page.getByRole('contentinfo').getByText('Integrante da Rede Qualidade é Vida')).toBeVisible();
   await expect(page.getByRole('contentinfo').getByAltText('Rede Qualidade é Vida')).toBeVisible();
 });
@@ -190,7 +190,7 @@ test('header e cartão do fundador continuam responsivos no mobile', async ({ pa
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/sobre');
 
-  await expect(page.getByRole('banner').getByTestId('brand-lockup')).toBeVisible();
+  await expect(page.getByRole('banner').locator('img[src*="kavtris-technology-consulting-lockup"]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
   await expect(page.getByTestId('about-founder-card').getByAltText(founderAlt)).toBeVisible();
@@ -205,7 +205,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   await page.goto('/');
 
   const banner = page.getByRole('banner');
-  const headerLockup = banner.getByTestId('brand-lockup');
+  const headerLockup = banner.locator('img[src*="kavtris-technology-consulting-lockup"]');
   const initialMetrics = (await headerLockup.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
@@ -232,7 +232,7 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
 test('link da logomarca leva ao início da página', async ({ page }) => {
   await page.goto('/');
   await page.locator('#contacto').scrollIntoViewIfNeeded();
-  await page.getByLabel('KAVTRIS - início').click();
+  await page.getByLabel(/KAVTRIS — Technology & Consulting/i).click();
 
   await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#inicio');
 });

@@ -1,5 +1,5 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { BrandLockup } from '@/components/layout/BrandLockup';
 import { Logo } from '@/components/layout/Logo';
 import { brandTagline, publicBrandName } from '@/lib/constants';
 
@@ -11,10 +11,17 @@ export function Footer() {
             block; keeps breathing room without loosening the footer. */}
         <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
-            {/* WEB.1F.1 — same brand lockup logic as the Header: the descriptor
-                sits underneath the KAVTRIS wordmark only, never under the whole
-                symbol + wordmark block. */}
-            <BrandLockup descriptorClassName="mt-1.5" descriptorSize="sm" />
+            {/* WEB.1F.2 — same owner-approved web lockup PNG as the Header
+                (KAVTRIS + TECHNOLOGY & CONSULTING); meaningful alt label since
+                the footer brand is not a link. */}
+            <Image
+              src="/brand/kavtris/kavtris-technology-consulting-lockup.png"
+              alt="KAVTRIS — Technology & Consulting"
+              width={2071}
+              height={686}
+              sizes="(max-width: 640px) 150px, (max-width: 1024px) 170px, 190px"
+              className="h-auto w-[150px] object-contain sm:w-[170px] lg:w-[190px]"
+            />
             <p className="text-sm text-white/72">{brandTagline}</p>
             <p className="max-w-sm text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
           </div>

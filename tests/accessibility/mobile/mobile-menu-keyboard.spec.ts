@@ -4,7 +4,7 @@ test('mobile menu supports keyboard navigation, Escape and focus return', async 
   await page.goto('/');
 
   await page.keyboard.press('Tab');
-  await expect(page.getByLabel('KAVTRIS - início')).toBeFocused();
+  await expect(page.getByLabel(/KAVTRIS — Technology & Consulting/i)).toBeFocused();
 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();

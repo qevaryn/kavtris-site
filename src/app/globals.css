@@ -148,10 +148,11 @@ section[id] {
   }
 }
 
-/* Current white symbol: quick fade + very slight scale normalize. */
+/* Current white symbol: quick fade + very slight scale normalize.
+   WEB.1F.2 — exact owner-requested 750ms entrance (perceived complete <= 800ms). */
 .hero-logo {
   opacity: 0;
-  animation: hero-logo-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+  animation: hero-logo-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
 }
 
 /* Subtle side fog: blurred low-opacity cool-white gradients that enter
@@ -165,7 +166,7 @@ section[id] {
   filter: blur(22px);
   pointer-events: none;
   opacity: 0;
-  animation: hero-fog-in 0.9s ease-out 0s forwards;
+  animation: hero-fog-in 0.7s ease-out 0s forwards;
   z-index: 1;
 }
 

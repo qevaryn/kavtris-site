@@ -29,9 +29,10 @@ test('hero: copy e CTAs imediatamente visíveis; eyebrow redundante removido', a
   await expect(hero.getByText('KAVTRIS', { exact: true })).toHaveCount(0);
   await expect(hero.getByText(/TECHNOLOGY\s*&\s*CONSULTING/i)).toHaveCount(0);
 
-  // Brand identifiers still exist elsewhere (Header/Footer).
-  await expect(page.getByText('KAVTRIS', { exact: true }).first()).toBeVisible();
-  await expect(page.getByTestId('brand-descriptor').first()).toBeVisible();
+  // Brand identifiers still exist elsewhere (Header/Footer): the web lockup PNG
+  // carries KAVTRIS + TECHNOLOGY & CONSULTING; the link label is the accessible name.
+  await expect(page.locator('header img[src*="kavtris-technology-consulting-lockup"]')).toBeVisible();
+  await expect(page.getByRole('banner').getByLabel(/KAVTRIS — Technology & Consulting/i)).toBeVisible();
 
   // The current white symbol is still present in the Hero.
   await expect(page.locator(HERO).getByAltText('Símbolo KAVTRIS')).toBeVisible();
@@ -61,6 +62,10 @@ test('hero: novo reveal rápido — fade + fog, duração <= 1500ms, estático d
   expect(timing.durationMs).toBeGreaterThanOrEqual(300);
   expect(timing.durationMs + timing.delayMs).toBeLessThanOrEqual(1500);
   expect(timing.iterationCount).toBe('1');
+
+  // WEB.1F.2 — exact owner-requested value: 750ms primary fade, no delay.
+  expect(timing.durationMs).toBe(750);
+  expect(timing.delayMs).toBe(0);
 
   // Primary reveal resolves quickly, then stays static.
   await expect.poll(() => logo.evaluate((node) => getComputedStyle(node).opacity), { timeout: 4000 }).toBe('1');

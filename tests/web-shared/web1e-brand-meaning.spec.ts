@@ -2,9 +2,10 @@ import { expect, test } from '@playwright/test';
 import { scrollToTop } from '../shared/helpers/reveal';
 
 /**
- * WEB.1E — brand meaning + header/footer descriptor validation.
+ * WEB.1E — brand meaning + header/footer brand lockup validation.
  *
- *  - Header/Footer: KAVTRIS master brand + contextual descriptor (HTML/CSS)
+ *  - Header/Footer: owner-approved web lockup PNG (KAVTRIS + TECHNOLOGY &
+ *    CONSULTING in one cohesive image); accessible label on the logo link
  *  - Meaning section: heading, exactly 7 principles (K A V T R I S), English
  *    prominent, Portuguese secondary, positioned after Contact / before Footer
  *  - Governance: KAVTRIS is NOT an acronym (no "stands for"/"acronym" wording)
@@ -12,66 +13,53 @@ import { scrollToTop } from '../shared/helpers/reveal';
  *  - Reveal: existing one-time system preserved; reduced-motion immediate
  */
 
-const DESCRIPTOR = /technology\s*&\s*consulting/i;
-
-test('header: KAVTRIS mestre + descriptor alinhado abaixo do wordmark apenas', async ({ page }) => {
+test('header: lockup web PNG de marca (KAVTRIS + TECHNOLOGY & CONSULTING)', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
   const header = page.locator('header');
-  const lockup = header.getByTestId('brand-lockup');
-  const textLockup = header.getByTestId('brand-text-lockup');
-  const descriptor = header.getByTestId('brand-descriptor');
+  const lockup = header.locator('img[src*="kavtris-technology-consulting-lockup"]');
 
+  // WEB.1F.2 — the visible brand is ONE cohesive owner-approved PNG
+  // (symbol + KAVTRIS wordmark + TECHNOLOGY & CONSULTING underneath).
   await expect(lockup).toBeVisible();
-  await expect(descriptor).toBeVisible();
-  await expect(descriptor).toContainText(DESCRIPTOR);
+  await expect(lockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(lockup).toHaveAttribute('alt', '');
 
-  // WEB.1F.1 — the descriptor belongs to the textual wordmark wrapper
-  // (symbol + textual lockup: KAVTRIS + descriptor), never to the symbol.
-  await expect(textLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
-  await expect(textLockup.getByTestId('brand-descriptor')).toBeVisible();
+  // Accessible brand name lives on the logo link (single clean announcement —
+  // no duplicated screen-reader output for the visible PNG).
+  const brandLink = header.getByLabel(/KAVTRIS — Technology & Consulting/i);
+  await expect(brandLink).toHaveAttribute('href', '/#inicio');
 
-  // Descriptor starts at the KAVTRIS wordmark text start (wordmark geometry,
-  // not viewport) and sits directly below it — not under the symbol.
-  const wordmarkBox = (await textLockup.getByText('KAVTRIS', { exact: true }).boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
-  const descBox = (await descriptor.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
-  expect(descBox.y).toBeGreaterThan(wordmarkBox.y + wordmarkBox.height - 4);
-  expect(Math.abs(descBox.x - wordmarkBox.x)).toBeLessThanOrEqual(6);
-
-  // Not aligned as a full-width line under the symbol + wordmark block.
-  const lockupBox = (await lockup.boundingBox()) ?? { x: 0, width: 0 };
-  expect(descBox.x - lockupBox.x).toBeGreaterThanOrEqual(28);
-
-  // The descriptor never wraps under ordinary viewport widths.
-  const nowrap = await descriptor.evaluate((node) => getComputedStyle(node).whiteSpace);
-  expect(nowrap).toBe('nowrap');
+  // No duplicated visible HTML descriptor or wordmark beside the PNG.
+  await expect(header.getByTestId('brand-descriptor')).toHaveCount(0);
+  await expect(header.getByText('TECHNOLOGY & CONSULTING', { exact: false })).toHaveCount(0);
 
   // It is brand identity, not navigation text.
-  await expect(header.getByRole('navigation').getByTestId('brand-descriptor')).toHaveCount(0);
+  await expect(header.getByRole('navigation').getByText(/KAVTRIS/i)).toHaveCount(0);
 });
 
-test('footer: KAVTRIS mestre + descriptor alinhado ao wordmark, compacto', async ({ page }) => {
+test('footer: mesmo lockup web PNG + alt descritivo, bloco compacto', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
   const footer = page.getByRole('contentinfo');
-  const descriptor = footer.getByTestId('brand-descriptor');
-  const textLockup = footer.getByTestId('brand-text-lockup');
-  await expect(footer.getByTestId('brand-lockup')).toBeVisible();
-  await expect(descriptor).toBeVisible();
-  await expect(descriptor).toContainText(DESCRIPTOR);
-  await expect(textLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
+  const lockup = footer.locator('img[src*="kavtris-technology-consulting-lockup"]');
+  await expect(lockup).toBeVisible();
+  await expect(lockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(lockup).toHaveAttribute('alt', /KAVTRIS — Technology & Consulting/i);
 
-  // Same brand lockup logic as the Header: descriptor below the wordmark only.
-  const wordmarkBox = (await textLockup.getByText('KAVTRIS', { exact: true }).boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
-  const descBox = (await descriptor.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
-  expect(descBox.y).toBeGreaterThan(wordmarkBox.y + wordmarkBox.height - 4);
-  expect(Math.abs(descBox.x - wordmarkBox.x)).toBeLessThanOrEqual(6);
+  // Same web lockup source as the Header (HEADER_FOOTER_ASSET_MATCH).
+  const headerSrc = await page.locator('header img[src*="kavtris-technology-consulting-lockup"]').getAttribute('src');
+  const footerSrc = await lockup.getAttribute('src');
+  expect(footerSrc).toBe(headerSrc);
 
-  // WEB.1F — the identity block is compact: the descriptor does not stretch
-  // across the whole footer column (tight group, not detached).
-  expect(descBox.width).toBeLessThan(260);
+  // WEB.1F — the identity block remains compact (descriptor lives inside the PNG).
+  const box = (await lockup.boundingBox()) ?? { width: 0 };
+  expect(box.width).toBeLessThanOrEqual(230);
+
+  // No duplicated visible HTML descriptor.
+  await expect(footer.getByTestId('brand-descriptor')).toHaveCount(0);
 });
 
 test('meaning: heading + exatamente 7 princípios com ordem e valores corretos', async ({ page }) => {
