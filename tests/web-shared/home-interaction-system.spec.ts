@@ -92,7 +92,11 @@ test('ticker de serviços mantém duplicação visual escondida e pausa momentan
   await page.keyboard.press('Tab');
   await expect(injectedMainButton).toBeFocused();
 
-  await page.locator('header').first().click();
+  // Click the header's non-interactive gap (between the brand lockup and the
+  // mobile menu button) to move focus off the injected ticker button. A plain
+  // center-click would land on the KAVTRIS brand link (WEB.1F.1 lockup) and
+  // navigate to /#inicio, which the test does not intend.
+  await page.locator('header').first().click({ position: { x: 260, y: 36 } });
   await expect(injectedMainButton).not.toBeFocused();
 
   await ticker.scrollIntoViewIfNeeded();

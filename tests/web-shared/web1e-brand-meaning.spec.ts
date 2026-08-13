@@ -14,42 +14,63 @@ import { scrollToTop } from '../shared/helpers/reveal';
 
 const DESCRIPTOR = /technology\s*&\s*consulting/i;
 
-test('header: KAVTRIS mestre + descriptor contextual alinhado abaixo do logo', async ({ page }) => {
+test('header: KAVTRIS mestre + descriptor alinhado abaixo do wordmark apenas', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
   const header = page.locator('header');
-  const logo = header.getByTestId('brand-logo');
+  const lockup = header.getByTestId('brand-lockup');
+  const textLockup = header.getByTestId('brand-text-lockup');
   const descriptor = header.getByTestId('brand-descriptor');
 
-  await expect(logo).toBeVisible();
+  await expect(lockup).toBeVisible();
   await expect(descriptor).toBeVisible();
   await expect(descriptor).toContainText(DESCRIPTOR);
 
-  // Descriptor sits directly below the wordmark (logo geometry, not viewport).
-  const logoBox = (await logo.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
+  // WEB.1F.1 — the descriptor belongs to the textual wordmark wrapper
+  // (symbol + textual lockup: KAVTRIS + descriptor), never to the symbol.
+  await expect(textLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
+  await expect(textLockup.getByTestId('brand-descriptor')).toBeVisible();
+
+  // Descriptor starts at the KAVTRIS wordmark text start (wordmark geometry,
+  // not viewport) and sits directly below it — not under the symbol.
+  const wordmarkBox = (await textLockup.getByText('KAVTRIS', { exact: true }).boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
   const descBox = (await descriptor.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
-  expect(descBox.y).toBeGreaterThan(logoBox.y + logoBox.height - 2);
-  expect(descBox.x).toBeGreaterThanOrEqual(logoBox.x);
-  expect(descBox.x + descBox.width).toBeLessThanOrEqual(logoBox.x + logoBox.width + 6);
+  expect(descBox.y).toBeGreaterThan(wordmarkBox.y + wordmarkBox.height - 4);
+  expect(Math.abs(descBox.x - wordmarkBox.x)).toBeLessThanOrEqual(6);
+
+  // Not aligned as a full-width line under the symbol + wordmark block.
+  const lockupBox = (await lockup.boundingBox()) ?? { x: 0, width: 0 };
+  expect(descBox.x - lockupBox.x).toBeGreaterThanOrEqual(28);
+
+  // The descriptor never wraps under ordinary viewport widths.
+  const nowrap = await descriptor.evaluate((node) => getComputedStyle(node).whiteSpace);
+  expect(nowrap).toBe('nowrap');
 
   // It is brand identity, not navigation text.
   await expect(header.getByRole('navigation').getByTestId('brand-descriptor')).toHaveCount(0);
 });
 
-test('footer: KAVTRIS mestre + descriptor contextual presente', async ({ page }) => {
+test('footer: KAVTRIS mestre + descriptor alinhado ao wordmark, compacto', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
   const footer = page.getByRole('contentinfo');
   const descriptor = footer.getByTestId('brand-descriptor');
-  await expect(footer.getByTestId('brand-logo').first()).toBeVisible();
+  const textLockup = footer.getByTestId('brand-text-lockup');
+  await expect(footer.getByTestId('brand-lockup')).toBeVisible();
   await expect(descriptor).toBeVisible();
   await expect(descriptor).toContainText(DESCRIPTOR);
+  await expect(textLockup.getByText('KAVTRIS', { exact: true })).toBeVisible();
+
+  // Same brand lockup logic as the Header: descriptor below the wordmark only.
+  const wordmarkBox = (await textLockup.getByText('KAVTRIS', { exact: true }).boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
+  const descBox = (await descriptor.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
+  expect(descBox.y).toBeGreaterThan(wordmarkBox.y + wordmarkBox.height - 4);
+  expect(Math.abs(descBox.x - wordmarkBox.x)).toBeLessThanOrEqual(6);
 
   // WEB.1F — the identity block is compact: the descriptor does not stretch
   // across the whole footer column (tight group, not detached).
-  const descBox = (await descriptor.boundingBox()) ?? { width: 0 };
   expect(descBox.width).toBeLessThan(260);
 });
 

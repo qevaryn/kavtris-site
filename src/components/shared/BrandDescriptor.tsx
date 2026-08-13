@@ -1,5 +1,12 @@
 import { cn } from '@/components/shared/cn';
 
+type BrandDescriptorProps = {
+  className?: string;
+  /** 'xs' = compact mobile (Header); 'sm' = slightly larger (Footer). Both
+      converge to the same size at sm+ breakpoints. */
+  size?: 'xs' | 'sm';
+};
+
 /**
  * WEB.1E — contextual brand descriptor.
  *
@@ -10,11 +17,12 @@ import { cn } from '@/components/shared/cn';
  * Same text / capitalization / tracking philosophy is reused in the Header and
  * the Footer; only the font-size may differ by context.
  */
-export function BrandDescriptor({ className }: { className?: string }) {
+export function BrandDescriptor({ className, size = 'xs' }: BrandDescriptorProps) {
   return (
     <span
       className={cn(
-        'block whitespace-nowrap text-[0.56rem] font-semibold uppercase leading-none tracking-[0.2em] text-white/55 sm:text-[0.65rem]',
+        'block whitespace-nowrap font-semibold uppercase leading-none tracking-[0.2em] text-white/55 sm:text-[0.65rem]',
+        size === 'sm' ? 'text-[0.6rem]' : 'text-[0.5rem]',
         className
       )}
       data-testid="brand-descriptor"

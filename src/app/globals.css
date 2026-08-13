@@ -96,46 +96,15 @@ section[id] {
 }
 
 /* ------------------------------------------------------------------ */
-/* WEB.1A — Hero engineering visual (CSS/SVG, SSR-safe, no WebGL).     */
-/* Sequence: light point → angular path → circuits → converge → K.     */
+/* WEB.1F.1 - Hero logo reveal (current white KAVTRIS symbol).        */
+/* One quick entrance: fast fade + subtle side fog (~1s), then static. */
+/* No narrative sequence, no loops, no WebGL/canvas/external assets.   */
+/* Reduced motion: final static state immediately.                     */
 /* ------------------------------------------------------------------ */
-@keyframes hero-draw-line {
-  from {
-    stroke-dashoffset: 640;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes hero-light-travel {
-  0% {
-    opacity: 0;
-    transform: translate(58px, 366px);
-  }
-  10% {
-    opacity: 1;
-  }
-  38% {
-    transform: translate(252px, 218px);
-  }
-  66% {
-    transform: translate(462px, 148px);
-  }
-  84% {
-    transform: translate(470px, 214px);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(470px, 214px);
-    opacity: 0;
-  }
-}
-
-@keyframes hero-node-pop {
+@keyframes hero-logo-in {
   from {
     opacity: 0;
-    transform: scale(0.4);
+    transform: scale(0.985);
   }
   to {
     opacity: 1;
@@ -143,161 +112,96 @@ section[id] {
   }
 }
 
-@keyframes hero-k-symbol-in {
+@keyframes hero-fog-in {
   from {
     opacity: 0;
-    transform: scale(0.92);
   }
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
-@keyframes hero-inner-pulse {
-  0%,
-  100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.28;
+/* Faint static technical ring (same restrained depth language). */
+.hero-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(64vw, 20rem);
+  height: min(64vw, 20rem);
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .hero-ring {
+    width: min(72vw, 24rem);
+    height: min(72vw, 24rem);
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* WEB.1D.2 — Hero symbolic motion refinement (technology-first).      */
-/*                                                                     */
-/* The build expresses a brand-philosophy sequence without labels:     */
-/*   LIGHT (origin pulse) → PATH (angular trace) → KNOWLEDGE (nodes)   */
-/*   → ENGINEERING (structure) → VISION/TRUST (stabilizing geometry)   */
-/*   → IMPACT (convergence) → K (final symbol).                        */
-/*                                                                     */
-/* A vertical + horizontal technical trace briefly intersect (~350ms)  */
-/* creating a cross-like luminous junction in the SAME trace language: */
-/* discoverable, never highlighted, never announced — the build simply */
-/* continues past it. No text, no icon, no dedicated color.            */
-/* ------------------------------------------------------------------ */
-
-@keyframes hero-origin-pulse {
-  0% {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  30% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.6);
+@media (min-width: 1024px) {
+  .hero-ring {
+    width: min(54vw, 30rem);
+    height: min(54vw, 30rem);
   }
 }
 
-@keyframes hero-cross-draw {
-  from {
-    stroke-dashoffset: var(--hero-cross-len, 220);
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes hero-cross-fade {
-  from {
-    opacity: 0.55;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes hero-node-idle {
-  0%,
-  100% {
-    opacity: 0.12;
-  }
-  50% {
-    opacity: 0.32;
-  }
-}
-
-.hero-draw {
-  stroke-dasharray: 640;
-  stroke-dashoffset: 640;
-  animation: hero-draw-line 1.7s cubic-bezier(0.45, 0, 0.25, 1) forwards;
-}
-
-/* Seed-like origin: a faint expanding pulse where the light begins. */
-.hero-origin {
+/* Current white symbol: quick fade + very slight scale normalize. */
+.hero-logo {
   opacity: 0;
-  animation: hero-origin-pulse 0.9s cubic-bezier(0.45, 0, 0.25, 1) 0.2s forwards;
+  animation: hero-logo-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
 }
 
-/* Cross-like technical intersection (transient routing traces).       */
-/* Both traces draw during the engineering stage; they coexist fully   */
-/* for ~250–350ms before fading away — the build simply continues.     */
-.hero-cross-v {
-  --hero-cross-len: 222;
-  stroke-dasharray: 222;
-  stroke-dashoffset: 222;
-  animation:
-    hero-cross-draw 0.4s cubic-bezier(0.45, 0, 0.25, 1) 2.8s forwards,
-    hero-cross-fade 0.7s ease-in-out 3.8s forwards;
-}
-
-.hero-cross-h {
-  --hero-cross-len: 352;
-  stroke-dasharray: 352;
-  stroke-dashoffset: 352;
-  animation:
-    hero-cross-draw 0.4s cubic-bezier(0.45, 0, 0.25, 1) 3.15s forwards,
-    hero-cross-fade 0.7s ease-in-out 3.9s forwards;
-}
-
-.hero-light-point {
+/* Subtle side fog: blurred low-opacity cool-white gradients that enter
+   with the logo, settle below visual noise, then stay static. */
+.hero-fog {
+  position: absolute;
+  top: 50%;
+  width: 32%;
+  height: 72%;
+  transform: translateY(-50%);
+  filter: blur(22px);
+  pointer-events: none;
   opacity: 0;
-  animation: hero-light-travel 6.2s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+  animation: hero-fog-in 0.9s ease-out 0s forwards;
+  z-index: 1;
 }
 
-.hero-node {
-  opacity: 0;
-  animation: hero-node-pop 0.5s ease-out forwards;
+.hero-fog-left {
+  left: -4%;
+  background: radial-gradient(ellipse at center, rgba(214, 228, 255, 0.16), rgba(61, 123, 255, 0.06) 46%, transparent 72%);
 }
 
-/* Very faint post-build idle: a couple of stable nodes "breathe".     */
-.hero-node-idle {
-  animation: hero-node-idle 4.5s ease-in-out 7s infinite;
+.hero-fog-right {
+  right: -4%;
+  background: radial-gradient(ellipse at center, rgba(214, 228, 255, 0.14), rgba(61, 123, 255, 0.05) 46%, transparent 72%);
 }
 
-.hero-k-symbol {
-  opacity: 0;
-  animation: hero-k-symbol-in 0.8s cubic-bezier(0.45, 0, 0.25, 1) 5.2s forwards;
-}
-
-.hero-inner-ring {
-  opacity: 0;
-  animation: hero-inner-pulse 2.4s ease-in-out 6s infinite;
-}
-
-/* Tiny origin detail is dropped on small screens to keep mobile clean. */
 @media (max-width: 767px) {
-  .hero-origin {
-    display: none;
+  .hero-fog {
+    width: 26%;
+    height: 62%;
+    filter: blur(16px);
   }
 }
 
-.hero-reduced .hero-draw,
-.hero-reduced .hero-light-point,
-.hero-reduced .hero-node,
-.hero-reduced .hero-k-symbol,
-.hero-reduced .hero-inner-ring,
-.hero-reduced .hero-origin,
-.hero-reduced .hero-cross-v,
-.hero-reduced .hero-cross-h,
-.hero-reduced .hero-node-idle {
-  animation: none !important;
-  opacity: 1;
-  stroke-dashoffset: 0;
-  transform: none;
+/* Reduced motion: final static state immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo,
+  .hero-fog {
+    animation: none;
+  }
+
+  .hero-logo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-fog {
+    opacity: 1;
+  }
 }
 
 @media (min-width: 768px) {

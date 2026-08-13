@@ -171,17 +171,18 @@ test('engineering: desktop grid e mobile carousel partilham o mesmo conteúdo', 
 });
 
 
-test('hero mobile: ordem preferida, descritor legível e visual sem clipping/overflow', async ({ page }) => {
+test('hero mobile: headline primeiro, sem eyebrow redundante, visual sem clipping/overflow', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto('/');
 
   const hero = page.locator('#inicio');
-  await expect(hero.getByText('TECHNOLOGY & CONSULTING')).toBeVisible();
+  // WEB.1F.1 — the redundant brand eyebrow was removed from the Hero.
+  await expect(hero.getByText('KAVTRIS', { exact: true })).toHaveCount(0);
+  await expect(hero.getByText('TECHNOLOGY & CONSULTING')).toHaveCount(0);
 
-  // Preferred order: eyebrow → headline → copy → CTAs → K visual → credibility loop.
+  // Preferred order: headline → copy → CTAs → K visual → credibility loop.
   const boxes = await Promise.all(
     [
-      hero.getByText('KAVTRIS', { exact: true }).first(),
       hero.getByRole('heading', { name: /Tecnologia que/ }),
       hero.getByText(/A KAVTRIS combina consultoria/i),
       hero.getByRole('link', { name: 'Conhecer soluções' }),
@@ -197,7 +198,7 @@ test('hero mobile: ordem preferida, descritor legível e visual sem clipping/ove
   }
 
   // K visual fits the 320px viewport without clipping.
-  const visualBox = boxes[5];
+  const visualBox = boxes[4];
   if (!visualBox) {
     throw new Error('hero-brand-visual sem dimensões');
   }

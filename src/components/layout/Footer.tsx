@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BrandDescriptor } from '@/components/shared/BrandDescriptor';
+import { BrandLockup } from '@/components/layout/BrandLockup';
 import { Logo } from '@/components/layout/Logo';
 import { brandTagline, publicBrandName } from '@/lib/constants';
 
@@ -11,11 +11,10 @@ export function Footer() {
             block; keeps breathing room without loosening the footer. */}
         <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
-            <span className="flex flex-col items-start">
-              <Logo variant="qevarynWhite" />
-              {/* WEB.1E — same semantic descriptor family as the Header. */}
-              <BrandDescriptor className="mt-1.5 text-[0.6rem] sm:text-[0.65rem]" />
-            </span>
+            {/* WEB.1F.1 — same brand lockup logic as the Header: the descriptor
+                sits underneath the KAVTRIS wordmark only, never under the whole
+                symbol + wordmark block. */}
+            <BrandLockup descriptorClassName="mt-1.5" descriptorSize="sm" />
             <p className="text-sm text-white/72">{brandTagline}</p>
             <p className="max-w-sm text-sm leading-7 text-white/62">Sistemas, automação, integrações e qualidade para processos empresariais mais organizados.</p>
           </div>

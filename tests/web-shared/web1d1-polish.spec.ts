@@ -149,7 +149,7 @@ test('microtexto: textos-chave legíveis sem zoom (header, hero, credibilidade, 
     };
     return {
       headerNav: fontSize('nav[aria-label="Navegação principal"] a'),
-      heroEyebrow: fontSize('#inicio p'),
+      heroCopy: fontSize('#inicio p'),
       credibilityTitle: fontSize('[data-testid="services-ticker"] article p'),
       credibilitySubtitle: fontSize('[data-testid="services-ticker"] article p span'),
       productsCategory: fontSize('#produtos-preview article p'),
@@ -158,7 +158,7 @@ test('microtexto: textos-chave legíveis sem zoom (header, hero, credibilidade, 
   });
 
   expect(sizes.headerNav).toBeGreaterThanOrEqual(13);
-  expect(sizes.heroEyebrow).toBeGreaterThanOrEqual(12);
+  expect(sizes.heroCopy).toBeGreaterThanOrEqual(12);
   expect(sizes.credibilityTitle).toBeGreaterThanOrEqual(12);
   expect(sizes.credibilitySubtitle).toBeGreaterThanOrEqual(11);
   expect(sizes.productsCategory).toBeGreaterThanOrEqual(13);
