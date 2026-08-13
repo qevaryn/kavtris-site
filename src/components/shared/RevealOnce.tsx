@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/components/shared/cn';
 
 /**
- * WEB.1D — one-time scroll reveal (IntersectionObserver + CSS transition).
+ * WEB.1D / WEB.1D.1 — one-time scroll reveal (IntersectionObserver + CSS transition).
  *
  * Contract:
  *  - REVEAL_ONCE = YES — the observer disconnects after the first intersection.
@@ -14,18 +14,38 @@ import { cn } from '@/components/shared/cn';
  *    the client, after hydration, only to content strictly below the fold.
  *  - prefers-reduced-motion: reduce → content stays visible immediately.
  *  - transform/opacity only → REVEAL_CAUSES_LAYOUT_SHIFT = NO.
+ *
+ * Trigger strategy (WEB.1D.1 — owner correction for "too early"):
+ *  the reveal begins when the section top is genuinely approaching the lower
+ *  visual area, NOT when a sliver exists anywhere in the viewport:
+ *   - mobile / tablet portrait (≤768px wide or ≤700px tall): section top at ~90%
+ *   - normal desktop: section top at ~85%
+ *   - very tall / large screens (>1100px tall): section top at ~82%
  */
 
 type RevealOnceProps = {
   children: ReactNode;
   className?: string;
-  /** Applies the shared short-delay token; reset to 0 below the lg breakpoint. */
+  /** Staged-right variant: applies the shared short-delay token (reset to 0 below lg). */
   delay?: 'none' | 'short';
   testId?: string;
 };
 
-/** Trigger slightly before the content reaches the visual focus area (§39). */
-const BELOW_FOLD_TRIGGER_PX = 96;
+/** Any content meaningfully visible in the initial viewport (≥30%) must not be hidden. */
+const INITIAL_VISIBLE_RATIO = 0.3;
+
+function triggerBottomRootMargin(viewportWidth: number, viewportHeight: number): string {
+  // Mobile / tablet portrait and short landscape windows: ~90% of viewport height.
+  if (viewportWidth <= 768 || viewportHeight <= 700) {
+    return '-10%';
+  }
+  // Very tall / large screens (1440p / 4K-like heights): ~82%.
+  if (viewportHeight > 1100) {
+    return '-18%';
+  }
+  // Normal desktop: ~85%.
+  return '-15%';
+}
 
 export function RevealOnce({ children, className, delay = 'none', testId }: RevealOnceProps) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -43,17 +63,20 @@ export function RevealOnce({ children, className, delay = 'none', testId }: Reve
     // server/first paint output stays fully visible (fail-open) while the
     // below-fold content is then hidden and revealed once on intersection.
     const frame = window.requestAnimationFrame(() => {
-      // Reduced motion: content stays visible immediately (§46).
+      // Reduced motion: content stays visible immediately (§74).
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         setMounted(true);
         setRevealed(true);
         return;
       }
 
-      // Any content already inside the initial viewport must not blank (§35/§54 —
-      // also covers hash/anchor deep links and scroll restoration).
+      // Any content MEANINGFULLY visible in the initial viewport (≥30% of the
+      // section) must stay visible — applies especially to tall/large screens.
       const rect = node.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
+      const viewportHeight = window.innerHeight;
+      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const visibleRatio = visibleHeight / Math.max(rect.height, 1);
+      if (visibleRatio >= INITIAL_VISIBLE_RATIO) {
         setMounted(true);
         setRevealed(true);
         return;
@@ -61,6 +84,7 @@ export function RevealOnce({ children, className, delay = 'none', testId }: Reve
 
       setMounted(true);
 
+      const rootMargin = `0px 0px ${triggerBottomRootMargin(window.innerWidth, viewportHeight)} 0px`;
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
@@ -69,7 +93,7 @@ export function RevealOnce({ children, className, delay = 'none', testId }: Reve
             setRevealed(true);
           }
         },
-        { rootMargin: `0px 0px ${BELOW_FOLD_TRIGGER_PX}px 0px`, threshold: 0 }
+        { rootMargin, threshold: 0 }
       );
       observerRef.current = observer;
       observer.observe(node);

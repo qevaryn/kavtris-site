@@ -20,7 +20,7 @@ export function Header() {
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-4 min-[1180px]:flex 2xl:gap-5">
           {navigationLinks.map((link) => (
-            <Link key={`${link.href}-${link.label}`} href={link.href} className="rounded-sm px-0.5 text-xs font-semibold text-white/84 transition hover:text-kavtris-blueLight focus-visible:text-kavtris-blueLight 2xl:text-[0.82rem]">
+            <Link key={`${link.href}-${link.label}`} href={link.href} className="rounded-sm px-0.5 text-[13px] font-semibold text-white/84 transition hover:text-kavtris-blueLight focus-visible:text-kavtris-blueLight 2xl:text-sm">
               {link.label}
             </Link>
           ))}

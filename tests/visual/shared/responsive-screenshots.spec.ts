@@ -4,6 +4,11 @@ import { waitForTrustImages } from '../../shared/helpers/images';
 import { revealWholePage } from '../../shared/helpers/reveal';
 
 test('generates full-page visual audit screenshots', async ({ page }, testInfo) => {
+  // Ten full-page captures across viewports (plus a full reveal pass each) needs
+  // more than the default 60s test timeout — this is a heavy evidence generator,
+  // not a behavioral assertion.
+  test.setTimeout(120_000);
+
   for (const viewport of [
     { ...qaViewports.desktopWide, screenshotName: 'desktop-1920x1080' },
     { ...qaViewports.desktop, screenshotName: 'desktop-1440x900' },

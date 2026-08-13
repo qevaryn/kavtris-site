@@ -11,12 +11,12 @@ export function Hero() {
       />
       <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(1,6,25,0.98),rgba(1,6,25,0))]" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-[1180px] items-start gap-8 px-5 py-10 sm:px-8 sm:py-12 lg:grid-cols-[0.55fr_0.45fr] lg:items-center lg:gap-10 lg:py-16 xl:gap-14">
+      <div className="relative mx-auto grid max-w-[1280px] items-start gap-8 px-5 py-10 sm:px-8 sm:py-12 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-10 lg:py-16 xl:gap-14">
         <div className="max-w-[42rem]">
-          <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.3em] text-kavtris-blueLight">KAVTRIS</p>
+          <p className="text-[0.75rem] font-extrabold uppercase tracking-[0.3em] text-kavtris-blueLight">KAVTRIS</p>
           {/* WEB.1B — CONTEXTUAL_BRAND_DESCRIPTOR (owner-approved, small/secondary/high-tracking).
               Not part of the corporate name or canonical logo geometry. */}
-          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/48 sm:text-sm sm:tracking-[0.32em]">
+          <p className="mt-2 text-[0.8rem] font-semibold uppercase tracking-[0.28em] text-white/48 sm:text-[0.85rem] sm:tracking-[0.32em]">
             Technology &amp; Consulting
           </p>
 

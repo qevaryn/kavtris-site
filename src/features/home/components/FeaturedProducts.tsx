@@ -90,7 +90,7 @@ export function FeaturedProducts() {
                     <Image src={item.image} alt={item.imageAlt} fill sizes="(min-width: 1380px) 32vw, (min-width: 1024px) 34vw, (min-width: 768px) 50vw, 90vw" className="object-cover" />
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">{item.categoryLabel}</p>
+                    <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-kavtris-blue">{item.categoryLabel}</p>
                     <h3 className="mt-3 text-xl font-semibold text-navy-800">{item.name}</h3>
                     <p className="mt-3 text-sm leading-6 text-muted">{item.shortDescription}</p>
                     <Link
@@ -106,7 +106,7 @@ export function FeaturedProducts() {
             ) : (
               <article className="panel-light flex h-full rounded-[1.35rem] border border-kavtris-blue/30 p-5 text-navy-800">
                 <div className="flex w-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Solução personalizada</p>
+                  <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Solução personalizada</p>
                   <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted">{item.description}</p>
                   <Button href="#contacto" className="mt-auto w-full">

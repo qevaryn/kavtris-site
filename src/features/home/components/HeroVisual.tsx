@@ -19,13 +19,13 @@ export function HeroVisual() {
 
   return (
     <div
-      className="relative mx-auto min-h-[190px] w-full max-w-[22rem] sm:min-h-[250px] sm:max-w-[28rem] lg:min-h-[380px] lg:max-w-none"
+      className="relative mx-auto min-h-[190px] w-full max-w-[22rem] sm:min-h-[250px] sm:max-w-[28rem] lg:min-h-[440px] lg:max-w-none xl:min-h-[470px]"
       data-testid="hero-brand-visual"
       aria-hidden="true"
     >
       <div
         className={cn(
-          'absolute left-1/2 top-1/2 h-[min(64vw,20rem)] w-[min(64vw,20rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06] sm:h-[min(72vw,24rem)] sm:w-[min(72vw,24rem)]',
+          'absolute left-1/2 top-1/2 h-[min(64vw,20rem)] w-[min(64vw,20rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06] sm:h-[min(72vw,24rem)] sm:w-[min(72vw,24rem)] lg:h-[min(54vw,30rem)] lg:w-[min(54vw,30rem)]',
           !reducedMotion && 'hero-inner-ring'
         )}
       />
@@ -118,7 +118,7 @@ export function HeroVisual() {
       </svg>
 
       {/* Converged KAVTRIS symbol */}
-      <div className="absolute left-1/2 top-1/2 w-[min(50vw,12.5rem)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(46vw,13rem)] lg:left-[62%] lg:w-[25rem] xl:w-[29rem]">
+      <div className="absolute left-1/2 top-1/2 w-[min(50vw,12.5rem)] -translate-x-1/2 -translate-y-1/2 sm:w-[min(46vw,13rem)] lg:left-[56%] lg:w-[27rem] xl:w-[30rem]">
         <Image
           src="/brand/kavtris/kavtris-symbol-dark.png"
           alt="Símbolo KAVTRIS"

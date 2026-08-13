@@ -5,8 +5,8 @@ import { brandTagline, publicBrandName } from '@/lib/constants';
 export function Footer() {
   return (
     <footer className="border-t-2 border-kavtris-blue bg-navy-950 text-white">
-      <div className="container-section py-9">
-        <div className="grid gap-8 border-b border-white/10 pb-8 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
+      <div className="container-section py-10">
+        <div className="grid gap-10 border-b border-white/10 pb-10 lg:grid-cols-[1.1fr_0.9fr_0.75fr] lg:items-start">
           <div className="space-y-4">
             <Logo variant="qevarynWhite" />
             <p className="text-sm text-white/72">{brandTagline}</p>
@@ -28,7 +28,7 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="grid gap-x-6 gap-y-3 text-sm text-white/70 sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
+          <div className="grid gap-x-6 gap-y-3.5 text-sm text-white/70 sm:grid-cols-2 lg:flex lg:flex-col lg:items-end">
             <Link href="/sobre" className="transition hover:text-white">
               Sobre
             </Link>
@@ -44,7 +44,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-3 text-sm text-white/65 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mt-8 grid gap-3 text-sm text-white/65 md:grid-cols-[1fr_auto] md:items-center">
           <p>Duas marcas. Um propósito. Tecnologia que conecta. Qualidade que transforma.</p>
           <p>© {new Date().getFullYear()} {publicBrandName}. Todos os direitos reservados.</p>
         </div>

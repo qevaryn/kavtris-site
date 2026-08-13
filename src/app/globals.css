@@ -325,30 +325,38 @@ section[id] {
 }
 
 /* ------------------------------------------------------------------ */
-/* WEB.1D — one-time scroll reveal & purposeful motion system.         */
+/* WEB.1D / WEB.1D.1 — one-time scroll reveal & purposeful motion.     */
 /* Motion is progressive enhancement: SSR / JS-off output stays fully  */
 /* visible; the hidden state is applied on the client, after           */
 /* hydration, only to content strictly below the fold, and only once.  */
+/* WEB.1D.1 — owner review timing correction: ~950ms standard reveal,  */
+/* 20px vertical distance, adaptive trigger zones per viewport, and a  */
+/* staged-right variant (delay + slightly shorter duration) so the     */
+/* total Contact/Network sequence completes around one second.         */
 /* ------------------------------------------------------------------ */
 :root {
-  --reveal-duration-fast: 250ms;
-  --reveal-duration: 350ms;
-  --reveal-delay-short: 80ms;
-  --reveal-distance: 14px;
+  --reveal-duration: 950ms;
+  --reveal-duration-short: 800ms;
+  --reveal-delay-short: 220ms;
+  --reveal-distance: 20px;
   --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .kavtris-reveal {
   opacity: 0;
-  transform: translateY(var(--reveal-distance, 14px));
+  transform: translateY(var(--reveal-distance, 20px));
   transition:
-    opacity var(--reveal-duration, 350ms) var(--reveal-ease, ease-out),
-    transform var(--reveal-duration, 350ms) var(--reveal-ease, ease-out);
+    opacity var(--reveal-duration, 950ms) var(--reveal-ease, ease-out),
+    transform var(--reveal-duration, 950ms) var(--reveal-ease, ease-out);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+/* Staged-right variant (Network identity card, Contact form panel):
+   right column starts shortly after the left and completes around the
+   same ~1s mark (220ms delay + 800ms duration). */
 .kavtris-reveal--delay-short {
-  --reveal-delay: var(--reveal-delay-short, 80ms);
+  --reveal-delay: var(--reveal-delay-short, 220ms);
+  --reveal-duration: var(--reveal-duration-short, 800ms);
 }
 
 /* Staged two-column sections (Network / Contact) stack below the lg

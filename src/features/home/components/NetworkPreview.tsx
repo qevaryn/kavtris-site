@@ -31,7 +31,7 @@ export function NetworkPreview() {
               delay="short"
               testId="reveal-rede-right"
             >
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-kavtris-blue">Rede Qualidade é Vida</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-kavtris-blue">Rede Qualidade é Vida</p>
               <div className="mt-2">
                 <Logo variant="network" className="max-w-[150px]" />
               </div>

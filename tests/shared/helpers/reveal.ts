@@ -17,19 +17,28 @@ export async function scrollThroughPage(page: Page, stepRatio = 0.5, settleMs = 
     return Boolean(node);
   });
 
+  // Down pass then up pass: guarantees every section actually crosses the
+  // viewport even if IntersectionObserver deliveries are batched/delayed under
+  // parallel load (a one-way giant jump would skip sections entirely — IO only
+  // reports state changes, and elements that never intersect stay pending).
   await page.evaluate(
     ({ stepRatio: ratio, settleMs: settle }) =>
       new Promise<void>((resolve) => {
         const height = document.documentElement.scrollHeight;
         const step = Math.max(240, Math.floor(window.innerHeight * ratio));
-        let y = 0;
+        const positions: number[] = [];
+        for (let y = 0; y <= height; y += step) {
+          positions.push(y);
+        }
+        positions.push(height);
+        const sequence = [...positions, ...positions.slice(0, -1).reverse()];
+        let index = 0;
         const advance = () => {
-          window.scrollTo({ top: y, behavior: 'instant' });
-          y += step;
-          if (y <= height) {
+          window.scrollTo({ top: sequence[index], behavior: 'instant' });
+          index += 1;
+          if (index < sequence.length) {
             window.setTimeout(advance, settle);
           } else {
-            window.scrollTo({ top: height, behavior: 'instant' });
             window.setTimeout(resolve, settle);
           }
         };

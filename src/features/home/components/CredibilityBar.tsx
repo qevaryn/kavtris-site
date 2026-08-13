@@ -35,13 +35,13 @@ export function CredibilityBar() {
         const Icon = item.icon;
 
         return (
-          <article key={item.title} className="panel-dark flex min-h-[5.5rem] items-center gap-2.5 rounded-2xl border border-white/10 px-4 py-3">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
+          <article key={item.title} className="panel-dark flex min-h-[6rem] items-center gap-3 rounded-2xl border border-white/10 px-5 py-4">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
               <Icon className="h-5 w-5 stroke-[1.7]" aria-hidden="true" />
             </span>
-            <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-white">
+            <p className="text-left text-[0.78rem] font-extrabold uppercase leading-5 tracking-[0.05em] text-white">
               {item.title}
-              <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case leading-4 tracking-normal text-white/55">{item.subtitle}</span>
+              <span className="mt-0.5 block text-[0.7rem] font-semibold normal-case leading-[1.45] tracking-normal text-white/60">{item.subtitle}</span>
             </p>
           </article>
         );
@@ -50,7 +50,7 @@ export function CredibilityBar() {
   );
 
   return (
-    <section className="kavtris-ambient border-y border-white/5 bg-kavtris-dark py-2" aria-label="Como a KAVTRIS trabalha e no que pode confiar">
+    <section className="kavtris-ambient border-y border-white/5 bg-kavtris-dark py-3" aria-label="Como a KAVTRIS trabalha e no que pode confiar">
       <div className="mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-10">
         {reducedMotion ? (
           <div data-testid="services-static-reduced">{staticContent}</div>
@@ -59,20 +59,20 @@ export function CredibilityBar() {
             ariaLabel="Como a KAVTRIS trabalha e no que pode confiar"
             items={credibilityItems}
             testId="services-ticker"
-            viewportClassName="py-1"
-            itemClassName="w-[16.5rem] sm:w-[18rem]"
+            viewportClassName="py-1.5"
+            itemClassName="w-[19rem] sm:w-[21rem]"
             edgeFadeClassName="from-[#010619]"
             renderItem={(item) => {
               const Icon = item.icon;
 
               return (
-                <article className="panel-dark flex min-h-[5.5rem] items-center gap-2.5 rounded-2xl border border-white/10 px-4 py-3">
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
+                <article className="panel-dark flex min-h-[6rem] items-center gap-3 rounded-2xl border border-white/10 px-5 py-4">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-kavtris-blueLight">
                     <Icon className="h-5 w-5 stroke-[1.7]" aria-hidden="true" />
                   </span>
-                  <p className="text-left text-[0.69rem] font-extrabold uppercase leading-4 tracking-[0.05em] text-white">
+                  <p className="text-left text-[0.78rem] font-extrabold uppercase leading-5 tracking-[0.05em] text-white">
                     {item.title}
-                    <span className="mt-0.5 block text-[0.62rem] font-semibold normal-case leading-4 tracking-normal text-white/55">{item.subtitle}</span>
+                    <span className="mt-0.5 block text-[0.7rem] font-semibold normal-case leading-[1.45] tracking-normal text-white/60">{item.subtitle}</span>
                   </p>
                 </article>
               );

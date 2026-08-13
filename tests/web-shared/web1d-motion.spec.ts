@@ -38,6 +38,20 @@ test('reveal acontece uma vez: pending → revealed → persiste ao subir → n�
   await expect(wrapper).toHaveAttribute('data-reveal-state', 'pending');
   await expect.poll(() => wrapper.evaluate((node) => getComputedStyle(node).opacity)).toBe('0');
 
+  // Governed standard timing (WEB.1D.1): ~950ms duration, no delay, 20px distance.
+  const styles = await wrapper.evaluate((node) => {
+    const computed = getComputedStyle(node);
+    return {
+      duration: computed.transitionDuration,
+      delay: computed.transitionDelay,
+      transform: computed.transform
+    };
+  });
+  // computed transition-duration may be a per-property list ("0.95s, 0.95s").
+  expect(styles.duration.split(',')[0].trim()).toBe('0.95s');
+  expect(styles.delay).toBe('0s');
+  expect(styles.transform).not.toBe('none');
+
   const heightBefore = await page.evaluate(() => document.documentElement.scrollHeight);
   const widthBefore = await page.evaluate(() => document.documentElement.scrollWidth);
 
@@ -63,7 +77,7 @@ test('reveal acontece uma vez: pending → revealed → persiste ao subir → n�
   expect(widthAfter).toBe(widthBefore);
 });
 
-test('contacto desktop: esquerda revela primeiro; formulário recebe stagger governado (≤120ms)', async ({ page }) => {
+test('contacto desktop: esquerda revela primeiro; formulário recebe stagger governado (200–250ms)', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
@@ -74,16 +88,21 @@ test('contacto desktop: esquerda revela primeiro; formulário recebe stagger gov
   await expect(form).toHaveAttribute('data-reveal-state', 'pending');
   await expect(form).toHaveClass(/kavtris-reveal--delay-short/);
 
-  // Governed short-delay token: 80ms on desktop (≤120ms requirement).
-  const delay = await form.evaluate((node) => getComputedStyle(node).transitionDelay);
-  expect(delay).toBe('0.08s');
+  // Governed staged-right variant: 220ms delay + 800ms duration → the right
+  // column starts shortly after the left and completes around the ~1s mark.
+  const styles = await form.evaluate((node) => {
+    const computed = getComputedStyle(node);
+    return { delay: computed.transitionDelay, duration: computed.transitionDuration };
+  });
+  expect(styles.delay).toBe('0.22s');
+  expect(styles.duration.split(',')[0].trim()).toBe('0.8s');
 
   await form.scrollIntoViewIfNeeded();
   await expect(left).toHaveAttribute('data-reveal-state', 'revealed');
   await expect(form).toHaveAttribute('data-reveal-state', 'revealed');
 });
 
-test('rede: progressão em duas partes com stagger ≤120ms no desktop', async ({ page }) => {
+test('rede: progressão em duas partes com stagger governado (200–250ms) no desktop', async ({ page }) => {
   await page.setViewportSize(DESKTOP);
   await page.goto('/');
 
@@ -93,7 +112,7 @@ test('rede: progressão em duas partes com stagger ≤120ms no desktop', async (
   await expect(right).toHaveAttribute('data-reveal-state', 'pending');
   await expect(right).toHaveClass(/kavtris-reveal--delay-short/);
   const delay = await right.evaluate((node) => getComputedStyle(node).transitionDelay);
-  expect(delay).toBe('0.08s');
+  expect(delay).toBe('0.22s');
 
   await right.scrollIntoViewIfNeeded();
   await expect(left).toHaveAttribute('data-reveal-state', 'revealed');

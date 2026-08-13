@@ -101,10 +101,13 @@ export function Contact() {
 
   return (
     <section id="contacto" className="kavtris-ambient-light bg-kavtris-light py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-start lg:px-16">
+      <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.35fr_0.65fr] lg:items-stretch lg:px-16">
         {/* WEB.1D — owner-approved staged reveal: left (heading + next steps)
             first, then the form panel (≤120ms); stack resets the delay. */}
-        <RevealOnce className="lg:sticky lg:top-28" testId="reveal-contacto-left">
+        {/* WEB.1D.1 — desktop equal top/bottom: left column is a flex column
+            stretched to the grid row; the network/trust card anchors the bottom
+            (CONTACT_BOTTOM_ALIGNMENT = PASS). */}
+        <RevealOnce className="flex flex-col" testId="reveal-contacto-left">
           <SectionHeading className="[&_h2]:font-sans"
             eyebrow="Contacto"
             title="Não precisa chegar com uma solução pronta."
@@ -119,8 +122,10 @@ export function Contact() {
               <Send className="h-16 w-16 stroke-[1.4]" aria-hidden="true" />
             </div>
           </div>
-          {/* WEB.1B — Rede card stays in the left column on desktop only. */}
-          <div className="mt-5 hidden lg:block">{redeContactCard}</div>
+          {/* WEB.1B — Rede card stays in the left column on desktop only.
+              WEB.1D.1 — pinned to the column bottom (mt-auto) so both columns
+              share the same bottom edge on desktop. */}
+          <div className="mt-5 hidden lg:mt-auto lg:block">{redeContactCard}</div>
         </RevealOnce>
 
         <RevealOnce
