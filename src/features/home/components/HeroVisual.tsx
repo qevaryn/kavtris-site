@@ -7,6 +7,16 @@ import { useReducedMotion } from '@/components/shared/useReducedMotion';
 /**
  * WEB.1A — Hero engineering visual.
  *
+ * WEB.1D.2 — symbolic motion refinement (technology-first):
+ *   LIGHT (origin pulse) → PATH (angular trace) → KNOWLEDGE (nodes) →
+ *   ENGINEERING (structure) → VISION/TRUST (stabilizing geometry) →
+ *   IMPACT (convergence) → K (final symbol).
+ *
+ * A vertical + horizontal technical trace briefly intersect during the build
+ * (~350ms) creating a natural cross-like luminous junction in the SAME trace
+ * language — discoverable, never highlighted, never announced. No text, no
+ * icon, no dedicated color; the build simply continues past it.
+ *
  * Linear/angular SVG + CSS composition: a small light point travels an angular
  * technical path, precise circuit structures assemble around it, and the
  * structures converge toward the KAVTRIS K symbol. No cube / sphere / portal /
@@ -36,7 +46,10 @@ export function HeroVisual() {
         fill="none"
         aria-hidden="true"
       >
-        {/* Angular technical paths (draw in sequence) */}
+        {/* LIGHT — origin point: a faint expanding pulse where the light begins. */}
+        <circle className="hero-origin" cx="58" cy="366" r="5" stroke="#3D7BFF" strokeWidth="1.2" opacity="0.5" />
+
+        {/* PATH — angular technical paths (draw in sequence) */}
         <path
           className="hero-draw"
           style={{ animationDelay: '0.7s' }}
@@ -70,6 +83,23 @@ export function HeroVisual() {
           opacity="0.55"
         />
 
+        {/* ENGINEERING — cross-like technical intersection: two routing traces
+            briefly intersect mid-build (same trace language, no highlight). */}
+        <path
+          className="hero-cross-v"
+          d="M300 108 L300 330"
+          stroke="currentColor"
+          strokeWidth="1"
+          opacity="0.55"
+        />
+        <path
+          className="hero-cross-h"
+          d="M118 218 L470 218"
+          stroke="currentColor"
+          strokeWidth="1"
+          opacity="0.55"
+        />
+
         {/* Geometric K outline (draws as structures converge, 4.5–6.5s) */}
         <path
           className="hero-draw"
@@ -96,10 +126,13 @@ export function HeroVisual() {
           opacity="0.9"
         />
 
-        {/* Circuit nodes */}
+        {/* KNOWLEDGE — circuit nodes */}
         <g className="hero-node" style={{ animationDelay: '1.2s' }}>
-          <circle cx="188" cy="306" r="4" fill="#3D7BFF" />
+          <circle cx="188" cy="306" r="4" fill="#3D7BFF" className="hero-node-idle" />
           <circle cx="340" cy="196" r="3.4" fill="currentColor" />
+        </g>
+        <g className="hero-node" style={{ animationDelay: '1.8s' }}>
+          <circle cx="252" cy="218" r="3" fill="#3D7BFF" />
         </g>
         <g className="hero-node" style={{ animationDelay: '2s' }}>
           <circle cx="462" cy="148" r="4" fill="#3D7BFF" />
@@ -107,7 +140,7 @@ export function HeroVisual() {
         </g>
         <g className="hero-node" style={{ animationDelay: '2.6s' }}>
           <circle cx="368" cy="300" r="3.4" fill="currentColor" />
-          <circle cx="560" cy="214" r="4" fill="#3D7BFF" />
+          <circle cx="560" cy="214" r="4" fill="#3D7BFF" className="hero-node-idle" />
         </g>
 
         {/* Light point travelling the angular path */}
