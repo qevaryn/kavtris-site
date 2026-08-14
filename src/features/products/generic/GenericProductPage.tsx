@@ -73,7 +73,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
         {/* 1 — Product hero: strong visual, short copy, level-aware CTAs. */}
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="mx-auto grid max-w-[1200px] gap-10 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
-            <div>
+            <div className="min-w-0">
               <p className="inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 {product.label}
               </p>
@@ -103,7 +103,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 </Link>
               </div>
             </div>
-            <div data-testid="product-hero-visual">
+            <div className="min-w-0" data-testid="product-hero-visual">
               <ProductMockup product={product} />
             </div>
           </div>
