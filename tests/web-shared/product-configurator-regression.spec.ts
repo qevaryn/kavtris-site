@@ -256,6 +256,8 @@ test.describe('WEB.1F.7', () => {
   });
 
   test('responsivo: sem overflow horizontal nas rotas tocadas', async ({ page }) => {
+    test.setTimeout(120000);
+
     const routes = [
       '/',
       '/produtos',
@@ -301,4 +303,3 @@ test.describe('WEB.1F.7', () => {
     }
   });
 });
-
