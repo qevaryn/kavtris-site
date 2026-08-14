@@ -16,7 +16,7 @@ body {
 }
 
 ::selection {
-  background: rgba(242, 182, 50, 0.28);
+  background: rgba(6, 90, 253, 0.28);
 }
 
 section[id] {
@@ -61,7 +61,7 @@ section[id] {
   }
 
   :focus-visible {
-    outline: 2px solid #d99a16;
+    outline: 2px solid #065afd;
     outline-offset: 2px;
   }
 }
@@ -95,6 +95,116 @@ section[id] {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* WEB.1F.1 - Hero logo reveal (current white KAVTRIS symbol).        */
+/* One quick entrance: fast fade + subtle side fog (~1s), then static. */
+/* No narrative sequence, no loops, no WebGL/canvas/external assets.   */
+/* Reduced motion: final static state immediately.                     */
+/* ------------------------------------------------------------------ */
+@keyframes hero-logo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-fog-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Faint static technical ring (same restrained depth language). */
+.hero-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(64vw, 20rem);
+  height: min(64vw, 20rem);
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .hero-ring {
+    width: min(72vw, 24rem);
+    height: min(72vw, 24rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-ring {
+    width: min(54vw, 30rem);
+    height: min(54vw, 30rem);
+  }
+}
+
+/* Current white symbol: quick fade + very slight scale normalize.
+   WEB.1F.2 — exact owner-requested 750ms entrance (perceived complete <= 800ms). */
+.hero-logo {
+  opacity: 0;
+  animation: hero-logo-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
+}
+
+/* Subtle side fog: blurred low-opacity cool-white gradients that enter
+   with the logo, settle below visual noise, then stay static. */
+.hero-fog {
+  position: absolute;
+  top: 50%;
+  width: 32%;
+  height: 72%;
+  transform: translateY(-50%);
+  filter: blur(22px);
+  pointer-events: none;
+  opacity: 0;
+  animation: hero-fog-in 0.7s ease-out 0s forwards;
+  z-index: 1;
+}
+
+.hero-fog-left {
+  left: -4%;
+  background: radial-gradient(ellipse at center, rgba(214, 228, 255, 0.16), rgba(61, 123, 255, 0.06) 46%, transparent 72%);
+}
+
+.hero-fog-right {
+  right: -4%;
+  background: radial-gradient(ellipse at center, rgba(214, 228, 255, 0.14), rgba(61, 123, 255, 0.05) 46%, transparent 72%);
+}
+
+@media (max-width: 767px) {
+  .hero-fog {
+    width: 26%;
+    height: 62%;
+    filter: blur(16px);
+  }
+}
+
+/* Reduced motion: final static state immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo,
+  .hero-fog {
+    animation: none;
+  }
+
+  .hero-logo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-fog {
+    opacity: 1;
+  }
+}
+
 @media (min-width: 768px) {
   section[id] {
     scroll-margin-top: 6.25rem;
@@ -114,3 +224,271 @@ section[id] {
     box-shadow: 0 18px 45px rgba(3, 20, 38, 0.12);
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* WEB.1B — Controlled background depth (KAVTRIS_DARK = #010619 base). */
+/* Layered static radial gradients + diffused section-local light.     */
+/* No portal / eye / glow-halo / glassmorphism / full-page blur.       */
+/* The ::before layer sits below content (z-index: -1) and above the   */
+/* section's own background, so the effect is DEPTH, not CONTENT BLUR. */
+/* ------------------------------------------------------------------ */
+.kavtris-ambient {
+  position: relative;
+  isolation: isolate;
+}
+
+.kavtris-ambient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 42% at 14% 6%, rgba(6, 90, 253, 0.08), transparent 62%),
+    radial-gradient(46% 38% at 88% 82%, rgba(61, 123, 255, 0.05), transparent 60%),
+    radial-gradient(64% 46% at 50% 112%, rgba(255, 255, 255, 0.03), transparent 68%);
+}
+
+/* WEB.1B — engineered floating panel (precision panel, not glass). */
+/* Restrained tonal surface + 1px separation + soft ambient shadow.  */
+/* Border colour is left to per-card Tailwind utilities.             */
+.panel-dark {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.018) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 2px rgba(1, 6, 25, 0.4),
+    0 20px 46px rgba(1, 6, 25, 0.45);
+}
+
+.panel-dark-hover {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel-dark-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(61, 123, 255, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 2px 4px rgba(1, 6, 25, 0.4),
+      0 26px 54px rgba(1, 6, 25, 0.55);
+  }
+}
+
+/* Mobile pays for depth with static gradients only (no backdrop-filter,  */
+/* no extra blur) — smoothness is not traded for desktop decoration.      */
+@media (max-width: 767px) {
+  .kavtris-ambient::before {
+    background:
+      radial-gradient(50% 34% at 18% 0%, rgba(6, 90, 253, 0.055), transparent 60%),
+      radial-gradient(42% 30% at 82% 100%, rgba(61, 123, 255, 0.04), transparent 62%);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* WEB.1C — UX-first light body (hybrid dark/light architecture).      */
+/* Light surfaces retain restrained atmospheric depth via static       */
+/* radial gradients — never portal/orb/eye/giant glowing shapes.       */
+/* ------------------------------------------------------------------ */
+.kavtris-ambient-light {
+  position: relative;
+  isolation: isolate;
+}
+
+.kavtris-ambient-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 38% at 16% 0%, rgba(6, 90, 253, 0.05), transparent 62%),
+    radial-gradient(42% 34% at 88% 88%, rgba(61, 123, 255, 0.04), transparent 60%);
+}
+
+@media (max-width: 767px) {
+  .kavtris-ambient-light::before {
+    background:
+      radial-gradient(50% 30% at 20% 0%, rgba(6, 90, 253, 0.04), transparent 60%),
+      radial-gradient(42% 28% at 82% 100%, rgba(61, 123, 255, 0.03), transparent 62%);
+  }
+}
+
+/* WEB.1C — light engineered panel (elevated white card on light body). */
+.panel-light {
+  background: #ffffff;
+  border: 1px solid rgba(10, 27, 48, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 1px 2px rgba(3, 20, 38, 0.04),
+    0 18px 40px rgba(3, 20, 38, 0.06);
+}
+
+/* ------------------------------------------------------------------ */
+/* WEB.1D / WEB.1D.1 — one-time scroll reveal & purposeful motion.     */
+/* Motion is progressive enhancement: SSR / JS-off output stays fully  */
+/* visible; the hidden state is applied on the client, after           */
+/* hydration, only to content strictly below the fold, and only once.  */
+/* WEB.1D.1 — owner review timing correction: ~950ms standard reveal,  */
+/* 20px vertical distance, adaptive trigger zones per viewport, and a  */
+/* staged-right variant (delay + slightly shorter duration) so the     */
+/* total Contact/Network sequence completes around one second.         */
+/* ------------------------------------------------------------------ */
+:root {
+  --reveal-duration: 950ms;
+  --reveal-duration-short: 800ms;
+  --reveal-delay-short: 220ms;
+  --reveal-distance: 20px;
+  --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kavtris-reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance, 20px));
+  transition:
+    opacity var(--reveal-duration, 950ms) var(--reveal-ease, ease-out),
+    transform var(--reveal-duration, 950ms) var(--reveal-ease, ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Staged-right variant (Network identity card, Contact form panel):
+   right column starts shortly after the left and completes around the
+   same ~1s mark (220ms delay + 800ms duration). */
+.kavtris-reveal--delay-short {
+  --reveal-delay: var(--reveal-delay-short, 220ms);
+  --reveal-duration: var(--reveal-duration-short, 800ms);
+}
+
+/* WEB.1E — a faster whole-block reveal variant for the brand-meaning
+   signature section (the internal letter stagger drives the choreography). */
+.kavtris-reveal--duration-short {
+  --reveal-duration: var(--reveal-duration-short, 800ms);
+}
+
+/* Staged two-column sections (Network / Contact) stack below the lg
+   breakpoint; the right column moves beneath the left, so no stagger. */
+@media (max-width: 1023px) {
+  .kavtris-reveal--delay-short {
+    --reveal-delay: 0ms;
+  }
+}
+
+.kavtris-reveal--revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Content waiting for reveal must not intercept pointers; once
+   revealed, interaction is immediate. */
+.kavtris-reveal:not(.kavtris-reveal--revealed) {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kavtris-reveal,
+  .kavtris-reveal--revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.panel-light-hover {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel-light-hover:hover {
+    transform: translateY(-2px);
+    border-color: rgba(6, 90, 253, 0.35);
+    box-shadow:
+      0 2px 4px rgba(3, 20, 38, 0.05),
+      0 22px 44px rgba(3, 20, 38, 0.09);
+  }
+}
+
+/* WEB.1F.4 — subtle contextual discovery panel entrance (~220ms, no drama).
+   The `motion-safe:` variant keeps it instant under prefers-reduced-motion. */
+@keyframes discovery-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* WEB.1F.6 — content switch inside an already-open discovery panel.
+   A short opacity + slight vertical movement (240ms) signals that a NEW
+   business selection was loaded. `motion-safe:` keeps it instant under
+   prefers-reduced-motion. No bounce, no dramatic slide, no spinner. */
+@keyframes point-of-start-switch {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* WEB.1F.7 — product level switch. A short opacity + slight rise (240ms,
+   within the 180–300ms range) makes the visitor visibly perceive that the
+   selected-level product visual CHANGED. Restrained: no carousel, no bounce.
+   `motion-safe:` keeps it instant under prefers-reduced-motion. */
+@keyframes product-level-switch {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* WEB.1E — KAVTRIS brand meaning (institutional signature section).   */
+/* Seven symbolic brand principles, one engineered system. Letters     */
+/* resolve left-to-right quickly after the section's one-time reveal.  */
+/* ------------------------------------------------------------------ */
+@keyframes kavtris-principle-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fail-open: principles are visible in raw SSR output; they only hide
+   while the parent one-time reveal is in its pending (hidden) state. */
+.kavtris-reveal:not(.kavtris-reveal--revealed) .kavtris-principle {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.kavtris-reveal--revealed .kavtris-principle {
+  animation: kavtris-principle-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kavtris-principle {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+

@@ -207,7 +207,7 @@ Current examples:
 
 - `MobileMenu`: mobile-specific layout behavior;
 - `ProductCatalogClient`: responsive orchestrator;
-- `FieldOpsExperience`: shared state with desktop/mobile product demonstrations.
+- `FieldOpsSectorAdaptation` and `FieldOpsDemonstration`: FieldOps-specific responsive sections coordinated by the page-level product state.
 
 See [docs/architecture/responsive-web.md](docs/architecture/responsive-web.md) and [docs/architecture/frontend-responsibilities.md](docs/architecture/frontend-responsibilities.md).
 

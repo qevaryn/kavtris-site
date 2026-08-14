@@ -163,7 +163,14 @@ export function LoopingTicker<T>({
 
     const raw = viewport.scrollLeft;
     const phase = ((raw % step) + step) % step;
-    const alignedCurrentStart = raw - phase;
+    // WEB.1B — robustness: floating-point drift can leave `raw` a fraction of a
+    // pixel below an exact item boundary (e.g. fractional card widths), making
+    // `phase ≈ step` and the "next" step snap backwards to the same position.
+    // Treat near-boundary positions (within 1px) as aligned so navigation always
+    // advances exactly one logical item (NO_VISIBLE_JUMP / NO_DEAD_END).
+    const ALIGN_EPSILON = 1;
+    const snappedPhase = phase < ALIGN_EPSILON || step - phase < ALIGN_EPSILON ? 0 : phase;
+    const alignedCurrentStart = raw - snappedPhase;
     const fullExtent = viewport.scrollWidth;
     const target = Math.max(0, Math.min(fullExtent - 8, alignedCurrentStart + direction * step));
 
@@ -404,7 +411,7 @@ export function LoopingTicker<T>({
 
         <button
           type="button"
-          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-kavtris-blue hover:bg-white hover:text-kavtris-blue active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2"
           aria-label="Anterior"
           onClick={() => stepManual(-1)}
         >
@@ -413,7 +420,7 @@ export function LoopingTicker<T>({
 
         <button
           type="button"
-          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-sm backdrop-blur-sm transition hover:border-kavtris-blue hover:bg-white hover:text-kavtris-blue active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2"
           aria-label="Seguinte"
           onClick={() => stepManual(1)}
         >

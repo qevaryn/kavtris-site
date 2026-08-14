@@ -8,6 +8,8 @@ export interface EnterpriseCapabilityGroup {
   id: string;
   title: string;
   description: string;
+  /** WEB.1F.6 — concise "why it matters" line for the expanded accordion state. */
+  why?: string;
   items: string[];
 }
 

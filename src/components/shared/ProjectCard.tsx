@@ -19,14 +19,14 @@ export function ProjectCard({ title, flag, type, image, summary, technologies }:
       </div>
       <div className="flex flex-1 flex-col p-5">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-gold-600/10 px-3 py-1 text-xs font-semibold text-gold-600">{flag}</span>
+          <span className="rounded-full bg-kavtris-blue/10 px-3 py-1 text-xs font-semibold text-kavtris-blue">{flag}</span>
           <Tag tone="navy">{type}</Tag>
         </div>
         <h3 className="mt-4 text-lg font-semibold leading-tight text-navy-800">{title}</h3>
         <ul className="mt-4 grid gap-2 text-sm leading-5 text-muted">
           {summary.map((item) => (
             <li key={item} className="flex items-start gap-2">
-              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-gold-600" />
+              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-kavtris-blue" />
               <span>{item}</span>
             </li>
           ))}

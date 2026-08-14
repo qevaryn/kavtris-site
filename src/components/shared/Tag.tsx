@@ -9,7 +9,7 @@ type TagProps = {
 
 export function Tag({ children, className, tone = 'light' }: TagProps) {
   const tones = {
-    gold: 'bg-gold-500/10 text-gold-500 ring-gold-500/20',
+    gold: 'bg-kavtris-blue/10 text-kavtris-blueLight ring-kavtris-blue/20',
     light: 'bg-white text-slate-700 ring-borderline',
     navy: 'bg-navy-950 text-white ring-navy-900'
   };

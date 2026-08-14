@@ -50,7 +50,7 @@ A responsive orchestrator owns shared state and delegates presentation when inte
 Current examples:
 
 - `ProductCatalogClient`: owns catalog filter state and renders responsive catalog content.
-- `FieldOpsExperience`: owns FieldOps tab, sector and configuration state.
+- `FieldOpsPage`: owns FieldOps level and sector state, delegating sector adaptation and visual demonstration to feature-specific responsive sections.
 
 ### Desktop-specific components
 

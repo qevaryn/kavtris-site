@@ -98,8 +98,8 @@ export function BusinessSolutionWizard() {
                     type="button"
                     aria-pressed={goal === value}
                     onClick={() => setGoal(value)}
-                    className={`min-h-12 rounded-2xl border px-4 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 ${
-                      goal === value ? 'border-navy-900 bg-navy-900 text-white' : 'border-borderline bg-paper text-navy-800 hover:border-gold-600'
+                    className={`min-h-12 rounded-2xl border px-4 text-left text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue ${
+                      goal === value ? 'border-navy-900 bg-navy-900 text-white' : 'border-borderline bg-paper text-navy-800 hover:border-kavtris-blue'
                     }`}
                   >
                     {label}
@@ -143,7 +143,7 @@ export function BusinessSolutionWizard() {
           </div>
 
           <aside className="rounded-[1.6rem] border border-navy-900/15 bg-navy-950 p-6 text-white shadow-card sm:p-8" aria-live="polite">
-            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-gold-500">Solução sugerida</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-kavtris-blueLight">Solução sugerida</p>
             <h3 className="mt-4 text-2xl font-extrabold leading-tight">{suggestion.title}</h3>
             <p className="mt-4 text-sm leading-7 text-white/72">{suggestion.text}</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">

@@ -22,6 +22,10 @@ const nextConfig = {
     localPatterns: [
       {
         pathname: '/images/**'
+      },
+      {
+        // BRAND.2D — KAVTRIS canonical brand assets integrated via next/image.
+        pathname: '/brand/kavtris/**'
       }
     ],
     remotePatterns: []

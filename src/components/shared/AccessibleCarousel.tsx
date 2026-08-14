@@ -22,6 +22,7 @@ type AccessibleCarouselProps<T> = {
   counterClassName?: string;
   testId?: string;
   motionMode?: 'default' | 'continuous' | 'featured-step';
+  tone?: 'dark' | 'light';
 };
 
 const PROGRAMMATIC_SCROLL_EPSILON = 4;
@@ -51,7 +52,8 @@ export function AccessibleCarousel<T>({
   showCounter = false,
   counterClassName,
   testId,
-  motionMode = 'default'
+  motionMode = 'default',
+  tone = 'dark'
 }: AccessibleCarouselProps<T>) {
   const carouselId = useId();
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -1091,7 +1093,7 @@ export function AccessibleCarousel<T>({
 
         <button
           type="button"
-          className="absolute -left-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:left-0"
+          className="absolute -left-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-kavtris-blue hover:bg-white hover:text-kavtris-blue active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 sm:left-0"
           aria-label="Slide anterior"
           onClick={() => enqueueManual(-1)}
         >
@@ -1100,7 +1102,7 @@ export function AccessibleCarousel<T>({
 
         <button
           type="button"
-          className="absolute -right-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-gold-500 hover:bg-white hover:text-gold-600 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:right-0"
+          className="absolute -right-3 top-1/2 z-20 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full border border-navy-900/20 bg-white/80 text-navy-900 shadow-md backdrop-blur-sm transition hover:border-kavtris-blue hover:bg-white hover:text-kavtris-blue active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 sm:right-0"
           aria-label="Próximo slide"
           onClick={() => enqueueManual(1)}
         >
@@ -1115,7 +1117,13 @@ export function AccessibleCarousel<T>({
             type="button"
             className={cn(
               'h-2 rounded-full transition',
-              index === clampedIndex ? 'w-6 bg-gold-600' : 'w-2 bg-navy-900/20 hover:bg-gold-500/60'
+              index === clampedIndex
+                ? tone === 'light'
+                  ? 'w-6 bg-kavtris-blue'
+                  : 'w-6 bg-kavtris-blueLight'
+                : tone === 'light'
+                  ? 'w-2 bg-navy-900/20 hover:bg-kavtris-blue/60'
+                  : 'w-2 bg-white/25 hover:bg-kavtris-blueLight/60'
             )}
             aria-label={`Ir para ${getItemLabel(item, index)}`}
             aria-pressed={index === clampedIndex}

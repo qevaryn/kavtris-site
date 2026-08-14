@@ -18,7 +18,7 @@ export function EngagementModels() {
 
             return (
               <article key={model.title} className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-navy-900 text-gold-500">
+                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-navy-900 text-kavtris-blueLight">
                   <Icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <h3 className="mt-5 text-xl font-semibold text-navy-900">{model.title}</h3>

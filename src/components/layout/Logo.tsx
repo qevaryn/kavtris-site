@@ -8,19 +8,26 @@ type LogoProps = {
 };
 
 const logos = {
+  // Variant names remain technical ('qevaryn'/'qevarynWhite') to minimize
+  // churn. Both current usages sit on dark backgrounds; per the compact
+  // layout rule the header/rede surfaces use the landscape KAVTRIS wordmark
+  // (silver + blue accent). The full dark lockup
+  // (kavtris-logo-dark-divider-transparent.png) remains available for
+  // surfaces with vertical space; the light lockup lives in the
+  // source-of-truth for future light backgrounds.
   qevaryn: {
-    src: '/images/qevaryn-systems-logo.png',
-    alt: 'Qevaryn Systems',
-    width: 900,
-    height: 282,
+    src: '/brand/kavtris/kavtris-wordmark-dark.png',
+    alt: 'KAVTRIS',
+    width: 760,
+    height: 180,
     sizes: '(max-width: 430px) 145px, (max-width: 640px) 170px, (max-width: 1024px) 220px, 260px',
     className: 'h-auto w-[145px] shrink-0 object-contain min-[430px]:w-[170px] sm:w-[220px] xl:w-[260px]'
   },
   qevarynWhite: {
-    src: '/images/qevaryn-systems-white.png',
-    alt: 'Qevaryn Systems',
+    src: '/brand/kavtris/kavtris-wordmark-dark.png',
+    alt: 'KAVTRIS',
     width: 760,
-    height: 245,
+    height: 180,
     sizes: '(max-width: 430px) 145px, (max-width: 640px) 160px, (max-width: 1180px) 175px, 205px',
     className: 'h-auto w-[145px] shrink-0 object-contain min-[430px]:w-[160px] min-[1180px]:w-[190px] 2xl:w-[205px]'
   },

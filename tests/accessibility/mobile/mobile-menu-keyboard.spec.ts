@@ -4,7 +4,7 @@ test('mobile menu supports keyboard navigation, Escape and focus return', async 
   await page.goto('/');
 
   await page.keyboard.press('Tab');
-  await expect(page.getByLabel('Qevaryn Systems - início')).toBeFocused();
+  await expect(page.getByLabel(/KAVTRIS — Technology & Consulting/i)).toBeFocused();
 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Abrir menu' })).toBeFocused();
@@ -25,18 +25,18 @@ test('mobile menu moves focus inside on open and keeps it within the menu (Tab c
   const nav = page.getByRole('navigation', { name: 'Menu móvel' });
   await expect(nav).toBeVisible();
 
-  // Foco inicial: primeiro link navegável.
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  // Foco inicial: primeiro link navegável (WEB.1F.4 — agora é "Início").
+  await expect(nav.getByRole('link', { name: 'Início', exact: true })).toBeFocused();
 
   // Tab até ao último elemento do menu.
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 6; i += 1) {
     await page.keyboard.press('Tab');
   }
   await expect(dialog.getByRole('link', { name: 'Pedir demonstração' })).toBeFocused();
 
   // Tab no último elemento volta ao primeiro (focus trap).
   await page.keyboard.press('Tab');
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  await expect(nav.getByRole('link', { name: 'Início', exact: true })).toBeFocused();
 });
 
 test('mobile menu supports Shift+Tab backwards cycle', async ({ page }) => {
@@ -46,7 +46,7 @@ test('mobile menu supports Shift+Tab backwards cycle', async ({ page }) => {
   const dialog = page.getByRole('dialog', { name: 'Menu de navegação' });
   const nav = page.getByRole('navigation', { name: 'Menu móvel' });
   await expect(nav).toBeVisible();
-  await expect(nav.getByRole('link', { name: 'Soluções', exact: true })).toBeFocused();
+  await expect(nav.getByRole('link', { name: 'Início', exact: true })).toBeFocused();
 
   // Shift+Tab no primeiro elemento vai para o último (focus trap reverso).
   await page.keyboard.press('Shift+Tab');

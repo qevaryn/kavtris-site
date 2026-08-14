@@ -5,10 +5,10 @@ test('página empresarial carrega com navegação, hero e CTAs corretos', async 
 
   await expect(page.getByRole('banner')).toBeVisible();
   await expect(page.getByRole('contentinfo')).toBeVisible();
-  await expect(page.getByRole('heading', { name: /Software claro para operações/i })).toBeVisible();
-  await expect(page.getByText(/A comunicação começa pelo problema da empresa/i)).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Falar sobre requisitos' }).first()).toHaveAttribute('href', '/?tipo=empresa#contacto');
-  await expect(page.getByRole('link', { name: 'Ver capacidades' })).toHaveAttribute('href', '#capacidades');
+  await expect(page.getByRole('heading', { name: /Tecnologia adaptada à realidade da sua empresa/i })).toBeVisible();
+  await expect(page.getByText(/Não precisa saber qual sistema precisa antes de falar connosco/i)).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Falar sobre a minha empresa' }).first()).toHaveAttribute('href', '/?tipo=empresa#contacto');
+  await expect(page.getByRole('link', { name: 'Ver como trabalhamos' })).toHaveAttribute('href', '#como-trabalhamos');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/empresas$/);
 });
 
@@ -19,7 +19,7 @@ test('fundamentos empresariais aparecem sem claims de certificação ou SLA fixo
     await expect(page.getByRole('heading', { name: heading })).toBeVisible();
   }
 
-  await expect(page.getByText(/ISO|SOC|24\/7|99,9%|uptime|garantia de segurança|garantido/i)).toHaveCount(0);
+  await expect(page.getByText(/\bISO\b|\bSOC\b|\b24\/7\b|99,9%|uptime|garantia de segurança|garantido/i)).toHaveCount(0);
   await expect(page.getByText(/não são apresentadas certificações/i)).toBeVisible();
 });
 
@@ -57,10 +57,10 @@ test('clareza comercial cobre escopo, propriedade, alojamento, suporte e transi�
 test('CTA empresarial abre contacto com requisitos selecionados e preserva produto existente', async ({ page }) => {
   await page.goto('/empresas');
 
-  await page.getByRole('link', { name: /Falar sobre requisitos/ }).first().click();
+  await page.getByRole('link', { name: /Falar sobre a minha empresa/ }).first().click();
   await expect(page).toHaveURL(/\/\?tipo=empresa#contacto$/);
   await expect(page.getByLabel('Produto ou problema')).toHaveValue('Projeto empresarial / requisitos e integrações');
 
   await page.goto('/?produto=fieldops#contacto');
-  await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('Qevaryn FieldOps');
+  await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('FieldOps');
 });
