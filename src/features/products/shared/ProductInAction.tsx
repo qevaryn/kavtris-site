@@ -14,7 +14,7 @@ import {
   UtensilsCrossed
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { ProductConcept } from '@/features/products/data/products';
+import type { ProductConcept, ProductLevelId } from '@/features/products/data/products';
 
 /**
  * WEB.1F.7 — "product in action" visual storytelling.
@@ -186,8 +186,15 @@ const phoneTone: Record<InActionConfig['phoneRows'][number]['tone'], string> = {
 };
 
 
-export function ProductInAction({ product }: { product: ProductConcept }) {
+export function ProductInAction({ product, levelId }: { product: ProductConcept; levelId?: ProductLevelId }) {
   const config = inAction[product.mockupType];
+  // WEB.1F.8 — the demonstration reacts to the page-level selected level: the
+  // companion device and the level badge derive from the level's own visual
+  // data (DEMONSTRATION_LEVEL_AWARE = YES), not just a subtitle.
+  const level = levelId ? product.levels.find((item) => item.id === levelId) : undefined;
+  const phoneRows = level
+    ? level.visual.rows.map((row) => ({ label: row.label, state: row.value, tone: row.tone }))
+    : config.phoneRows;
 
   return (
     <div
@@ -228,11 +235,11 @@ export function ProductInAction({ product }: { product: ProductConcept }) {
                 {config.phoneTitle}
               </p>
               <span className="rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-white/80">
-                Mobile
+                {level ? `Nível ${level.name}` : 'Mobile'}
               </span>
             </div>
             <div className="mt-4 space-y-2.5">
-              {config.phoneRows.map((row) => (
+              {phoneRows.map((row) => (
                 <div key={row.label} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-3">
                   <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${phoneTone[row.tone]}`} />
                   <div className="min-w-0">

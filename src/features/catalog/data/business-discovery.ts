@@ -20,6 +20,41 @@ export type BusinessCategory = {
   productSlugs: string[];
 };
 
+/**
+ * WEB.1F.8 — business filters. Data-driven mapping (stable category IDs, never
+ * fragile display-name matching) that mirrors the system-discovery filter
+ * interaction (SYSTEM/BUSINESS PARITY). Default = Todos.
+ */
+export type BusinessFilterId =
+  | 'todos'
+  | 'servicos'
+  | 'alimentacao'
+  | 'alojamento'
+  | 'retalho'
+  | 'equipas'
+  | 'gestao';
+
+export type BusinessFilter = {
+  id: BusinessFilterId;
+  label: string;
+  /** Category ids covered by this filter (all ids for 'todos'). */
+  categoryIds: BusinessCategoryId[];
+};
+
+export const businessFilters: BusinessFilter[] = [
+  {
+    id: 'todos',
+    label: 'Todos',
+    categoryIds: ['barbearias', 'restaurantes', 'hoteis', 'lojas', 'terreno', 'escritorios']
+  },
+  { id: 'servicos', label: 'Serviços', categoryIds: ['barbearias'] },
+  { id: 'alimentacao', label: 'Alimentação', categoryIds: ['restaurantes'] },
+  { id: 'alojamento', label: 'Alojamento', categoryIds: ['hoteis'] },
+  { id: 'retalho', label: 'Retalho', categoryIds: ['lojas'] },
+  { id: 'equipas', label: 'Equipas', categoryIds: ['terreno'] },
+  { id: 'gestao', label: 'Gestão', categoryIds: ['escritorios'] }
+];
+
 export const businessCategories: BusinessCategory[] = [
   {
     id: 'barbearias',

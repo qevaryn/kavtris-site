@@ -20,7 +20,7 @@ test('homepage usa a jornada simplificada: hero → credibilidade → como funci
   await expect(businessPath.getByRole('heading', { name: 'Começar pelo meu negócio' })).toBeVisible();
   await expect(businessPath.getByRole('link', { name: 'Escolher pelo meu negócio' })).toHaveAttribute(
     'href',
-    '/produtos?modo=negocio#tipos-de-negocio'
+    '/produtos?modo=negocio'
   );
 
   const systemsPath = comoFunciona.getByTestId('home-path-systems-secondary');

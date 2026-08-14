@@ -1,3 +1,7 @@
+﻿'use client';
+
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import {
   ArrowRight,
   Bell,
@@ -15,11 +19,13 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
 import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
+import { ProductAdaptation } from '@/features/products/shared/ProductAdaptation';
 import { ProductConsultantEscape } from '@/features/products/shared/ProductConsultantEscape';
+import { ProductEvolution } from '@/features/products/shared/ProductEvolution';
 import { ProductInAction } from '@/features/products/shared/ProductInAction';
 import { ProductLevelConfigurator } from '@/features/products/shared/ProductLevelConfigurator';
 import { ProductMockup } from '@/features/products/shared/ProductMockup';
-import type { ProductConcept } from '@/domain/products/types';
+import type { ProductConcept, ProductLevelId } from '@/domain/products/types';
 
 type GenericProductPageProps = {
   product: ProductConcept;
@@ -38,24 +44,21 @@ const benefitIcons: LucideIcon[] = [
 ];
 
 /**
- * WEB.1F.7 — data-driven product detail presentation (SHOW FIRST, EXPLAIN
- * SECOND).
+ * WEB.1F.8 — shared product-detail journey (SHOW FIRST, EXPLAIN SECOND).
  *
- * Storytelling order:
- *   1. product hero (visual-first, short copy)      → strong mockup
- *   2. product in action                            → purpose-built scene
- *   3. visual level configurator                    → Essencial/Crescimento/
- *                                                     Empresarial + live visual
- *   4. short benefits / use context                 → icon + title, chips
- *   5. technical details                            → after the discovery
- *   6. primary next step                            → light surface, no footer blur
- *   7. consultant escape path                       → /#contacto
- *   8. footer
- *
- * Text density is reduced (no long wall of copy before the visitor sees how
- * the product works); every visual derives from the product's own definition.
+ * Order: Hero → Configurator → Evolução por fases → Adaptação à operação →
+ * Demonstração visual → Benefícios/apoio → Detalhes técnicos → Escape de
+ * consultor → footer. `selectedLevel` is page-level state (single source of
+ * truth) and drives the hero CTA, configurator, evolution, adaptation,
+ * demonstration, summary and adaptation CTAs — all in sync.
  */
 export function GenericProductPage({ product }: GenericProductPageProps) {
+  const [levelId, setLevelId] = useState<ProductLevelId>('essential');
+  const level = useMemo(
+    () => product.levels.find((item) => item.id === levelId) ?? product.levels[0],
+    [levelId, product]
+  );
+
   return (
     <>
       <Header />
@@ -67,7 +70,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </div>
 
-        {/* 1 — Product hero: WHAT is it, WHO could use it, WHY it matters. */}
+        {/* 1 — Product hero: strong visual, short copy, level-aware CTAs. */}
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="mx-auto grid max-w-[1200px] gap-10 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
             <div>
@@ -79,13 +82,25 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
               <p className="mt-4 text-sm leading-7 text-white/62">
                 Este é um exemplo de solução que pode ser adaptado ao funcionamento da sua empresa.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href={`/?produto=${product.slug}#contacto`} className="text-navy-950">
-                  Adaptar à minha empresa
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <Button
+                  href={`/?produto=${product.slug}#contacto`}
+                  data-testid="hero-adapt-cta"
+                  className="text-navy-950"
+                >
+                  Adaptar o {level.name} à minha empresa
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                 </Button>
-                <Button href="#produto-em-acao" variant="secondary">
-                  Ver em ação
+                <Button href="#demonstracao" variant="secondary">
+                  Ver como funciona
                 </Button>
+                <Link
+                  href="/#contacto"
+                  data-testid="hero-doubt-cta"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-white/72 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+                >
+                  Tirar uma dúvida
+                </Link>
               </div>
             </div>
             <div data-testid="product-hero-visual">
@@ -94,13 +109,22 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </section>
 
-        {/* 2 — Product in action: a purpose-built scene per product. */}
-        <section id="produto-em-acao" className="bg-white py-14 sm:py-16 lg:py-20">
+        {/* 2 — Visual level configurator (page-level state). */}
+        <ProductLevelConfigurator product={product} levelId={levelId} onLevelChange={setLevelId} />
+
+        {/* 3 — Evolution by phases (reacts to the selected level). */}
+        <ProductEvolution product={product} levelId={levelId} />
+
+        {/* 4 — Adaptation to the operation (reacts to the selected level). */}
+        <ProductAdaptation product={product} levelId={levelId} />
+
+        {/* 5 — Visual demonstration (reacts to the selected level). */}
+        <section id="demonstracao" className="bg-white py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div className="max-w-3xl">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Possível utilização</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Demonstração visual</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-                Veja o {product.name} em ação.
+                Veja o {product.name} em funcionamento.
               </h2>
               <p className="mt-4 text-base leading-8 text-slate-600">
                 Uma leitura visual de como a solução pode acompanhar o dia a dia. Os passos exatos dependem do
@@ -108,20 +132,16 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
               </p>
             </div>
             <div className="mt-8">
-              <ProductInAction product={product} />
+              <ProductInAction product={product} levelId={levelId} />
             </div>
           </div>
         </section>
 
-        {/* 3 — Visual level configurator (shared, data-driven). */}
-        <ProductLevelConfigurator product={product} />
-
-        {/* 4 — Short benefits + use context: icon + title, compact chips
-            (WEB.1F.7 — no tall text-card stacks, no empty columns). */}
-        <section className="bg-white py-14 sm:py-16 lg:py-20">
+        {/* 6 — Short benefits + use context: icon + title, compact chips. */}
+        <section className="bg-paper py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr] lg:items-start">
-              <article className="rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-8">
+              <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Benefícios práticos</p>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Mais simples no dia a dia.</h2>
                 <ul className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -130,7 +150,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                     return (
                       <li
                         key={benefit}
-                        className="flex items-center gap-3 rounded-2xl border border-borderline bg-white px-4 py-3.5"
+                        className="flex items-center gap-3 rounded-2xl border border-borderline bg-paper px-4 py-3.5"
                       >
                         <Icon className="h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
                         <span className="text-sm font-semibold leading-5 text-navy-900">{benefit}</span>
@@ -163,20 +183,18 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </section>
 
-        {/* 5 — Technical details, positioned AFTER the visual discovery
-            (WEB.1F.7: the accordion remains accessible but never dominates the
-            commercial discovery journey). */}
-        <section className="bg-mist py-14 sm:py-16 lg:py-20">
+        {/* 7 — Technical details (after the visual discovery journey). */}
+        <section className="bg-white py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             {product.optionalEquipment?.length ? (
-              <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
+              <article className="rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-8">
                 <h2 className="text-2xl font-semibold text-navy-950">Equipamento opcional e acessível</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
                   O software deve ter valor por si só. Estes elementos podem ser usados apenas quando ajudarem a simplificar a operação.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {product.optionalEquipment.map((item) => (
-                    <span key={item} className="rounded-full border border-kavtris-blue/30 bg-kavtris-blue/10 px-3 py-1 text-sm font-medium text-kavtris-blue">
+                    <span key={item} className="rounded-full border border-kavtris-blue/30 bg-kavtris-blue/10 px-3 py-1 text-sm font-medium text-navy-900">
                       {item}
                     </span>
                   ))}
@@ -206,32 +224,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </section>
 
-        {/* 6 — Next step: a LIGHT product-page surface, clearly NOT the footer.
-            The deep-navy footer follows only after this distinct section. */}
-        <section className="bg-white pb-14 sm:pb-16 lg:pb-20">
-          <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-            <article
-              data-testid="product-next-step"
-              className="rounded-[1.35rem] border border-kavtris-blue/30 bg-[#EAF1FC] p-6 text-navy-950 shadow-sm sm:p-8"
-            >
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div className="max-w-2xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Próximo passo</p>
-                  <h2 className="mt-3 text-2xl font-semibold tracking-tight">Adaptar à sua empresa.</h2>
-                  <p className="mt-4 text-sm leading-7 text-navy-800/80">
-                    Começamos por entender o processo atual, definir o essencial e adaptar a solução por fases. Não há preço automático nem promessa de prazo sem levantamento.
-                  </p>
-                </div>
-                <Button href={`/?produto=${product.slug}#contacto`} className="shrink-0 text-navy-950">
-                  Adaptar à minha empresa
-                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                </Button>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        {/* 7 — Consultant escape path (never a dead end for unsure visitors). */}
+        {/* 8 — Consultant escape path (never a dead end for unsure visitors). */}
         <ProductConsultantEscape />
       </main>
       <Footer />

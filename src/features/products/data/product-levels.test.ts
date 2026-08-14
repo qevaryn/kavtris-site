@@ -59,4 +59,16 @@ describe('WEB.1F.7 — product levels', () => {
       }
     }
   });
+
+  it('nenhum rótulo de integração genérica aparece em produtos sem suporte (WEB.1F.8 §85)', () => {
+    for (const product of products) {
+      const supportsIntegrations = product.technicalDetails.some((detail) => /integra|api/i.test(detail));
+      const labelStrings = product.levels.flatMap((level) => [...level.highlights, ...level.visual.tiles]);
+      for (const label of labelStrings) {
+        if (!supportsIntegrations) {
+          expect(/integra|api/i.test(label), `${product.slug} tem rótulo de integração não suportado: "${label}"`).toBe(false);
+        }
+      }
+    }
+  });
 });

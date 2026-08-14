@@ -162,7 +162,7 @@ test.describe('WEB.1F.7', () => {
 
     const configurator = page.getByTestId('product-level-configurator');
     await expect(configurator.getByText('A composição final é definida de acordo com a sua operação.')).toBeVisible();
-    await expect(configurator.getByRole('link', { name: 'Adaptar à minha empresa' })).toHaveAttribute(
+    await expect(configurator.getByRole('link', { name: 'Adaptar o Essencial à minha empresa' })).toHaveAttribute(
       'href',
       '/?produto=customer-portal#contacto'
     );

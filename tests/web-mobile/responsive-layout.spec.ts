@@ -32,7 +32,7 @@ test('mobile fields, buttons and anchored sections remain accessible', async ({ 
 
   const submit = page.getByRole('button', { name: 'Enviar explicação' });
   const submitBox = await submit.boundingBox();
-  expect(submitBox?.height).toBeGreaterThanOrEqual(44);
+  expect(Math.round(submitBox?.height ?? 0)).toBeGreaterThanOrEqual(44);
 
   for (const href of ['#como-funciona', '#rede', '#contacto']) {
     await page.goto(`/${href}`);

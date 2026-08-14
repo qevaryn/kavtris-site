@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { cn } from '@/components/shared/cn';
@@ -10,7 +10,9 @@ import { useReducedMotion } from '@/components/shared/useReducedMotion';
 import { useKavtrisNavigation } from '@/components/shared/NavigationHistoryProvider';
 import {
   businessCategories,
-  type BusinessCategory
+  businessFilters,
+  type BusinessCategory,
+  type BusinessFilterId
 } from '@/features/catalog/data/business-discovery';
 import { BusinessVisual } from '@/features/catalog/components/responsive/BusinessVisual';
 import { getProductBySlug } from '@/features/products/data/products';
@@ -39,6 +41,9 @@ export function BusinessDiscovery() {
   const { pushNavigation, replaceNavigation, back, canGoBack, canBackToProductsGrid, restoreFocus } =
     useKavtrisNavigation();
   const [selectedId, setSelectedId] = useState<SelectedId>(null);
+  // WEB.1F.8 — business filter (mirrors system discovery). Local UI state only:
+  // no URL history entries, default = Todos.
+  const [activeFilter, setActiveFilter] = useState<BusinessFilterId>('todos');
   const resultsRef = useRef<HTMLDivElement>(null);
 
   // Direct deep-link state (refresh-safe): /produtos?modo=negocio&negocio=barbearias.
@@ -70,6 +75,30 @@ export function BusinessDiscovery() {
   const selected = useMemo(
     () => businessCategories.find((category) => category.id === selectedId) ?? null,
     [selectedId]
+  );
+
+  // WEB.1F.8 — categories visible under the active business filter.
+  const visibleCategories = useMemo(() => {
+    const filter = businessFilters.find((item) => item.id === activeFilter) ?? businessFilters[0];
+    return businessCategories.filter((category) => filter.categoryIds.includes(category.id));
+  }, [activeFilter]);
+
+  // WEB.1F.8 — filter change. If the open point-of-start becomes hidden by the
+  // new filter, reset it cleanly (no incoherent visible state, no stale
+  // `negocio=` in the URL). If it remains visible, the selection may stay.
+  const changeFilter = useCallback(
+    (filterId: BusinessFilterId) => {
+      const filter = businessFilters.find((item) => item.id === filterId);
+      setActiveFilter(filterId);
+      if (selectedId && filter && !filter.categoryIds.includes(selectedId)) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('negocio');
+        url.hash = 'tipos-de-negocio';
+        replaceNavigation({ url: url.toString() });
+        setSelectedId(null);
+      }
+    },
+    [selectedId, replaceNavigation]
   );
 
   const openDiscovery = useCallback(
@@ -180,6 +209,15 @@ export function BusinessDiscovery() {
               <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
                 Não precisa saber qual sistema precisa antes de falar connosco. Comece pelo tipo de negócio mais próximo e veja soluções que podem fazer sentido.
               </p>
+              {/* WEB.1F.8 — restrained hero action: jump to the selection grid. */}
+              <Link
+                href="#tipos-de-negocio"
+                data-testid="business-hero-cta"
+                className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-kavtris-blueLight hover:bg-kavtris-blue/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+              >
+                Ver tipos de negócio
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              </Link>
             </div>
           </div>
         </div>
@@ -192,8 +230,8 @@ export function BusinessDiscovery() {
             <SectionHeading
               className="[&_h2]:font-sans"
               eyebrow="Qual é o seu negócio?"
-              title="Descubra sistemas a partir do contexto da sua empresa."
-              subtitle="Escolha o tipo de negócio mais próximo e veja sistemas que podem servir como ponto de partida."
+              title="Encontre o ponto de partida mais próximo."
+              subtitle="Escolha o contexto que mais se aproxima da sua operação."
             />
             <Link
               href="/produtos"
@@ -206,8 +244,38 @@ export function BusinessDiscovery() {
           </div>
 
 
+          {/* WEB.1F.8 — business filters (parity with system discovery). */}
+          <div
+            role="group"
+            aria-label="Filtrar tipos de negócio"
+            data-testid="business-filters"
+            className="mt-8 flex flex-wrap gap-2"
+          >
+            {businessFilters.map((filter) => {
+              const isActive = activeFilter === filter.id;
+
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  data-testid={`business-filter-${filter.id}`}
+                  aria-pressed={isActive}
+                  onClick={() => changeFilter(filter.id)}
+                  className={[
+                    'min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
+                    isActive
+                      ? 'border-kavtris-blue bg-kavtris-blue text-white shadow-sm'
+                      : 'border-navy-900/15 bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
+                  ].join(' ')}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="snap-row mt-8 md:grid md:snap-none md:grid-cols-2 xl:grid-cols-3">
-            {businessCategories.map((category) => {
+            {visibleCategories.map((category) => {
               const isSelected = selectedId === category.id;
 
               return (

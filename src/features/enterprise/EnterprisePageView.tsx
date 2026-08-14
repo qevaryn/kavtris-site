@@ -395,7 +395,7 @@ export function EnterprisePageView() {
                   Escolha o tipo de empresa que mais se aproxima da sua e veja sistemas que podem servir como ponto de partida.
                 </p>
                 <Button
-                  href="/produtos?modo=negocio#tipos-de-negocio"
+                  href="/produtos?modo=negocio"
                   variant="outline"
                   className="mt-auto sm:mt-8"
                 >

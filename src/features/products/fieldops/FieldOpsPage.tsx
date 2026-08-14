@@ -1,14 +1,24 @@
+﻿'use client';
+
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight, MapPinned, QrCode, Smartphone, Tags } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
 import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
-import { FieldOpsExperience } from '@/features/products/fieldops/components/responsive/FieldOpsExperience';
 import { getProductBySlug } from '@/features/products/data/products';
-import { fieldOpsTechnicalGroups } from '@/features/products/fieldops/data/fieldops';
+import type { ProductLevelId } from '@/features/products/data/products';
+import { fieldOpsSectors, fieldOpsTechnicalGroups } from '@/features/products/fieldops/data/fieldops';
+import {
+  FieldOpsSectorAdaptation,
+  type FieldOpsSectorId
+} from '@/features/products/fieldops/components/responsive/FieldOpsSectorAdaptation';
+import { FieldOpsDemonstration } from '@/features/products/fieldops/components/responsive/FieldOpsDemonstration';
 import { ProductConsultantEscape } from '@/features/products/shared/ProductConsultantEscape';
+import { ProductEvolution } from '@/features/products/shared/ProductEvolution';
 import { ProductLevelConfigurator } from '@/features/products/shared/ProductLevelConfigurator';
 
 const fieldOpsProduct = getProductBySlug('fieldops');
@@ -20,8 +30,24 @@ const equipmentItems: Array<{ icon: LucideIcon; label: string }> = [
   { icon: MapPinned, label: 'Tablet ou local identificado' }
 ];
 
+/**
+ * WEB.1F.8 — FieldOps journey (synchronized page-level state).
+ *
+ * Order: Hero → Configurator → Evolução por fases → Adaptação por setor →
+ * Demonstração visual → equipamento/apoio → detalhes técnicos → escape de
+ * consultor → footer. `selectedLevel` is page-level (single source of truth);
+ * `sectorId` is also lifted so the demonstration stays contextual.
+ */
 export function FieldOpsPage() {
-  if (!fieldOpsProduct) {
+  const [levelId, setLevelId] = useState<ProductLevelId>('essential');
+  const [sectorId, setSectorId] = useState<FieldOpsSectorId>(fieldOpsSectors[0].id);
+
+  const level = useMemo(
+    () => fieldOpsProduct?.levels.find((item) => item.id === levelId) ?? fieldOpsProduct?.levels[0],
+    [levelId]
+  );
+
+  if (!fieldOpsProduct || !level) {
     return null;
   }
 
@@ -35,6 +61,8 @@ export function FieldOpsPage() {
             <ContextBackForwardControls fallbackHref="/produtos" />
           </div>
         </div>
+
+        {/* 1 — Product hero: visual first, level-aware CTAs. */}
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="container-section grid gap-9 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
             <div>
@@ -54,13 +82,25 @@ export function FieldOpsPage() {
               <p className="mt-4 rounded-2xl border border-kavtris-blue/20 bg-white/5 p-4 text-sm leading-7 text-white/70">
                 Esta apresentação mostra uma possível configuração. As funcionalidades finais dependem do levantamento e das necessidades de cada empresa.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="#fieldops-experience" className="text-navy-950">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <Button
+                  href={`/?produto=${fieldOpsProduct.slug}#contacto`}
+                  data-testid="hero-adapt-cta"
+                  className="text-navy-950"
+                >
+                  Adaptar o {level.name} à minha empresa
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+                <Button href="#fieldops-experience" variant="secondary">
                   Ver como funciona
                 </Button>
-                <Button href="/?produto=fieldops#contacto" variant="secondary">
-                  Adaptar à minha empresa
-                </Button>
+                <Link
+                  href="/#contacto"
+                  data-testid="hero-doubt-cta"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-white/72 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+                >
+                  Tirar uma dúvida
+                </Link>
               </div>
             </div>
 
@@ -71,13 +111,19 @@ export function FieldOpsPage() {
           </div>
         </section>
 
-        <FieldOpsExperience />
+        {/* 2 — Visual level configurator (page-level state). */}
+        <ProductLevelConfigurator product={fieldOpsProduct} levelId={levelId} onLevelChange={setLevelId} />
 
-        {/* WEB.1F.7 — shared visual level configurator (the same reusable
-            system as every other product: the selected level visibly changes
-            the FieldOps composition). */}
-        <ProductLevelConfigurator product={fieldOpsProduct} />
+        {/* 3 — Evolution by phases (reacts to selected level). */}
+        <ProductEvolution product={fieldOpsProduct} levelId={levelId} />
 
+        {/* 4 — Adaptation by sector (sector tabs + level-aware config line). */}
+        <FieldOpsSectorAdaptation levelId={levelId} sectorId={sectorId} onSectorChange={setSectorId} />
+
+        {/* 5 — Visual demonstration (experience tabs + level-aware config panel). */}
+        <FieldOpsDemonstration levelId={levelId} sectorId={sectorId} />
+
+        {/* 6 — Supporting practical information (optional equipment). */}
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
             <div>
@@ -104,7 +150,8 @@ export function FieldOpsPage() {
           </div>
         </section>
 
-        <section className="bg-paper py-16 sm:py-20">
+        {/* 7 — Technical details (after the visual discovery). */}
+        <section id="detalhes" className="bg-paper py-16 sm:py-20">
           <div className="container-section">
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight text-navy-950">
               Detalhes técnicos para empresas e equipas de tecnologia
@@ -132,31 +179,7 @@ export function FieldOpsPage() {
           </div>
         </section>
 
-        {/* WEB.1F.6 — final CTA on a LIGHT page surface, clearly separated from
-            the deep-navy footer that follows. */}
-        <section className="bg-mist py-16 sm:py-20">
-          <div className="container-section">
-            <div className="rounded-[1.6rem] border border-kavtris-blue/30 bg-[#EAF1FC] p-6 text-navy-950 sm:p-8" data-testid="product-next-step">
-              <h2 className="max-w-3xl text-3xl font-semibold tracking-tight">
-                Quer saber como o FieldOps funcionaria na sua empresa?
-              </h2>
-              <p className="mt-4 max-w-3xl text-base leading-8 text-navy-800/80">
-                Explique como os serviços são organizados atualmente e onde acontecem as maiores dificuldades.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="/?produto=fieldops#contacto" className="text-navy-950">
-                  Adaptar o FieldOps à minha empresa
-                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                </Button>
-                <Button href="/#contacto" variant="outline">
-                  Ainda não sei qual solução preciso
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* WEB.1F.7 — consultant escape path (never a dead end). */}
+        {/* 8 — Final consultant escape (never a dead end). */}
         <ProductConsultantEscape />
       </main>
       <Footer />

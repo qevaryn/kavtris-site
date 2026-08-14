@@ -76,21 +76,28 @@ test('setor selecionado mostra apenas problema, fluxo, módulos e resultado dess
   await expect(page.getByText('Prova de entrega')).toBeVisible();
 });
 
-test('seletor de evolução altera módulos e resultado sem apresentar preços fixos', async ({ page }) => {
+test('nível selecionado na página sincroniza os módulos e o resultado da demonstração', async ({ page }) => {
   await page.goto('/produtos/fieldops');
 
-  await expect(page.getByRole('tab', { name: 'Essencial' })).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByText(/Organizar serviços e reduzir informação perdida/i)).toBeVisible();
+  // Default = Essencial (page-level single source of truth).
+  await expect(page.getByTestId('product-level-option-essential')).toHaveAttribute('aria-checked', 'true');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Nível Essencial');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Organizar serviços e reduzir informação perdida');
 
-  await page.getByRole('tab', { name: 'Crescimento' }).click();
-  await expect(page.getByText('QR Code ou NFC')).toBeVisible();
-  await expect(page.getByText(/Acompanhar equipas e manter responsabilidades/i)).toBeVisible();
+  // Crescimento muda a demonstração sem criar outro seletor de nível.
+  await page.getByTestId('product-level-option-growth').click();
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Nível Crescimento');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('QR Code ou NFC');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Acompanhar equipas e manter responsabilidades');
 
-  await page.getByRole('tab', { name: 'Empresarial' }).click();
-  await expect(page.getByText('histórico de auditoria')).toBeVisible();
-  await expect(page.getByText(/Integrar a operação e criar controlo/i)).toBeVisible();
-  await expect(page.getByText(/não representam pacotes fechados ou preços fixos/i)).toBeVisible();
-  await expect(page.getByText(/Comprar|checkout|carrinho|preço mensal/i)).toHaveCount(0);
+  // Empresarial idem.
+  await page.getByTestId('product-level-option-enterprise').click();
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Nível Empresarial');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('histórico de auditoria');
+  await expect(page.getByTestId('fieldops-demo-config')).toContainText('Integrar a operação e criar controlo');
+
+  // Os níveis não são pacotes fechados nem têm preços.
+  await expect(page.getByText(/Comprar|checkout|carrinho|preço mensal|€/i)).toHaveCount(0);
 });
 
 test('equipamentos opcionais preservam foco em software e privacidade', async ({ page }) => {
@@ -119,11 +126,11 @@ test('detalhes técnicos começam fechados e abrem por accordion', async ({ page
 test('CTAs de contacto mantêm FieldOps selecionado ou contacto geral', async ({ page }) => {
   await page.goto('/produtos/fieldops');
 
-  await page.getByRole('link', { name: /Adaptar o FieldOps à minha empresa/i }).click();
+  await page.getByRole('link', { name: /^Adaptar o Essencial à minha empresa$/ }).first().click();
   await expect(page).toHaveURL(/\/\?produto=fieldops#contacto$/);
   await expect(page.getByLabel(/Produto de interesse/)).toHaveValue('FieldOps');
 
   await page.goto('/produtos/fieldops');
-  await page.getByRole('link', { name: 'Ainda não sei qual solução preciso' }).click();
+  await page.getByTestId('product-consultant-escape').getByRole('link', { name: 'Falar com um consultor' }).click();
   await expect(page).toHaveURL(/\/#contacto$/);
 });

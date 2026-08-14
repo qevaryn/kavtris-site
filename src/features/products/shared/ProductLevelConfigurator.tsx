@@ -1,33 +1,45 @@
 'use client';
 
 import type { KeyboardEvent } from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { cn } from '@/components/shared/cn';
 import type { ProductConcept, ProductLevelId } from '@/features/products/data/products';
 import { ProductLevelMockup } from '@/features/products/shared/ProductLevelMockup';
 
+type ProductLevelConfiguratorProps = {
+  product: ProductConcept;
+  /** Page-level selected level — single source of truth (WEB.1F.8). */
+  levelId: ProductLevelId;
+  onLevelChange: (levelId: ProductLevelId) => void;
+};
+
 /**
- * WEB.1F.7 — shared visual product-level configurator.
+ * WEB.1F.7/8 — shared visual product-level configurator.
  *
- * A single interactive system (no per-route copies) driven by each product's
- * `levels` data. The selected level (default: Essencial — start with what is
- * necessary and evolve) changes:
+ * Since WEB.1F.8 the configurator is CONTROLLED: the selected level lives at
+ * page level (SINGLE_SOURCE_OF_TRUTH_FOR_LEVEL = YES) and is passed down, so
+ * the configurator, evolution, adaptation, demonstration, summary and CTAs all
+ * derive from the same state.
+ *
+ * The selected level (default: Essencial — start with what is necessary and
+ * evolve) changes:
  *
  *   - the radio-like option state (aria-checked + border/bg/indicator);
  *   - the product visual (ProductLevelMockup, keyed by level → the 240ms
  *     `product-level-switch` animation, motion-safe);
- *   - the selected-level summary strip.
+ *   - the selected-level summary strip;
+ *   - the adaptation CTA label ("Adaptar o {Nível} à minha empresa").
  *
  * Levels are adoption/configuration levels — never prices or plans
  * (PRICING_ADDED = NO). Keyboard navigation works (arrow keys / Home / End).
  */
-export function ProductLevelConfigurator({ product }: { product: ProductConcept }) {
-  const [levelId, setLevelId] = useState<ProductLevelId>('essential');
-
-  const level =
-    useMemo(() => product.levels.find((item) => item.id === levelId) ?? product.levels[0], [levelId, product]);
+export function ProductLevelConfigurator({ product, levelId, onLevelChange }: ProductLevelConfiguratorProps) {
+  const level = useMemo(
+    () => product.levels.find((item) => item.id === levelId) ?? product.levels[0],
+    [levelId, product]
+  );
 
   const moveSelection = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
@@ -45,7 +57,7 @@ export function ProductLevelConfigurator({ product }: { product: ProductConcept 
             ? (currentIndex + 1) % ids.length
             : (currentIndex - 1 + ids.length) % ids.length;
     const nextId = ids[nextIndex];
-    setLevelId(nextId);
+    onLevelChange(nextId);
     window.requestAnimationFrame(() => {
       document.getElementById(`product-level-option-${nextId}`)?.focus();
     });
@@ -99,7 +111,7 @@ export function ProductLevelConfigurator({ product }: { product: ProductConcept 
                     role="radio"
                     aria-checked={isSelected}
                     data-testid={`product-level-option-${item.id}`}
-                    onClick={() => setLevelId(item.id)}
+                    onClick={() => onLevelChange(item.id)}
                     className={cn(
                       'flex flex-col items-start gap-1 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
                       isSelected
@@ -135,8 +147,12 @@ export function ProductLevelConfigurator({ product }: { product: ProductConcept 
               <p className="mt-5 rounded-2xl bg-paper p-4 text-sm leading-6 text-slate-600">
                 A composição final é definida de acordo com a sua operação.
               </p>
-              <Button href={`/?produto=${product.slug}#contacto`} className="mt-6 w-full text-navy-950">
-                Adaptar à minha empresa
+              <Button
+                href={`/?produto=${product.slug}#contacto`}
+                className="mt-6 w-full text-navy-950"
+                data-testid="product-level-cta"
+              >
+                Adaptar o {level.name} à minha empresa
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
             </div>

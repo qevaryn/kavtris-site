@@ -147,7 +147,7 @@ test.describe('WEB.1F.6', () => {
       await settle(page, 500);
 
       await expect(page.getByRole('link', { name: 'Voltar aos produtos', exact: true })).toHaveCount(0);
-      await expect(page.getByRole('link', { name: 'Adaptar à minha empresa' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: /^Adaptar o .+ à minha empresa$/ }).first()).toBeVisible();
 
       if (product.experience) {
         await expect(page.locator('#fieldops-experience')).toBeVisible();
@@ -157,7 +157,10 @@ test.describe('WEB.1F.6', () => {
         await expect(page.getByTestId('product-workflow-visual')).toContainText(product.flow);
       }
 
-      await expect(page.getByTestId('product-next-step')).toBeVisible();
+      // WEB.1F.8 — the redundant mid-product conversion block is removed; the
+      // final consultant escape remains as the closing fallback.
+      await expect(page.getByText('Quer saber como o FieldOps funcionaria na sua empresa?')).toHaveCount(0);
+      await expect(page.getByTestId('product-consultant-escape')).toBeVisible();
       await expectNoHorizontalOverflow(page);
     }
   });

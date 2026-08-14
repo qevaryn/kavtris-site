@@ -50,7 +50,7 @@ export function ProductsModeSelector() {
               Escolha o tipo de empresa que mais se aproxima da sua e veja sistemas que podem servir como ponto de partida.
             </p>
             <Button
-              href="/produtos?modo=negocio#tipos-de-negocio"
+              href="/produtos?modo=negocio"
               className="mt-auto w-full bg-kavtris-blue text-white shadow-glow hover:bg-[#0B5EFF] sm:mt-8 sm:w-auto"
             >
               Escolher pelo meu negócio

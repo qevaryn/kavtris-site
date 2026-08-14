@@ -103,7 +103,7 @@ test.describe('WEB.1F.5', () => {
     await expect(businessCard.getByText('Não sei qual sistema preciso', { exact: false })).toBeVisible();
     await expect(businessCard.getByRole('link', { name: 'Escolher pelo meu negócio' })).toHaveAttribute(
       'href',
-      '/produtos?modo=negocio#tipos-de-negocio'
+      '/produtos?modo=negocio'
     );
 
     const systemsCard = section.getByTestId('home-path-systems-secondary');
@@ -118,11 +118,14 @@ test.describe('WEB.1F.5', () => {
     await expect(section.getByText('Ver capacidades mais técnicas')).toHaveCount(0);
   });
 
-  test('home journey A: "Escolher pelo meu negócio" abre o modo negócio sem repetir o seletor', async ({ page }) => {
+  test('home journey A: "Escolher pelo meu negócio" abre o modo negócio no topo da página', async ({ page }) => {
     await page.goto('/');
     await page.locator('#como-funciona').getByRole('link', { name: 'Escolher pelo meu negócio' }).click();
 
-    await expect(page).toHaveURL(/\/produtos\?modo=negocio#tipos-de-negocio/);
+    await expect(page).toHaveURL(/\/produtos\?modo=negocio$/);
+    // NORMAL_BUSINESS_ENTRY_STARTS_AT_TOP — the hero (not the grid anchor) is
+    // the first thing the visitor sees.
+    await expect(page.getByRole('heading', { name: 'Descubra sistemas a partir do contexto da sua empresa.' })).toBeInViewport();
     await expect(page.getByTestId('business-card-barbearias')).toBeVisible();
     await expect(page.getByTestId('products-mode-business-primary')).toHaveCount(0);
   });
@@ -156,7 +159,7 @@ test.describe('WEB.1F.5', () => {
   test('produtos default: cartões do seletor abrem os respetivos modos', async ({ page }) => {
     await page.goto('/produtos');
     await page.getByTestId('products-mode-business-primary').getByRole('link', { name: 'Escolher pelo meu negócio' }).click();
-    await expect(page).toHaveURL(/\/produtos\?modo=negocio#tipos-de-negocio/);
+    await expect(page).toHaveURL(/\/produtos\?modo=negocio$/);
     await expect(page.getByTestId('business-card-barbearias')).toBeVisible();
 
     await page.goto('/produtos');
@@ -283,7 +286,7 @@ test.describe('WEB.1F.5', () => {
 
     await expect(page.getByTestId('engineering-final-business').getByRole('link', { name: 'Encontrar pelo meu negócio' })).toHaveAttribute(
       'href',
-      '/produtos?modo=negocio#tipos-de-negocio'
+      '/produtos?modo=negocio'
     );
     await expect(page.getByTestId('engineering-final-systems').getByRole('link', { name: 'Ver todos os sistemas' })).toHaveAttribute(
       'href',

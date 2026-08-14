@@ -122,7 +122,7 @@ test('rotas de produto carregam com detalhes técnicos progressivos', async ({ p
 
 test('pedido de adaptação leva ao contacto com produto selecionado', async ({ page }) => {
   await page.goto('/produtos/fieldops');
-  await page.getByRole('link', { name: /^Adaptar à minha empresa$/ }).first().click();
+  await page.getByRole('link', { name: /^Adaptar o .+ à minha empresa$/ }).first().click();
 
   await expect(page).toHaveURL(/\/\?produto=fieldops#contacto$/);
   await expect(page.locator('#contacto')).toBeInViewport();
