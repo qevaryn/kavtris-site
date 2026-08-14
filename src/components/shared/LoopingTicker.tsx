@@ -163,7 +163,14 @@ export function LoopingTicker<T>({
 
     const raw = viewport.scrollLeft;
     const phase = ((raw % step) + step) % step;
-    const alignedCurrentStart = raw - phase;
+    // WEB.1B — robustness: floating-point drift can leave `raw` a fraction of a
+    // pixel below an exact item boundary (e.g. fractional card widths), making
+    // `phase ≈ step` and the "next" step snap backwards to the same position.
+    // Treat near-boundary positions (within 1px) as aligned so navigation always
+    // advances exactly one logical item (NO_VISIBLE_JUMP / NO_DEAD_END).
+    const ALIGN_EPSILON = 1;
+    const snappedPhase = phase < ALIGN_EPSILON || step - phase < ALIGN_EPSILON ? 0 : phase;
+    const alignedCurrentStart = raw - snappedPhase;
     const fullExtent = viewport.scrollWidth;
     const target = Math.max(0, Math.min(fullExtent - 8, alignedCurrentStart + direction * step));
 

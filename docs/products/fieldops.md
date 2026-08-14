@@ -34,9 +34,10 @@ src/features/products/fieldops/FieldOpsPage.tsx
 This component composes:
 
 - hero;
-- visual product experience;
+- level configurator;
+- evolution by phases;
 - sector adaptation;
-- growth/configuration selector;
+- visual demonstration;
 - optional equipment;
 - technical details;
 - final CTA.
@@ -55,19 +56,29 @@ The product record itself is not duplicated. Product catalog and route data come
 src/features/products/data/products.ts
 ```
 
-## Responsive Orchestrator
+## Page-level State
 
 ```text
-src/features/products/fieldops/components/responsive/FieldOpsExperience.tsx
+src/features/products/fieldops/FieldOpsPage.tsx
 ```
 
 This component owns shared state:
 
-- selected experience tab;
+- selected product level;
 - selected sector;
-- selected configuration.
 
-State stays at the common owner so desktop and mobile product demonstrations do not duplicate business rules.
+State stays at the page-level common owner so adaptation, demonstration and CTAs do not duplicate business rules.
+
+## Responsive Sections
+
+```text
+src/features/products/fieldops/components/responsive/FieldOpsSectorAdaptation.tsx
+src/features/products/fieldops/components/responsive/FieldOpsDemonstration.tsx
+```
+
+`FieldOpsSectorAdaptation` owns the sector tabs and sector-specific adaptation presentation.
+
+`FieldOpsDemonstration` owns the visual demonstration tabs for management, team and process views while reading the page-level product level and sector.
 
 ## Desktop-specific Product Demonstration
 
@@ -102,7 +113,7 @@ tests/web-shared/fieldops.spec.ts
 tests/web-mobile/fieldops-mobile.spec.ts
 ```
 
-These validate tabs, sector selection, configuration selection, accordions, CTAs and mobile overflow.
+These validate tabs, sector selection, level synchronization, accordions, CTAs and mobile overflow.
 
 ## Contact Integration
 

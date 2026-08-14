@@ -1,0 +1,185 @@
+import { expect, test } from '@playwright/test';
+
+/**
+ * WEB.1B + WEB.1F.5 — validation suite for the refined homepage:
+ *  - infinite credibility loop (seamless, accessible, bounded)
+ *  - mobile Hero adaptation (order, descriptor, no clipping/overflow)
+ *  - background depth gate (not flat, not portal-like)
+ *  - Contact mobile order and Footer legibility
+ *  - WEB.1F.5: old process/products/engineering home sections removed
+ */
+
+async function collectConsoleErrors(page: import('@playwright/test').Page) {
+  const errors: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      errors.push(message.text());
+    }
+  });
+  page.on('pageerror', (error) => errors.push(String(error)));
+  return errors;
+}
+
+test('credibility loop é infinito, contínuo e acessível (duplicação escondida)', async ({ page }) => {
+  const errors = await collectConsoleErrors(page);
+  await page.goto('/');
+
+  const ticker = page.getByTestId('services-ticker');
+  const mainTrack = page.getByTestId('services-ticker-main');
+  const duplicateTrack = page.getByTestId('services-ticker-duplicate');
+  const viewport = page.getByTestId('services-ticker-viewport');
+
+  // Inventory: 8 real items in the main track; duplicate track is hidden + inert.
+  await expect(mainTrack.locator('li')).toHaveCount(8);
+  await expect(duplicateTrack.locator('li')).toHaveCount(8);
+  await expect(duplicateTrack).toHaveAttribute('aria-hidden', 'true');
+  await expect.poll(() => duplicateTrack.evaluate((node) => (node as HTMLElement).inert)).toBe(true);
+
+  // The two tracks carry the same content — the loop boundary is visually identical.
+  const mainTexts = await mainTrack.locator('li').allTextContents();
+  const duplicateTexts = await duplicateTrack.locator('li').allTextContents();
+  expect(mainTexts).toEqual(duplicateTexts);
+  const mainWidth = await mainTrack.evaluate((node) => node.scrollWidth);
+  const duplicateWidth = await duplicateTrack.evaluate((node) => node.scrollWidth);
+  expect(Math.abs(mainWidth - duplicateWidth)).toBeLessThanOrEqual(2);
+
+  // Continuous motion: scrollLeft moves and stays normalized within one cycle.
+  await page.evaluate(() => {
+    document.querySelector('[data-testid="services-ticker"]')?.scrollIntoView({ block: 'center' });
+  });
+  await expect.poll(() => viewport.evaluate((el) => el.scrollLeft), { timeout: 5000 }).toBeGreaterThan(0);
+
+  const samples: number[] = [];
+  for (let i = 0; i < 30; i += 1) {
+    samples.push(await viewport.evaluate((el) => el.scrollLeft));
+    await page.waitForTimeout(60);
+  }
+  const maxScroll = Math.max(...samples);
+  expect(maxScroll).toBeLessThan(mainWidth + 4);
+  expect(maxScroll).toBeGreaterThan(0);
+
+  // Manual navigation has no dead-end after many steps (wrap normalizes).
+  for (let i = 0; i < 10; i += 1) {
+    await ticker.getByRole('button', { name: 'Seguinte' }).click();
+    await page.waitForTimeout(80);
+    const scroll = await viewport.evaluate((el) => el.scrollLeft);
+    expect(scroll).toBeGreaterThanOrEqual(0);
+    expect(scroll).toBeLessThan(mainWidth + 4);
+  }
+
+  await page.waitForTimeout(400);
+  expect(errors).toEqual([]);
+});
+
+test('creedibilidade reduzida mantém grelha estática acessível (sem loop vazio)', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const staticGrid = page.getByTestId('services-static-reduced');
+  await expect(staticGrid).toBeVisible();
+  await expect(page.getByTestId('services-ticker')).toHaveCount(0);
+  await expect(staticGrid.getByTestId('services-static-grid').locator('article')).toHaveCount(8);
+  for (const title of ['Consultoria ativa', 'Tecnologia adaptável', 'Resultados reais', 'Reduzir tarefas manuais']) {
+    await expect(staticGrid.getByText(title).first()).toBeVisible();
+  }
+});
+
+test('hero mobile: headline primeiro, sem eyebrow redundante, visual sem clipping/overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.goto('/');
+
+  const hero = page.locator('#inicio');
+  // WEB.1F.1 — the redundant brand eyebrow was removed from the Hero.
+  await expect(hero.getByText('KAVTRIS', { exact: true })).toHaveCount(0);
+  await expect(hero.getByText('TECHNOLOGY & CONSULTING')).toHaveCount(0);
+
+  // Preferred order: headline → copy → CTAs → K visual → credibility loop.
+  const boxes = await Promise.all(
+    [
+      hero.getByRole('heading', { name: /Tecnologia que/ }),
+      hero.getByText(/A KAVTRIS combina consultoria/i),
+      hero.getByRole('link', { name: 'Ver como funciona' }),
+      hero.getByRole('link', { name: 'Falar com a KAVTRIS' }),
+      page.getByTestId('hero-brand-visual'),
+      page.getByTestId('services-ticker')
+    ].map((locator) => locator.boundingBox())
+  );
+
+  const ys = boxes.map((box) => box?.y ?? 0);
+  for (let i = 1; i < ys.length; i += 1) {
+    expect(ys[i]).toBeGreaterThanOrEqual(ys[i - 1]);
+  }
+
+  // K visual fits the 320px viewport without clipping.
+  const visualBox = boxes[4];
+  if (!visualBox) {
+    throw new Error('hero-brand-visual sem dimensões');
+  }
+  expect(visualBox.x).toBeGreaterThanOrEqual(0);
+  expect(visualBox.x + visualBox.width).toBeLessThanOrEqual(320);
+
+  // No horizontal page overflow.
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+});
+
+test('background depth: secções usam ambiente em camadas (dark e light, não fundo plano)', async ({ page }) => {
+  await page.goto('/');
+
+  // WEB.1C — hybrid architecture: dark sections keep the dark ambient layer;
+  // light body sections use the restrained light ambient layer.
+  for (const id of ['inicio']) {
+    const section = page.locator(`#${id}`);
+    await expect(section).toHaveClass(/kavtris-ambient/);
+  }
+  for (const id of ['como-funciona', 'contacto']) {
+    const section = page.locator(`#${id}`);
+    await expect(section).toHaveClass(/kavtris-ambient-light/);
+  }
+
+  // Both pseudo-element layers actually render a gradient (depth, not flat).
+  for (const id of ['inicio', 'como-funciona']) {
+    const background = await page
+      .locator(`#${id}`)
+      .evaluate((node) => getComputedStyle(node, '::before').backgroundImage);
+    expect(background).toContain('radial-gradient');
+    expect(background).not.toBe('none');
+  }
+});
+
+test('contacto mobile: ordem preferida heading → próximo passo → formulário → Rede', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.locator('#contacto').scrollIntoViewIfNeeded();
+
+  const heading = page.locator('#contacto').getByRole('heading', { name: 'Não precisa chegar com uma solução pronta.' });
+  const nextCard = page.locator('#contacto').getByText('O que acontece depois?');
+  const form = page.locator('#contacto').getByRole('button', { name: 'Enviar explicação' });
+  // Mobile shows the Rede card after the form; the desktop-only instance is hidden.
+  const rede = page.locator('#contacto').getByText('Integrante da Rede Qualidade é Vida').last();
+
+  const headingY = (await heading.boundingBox())?.y ?? 0;
+  const nextY = (await nextCard.boundingBox())?.y ?? 0;
+  const formY = (await form.boundingBox())?.y ?? 0;
+  const redeY = (await rede.boundingBox())?.y ?? 0;
+
+  expect(headingY).toBeLessThan(nextY);
+  expect(nextY).toBeLessThan(formY);
+  expect(formY).toBeLessThan(redeY);
+});
+
+test('footer mobile mantém links legíveis e agrupados', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.goto('/');
+
+  const footer = page.getByRole('contentinfo');
+  await expect(footer.getByRole('link', { name: 'Sobre' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Contacto' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Política de Privacidade' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Política de Cookies' })).toBeVisible();
+
+  const fontSize = await footer
+    .getByRole('link', { name: 'Política de Privacidade' })
+    .evaluate((node) => Number.parseFloat(getComputedStyle(node).fontSize));
+  expect(fontSize).toBeGreaterThanOrEqual(13);
+});
+

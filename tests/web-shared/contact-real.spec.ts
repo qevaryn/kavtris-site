@@ -43,6 +43,20 @@ test.beforeAll(async ({ request }) => {
 });
 
 async function fillContactForm(page: import('@playwright/test').Page) {
+  // WEB.1F — robustness: wait for the CONTACT section itself to hydrate before
+  // filling. Under parallel load the dev server can stream chunks out of order;
+  // waiting for any reveal-state (e.g. the products section near the top) can
+  // resolve before the bottom contact chunk has hydrated, and filling the raw
+  // SSR DOM lets the later hydration render overwrite the values
+  // (react-hook-form initial state), making the submit invalid and never firing
+  // a POST. The contact reveal-state only appears after that subtree commits.
+  await page.waitForFunction(() => {
+    const node = document.querySelector(
+      '#contacto [data-reveal-state="pending"], #contacto [data-reveal-state="revealed"]'
+    );
+    return Boolean(node);
+  });
+
   await page.getByRole('textbox', { name: 'Nome' }).fill('Utilizador QA');
   await page.getByRole('textbox', { name: 'Empresa' }).fill('Empresa QA');
   await page.getByRole('textbox', { name: 'Email' }).fill('contact-browser@example.test');
@@ -113,6 +127,38 @@ test('browser contact double-click does not duplicate the API POST', async ({ pa
 
   await page.goto('/');
   await fillContactForm(page);
+
+  // WEB.1F.6 robustness fix (assertions unchanged): the homepage uses smooth
+  // scrolling (`html { scroll-behavior: smooth }`) and one-time scroll reveals.
+  // A delayed click (mousedown → 50ms → mouseup) on a still-moving button is
+  // swallowed by the browser (no mouseup → no click event), so this test would
+  // fail without exercising the double-submission guard at all. Force the page
+  // stable (instant scroll + poll until the submit button's box stops moving)
+  // before the double-click. Verified: contact implementation diff = 0.
+  await page.evaluate(() => {
+    document.getElementById('contacto')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
+  await page.waitForFunction(
+    () =>
+      new Promise<boolean>((resolve) => {
+        const btn = document.querySelector('button[type="submit"]');
+        if (!btn) {
+          resolve(false);
+          return;
+        }
+        const before = btn.getBoundingClientRect();
+        window.setTimeout(() => {
+          const after = btn.getBoundingClientRect();
+          resolve(
+            before.x === after.x &&
+              before.y === after.y &&
+              before.width === after.width &&
+              before.height === after.height
+          );
+        }, 80);
+      }),
+    { polling: 120 }
+  );
 
   const submitButton = page.getByRole('button', { name: 'Enviar explicação' });
   await submitButton.click({ delay: 50 });

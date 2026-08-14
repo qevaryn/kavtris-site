@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
 import { Logo } from '@/components/layout/Logo';
+import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
 import { companyName, siteUrl } from '@/lib/constants';
 
 const founderLinkedIn = 'https://www.linkedin.com/in/gabrielsouza80/';
@@ -35,8 +36,9 @@ const timelineSteps = [
   'Primeiros passos e observação de problemas reais',
   'Conselhos e apoio de pais, familiares e amigos',
   'Experiência profissional em Quality Assurance',
-  'Nascimento da Qevaryn Systems',
+  'Nascimento do projeto inicial',
   'Construção e evolução dos produtos',
+  'Evolução da marca para KAVTRIS',
   'Visão de futuro com melhoria contínua'
 ];
 
@@ -45,14 +47,20 @@ export function AboutPageView() {
     <>
       <Header />
       <main className="bg-paper">
-        <section className="bg-navy-950 py-16 text-white sm:py-20">
+        {/* WEB.1F.4 — explicit Back/Forward (fallback Início on direct entry). */}
+        <div className="border-b border-navy-900/5 bg-white">
+          <div className="container-section py-3">
+            <ContextBackForwardControls fallbackHref="/" />
+          </div>
+        </div>
+        <section id="historia" className="bg-navy-950 py-16 text-white sm:py-20">
           <div className="container-section">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">A nossa história</p>
             <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-6xl">
               Construída com propósito, qualidade e vontade de servir.
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 md:text-lg">
-              A Qevaryn Systems nasceu de uma ideia simples: a tecnologia deve facilitar o trabalho das pessoas, reduzir dificuldades e ajudar
+              A história que deu origem à KAVTRIS começou com uma ideia simples: a tecnologia deve facilitar o trabalho das pessoas, reduzir dificuldades e ajudar
               empresas a crescer com mais organização e confiança.
             </p>
             <p className="mt-4 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
@@ -67,7 +75,7 @@ export function AboutPageView() {
             <article className="rounded-[1.35rem] border border-borderline bg-paper p-5 shadow-sm sm:p-7">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Onde tudo começou</h2>
               <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
-                O início da Qevaryn não aconteceu com todas as respostas prontas. Começou enquanto Gabriel Dias de Souza trabalhava como QA Engineer
+                O início deste projeto não aconteceu com todas as respostas prontas. Começou enquanto Gabriel Dias de Souza trabalhava como QA Engineer
                 e descobria que qualidade de software significava muito mais do que encontrar erros.
               </p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
@@ -154,7 +162,7 @@ export function AboutPageView() {
               </p>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
                 A sua experiência envolve testes, automação, análise de requisitos e participação em projetos de software, aplicando essa visão na
-                construção e evolução da Qevaryn Systems.
+                construção e evolução do projeto que hoje é a KAVTRIS.
               </p>
               <div className="mt-5">
                 <Button
@@ -225,8 +233,10 @@ export function AboutPageView() {
               Mais do que criar software, queremos construir relações de confiança e sistemas que tenham valor na vida de quem os utiliza.
             </p>
             <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-              <Button href="/produtos" className="text-navy-950">
-                Conhecer os produtos
+              {/* WEB.1F.5 — the public homepage label is now "Como funciona"; the
+                  About final CTA follows the same terminology. */}
+              <Button href="/#como-funciona" className="text-navy-950">
+                Ver como funciona
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
               <Button href="/#contacto" variant="secondary">

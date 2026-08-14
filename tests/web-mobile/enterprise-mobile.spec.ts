@@ -6,6 +6,6 @@ test('mobile enterprise page has no horizontal overflow and keeps accordions usa
   await page.goto('/empresas');
 
   await expectNoHorizontalOverflow(page);
-  await expect(page.getByRole('heading', { name: /Software claro para operações/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Tecnologia adaptada à realidade/i })).toBeVisible();
   await expect(page.locator('#capacidades').locator('summary').first()).toBeVisible();
 });

@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       </div>
       <div className="mt-10 space-y-6 text-sm leading-7 text-slate-600">
         <p className="rounded-2xl border border-borderline bg-paper p-4 text-navy-800">Versão provisória. Este texto deve ser revisto antes da publicação comercial.</p>
-        <p>Os dados são utilizados apenas para responder ao contacto e avaliar o pedido apresentado à Qevaryn Systems.</p>
+        <p>Os dados são utilizados apenas para responder ao contacto e avaliar o pedido apresentado à KAVTRIS.</p>
         <p>Não vendemos nem partilhamos informação com terceiros para fins comerciais.</p>
         <p>O envio do formulário depende do prestador de email configurado no projeto.</p>
       </div>

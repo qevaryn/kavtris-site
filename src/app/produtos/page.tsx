@@ -37,6 +37,11 @@ export const metadata: Metadata = {
   }
 };
 
-export default function ProductsPage() {
-  return <CatalogPageView />;
+export default async function ProductsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ modo?: string; negocio?: string }>;
+}) {
+  const params = await searchParams;
+  return <CatalogPageView searchParams={params} />;
 }

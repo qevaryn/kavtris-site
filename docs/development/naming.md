@@ -12,7 +12,8 @@ Use names that describe responsibility:
 ```text
 ContactForm
 ProductCatalogClient
-FieldOpsExperience
+FieldOpsSectorAdaptation
+FieldOpsDemonstration
 FieldOpsManagementDashboard
 FieldOpsEmployeeMobileView
 FieldOpsProcessWorkflow

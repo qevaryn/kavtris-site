@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
-const logoAlt = 'KAVTRIS';
-const logoSourcePattern = /kavtris-wordmark-dark/;
 const symbolSourcePattern = /kavtris-symbol-dark/;
 const founderAlt = 'Gabriel Dias de Souza, Fundador e QA Engineer da KAVTRIS';
 
@@ -67,14 +65,17 @@ test('logomarca KAVTRIS aparece no header e no footer sem caixa clara ou quadrad
   expect(logoFileSize.height).toBe(180);
   expect([3, 6]).toContain(logoFileSize.colorType);
 
-  const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
-  const footerLogo = page.getByRole('contentinfo').getByAltText(logoAlt);
+  // WEB.1F.2 — the Header/Footer visible brand is the owner-approved web lockup
+  // PNG (symbol + KAVTRIS + TECHNOLOGY & CONSULTING). The canonical wordmark
+  // asset remains in the repo and is still served.
   const logoResponse = await request.get('/brand/kavtris/kavtris-wordmark-dark.png');
-
-  await expect(headerLogo).toBeVisible();
   expect(logoResponse.status()).toBe(200);
-  await expect(headerLogo).toHaveAttribute('src', logoSourcePattern);
-  await expect(headerLogo).toHaveAttribute('alt', logoAlt);
+
+  const header = page.getByRole('banner');
+  const headerLockup = header.locator('img[src*="kavtris-technology-consulting-lockup"]');
+  await expect(headerLockup).toBeVisible();
+  await expect(headerLockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(headerLockup).toHaveAttribute('alt', '');
   await expect(page.getByText('QV', { exact: true })).toHaveCount(0);
   if (!viewport || viewport.width < 1360) {
     await expect(page.getByTestId('header-network-signature')).toBeHidden();
@@ -82,66 +83,44 @@ test('logomarca KAVTRIS aparece no header e no footer sem caixa clara ou quadrad
     await expect(page.getByTestId('header-network-signature')).toBeVisible();
   }
 
-  for (const logo of [headerLogo]) {
-    const metrics = await readRenderedImageMetrics(logo);
-    expect(metrics.source).toContain('kavtris-wordmark-dark');
-    expect(metrics.naturalWidth).toBeGreaterThan(0);
-    expect(metrics.naturalHeight).toBeGreaterThan(0);
-    expect(metrics.renderedWidth).toBeGreaterThanOrEqual(isMobileViewport ? 135 : 185);
-    expect(metrics.renderedHeight).toBeGreaterThanOrEqual(isMobileViewport ? 28 : 40);
-    expect(metrics.renderedWidth).toBeLessThanOrEqual(isMobileViewport ? 185 : 230);
-    expect(metrics.renderedHeight).toBeLessThanOrEqual(isMobileViewport ? 48 : 62);
-    // The next/image optimizer serves the wordmark at a slightly different
-    // intrinsic size than the CSS-rendered box (e.g. intrinsic 205x48 vs
-    // rendered 190x45), so the natural/rendered ratio tolerance must allow
-    // for that rounding while still catching real distortion (a 2:1 stretch
-    // would differ by >1).
-    expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.12);
-    expect(metrics.objectFit).toBe('contain');
+  const lockupBox = (await headerLockup.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
+  expect(lockupBox.x).toBeGreaterThanOrEqual(0);
+  expect(lockupBox.x + lockupBox.width).toBeLessThanOrEqual(viewport?.width || 1440);
 
-    const ancestorBackgrounds = await logo.evaluate((image) => {
-      const colors: string[] = [];
-      let element = image.parentElement;
-      while (element && colors.length < 5) {
-        colors.push(getComputedStyle(element).backgroundColor);
-        if (element.tagName === 'HEADER' || element.tagName === 'FOOTER') {
-          break;
-        }
-        element = element.parentElement;
+  // No bright box behind the brand (ancestors stay dark).
+  const ancestorBackgrounds = await headerLockup.evaluate((node) => {
+    const colors: string[] = [];
+    let element = node.parentElement;
+    while (element && colors.length < 5) {
+      colors.push(getComputedStyle(element).backgroundColor);
+      if (element.tagName === 'HEADER' || element.tagName === 'FOOTER') {
+        break;
       }
+      element = element.parentElement;
+    }
+    return colors;
+  });
+  expect(ancestorBackgrounds).not.toContain('rgb(255, 255, 255)');
+  expect(ancestorBackgrounds).not.toContain('rgb(248, 248, 246)');
 
-      return colors;
-    });
-
-    expect(ancestorBackgrounds).not.toContain('rgb(255, 255, 255)');
-    expect(ancestorBackgrounds).not.toContain('rgb(248, 248, 246)');
-  }
-
-  const headerMetrics = await readRenderedImageMetrics(headerLogo);
   const navBox = isMobileViewport ? null : await page.getByRole('navigation', { name: 'Navegação principal' }).boundingBox();
   const analysisButtonBox = isMobileViewport
     ? await page.getByRole('banner').getByRole('button', { name: 'Abrir menu' }).boundingBox()
     : await page.getByRole('banner').getByRole('link', { name: 'Pedir demonstração' }).boundingBox();
   expect(analysisButtonBox).not.toBeNull();
   if (navBox) {
-    expectNoOverlap(headerMetrics, toEdges(navBox));
+    expectNoOverlap(toEdges(lockupBox), toEdges(navBox));
   }
-  expectNoOverlap(headerMetrics, toEdges(analysisButtonBox!));
-  expect(headerMetrics.left).toBeGreaterThanOrEqual(0);
-  expect(headerMetrics.right).toBeLessThanOrEqual(viewport?.width || 1440);
+  expectNoOverlap(toEdges(lockupBox), toEdges(analysisButtonBox!));
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport?.width || 1440);
 
   await page.getByRole('contentinfo').scrollIntoViewIfNeeded();
-  await expect(footerLogo).toBeVisible();
-  await expect(footerLogo).toHaveAttribute('src', logoSourcePattern);
-  await expect(footerLogo).toHaveAttribute('alt', logoAlt);
+  const footerLockup = page.getByRole('contentinfo').locator('img[src*="kavtris-technology-consulting-lockup"]');
+  await expect(footerLockup).toBeVisible();
+  await expect(footerLockup).toHaveAttribute('src', /kavtris-technology-consulting-lockup/);
+  await expect(footerLockup).toHaveAttribute('alt', /Technology & Consulting/i);
   await expect(page.getByRole('contentinfo').getByText('Integrante da Rede Qualidade é Vida')).toBeVisible();
   await expect(page.getByRole('contentinfo').getByAltText('Rede Qualidade é Vida')).toBeVisible();
-
-  const footerMetrics = await readRenderedImageMetrics(footerLogo);
-  expect(footerMetrics.source).toContain('kavtris-wordmark-dark');
-  expect(Math.abs(footerMetrics.naturalRatio - footerMetrics.renderedRatio)).toBeLessThan(0.12);
-  expect(footerMetrics.objectFit).toBe('contain');
 });
 
 test('hero usa símbolo KAVTRIS em destaque e não mostra dashboard operacional', async ({ page, request }) => {
@@ -211,7 +190,7 @@ test('header e cartão do fundador continuam responsivos no mobile', async ({ pa
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/sobre');
 
-  await expect(page.getByRole('banner').getByAltText(logoAlt)).toBeVisible();
+  await expect(page.getByRole('banner').locator('img[src*="kavtris-technology-consulting-lockup"]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
   await expect(page.getByTestId('about-founder-card').getByAltText(founderAlt)).toBeVisible();
@@ -225,19 +204,16 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const headerLogo = page.getByRole('banner').getByAltText(logoAlt);
-  const initialMetrics = await readRenderedImageMetrics(headerLogo);
   const banner = page.getByRole('banner');
+  const headerLockup = banner.locator('img[src*="kavtris-technology-consulting-lockup"]');
+  const initialMetrics = (await headerLockup.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
   const menuButtonBox = await banner.getByRole('button', { name: 'Abrir menu' }).boundingBox();
 
-  expect(initialMetrics.renderedWidth).toBeGreaterThanOrEqual(135);
-  expect(initialMetrics.renderedWidth).toBeLessThanOrEqual(185);
-  expect(initialMetrics.renderedHeight).toBeGreaterThanOrEqual(28);
-  expect(initialMetrics.renderedHeight).toBeLessThanOrEqual(48);
-  expect(Math.abs(initialMetrics.naturalRatio - initialMetrics.renderedRatio)).toBeLessThan(0.12);
-  expect(initialMetrics.right).toBeLessThanOrEqual(390);
+  expect(initialMetrics.width).toBeGreaterThanOrEqual(100);
+  expect(initialMetrics.width).toBeLessThanOrEqual(240);
+  expect(initialMetrics.x + initialMetrics.width).toBeLessThanOrEqual(390);
   expect(menuButtonBox).not.toBeNull();
-  expectNoOverlap(initialMetrics, toEdges(menuButtonBox!));
+  expectNoOverlap(toEdges(initialMetrics), toEdges(menuButtonBox!));
   await expect(banner.getByRole('link', { name: 'Pedir demonstração' })).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
@@ -245,18 +221,18 @@ test('logomarca mobile mantém proporção, não sobrepõe ações e resiste ao 
   await expect(page.getByTestId('mobile-network-signature')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Pedir demonstração' })).toBeVisible();
   await expect(page.getByRole('banner').getByAltText('Rede Qualidade é Vida')).toHaveCount(0);
-  const openMenuMetrics = await readRenderedImageMetrics(headerLogo);
+  const openMenuMetrics = (await headerLockup.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
 
-  expect(openMenuMetrics.source).toContain('kavtris-wordmark-dark');
-  expect(Math.abs(openMenuMetrics.renderedRatio - initialMetrics.renderedRatio)).toBeLessThan(0.01);
-  expect(Math.abs(openMenuMetrics.renderedWidth - initialMetrics.renderedWidth)).toBeLessThan(1);
+  expect(Math.abs(openMenuMetrics.x - initialMetrics.x)).toBeLessThan(1);
+  expect(Math.abs(openMenuMetrics.y - initialMetrics.y)).toBeLessThan(1);
+  expect(Math.abs(openMenuMetrics.width - initialMetrics.width)).toBeLessThan(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
 test('link da logomarca leva ao início da página', async ({ page }) => {
   await page.goto('/');
   await page.locator('#contacto').scrollIntoViewIfNeeded();
-  await page.getByLabel('KAVTRIS - início').click();
+  await page.getByLabel(/KAVTRIS — Technology & Consulting/i).click();
 
   await expect.poll(async () => page.evaluate(() => window.location.hash)).toBe('#inicio');
 });

@@ -2,105 +2,122 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { ProductCard } from '@/features/catalog/components/shared/ProductCard';
 import { Button } from '@/components/shared/Button';
-import { products, sectorFilters, type ProductSector } from '@/features/products/data/products';
+import {
+  functionalFilters,
+  productFunctionMap,
+  products,
+  type ProductFunctionId
+} from '@/features/products/data/products';
 
+/**
+ * WEB.1F.5 — /produtos SYSTEM MODE (`?modo=sistemas`).
+ *
+ * This mode renders ONLY system-based discovery — never the business grid.
+ *
+ *  - Filters describe THE SYSTEM / FUNCTION (OPERATIONS, GESTÃO, STOCK E
+ *    PEDIDOS, EQUIPAS, CLIENTES), never the customer's business sector
+ *    (BUSINESS_SECTOR_FILTERS_IN_SYSTEM_MODE = NO).
+ *  - `← Escolher outra forma de procurar` returns to the /produtos selector.
+ *  - A consultant card closes the catalog so it is never a dead end.
+ */
 export function ProductCatalogClient() {
-  const [activeFilter, setActiveFilter] = useState<ProductSector | 'all'>('all');
+  const [activeFilter, setActiveFilter] = useState<ProductFunctionId | 'all'>('all');
 
   const visibleProducts = useMemo(() => {
     if (activeFilter === 'all') {
       return products;
     }
 
-    return products.filter((product) => product.sectors.includes(activeFilter));
+    return products.filter((product) => productFunctionMap[product.slug]?.includes(activeFilter));
   }, [activeFilter]);
 
   return (
-    <section id="catalogo" className="bg-paper py-14 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Catálogo visual</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-              Exemplos de software por setor
-            </h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-slate-600">
-            Filtre por área para ver conceitos que podem começar simples e evoluir para uma plataforma mais completa.
-          </p>
-        </div>
-
-        <div
-          className="-mx-5 mt-8 flex gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
-          aria-label="Filtros de setores"
-        >
-          {sectorFilters.map((filter) => {
-            const isActive = activeFilter === filter.value;
-
-            return (
-              <button
-                key={filter.value}
-                type="button"
-                aria-pressed={isActive}
-                onClick={() => setActiveFilter(filter.value)}
-                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 ${
-                  isActive
-                    ? 'border-kavtris-blue bg-kavtris-blue text-white'
-                    : 'border-borderline bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
-                }`}
-              >
-                {filter.label}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {visibleProducts.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-          {activeFilter === 'all' ? (
-            <article
-              data-testid="custom-solution-card"
-              className="flex min-h-[26rem] flex-col justify-between rounded-[1.35rem] border border-kavtris-blue/30 bg-navy-950 p-6 text-white shadow-card"
+    <section id="catalogo" className="bg-paper">
+      {/* System mode intro */}
+      <div className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-kavtris-blueLight">
+                Sistemas e soluções
+              </p>
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+                Explore diretamente os sistemas disponíveis e encontre o ponto de partida mais próximo do que procura.
+              </h1>
+            </div>
+            <Link
+              href="/produtos"
+              data-testid="systems-change-search-method"
+              className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-white/25 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-kavtris-blueLight hover:bg-kavtris-blue/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
             >
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-kavtris-blue/15 text-kavtris-blueLight">
-                  <Sparkles className="h-6 w-6" aria-hidden="true" />
-                </div>
-                <p className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">Solução personalizada</p>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight">Não encontrou uma solução parecida?</h3>
-                <p className="mt-4 text-sm leading-7 text-white/72">
-                  Explique-nos o problema. A solução pode ser criada a partir do funcionamento real da sua empresa.
-                </p>
-              </div>
-              <Link
-                href="/?tipo=personalizada#contacto"
-                className="mt-8 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-kavtris-blue px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
-              >
-                Falar sobre uma solução personalizada
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </article>
-          ) : null}
-        </div>
-
-        <section className="mt-12 rounded-[1.5rem] border border-borderline bg-white p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Próximo passo</p>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Ainda não sabe qual solução escolher?</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-              Conte-nos como a empresa trabalha e onde estão as principais dificuldades.
-            </p>
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Escolher outra forma de procurar
+            </Link>
           </div>
-          <Button href="/#contacto" className="mt-6 text-navy-950 lg:mt-0">
-            Explique o seu problema
-          </Button>
-        </section>
+        </div>
+      </div>
+
+      <div className="py-14 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
+          {/* Functional filters: describe the system/function, not the business. */}
+          <div
+            role="group"
+            aria-label="Filtrar sistemas por função"
+            data-testid="catalog-filters"
+            className="flex flex-wrap gap-2"
+          >
+            {functionalFilters.map((filter) => {
+              const isActive = activeFilter === filter.value;
+
+              return (
+                <button
+                  key={filter.value}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setActiveFilter(filter.value)}
+                  className={[
+                    'min-h-11 rounded-full border px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
+                    isActive
+                      ? 'border-kavtris-blue bg-kavtris-blue text-white shadow-sm'
+                      : 'border-navy-900/15 bg-white text-navy-800 hover:border-kavtris-blue hover:text-kavtris-blue'
+                  ].join(' ')}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {visibleProducts.map((product) => (
+              <ProductCard key={product.slug} product={product} />
+            ))}
+          </div>
+
+          {/* System-mode consultant help (the catalog is never a dead end). */}
+          <div
+            data-testid="systems-consultant"
+            className="mt-10 flex flex-col gap-4 rounded-[1.5rem] border border-kavtris-blue/30 bg-white p-6 shadow-sm sm:p-8 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-semibold tracking-tight text-navy-950">
+                Não encontrou o sistema que procura?
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+                Explique o que pretende melhorar. Podemos ajudar a encontrar, adaptar ou definir o próximo passo mais adequado.
+              </p>
+            </div>
+            <Button href="/#contacto" className="shrink-0 text-navy-950">
+              Falar com um consultor
+              <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
+

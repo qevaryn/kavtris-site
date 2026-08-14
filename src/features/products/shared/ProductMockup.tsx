@@ -41,21 +41,42 @@ const mockupRows: Record<ProductConcept['mockupType'], Array<{ label: string; va
 
 const icons = [ClipboardList, UserCheck, Package, MessageSquare, FileText, CheckCircle2];
 
+/**
+ * WEB.1F.6 — product hero mockup. A clearly-labelled, non-functional "Exemplo
+ * de interface" illustration: browser chrome + product-specific operational
+ * rows + a feature grid. Content is derived only from the product's own
+ * definition (mockupType rows + features). Decorative for screen readers.
+ */
 export function ProductMockup({ product, compact = false }: ProductMockupProps) {
   const rows = mockupRows[product.mockupType];
 
   return (
-    <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-navy-950 p-4 text-white shadow-card">
+    <div
+      aria-hidden="true"
+      className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-navy-950 p-4 text-white shadow-card"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(6,90,253,0.22),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_45%)]" />
       <div className="relative">
-        <div className="flex items-center justify-between gap-3">
+        {/* Browser chrome — the mockup reads as an application window, not a generic panel. */}
+        <div className="flex items-center gap-2.5">
+          <span className="flex shrink-0 gap-1.5" aria-hidden="true">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
+          </span>
+          <div className="min-w-0 flex-1 truncate rounded-full border border-white/10 bg-navy-900/80 px-3 py-1 text-[0.65rem] font-semibold text-white/55">
+            app.kavtris.pt/{product.mockupType}
+          </div>
+          <span className="shrink-0 rounded-full border border-kavtris-blue/30 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-kavtris-blueLight">
+            Demo
+          </span>
+        </div>
+
+        <div className="mt-5 flex items-center justify-between gap-3">
           <div>
             <p className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">Exemplo de interface</p>
             <p className="mt-1 text-sm font-semibold text-white">{product.name}</p>
           </div>
-          <span className="rounded-full border border-kavtris-blue/30 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-kavtris-blueLight">
-            Demo
-          </span>
         </div>
 
         <div className={`mt-5 grid gap-3 ${compact ? '' : 'sm:grid-cols-[0.8fr_1fr]'}`}>
@@ -94,6 +115,15 @@ export function ProductMockup({ product, compact = false }: ProductMockupProps) 
             </div>
             <div className="mt-4 h-16 rounded-xl bg-gradient-to-r from-kavtris-blue/20 via-navy-100 to-kavtris-blue/10" />
           </div>
+        </div>
+
+        {/* Live status strip — reinforces that the mockup depicts an operating state. */}
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-navy-900/80 px-4 py-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${rows[0]?.tone ?? 'bg-kavtris-blue'}`} />
+            <p className="truncate text-xs font-semibold text-white">{rows[0]?.label}</p>
+          </div>
+          <p className="shrink-0 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-kavtris-blueLight">Estado atualizado</p>
         </div>
       </div>
     </div>
