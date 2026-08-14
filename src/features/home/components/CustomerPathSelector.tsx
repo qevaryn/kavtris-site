@@ -66,10 +66,13 @@ export function CustomerPathSelector() {
                 WEB.1F.6: refined on a restrained cool-blue surface (never pure
                 white floating on white) — visible border, strong navy title,
                 readable body and a clear outline CTA. Still deliberately
-                lighter than the navy primary card. */}
+                lighter than the navy primary card.
+                WEB.1F.7: the card and its CTA now use a strong dark KAVTRIS
+                navy contour so the secondary path reads as clearly
+                interactive while staying secondary to the primary navy card. */}
             <article
               data-testid="home-path-systems-secondary"
-              className="flex flex-col rounded-[1.5rem] border border-kavtris-blue/30 bg-[#EAF1FC] p-6 text-navy-950 shadow-sm transition hover:border-kavtris-blue/60 hover:shadow-card sm:p-8"
+              className="flex flex-col rounded-[1.5rem] border border-navy-900/40 bg-[#EAF1FC] p-6 text-navy-950 shadow-sm transition hover:border-kavtris-blue/70 hover:shadow-card sm:p-8"
             >
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-kavtris-blue">
                 Já sei o que procuro
@@ -82,7 +85,7 @@ export function CustomerPathSelector() {
               </p>
               <Button
                 href="/produtos?modo=sistemas#catalogo"
-                variant="outline"
+                variant="outlineStrong"
                 className="mt-auto w-full sm:mt-8 sm:w-auto"
               >
                 Ver todos os sistemas

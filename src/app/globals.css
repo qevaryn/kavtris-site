@@ -442,6 +442,21 @@ section[id] {
   }
 }
 
+/* WEB.1F.7 — product level switch. A short opacity + slight rise (240ms,
+   within the 180–300ms range) makes the visitor visibly perceive that the
+   selected-level product visual CHANGED. Restrained: no carousel, no bounce.
+   `motion-safe:` keeps it instant under prefers-reduced-motion. */
+@keyframes product-level-switch {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* WEB.1E — KAVTRIS brand meaning (institutional signature section).   */
 /* Seven symbolic brand principles, one engineered system. Letters     */

@@ -8,6 +8,8 @@ import { ContextBackForwardControls } from '@/components/shared/ContextBackForwa
 import { FieldOpsExperience } from '@/features/products/fieldops/components/responsive/FieldOpsExperience';
 import { getProductBySlug } from '@/features/products/data/products';
 import { fieldOpsTechnicalGroups } from '@/features/products/fieldops/data/fieldops';
+import { ProductConsultantEscape } from '@/features/products/shared/ProductConsultantEscape';
+import { ProductLevelConfigurator } from '@/features/products/shared/ProductLevelConfigurator';
 
 const fieldOpsProduct = getProductBySlug('fieldops');
 
@@ -70,6 +72,11 @@ export function FieldOpsPage() {
         </section>
 
         <FieldOpsExperience />
+
+        {/* WEB.1F.7 — shared visual level configurator (the same reusable
+            system as every other product: the selected level visibly changes
+            the FieldOps composition). */}
+        <ProductLevelConfigurator product={fieldOpsProduct} />
 
         <section className="bg-white py-16 sm:py-20">
           <div className="container-section grid gap-8 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
@@ -148,6 +155,9 @@ export function FieldOpsPage() {
             </div>
           </div>
         </section>
+
+        {/* WEB.1F.7 — consultant escape path (never a dead end). */}
+        <ProductConsultantEscape />
       </main>
       <Footer />
     </>

@@ -1,28 +1,59 @@
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import {
+  ArrowRight,
+  Bell,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  FileStack,
+  FolderOpen,
+  MessageSquare,
+  Package,
+  ShieldCheck
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/shared/Button';
 import { ContextBackForwardControls } from '@/components/shared/ContextBackForwardControls';
+import { ProductConsultantEscape } from '@/features/products/shared/ProductConsultantEscape';
+import { ProductInAction } from '@/features/products/shared/ProductInAction';
+import { ProductLevelConfigurator } from '@/features/products/shared/ProductLevelConfigurator';
 import { ProductMockup } from '@/features/products/shared/ProductMockup';
-import { ProductWorkflow } from '@/features/products/shared/ProductWorkflow';
 import type { ProductConcept } from '@/domain/products/types';
 
 type GenericProductPageProps = {
   product: ProductConcept;
 };
 
+const benefitIcons: LucideIcon[] = [
+  CheckCircle2,
+  Bell,
+  FolderOpen,
+  FileStack,
+  Clock3,
+  ShieldCheck,
+  Building2,
+  MessageSquare,
+  Package
+];
+
 /**
- * WEB.1F.6 — data-driven product detail presentation.
+ * WEB.1F.7 — data-driven product detail presentation (SHOW FIRST, EXPLAIN
+ * SECOND).
  *
- * Storytelling sequence: hero → product-specific visual → how it could work
- * (workflow) → business problem → features/benefits → who it can serve →
- * technical details → clear next step. The prominent "← Voltar aos produtos"
- * link is REMOVED (PRODUCT_BACK_LINK_REMOVED); global navigation and browser
- * history already provide navigation context, so the page opens with
- * confidence in the product itself.
+ * Storytelling order:
+ *   1. product hero (visual-first, short copy)      → strong mockup
+ *   2. product in action                            → purpose-built scene
+ *   3. visual level configurator                    → Essencial/Crescimento/
+ *                                                     Empresarial + live visual
+ *   4. short benefits / use context                 → icon + title, chips
+ *   5. technical details                            → after the discovery
+ *   6. primary next step                            → light surface, no footer blur
+ *   7. consultant escape path                       → /#contacto
+ *   8. footer
  *
- * Every visual is derived from the product's own definition — no invented
- * capabilities, no stock photography.
+ * Text density is reduced (no long wall of copy before the visitor sees how
+ * the product works); every visual derives from the product's own definition.
  */
 export function GenericProductPage({ product }: GenericProductPageProps) {
   return (
@@ -52,8 +83,8 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 <Button href={`/?produto=${product.slug}#contacto`} className="text-navy-950">
                   Adaptar à minha empresa
                 </Button>
-                <Button href="#como-funcionaria" variant="secondary">
-                  Ver como funciona
+                <Button href="#produto-em-acao" variant="secondary">
+                  Ver em ação
                 </Button>
               </div>
             </div>
@@ -63,83 +94,65 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </section>
 
-        {/* 2 — How it could work: purpose-built product workflow visual. */}
-        <section id="como-funcionaria" className="bg-white py-14 sm:py-16 lg:py-20">
+        {/* 2 — Product in action: a purpose-built scene per product. */}
+        <section id="produto-em-acao" className="bg-white py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div className="max-w-3xl">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Como poderia funcionar</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Possível utilização</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-                Um fluxo simples, visível para todos.
+                Veja o {product.name} em ação.
               </h2>
               <p className="mt-4 text-base leading-8 text-slate-600">
-                O percurso abaixo ilustra uma possível utilização do {product.name}. Os passos exatos dependem do levantamento e da forma como a sua empresa opera.
+                Uma leitura visual de como a solução pode acompanhar o dia a dia. Os passos exatos dependem do
+                levantamento e da forma como a sua empresa opera.
               </p>
             </div>
             <div className="mt-8">
-              <ProductWorkflow product={product} />
+              <ProductInAction product={product} />
             </div>
           </div>
         </section>
 
-        {/* 3 — Business problem + how the product responds. */}
-        <section className="bg-mist py-14 sm:py-16 lg:py-20">
-          <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-            <div className="grid gap-6 lg:grid-cols-2">
-              <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">O problema que resolve</p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Onde costuma doer.</h2>
-                <p className="mt-4 text-base leading-8 text-slate-700">{product.problem}</p>
-              </article>
-              <article className="rounded-[1.35rem] border border-kavtris-blue/25 bg-white p-6 shadow-sm sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">O que propõe</p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Um ponto de partida organizado.</h2>
-                <p className="mt-4 text-base leading-8 text-slate-700">
-                  {product.description} As funcionalidades podem começar pelo essencial e crescer com a operação.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
+        {/* 3 — Visual level configurator (shared, data-driven). */}
+        <ProductLevelConfigurator product={product} />
 
-        {/* 4 — Features + benefits/audience (balanced two-column composition:
-            no tall empty card next to stacked cards). */}
+        {/* 4 — Short benefits + use context: icon + title, compact chips
+            (WEB.1F.7 — no tall text-card stacks, no empty columns). */}
         <section className="bg-white py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
-            <div className="grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-start">
+            <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr] lg:items-start">
               <article className="rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Funcionalidades possíveis</p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">O que poderia incluir.</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  Cada funcionalidade pode ser priorizada em fases, começando pelo essencial.
-                </p>
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {product.features.map((feature) => (
-                    <div key={feature} className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-navy-800">
-                      {feature}
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Benefícios práticos</p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">Mais simples no dia a dia.</h2>
+                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {product.benefits.map((benefit, index) => {
+                    const Icon = benefitIcons[index % benefitIcons.length];
+                    return (
+                      <li
+                        key={benefit}
+                        className="flex items-center gap-3 rounded-2xl border border-borderline bg-white px-4 py-3.5"
+                      >
+                        <Icon className="h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
+                        <span className="text-sm font-semibold leading-5 text-navy-900">{benefit}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </article>
 
               <div className="grid gap-6">
                 <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">Benefícios práticos</p>
-                  <ul className="mt-4 grid gap-3">
-                    {product.benefits.map((benefit) => (
-                      <li key={benefit} className="flex gap-2 text-sm leading-6 text-slate-700">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
-                        {benefit}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">O problema que resolve</p>
+                  <p className="mt-4 text-base leading-8 text-slate-700">{product.problem}</p>
                 </article>
-
-                <article className="rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-8">
+                <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">Para quem pode servir</p>
-                  <ul className="mt-4 grid gap-3">
+                  <ul className="mt-4 flex flex-wrap gap-2">
                     {product.audience.map((item) => (
-                      <li key={item} className="flex gap-2 text-sm leading-6 text-navy-800">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
+                      <li
+                        key={item}
+                        className="rounded-full border border-navy-200 bg-paper px-3.5 py-1.5 text-sm font-semibold text-navy-800"
+                      >
                         {item}
                       </li>
                     ))}
@@ -150,7 +163,9 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
           </div>
         </section>
 
-        {/* 5 — Optional equipment + technical details accordion. */}
+        {/* 5 — Technical details, positioned AFTER the visual discovery
+            (WEB.1F.7: the accordion remains accessible but never dominates the
+            commercial discovery journey). */}
         <section className="bg-mist py-14 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             {product.optionalEquipment?.length ? (
@@ -215,6 +230,9 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
             </article>
           </div>
         </section>
+
+        {/* 7 — Consultant escape path (never a dead end for unsure visitors). */}
+        <ProductConsultantEscape />
       </main>
       <Footer />
     </>

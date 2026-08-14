@@ -111,7 +111,7 @@ test('rotas de produto carregam com detalhes técnicos progressivos', async ({ p
       continue;
     }
 
-    await expect(page.getByRole('heading', { name: product.name })).toBeVisible();
+    await expect(page.getByRole('heading', { name: product.name, exact: true })).toBeVisible();
     await expect(page.getByText(/Este é um exemplo de solução que pode ser adaptado/i)).toBeVisible();
     const technicalDetails = page.locator('details').filter({ hasText: 'Ver detalhes técnicos' });
     await expect(technicalDetails.locator('summary')).toBeVisible();

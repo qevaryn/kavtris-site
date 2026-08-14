@@ -310,8 +310,11 @@ export function BusinessDiscovery() {
                 </div>
                 {/* WEB.1F.6 — clearly separated controls (no collision): a
                     wider gap and visually distinct actions. Wraps on mobile
-                    without horizontal overflow. */}
-                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                    without horizontal overflow.
+                    WEB.1F.7 — the two actions are now clearly independent
+                    controls: a generous gap and distinct visual weights
+                    (Voltar = navigation; Fechar = secondary/destructive exit). */}
+                <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                   <button
                     type="button"
                     data-testid="discovery-back-to-business"
@@ -339,7 +342,7 @@ export function BusinessDiscovery() {
                 Estas soluções podem servir como ponto de partida e ser adaptadas à realidade da sua empresa.
               </p>
 
-              <div className="mt-7 grid gap-5 md:grid-cols-3">
+              <div className="mt-7 grid gap-6 md:grid-cols-3">
                 {selected.productSlugs.map((slug) => {
                   const product = getProductBySlug(slug);
                   if (!product) {
@@ -347,31 +350,41 @@ export function BusinessDiscovery() {
                   }
 
                   return (
-                    <article key={slug} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6">
+                    <article
+                      key={slug}
+                      className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6"
+                    >
                       <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[#A5C9FF]">
                         {product.categoryLabel}
                       </p>
-                      <h4 className="mt-2 text-lg font-semibold text-white">{product.name}</h4>
-                      <p className="mt-3 text-sm leading-6 text-white/70">{product.shortDescription}</p>
-                      <span className="mt-4 inline-flex w-fit rounded-full border border-[#A5C9FF]/40 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#A5C9FF]">
+                      <h4 className="mt-3 text-lg font-semibold text-white">{product.name}</h4>
+                      <p className="mt-4 text-sm leading-6 text-white/70">{product.shortDescription}</p>
+                      {/* WEB.1F.7 — the "Pode ser adaptado" badge gets its own
+                          rhythm: it no longer collides with the CTA below. */}
+                      <span className="mt-6 inline-flex w-fit rounded-full border border-[#A5C9FF]/40 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#A5C9FF]">
                         Pode ser adaptado
                       </span>
-                      <Link
-                        href={`/produtos/${product.slug}`}
-                        className="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-kavtris-blueLight/50 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-kavtris-blue hover:border-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
-                      >
-                        Ver produto
-                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                      </Link>
+                      <div className="mt-auto pt-6">
+                        <Link
+                          href={`/produtos/${product.slug}`}
+                          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-kavtris-blueLight/50 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-kavtris-blue hover:border-kavtris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+                        >
+                          Ver produto
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </Link>
+                      </div>
                     </article>
                   );
                 })}
               </div>
 
-              {/* Starting-point consultant help (the panel is never a dead end). */}
+              {/* Starting-point consultant help (the panel is never a dead end).
+                  WEB.1F.7 — clearly independent fallback action: more separation
+                  from the product cards and a stronger boundary so it never
+                  reads as a fourth product card or a glued button. */}
               <div
                 data-testid="starting-point-consultant"
-                className="mt-7 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-5 sm:flex-row sm:items-center sm:justify-between"
+                className="mt-9 flex flex-col gap-4 rounded-2xl border border-white/20 bg-white/5 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
               >
                 <div>
                   <p className="text-base font-semibold text-white">Nenhuma destas opções parece certa?</p>
