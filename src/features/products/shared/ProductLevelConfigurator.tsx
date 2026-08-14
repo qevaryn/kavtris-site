@@ -83,7 +83,7 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
           {/* Selected-level visual — re-keyed so the level switch is visible. */}
           <div
             key={level.id}
-            className="motion-safe:animate-[product-level-switch_240ms_ease-out]"
+            className="min-w-0 motion-safe:animate-[product-level-switch_240ms_ease-out]"
             data-testid="product-level-visual-stage"
           >
             <ProductLevelMockup product={product} level={level} />
@@ -92,7 +92,7 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
           {/* Level selector panel */}
           <aside
             aria-label={`Níveis de configuração do ${product.name}`}
-            className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8"
+            className="min-w-0 rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8"
           >
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">Nível da solução</p>
             <div
@@ -185,4 +185,3 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
     </section>
   );
 }
-
