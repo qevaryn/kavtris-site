@@ -18,7 +18,7 @@ The project should not duplicate pages into separate desktop-web and mobile-web 
 
 - Header and mobile menu are global layout components.
 - Product catalog cards are shared responsive components.
-- FieldOps keeps shared state in `FieldOpsExperience` and delegates product-specific presentation to desktop, mobile and responsive child components.
+- FieldOps keeps level and sector state in `FieldOpsPage`, then delegates sector adaptation and visual demonstration to responsive child components.
 - Tabs, accordions and filters remain keyboard accessible and touch friendly.
 
 ## Current responsive ownership map
@@ -37,7 +37,8 @@ src/features/catalog/components
 src/features/products/fieldops/components
   desktop/FieldOpsManagementDashboard
   mobile/FieldOpsEmployeeMobileView
-  responsive/FieldOpsExperience
+  responsive/FieldOpsSectorAdaptation
+  responsive/FieldOpsDemonstration
   responsive/FieldOpsProcessWorkflow
 ```
 
