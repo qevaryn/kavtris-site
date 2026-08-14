@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight, MapPinned, QrCode, Smartphone, Tags } from 'lucide-react';
+import { ArrowRight, MapPinned, QrCode, Smartphone, Tags } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -37,11 +36,7 @@ export function FieldOpsPage() {
         <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
           <div className="container-section grid gap-9 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
             <div>
-              <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-kavtris-blueLight underline-offset-4 hover:underline">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Voltar aos produtos
-              </Link>
-              <p className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">FieldOps</p>
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">FieldOps</p>
               <p className="mt-3 inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 Conceito de solução adaptável
               </p>
@@ -95,7 +90,7 @@ export function FieldOpsPage() {
                   <p className="mt-4 text-sm font-semibold text-navy-900">{label}</p>
                 </div>
               ))}
-              <div className="sm:col-span-2 rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-5 text-sm leading-7 text-white/72">
+              <div className="sm:col-span-2 rounded-[1.35rem] border border-kavtris-blue/25 bg-navy-950 p-5 text-sm leading-7 text-white/70">
                 A utilização deve ser proporcional, transparente e limitada ao processo necessário. O objetivo não é vigilância permanente, e a KAVTRIS não fabrica estes dispositivos.
               </div>
             </div>
@@ -130,20 +125,26 @@ export function FieldOpsPage() {
           </div>
         </section>
 
-        <section className="bg-navy-950 py-16 text-white sm:py-20">
-          <div className="container-section rounded-[1.6rem] border border-white/10 bg-white/5 p-6 sm:p-8">
-            <h2 className="max-w-3xl text-3xl font-semibold tracking-tight">Quer saber como o FieldOps funcionaria na sua empresa?</h2>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-white/72">
-              Explique como os serviços são organizados atualmente e onde acontecem as maiores dificuldades.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/?produto=fieldops#contacto" className="text-navy-950">
-                Adaptar o FieldOps à minha empresa
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Button>
-              <Button href="/#contacto" variant="secondary">
-                Ainda não sei qual solução preciso
-              </Button>
+        {/* WEB.1F.6 — final CTA on a LIGHT page surface, clearly separated from
+            the deep-navy footer that follows. */}
+        <section className="bg-mist py-16 sm:py-20">
+          <div className="container-section">
+            <div className="rounded-[1.6rem] border border-kavtris-blue/30 bg-[#EAF1FC] p-6 text-navy-950 sm:p-8" data-testid="product-next-step">
+              <h2 className="max-w-3xl text-3xl font-semibold tracking-tight">
+                Quer saber como o FieldOps funcionaria na sua empresa?
+              </h2>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-navy-800/80">
+                Explique como os serviços são organizados atualmente e onde acontecem as maiores dificuldades.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button href="/?produto=fieldops#contacto" className="text-navy-950">
+                  Adaptar o FieldOps à minha empresa
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Button>
+                <Button href="/#contacto" variant="outline">
+                  Ainda não sei qual solução preciso
+                </Button>
+              </div>
             </div>
           </div>
         </section>

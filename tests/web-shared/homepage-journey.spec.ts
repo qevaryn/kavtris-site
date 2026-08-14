@@ -11,7 +11,8 @@ test('homepage usa a jornada simplificada: hero → credibilidade → como funci
   await expect(page.locator('#inicio').getByRole('link', { name: 'Ver como funciona' })).toHaveAttribute('href', '#como-funciona');
   await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
 
-  // Como funciona: seletor de caminho do cliente (dois cartões + caminho técnico).
+  // Como funciona: seletor de caminho do cliente (exatamente dois cartões;
+  // WEB.1F.6 removeu o terceiro caminho técnico).
   const comoFunciona = page.locator('#como-funciona');
   await expect(comoFunciona.getByRole('heading', { name: 'Comece pelo caminho mais simples para a sua empresa.' })).toBeVisible();
 
@@ -29,7 +30,8 @@ test('homepage usa a jornada simplificada: hero → credibilidade → como funci
     '/produtos?modo=sistemas#catalogo'
   );
 
-  await expect(comoFunciona.getByTestId('home-path-technical')).toHaveAttribute('href', '/empresas#capacidades');
+  await expect(comoFunciona.getByTestId('home-path-technical')).toHaveCount(0);
+  await expect(comoFunciona.getByText('Ver capacidades mais técnicas')).toHaveCount(0);
 
   // Rede Qualidade é Vida.
   const networkPreview = page.locator('#rede');

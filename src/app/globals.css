@@ -427,6 +427,21 @@ section[id] {
   }
 }
 
+/* WEB.1F.6 — content switch inside an already-open discovery panel.
+   A short opacity + slight vertical movement (240ms) signals that a NEW
+   business selection was loaded. `motion-safe:` keeps it instant under
+   prefers-reduced-motion. No bounce, no dramatic slide, no spinner. */
+@keyframes point-of-start-switch {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* WEB.1E — KAVTRIS brand meaning (institutional signature section).   */
 /* Seven symbolic brand principles, one engineered system. Letters     */

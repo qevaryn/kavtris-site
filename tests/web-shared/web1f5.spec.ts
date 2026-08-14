@@ -93,7 +93,7 @@ test.describe('WEB.1F.5', () => {
     await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
   });
 
-  test('home: Como funciona com dois cartões e terceiro caminho técnico', async ({ page }) => {
+  test('home: Como funciona com exatamente dois cartões e sem terceiro caminho técnico', async ({ page }) => {
     await page.goto('/');
 
     const section = page.locator('#como-funciona');
@@ -113,8 +113,9 @@ test.describe('WEB.1F.5', () => {
       '/produtos?modo=sistemas#catalogo'
     );
 
-    await expect(section.getByTestId('home-path-technical')).toHaveAttribute('href', '/empresas#capacidades');
-    await expect(section.getByTestId('home-path-technical')).toContainText('Ver capacidades mais técnicas');
+    // WEB.1F.6 — exactly two customer paths (HOME_MODE_CHOICES = 2).
+    await expect(section.getByTestId('home-path-technical')).toHaveCount(0);
+    await expect(section.getByText('Ver capacidades mais técnicas')).toHaveCount(0);
   });
 
   test('home journey A: "Escolher pelo meu negócio" abre o modo negócio sem repetir o seletor', async ({ page }) => {
@@ -135,13 +136,9 @@ test.describe('WEB.1F.5', () => {
     await expect(page.getByTestId('products-mode-systems-secondary')).toHaveCount(0);
   });
 
-  test('home journey C: "Ver capacidades mais técnicas" abre /empresas#capacidades', async ({ page }) => {
-    await page.goto('/');
-    await page.locator('#como-funciona').getByTestId('home-path-technical').click();
-
-    await expect(page).toHaveURL(/\/empresas#capacidades/);
-    await expect(page.locator('#capacidades')).toBeInViewport();
-  });
+  // WEB.1F.6 — the third technical path was REMOVED from the homepage. Technical
+  // visitors reach capabilities through Header → Engenharia (covered above), so
+  // there is no "home journey C" anymore.
 
   test('produtos default: apenas o seletor de modo é apresentado', async ({ page }) => {
     await page.goto('/produtos');

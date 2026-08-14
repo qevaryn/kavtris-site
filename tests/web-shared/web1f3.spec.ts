@@ -148,7 +148,7 @@ test.describe('WEB.1F.3', () => {
     await page.goto('/empresas');
 
     await expect(page.getByRole('heading', { name: /Tecnologia adaptada à realidade da sua empresa/ })).toBeVisible();
-    await expect(page.getByText('O que a KAVTRIS faz por si')).toBeVisible();
+    await expect(page.getByText('Como a KAVTRIS ajuda')).toBeVisible();
     for (const approach of ['Adaptar', 'Combinar', 'Integrar', 'Desenvolver']) {
       await expect(page.getByText(approach, { exact: true })).toBeVisible();
     }

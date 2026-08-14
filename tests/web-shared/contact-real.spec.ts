@@ -128,6 +128,38 @@ test('browser contact double-click does not duplicate the API POST', async ({ pa
   await page.goto('/');
   await fillContactForm(page);
 
+  // WEB.1F.6 robustness fix (assertions unchanged): the homepage uses smooth
+  // scrolling (`html { scroll-behavior: smooth }`) and one-time scroll reveals.
+  // A delayed click (mousedown → 50ms → mouseup) on a still-moving button is
+  // swallowed by the browser (no mouseup → no click event), so this test would
+  // fail without exercising the double-submission guard at all. Force the page
+  // stable (instant scroll + poll until the submit button's box stops moving)
+  // before the double-click. Verified: contact implementation diff = 0.
+  await page.evaluate(() => {
+    document.getElementById('contacto')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
+  await page.waitForFunction(
+    () =>
+      new Promise<boolean>((resolve) => {
+        const btn = document.querySelector('button[type="submit"]');
+        if (!btn) {
+          resolve(false);
+          return;
+        }
+        const before = btn.getBoundingClientRect();
+        window.setTimeout(() => {
+          const after = btn.getBoundingClientRect();
+          resolve(
+            before.x === after.x &&
+              before.y === after.y &&
+              before.width === after.width &&
+              before.height === after.height
+          );
+        }, 80);
+      }),
+    { polling: 120 }
+  );
+
   const submitButton = page.getByRole('button', { name: 'Enviar explicação' });
   await submitButton.click({ delay: 50 });
   // Second click while the first request is still in flight; the button is

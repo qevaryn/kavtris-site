@@ -1,18 +1,23 @@
-import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { RevealOnce } from '@/components/shared/RevealOnce';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 
 /**
- * WEB.1F.5 — Homepage "Como funciona" customer-path selector.
+ * WEB.1F.5/6 — Homepage "Como funciona" customer-path selector.
  *
  * The old five-step technical process section is intentionally removed. This
- * section orients the visitor instead of exploring content:
+ * section orients the visitor instead of exploring content. There are EXACTLY
+ * TWO customer paths (HOME_MODE_CHOICES = 2):
  *
  *   1. Card A (PRIMARY) — "não sei qual sistema preciso" → business discovery;
- *   2. Card B (SECONDARY) — "já sei o que procuro" → system catalog;
- *   3. Centered technical link — deeper capabilities on /empresas#capacidades.
+ *   2. Card B (SECONDARY) — "já sei o que procuro" → system catalog.
+ *
+ * WEB.1F.6: the technical "Ver capacidades mais técnicas" link is REMOVED
+ * (HOMEPAGE_TECHNICAL_LINK = REMOVED). Technical visitors reach capabilities
+ * through Header → Engenharia. The right card is refined on a restrained
+ * cool-blue secondary surface so both cards feel deliberate and legible while
+ * keeping the left option as the primary journey.
  *
  * Home orients; Products explores. The business cards/catalog live on their
  * dedicated Products modes and are NOT repeated here.
@@ -57,10 +62,14 @@ export function CustomerPathSelector() {
               </Button>
             </article>
 
-            {/* Card B — SECONDARY: system catalog */}
+            {/* Card B — SECONDARY: system catalog.
+                WEB.1F.6: refined on a restrained cool-blue surface (never pure
+                white floating on white) — visible border, strong navy title,
+                readable body and a clear outline CTA. Still deliberately
+                lighter than the navy primary card. */}
             <article
               data-testid="home-path-systems-secondary"
-              className="flex flex-col rounded-[1.5rem] border border-borderline bg-white p-6 shadow-sm sm:p-8"
+              className="flex flex-col rounded-[1.5rem] border border-kavtris-blue/30 bg-[#EAF1FC] p-6 text-navy-950 shadow-sm transition hover:border-kavtris-blue/60 hover:shadow-card sm:p-8"
             >
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-kavtris-blue">
                 Já sei o que procuro
@@ -68,7 +77,7 @@ export function CustomerPathSelector() {
               <h3 className="mt-4 font-display text-2xl leading-tight text-navy-950 sm:text-3xl">
                 Ver os sistemas
               </h3>
-              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+              <p className="mt-4 text-sm leading-7 text-navy-800/80 sm:text-base">
                 Explore diretamente os sistemas e soluções da KAVTRIS.
               </p>
               <Button
@@ -80,18 +89,6 @@ export function CustomerPathSelector() {
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
             </article>
-          </div>
-
-          {/* Third path — technical capabilities (visually less dominant). */}
-          <div className="mt-8 text-center">
-            <Link
-              href="/empresas#capacidades"
-              className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-kavtris-blue underline-offset-4 transition hover:text-kavtris-blueLight hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2"
-              data-testid="home-path-technical"
-            >
-              Ver capacidades mais técnicas
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
           </div>
         </div>
       </RevealOnce>

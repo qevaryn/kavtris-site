@@ -41,36 +41,42 @@ export const enterpriseCapabilities: EnterpriseCapabilityGroup[] = [
     id: 'applications',
     title: 'Aplicações',
     description: 'Interfaces adequadas ao uso interno, ao cliente e ao contexto operacional.',
+    why: 'Para que cada utilizador — equipa, cliente ou profissional no terreno — tenha uma forma adequada de trabalhar, sem depender de folhas ou mensagens.',
     items: ['sistemas web responsivos', 'interfaces mobile-first', 'plataformas internas', 'portais de cliente', 'PWA opcional', 'aplicação nativa conforme escopo']
   },
   {
     id: 'architecture',
     title: 'Arquitetura e dados',
     description: 'Base técnica definida de acordo com a dimensão, risco e evolução prevista.',
+    why: 'Para que a solução acompanhe o crescimento da empresa sem exigir reconstruções desnecessárias.',
     items: ['arquitetura modular', 'bases de dados', 'armazenamento de ficheiros', 'deploy conforme necessidade', 'separação de responsabilidades', 'escala conforme requisitos validados']
   },
   {
     id: 'integrations',
     title: 'Integrações',
     description: 'Ligações com ferramentas existentes quando forem necessárias e viáveis.',
+    why: 'Para que os sistemas atuais continuem a ser usados em vez de serem descartados ou duplicados.',
     items: ['APIs', 'sistemas de negócio existentes', 'provedores de identidade', 'calendários', 'ferramentas de relatórios', 'pagamentos quando contratualmente necessário', 'plataformas externas conforme viabilidade']
   },
   {
     id: 'security',
     title: 'Segurança e privacidade',
     description: 'Controlos definidos pelo risco, pelos dados tratados e pelo contexto de acesso.',
+    why: 'Para que acessos, dados e documentos estejam protegidos conforme o risco real de cada projeto.',
     items: ['autenticação', 'perfis e permissões', 'revisão de acessos', 'histórico de atividade', 'ficheiros seguros', 'minimização de dados', 'desenho orientado ao RGPD', 'controlos baseados em risco']
   },
   {
     id: 'quality',
     title: 'Qualidade de software',
     description: 'Validação progressiva para reduzir falhas e alinhar entregas com critérios definidos.',
+    why: 'Para que cada entrega seja verificada antes de chegar a quem vai usar o sistema.',
     items: ['critérios de aceitação', 'testes manuais', 'testes automatizados', 'testes de API', 'testes E2E', 'regressão', 'gestão de defeitos', 'validação de release']
   },
   {
     id: 'operation',
     title: 'Operação',
     description: 'Acompanhamento técnico definido conforme criticidade e contrato.',
+    why: 'Para que o sistema continue a funcionar e a evoluir depois do lançamento.',
     items: ['logs', 'monitorização quando aplicável', 'backups definidos por escopo', 'planeamento de recuperação', 'tratamento de incidentes', 'manutenção', 'documentação', 'planos de suporte']
   }
 ];

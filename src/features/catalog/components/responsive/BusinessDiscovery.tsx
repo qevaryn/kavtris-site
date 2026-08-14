@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, X } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { cn } from '@/components/shared/cn';
@@ -95,16 +95,35 @@ export function BusinessDiscovery() {
       replaceNavigation({ url: gridUrl.toString(), focusKey: `business-card-${id}` });
       pushNavigation({ url: url.toString(), kind: 'discovery', focusKey: `business-card-${id}` });
       setSelectedId(id);
-
-      window.setTimeout(() => {
-        resultsRef.current?.scrollIntoView({
-          behavior: reducedMotion ? 'auto' : 'smooth',
-          block: 'start'
-        });
-      }, 0);
     },
-    [selectedId, pushNavigation, replaceNavigation, reducedMotion]
+    [selectedId, pushNavigation, replaceNavigation]
   );
+
+  // WEB.1F.6 — EVERY valid business selection scrolls to the point-of-start
+  // region, not just the first one. This effect runs AFTER the new content has
+  // been committed (React effects run post-render), so no brittle timeout is
+  // needed. It covers:
+  //   - first click (panel opens)          — YES
+  //   - switching business while open      — YES
+  //   - previous panel left open           — YES
+  //   - after close and reopen             — YES
+  //   - browser Back/Forward into a panel  — YES
+  //   - direct deep-link entry             — YES
+  // It never runs when the panel closes (selectedId → null).
+  useEffect(() => {
+    if (!selectedId) {
+      return undefined;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({
+        behavior: reducedMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [selectedId, reducedMotion]);
 
 
   const closeDiscovery = useCallback(() => {
@@ -202,7 +221,7 @@ export function BusinessDiscovery() {
                   className={cn(
                     'snap-card group flex h-full flex-col overflow-hidden rounded-[1.35rem] border bg-white text-left shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
                     isSelected
-                      ? 'border-kavtris-blue ring-2 ring-kavtris-blue/40'
+                      ? 'border-kavtris-blue bg-[#F0F6FF] ring-2 ring-kavtris-blue/40'
                       : 'border-borderline hover:-translate-y-0.5 hover:border-kavtris-blue/50 hover:shadow-card motion-reduce:translate-y-0 motion-reduce:hover:translate-y-0'
                   )}
                 >
@@ -225,11 +244,22 @@ export function BusinessDiscovery() {
                     <span
                       className={cn(
                         'mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold',
-                        isSelected ? 'text-kavtris-blue' : 'text-kavtris-blue group-hover:text-kavtris-blueLight'
+                        isSelected
+                          ? 'text-kavtris-blue'
+                          : 'text-kavtris-blue group-hover:text-kavtris-blueLight'
                       )}
                     >
-                      Ver ponto de partida
-                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      {isSelected ? (
+                        <>
+                          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                          Ponto de partida aberto
+                        </>
+                      ) : (
+                        <>
+                          Ver ponto de partida
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        </>
+                      )}
                     </span>
                   </span>
                 </button>
@@ -262,15 +292,26 @@ export function BusinessDiscovery() {
               aria-labelledby="discovery-panel-title"
               className="mt-10 scroll-mt-24 rounded-[1.5rem] border border-kavtris-blue/30 bg-navy-950 p-6 text-white shadow-card motion-safe:animate-[discovery-panel-in_220ms_ease-out] sm:p-8"
             >
-              {/* Contextual panel header with explicit close affordances */}
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              {/* WEB.1F.6 — the keyed content re-animates (opacity + slight
+                  rise, 240ms, motion-safe) on EVERY business switch so the
+                  visitor clearly sees that a NEW starting point was loaded. */}
+              <div
+                key={selected.id}
+                data-testid="discovery-panel-content"
+                className="motion-safe:animate-[point-of-start-switch_240ms_ease-out]"
+              >
+                {/* Contextual panel header with explicit close affordances */}
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#A5C9FF]">Ponto de partida</p>
                   <h3 id="discovery-panel-title" className="mt-2 max-w-3xl text-2xl font-semibold tracking-tight sm:text-3xl">
                     Ponto de partida para {selected.label}.
                   </h3>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                {/* WEB.1F.6 — clearly separated controls (no collision): a
+                    wider gap and visually distinct actions. Wraps on mobile
+                    without horizontal overflow. */}
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <button
                     type="button"
                     data-testid="discovery-back-to-business"
@@ -298,7 +339,7 @@ export function BusinessDiscovery() {
                 Estas soluções podem servir como ponto de partida e ser adaptadas à realidade da sua empresa.
               </p>
 
-              <div className="mt-7 grid gap-4 md:grid-cols-3">
+              <div className="mt-7 grid gap-5 md:grid-cols-3">
                 {selected.productSlugs.map((slug) => {
                   const product = getProductBySlug(slug);
                   if (!product) {
@@ -306,13 +347,13 @@ export function BusinessDiscovery() {
                   }
 
                   return (
-                    <article key={slug} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-5">
+                    <article key={slug} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6">
                       <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[#A5C9FF]">
                         {product.categoryLabel}
                       </p>
                       <h4 className="mt-2 text-lg font-semibold text-white">{product.name}</h4>
-                      <p className="mt-2 text-sm leading-6 text-white/70">{product.shortDescription}</p>
-                      <span className="mt-3 inline-flex w-fit rounded-full border border-[#A5C9FF]/40 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#A5C9FF]">
+                      <p className="mt-3 text-sm leading-6 text-white/70">{product.shortDescription}</p>
+                      <span className="mt-4 inline-flex w-fit rounded-full border border-[#A5C9FF]/40 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#A5C9FF]">
                         Pode ser adaptado
                       </span>
                       <Link
@@ -341,6 +382,7 @@ export function BusinessDiscovery() {
                 <Button href="/#contacto" className="shrink-0">
                   Falar com um consultor
                 </Button>
+              </div>
               </div>
             </div>
           ) : null}
