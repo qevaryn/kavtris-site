@@ -30,7 +30,7 @@ The original Phase 1 requirements are retained below as audit traceability.
 | Interface detail level | Use large, readable UI blocks instead of tiny text. | Current mockup text is too small to carry meaning in mobile cards. |
 | Typography inside mockups | Treat mockup text as illustrative, not critical information. | Accessibility and mobile readability depend on page copy and alt text, not tiny embedded text. |
 | Navy/gold usage | Keep navy, gold and white as system anchors. | Current brand consistency is one of the strongest qualities. |
-| Logo presence | Decide whether Qevaryn branding appears inside product UI, subtly and consistently. | Current images feel like a product ecosystem but product names are mostly handled outside the image. |
+| Logo presence | Decide whether KAVTRIS branding appears inside product UI, subtly and consistently. | Current images feel like a product ecosystem but product names are mostly handled outside the image. |
 | Product-name presence | Decide if product names appear in images or remain card/page text only. | Product-card labels already name products; embedded text could become unreadable. |
 | Hardware representation | Define simple-equipment-only rule by product. | FieldOps/Stock/Kitchen use optional devices; future visuals must not imply proprietary hardware. |
 | Data realism | Use privacy-safe fictional interface data. | Customer Portal and FieldOps could otherwise imply real customer/service data. |
@@ -41,7 +41,7 @@ The original Phase 1 requirements are retained below as audit traceability.
 
 ## Software-First Visual Rules
 
-Future product images must show Qevaryn as a software provider first.
+Future product images must show KAVTRIS as a software provider first.
 
 Allowed supporting equipment:
 
@@ -60,8 +60,8 @@ Rules:
 
 - Hardware must be secondary to the software interface.
 - Hardware must look easy to source and replace.
-- Hardware must not look manufactured by Qevaryn.
-- Do not show large machines, industrial lines, custom kiosks, robots, complex clinical devices or expensive proprietary hardware as Qevaryn products.
+- Hardware must not look manufactured by KAVTRIS.
+- Do not show large machines, industrial lines, custom kiosks, robots, complex clinical devices or expensive proprietary hardware as KAVTRIS products.
 
 ## Product-Specific Honesty Rules
 
@@ -70,8 +70,8 @@ Rules:
 | FieldOps | Permanent surveillance, proprietary tracking hardware, guaranteed real-time monitoring. |
 | Stock & Orders | Full ERP replacement, guaranteed inventory accuracy, proprietary stock terminals. |
 | Hotel Operations | Integration with every PMS by default, guaranteed room-status automation. |
-| KitchenSync | Qevaryn-made kitchen machines, restaurant hardware manufacturing, guaranteed real-time kitchen system. |
-| Qevaryn Ops | Enterprise platform availability as a finished SaaS, guaranteed scalability or certifications. |
+| KitchenSync | KAVTRIS-made kitchen machines, restaurant hardware manufacturing, guaranteed real-time kitchen system. |
+| KAVTRIS Ops | Enterprise platform availability as a finished SaaS, guaranteed scalability or certifications. |
 | Customer Portal | Real customer data, app-store availability, fixed payment capability unless scoped. |
 
 ## Preliminary Naming Convention
@@ -113,7 +113,7 @@ public/images/
 │   ├── stock-orders/
 │   ├── hotel-operations/
 │   ├── kitchen-sync/
-│   ├── qevaryn-ops/
+│   ├── KAVTRIS-ops/
 │   └── customer-portal/
 ├── people/
 ├── email/

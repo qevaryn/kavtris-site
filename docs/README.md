@@ -135,11 +135,15 @@ Governança, produto, Platform, sistemas, planos e subscrições:
 
 `qevaryn/qevaryn-docs` — https://github.com/qevaryn/qevaryn-docs
 
+Status: external identity pending PRE-PLATFORM-TRANSITION.2B.
+
 ### Qevaryn Site
 
 Arquitetura técnica, desenvolvimento, QA, deploy e operação do site:
 
 este repositório.
+
+Status: external repository name pending PRE-PLATFORM-TRANSITION.2B.
 
 ## Visual Assets
 

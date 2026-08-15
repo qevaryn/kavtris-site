@@ -66,14 +66,14 @@ describe('sendContactEmail', () => {
     expect(payload.to).toBe('destinatario@example.com');
     expect(payload.replyTo).toBe('ana@example.com');
     expect(payload.subject).toBe('[Novo contacto] Automação de processos — Empresa Exemplo');
-    expect(payload.html).toContain('cid:qevaryn-systems-logo');
+    expect(payload.html).toContain('cid:kavtris-logo');
     expect(payload.text).toContain('Responder diretamente ao email do cliente');
     expect(payload.attachments).toEqual([
       expect.objectContaining({
         filename: 'kavtris-wordmark-dark.png',
         contentType: 'image/png',
-        contentId: 'qevaryn-systems-logo',
-        inlineContentId: 'qevaryn-systems-logo'
+        contentId: 'kavtris-logo',
+        inlineContentId: 'kavtris-logo'
       })
     ]);
     expect(payload.attachments[0].content).toBeInstanceOf(Buffer);

@@ -16,7 +16,7 @@ test('FieldOps carrega como conceito com CTAs e aviso honesto', async ({ page })
     image.complete &&
     image.naturalWidth > 0 &&
     image.naturalHeight > 0 &&
-    image.currentSrc.includes('qevaryn-fieldops.webp')
+    image.currentSrc.includes('kavtris-fieldops.webp')
   ))).toBe(true);
 
   await page.getByRole('link', { name: 'Ver como funciona' }).click();

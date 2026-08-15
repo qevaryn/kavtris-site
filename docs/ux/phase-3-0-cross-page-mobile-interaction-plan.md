@@ -45,7 +45,7 @@ Não fazer:
 Direção:
 - carrossel dos segmentos da Rede;
 - cada segmento com resumo curto e CTA de aprofundamento;
-- continuidade visual com marca da Rede e Qevaryn.
+- continuidade visual com marca da Rede e KAVTRIS.
 
 Não fazer:
 - autoplay agressivo em blocos densos;

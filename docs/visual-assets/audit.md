@@ -5,6 +5,8 @@ Audience: Product, design, frontend, QA and technical lead
 
 This audit records the current visual-asset baseline before any product image replacement. It is intentionally documentation-only.
 
+Note: this is a historical snapshot. Paths and active/usage classifications here describe the repository state at the time of the audit, before later KAVTRIS identity normalization. Do not treat old Qevaryn paths in this file as current runtime references.
+
 ## Scope
 
 Confirmed constraints for this phase:

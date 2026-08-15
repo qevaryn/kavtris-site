@@ -7,7 +7,7 @@ See [../README.md](../README.md).
 
 No repositories listed here currently exist unless explicitly stated. The current repository remains the source of truth.
 
-## qevaryn-web
+## KAVTRIS-web
 
 Status: Future evolution of the current repository.
 
@@ -31,7 +31,7 @@ Integration method: versioned API, shared contracts and compatible releases.
 
 It must remain one responsive application. Do not split desktop and mobile web into different repositories.
 
-## qevaryn-api
+## KAVTRIS-api
 
 Status: Conceptual - not implemented.
 
@@ -53,7 +53,7 @@ Risk of early extraction: operational overhead before backend scope justifies it
 
 Integration method: versioned HTTP API, shared contracts and documented compatibility.
 
-## qevaryn-contracts
+## KAVTRIS-contracts
 
 Status: Conceptual - not published.
 
@@ -67,7 +67,7 @@ Extraction trigger: web and API exist in separate repositories, more than one cl
 
 Integration method: private npm package, generated API client or OpenAPI-derived types. These are conceptual and not implemented.
 
-## qevaryn-qa-web
+## KAVTRIS-qa-web
 
 Status: Conceptual - current QA remains inside this repository.
 
@@ -81,7 +81,7 @@ Risk: application and test selectors may become unsynchronized; version coordina
 
 Integration method: deployed environment contract, stable selectors and CI pipelines.
 
-## qevaryn-mobile-app
+## KAVTRIS-mobile-app
 
 Status: Conceptual - no native application currently exists.
 
@@ -95,7 +95,7 @@ Integration method: shared API and versioned contracts.
 
 Do not create a separate mobile backend.
 
-## qevaryn-ui
+## KAVTRIS-ui
 
 Status: Conditional.
 
@@ -107,7 +107,7 @@ Extraction trigger: at least two active applications reuse the components, indep
 
 Risk of early extraction: site-specific components become falsely generic and package maintenance slows iteration.
 
-## qevaryn-docs
+## KAVTRIS-docs
 
 Status: Conditional.
 
@@ -117,7 +117,7 @@ Extraction trigger: documentation spans several active repositories or independe
 
 Until then, documentation remains inside the current repository.
 
-## qevaryn-infrastructure
+## KAVTRIS-infrastructure
 
 Status: Conditional.
 

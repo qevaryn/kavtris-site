@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { FieldOpsPage } from '@/features/products/fieldops/FieldOpsPage';
 import { GenericProductPage } from '@/features/products/generic/GenericProductPage';
 import { getProductBySlug, products } from '@/features/products/data/products';
@@ -9,12 +9,20 @@ type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+const legacyProductRedirects: Record<string, string> = {
+  'qevaryn-ops': 'kavtris-ops'
+};
+
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
+  if (legacyProductRedirects[slug]) {
+    return {};
+  }
+
   const product = getProductBySlug(slug);
 
   if (!product) {
@@ -63,6 +71,11 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { slug } = await params;
+  const redirectSlug = legacyProductRedirects[slug];
+  if (redirectSlug) {
+    permanentRedirect(`/produtos/${redirectSlug}`);
+  }
+
   const product = getProductBySlug(slug);
 
   if (!product) {

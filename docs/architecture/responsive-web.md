@@ -3,7 +3,7 @@
 Status: Current
 Audience: Frontend and QA
 
-Qevaryn Systems uses one responsive web frontend for desktop and mobile.
+KAVTRIS uses one responsive web frontend for desktop and mobile.
 
 The project should not duplicate pages into separate desktop-web and mobile-web applications. Differences in spacing, grid columns and text wrapping should remain CSS-responsive inside shared components.
 

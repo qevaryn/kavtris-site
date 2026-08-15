@@ -2,7 +2,8 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
 
 export const isDemoUrl = siteUrl.includes('localhost') || siteUrl.includes('.vercel.app');
-export const shouldIndexSite = !isDemoUrl;
+export const isPreLaunch = true;
+export const shouldIndexSite = false;
 
 export const companyName = 'KAVTRIS';
 /**

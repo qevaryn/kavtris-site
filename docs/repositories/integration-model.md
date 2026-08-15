@@ -8,18 +8,18 @@ See [../README.md](../README.md).
 Future integration must not rely on periodically copying source code between repositories.
 
 ```text
-qevaryn-web
+KAVTRIS-web
     |
     |-- versioned API
     |-- versioned contracts
     `-- published shared UI package when justified
 
-qevaryn-mobile-app
+KAVTRIS-mobile-app
     |
     |-- versioned API
     `-- versioned contracts
 
-qevaryn-qa-web
+KAVTRIS-qa-web
     |
     `-- deployed environment contract
 ```
