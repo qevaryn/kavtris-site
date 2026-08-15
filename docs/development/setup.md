@@ -45,6 +45,15 @@ NEXT_PUBLIC_SITE_URL
 CONTACT_FORM_MOCK
 ```
 
+Canonical URL resolution for metadata and sitemap follows this order:
+
+```text
+NEXT_PUBLIC_SITE_URL
+VERCEL_PROJECT_PRODUCTION_URL
+VERCEL_URL
+http://localhost:3000
+```
+
 For local development without real email delivery:
 
 ```text
