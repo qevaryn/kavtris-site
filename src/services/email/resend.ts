@@ -10,7 +10,7 @@ import type { ContactEmailProvider } from '@/services/email/email-provider';
 // only with the email HTML template and tests). It is intentionally not
 // renamed for cosmetic namespace cleanliness (BRAND.2E §21 option A). The
 // visible asset content is now the KAVTRIS wordmark.
-const logoContentId = 'qevaryn-systems-logo';
+const logoContentId = 'kavtris-logo';
 const logoFilename = 'kavtris-wordmark-dark.png';
 type InlineLogoAttachment = Attachment & { contentId: string; inlineContentId: string };
 

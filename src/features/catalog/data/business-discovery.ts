@@ -61,41 +61,41 @@ export const businessCategories: BusinessCategory[] = [
     label: 'Barbearias e salões',
     short: 'Agenda, clientes, produtos, equipa e organização do dia a dia.',
     needs: ['Agenda', 'Clientes', 'Produtos', 'Equipa'],
-    productSlugs: ['customer-portal', 'stock-orders', 'qevaryn-ops']
+    productSlugs: ['customer-portal', 'stock-orders', 'kavtris-ops']
   },
   {
     id: 'restaurantes',
     label: 'Restaurantes',
     short: 'Pedidos, cozinha, stock, equipas e operação.',
     needs: ['Pedidos', 'Cozinha', 'Stock', 'Equipas'],
-    productSlugs: ['kitchen-sync', 'stock-orders', 'qevaryn-ops']
+    productSlugs: ['kitchen-sync', 'stock-orders', 'kavtris-ops']
   },
   {
     id: 'hoteis',
     label: 'Hotéis e alojamento',
     short: 'Reservas, quartos, limpeza, manutenção e comunicação.',
     needs: ['Reservas', 'Quartos', 'Equipa', 'Comunicação'],
-    productSlugs: ['hotel-operations', 'customer-portal', 'qevaryn-ops']
+    productSlugs: ['hotel-operations', 'customer-portal', 'kavtris-ops']
   },
   {
     id: 'lojas',
     label: 'Lojas e retalho',
     short: 'Stock, encomendas, fornecedores, vendas e equipa.',
     needs: ['Stock', 'Encomendas', 'Fornecedores', 'Vendas'],
-    productSlugs: ['stock-orders', 'customer-portal', 'qevaryn-ops']
+    productSlugs: ['stock-orders', 'customer-portal', 'kavtris-ops']
   },
   {
     id: 'terreno',
     label: 'Equipas no terreno',
     short: 'Visitas, rotas, evidências no local e relatórios.',
     needs: ['Visitas', 'Rotas', 'Evidências', 'Relatórios'],
-    productSlugs: ['fieldops', 'qevaryn-ops']
+    productSlugs: ['fieldops', 'kavtris-ops']
   },
   {
     id: 'escritorios',
     label: 'Escritórios e gestão',
     short: 'Tarefas, aprovações, documentos e indicadores internos.',
     needs: ['Tarefas', 'Aprovações', 'Documentos', 'Indicadores'],
-    productSlugs: ['qevaryn-ops', 'customer-portal']
+    productSlugs: ['kavtris-ops', 'customer-portal']
   }
 ] as const;

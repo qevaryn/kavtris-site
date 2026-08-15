@@ -5,7 +5,7 @@ Audience: Technical Lead
 
 See [../README.md](../README.md).
 
-## Option A - Current Repository Becomes qevaryn-web
+## Option A - Current Repository Becomes KAVTRIS-web
 
 Suitable when:
 

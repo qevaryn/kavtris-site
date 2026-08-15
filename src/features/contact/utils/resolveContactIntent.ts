@@ -1,11 +1,16 @@
 import type { ContactIntent } from '@/domain/contact/types';
 
+const legacyProductSlugs: Record<string, string> = {
+  'qevaryn-ops': 'kavtris-ops'
+};
+
 /**
  * Resolves supported commercial intent parameters from the public URL.
  * Unknown values fall back to the general contact state.
  */
 export function resolveContactIntent(searchParams: URLSearchParams): ContactIntent {
-  const productSlug = searchParams.get('produto')?.trim() || undefined;
+  const rawProductSlug = searchParams.get('produto')?.trim() || undefined;
+  const productSlug = rawProductSlug ? legacyProductSlugs[rawProductSlug] ?? rawProductSlug : undefined;
   const selectedType = searchParams.get('tipo');
 
   if (selectedType === 'empresa') {

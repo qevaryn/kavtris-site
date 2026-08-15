@@ -24,7 +24,7 @@ test.describe('WEB.1F.7', () => {
     'stock-orders',
     'hotel-operations',
     'kitchen-sync',
-    'qevaryn-ops',
+    'kavtris-ops',
     'customer-portal'
   ];
 
@@ -267,7 +267,7 @@ test.describe('WEB.1F.7', () => {
       '/produtos/kitchen-sync',
       '/produtos/hotel-operations',
       '/produtos/stock-orders',
-      '/produtos/qevaryn-ops',
+      '/produtos/kavtris-ops',
       '/empresas'
     ];
     for (const width of [320, 375, 768, 1440]) {

@@ -14,13 +14,13 @@ Produce and replace the six product visuals using the Phase 2 visual system with
 Use a controlled two-product pilot:
 
 ```text
-1. Qevaryn Ops
-2. Qevaryn FieldOps
+1. KAVTRIS Ops
+2. KAVTRIS FieldOps
 ```
 
 Reason:
 
-- Qevaryn Ops is the weakest current asset and tests whether the system can make a generic product specific.
+- KAVTRIS Ops is the weakest current asset and tests whether the system can make a generic product specific.
 - FieldOps has the highest commercial impact and tests catalog/hero asset strategy.
 
 Alternative:
@@ -30,12 +30,12 @@ Alternative:
 
 ## Production Order
 
-1. Qevaryn Ops
-2. Qevaryn FieldOps
-3. Qevaryn KitchenSync
-4. Qevaryn Customer Portal
-5. Qevaryn Hotel Operations
-6. Qevaryn Stock & Orders
+1. KAVTRIS Ops
+2. KAVTRIS FieldOps
+3. KAVTRIS KitchenSync
+4. KAVTRIS Customer Portal
+5. KAVTRIS Hotel Operations
+6. KAVTRIS Stock & Orders
 
 ## Variant Strategy
 
@@ -43,8 +43,8 @@ For the pilot:
 
 | Product | Variants | Required exports |
 | --- | --- | --- |
-| Qevaryn Ops | 2-3 composition variants | `qevaryn-ops-catalog-v1.webp` after approval |
-| Qevaryn FieldOps | 2 catalog variants and 2 hero variants | `fieldops-catalog-v1.webp`, `fieldops-hero-v1.webp` after approval |
+| KAVTRIS Ops | 2-3 composition variants | `KAVTRIS-ops-catalog-v1.webp` after approval |
+| KAVTRIS FieldOps | 2 catalog variants and 2 hero variants | `fieldops-catalog-v1.webp`, `fieldops-hero-v1.webp` after approval |
 
 For remaining products:
 
@@ -87,7 +87,7 @@ Implementation rules:
 Pilot:
 
 ```text
-public/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp
+public/images/products/KAVTRIS-ops/KAVTRIS-ops-catalog-v1.webp
 public/images/products/fieldops/fieldops-catalog-v1.webp
 public/images/products/fieldops/fieldops-hero-v1.webp
 ```
@@ -149,7 +149,7 @@ Gate 1: Product brief compliance
 
 Gate 2: Visual family compliance
 
-- Does it match the Qevaryn system?
+- Does it match the KAVTRIS system?
 - Is it distinct from other products?
 
 Gate 3: Responsive crop
@@ -171,7 +171,7 @@ Gate 5: Regression
 
 Recommended first PR deliverable:
 
-- Replace Qevaryn Ops catalog image.
+- Replace KAVTRIS Ops catalog image.
 - Add FieldOps catalog and hero images only if both pass review.
 - Update image references and alt text only as needed to match the approved image.
 - Document asset hashes and decisions.
@@ -180,14 +180,14 @@ If the FieldOps hero requires page code to use a separate hero image, keep that 
 
 ## Pilot Decision Log
 
-### Qevaryn Ops catalog visual
+### KAVTRIS Ops catalog visual
 
 Status: Approved for pilot integration.
 
 Approved asset:
 
 ```text
-public/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp
+public/images/products/KAVTRIS-ops/KAVTRIS-ops-catalog-v1.webp
 ```
 
 Metadata:
@@ -203,8 +203,8 @@ SHA256: BA7A50306D038B4A776594384EDCFEF3A5D4DA70FB5D7D32FA406A626863A7EA
 
 Decision:
 
-- Use the approved Qevaryn Ops visual for catalog and generic product-page contexts.
-- Keep the previous `public/images/products/qevaryn-ops.webp` asset available for rollback during the pilot.
+- Use the approved KAVTRIS Ops visual for catalog and generic product-page contexts.
+- Keep the previous `public/images/products/KAVTRIS-ops.webp` asset available for rollback during the pilot.
 - Update the alt text to reflect approvals, responsible people, deadlines, recent documents and approval flow.
 - Do not integrate rejected previews, comparison images or temporary review artifacts.
 
@@ -216,9 +216,9 @@ Reason:
 
 Next gate:
 
-- Produce and review the Qevaryn FieldOps catalog proposals before replacing additional product visuals.
+- Produce and review the KAVTRIS FieldOps catalog proposals before replacing additional product visuals.
 
-### Qevaryn FieldOps catalog visual
+### KAVTRIS FieldOps catalog visual
 
 Status: Approved for controlled pilot integration.
 
@@ -242,7 +242,7 @@ SHA256: 159ADEA316CAA44E573CDA6871D1268A74AF69DC738D66C95FE576022FFBFDD2
 Catalog versus hero ownership:
 
 - Product cards use the approved catalog asset.
-- The existing `public/images/products/qevaryn-fieldops.webp` asset remains active for the `/produtos/fieldops` hero.
+- The existing `public/images/products/KAVTRIS-fieldops.webp` asset remains active for the `/produtos/fieldops` hero.
 - The existing asset is also retained for rollback during the pilot.
 - A dedicated FieldOps hero asset is still pending and must not be marked complete in this phase.
 
@@ -255,7 +255,7 @@ Decision:
 Reason:
 
 - The approved visual communicates external services, visits, locations, assigned professionals, check-in, checklist progress, evidence and service completion.
-- It remains visually consistent with the approved Qevaryn Ops catalog asset while staying clearly distinct from Ops, which communicates internal approvals, documents and business processes.
+- It remains visually consistent with the approved KAVTRIS Ops catalog asset while staying clearly distinct from Ops, which communicates internal approvals, documents and business processes.
 - The removed QR/NFC floating card keeps the catalog composition cleaner and avoids overemphasizing optional equipment.
 
 Next gate:

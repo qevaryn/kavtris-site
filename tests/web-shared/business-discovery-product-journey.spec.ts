@@ -25,7 +25,7 @@ test.describe('WEB.1F.8', () => {
     'stock-orders',
     'hotel-operations',
     'kitchen-sync',
-    'qevaryn-ops',
+    'kavtris-ops',
     'customer-portal'
   ];
 

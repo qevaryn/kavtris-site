@@ -3,14 +3,14 @@
 Status: Product Visual Assets Phase 2 specification
 Audience: Product, design, frontend, QA and technical lead
 
-These principles define how Qevaryn product visuals should be planned before production. They apply to the six current product concepts only:
+These principles define how KAVTRIS product visuals should be planned before production. They apply to the six current product concepts only:
 
-- Qevaryn FieldOps
-- Qevaryn Stock & Orders
-- Qevaryn Hotel Operations
-- Qevaryn KitchenSync
-- Qevaryn Ops
-- Qevaryn Customer Portal
+- KAVTRIS FieldOps
+- KAVTRIS Stock & Orders
+- KAVTRIS Hotel Operations
+- KAVTRIS KitchenSync
+- KAVTRIS Ops
+- KAVTRIS Customer Portal
 
 No image is generated or replaced by this document.
 
@@ -18,11 +18,11 @@ No image is generated or replaced by this document.
 
 Confirmed findings from Phase 1:
 
-- Qevaryn FieldOps is the strongest current asset and the highest-impact asset because it appears in homepage, catalog and the main detailed product page.
-- Qevaryn Ops is the weakest current asset because it is polished but too generic.
+- KAVTRIS FieldOps is the strongest current asset and the highest-impact asset because it appears in homepage, catalog and the main detailed product page.
+- KAVTRIS Ops is the weakest current asset because it is polished but too generic.
 - Stock & Orders is comparatively strong but has a slightly different source aspect ratio.
 - KitchenSync is clear by sector but risks becoming too hardware/context-heavy.
-- Customer Portal communicates useful functions but must be differentiated from Qevaryn Ops.
+- Customer Portal communicates useful functions but must be differentiated from KAVTRIS Ops.
 - Product visuals must not rely on tiny interface text, especially in mobile cards.
 - Product images should preserve the current honest positioning: concepts are adaptable and scoped after discovery.
 
@@ -36,7 +36,7 @@ The main subject of every product visual must be the software interface.
 
 Reason:
 
-Qevaryn sells adaptable software solutions, not hardware, machinery or fixed physical products.
+KAVTRIS sells adaptable software solutions, not hardware, machinery or fixed physical products.
 
 Practical consequence:
 
@@ -72,7 +72,7 @@ All products must share the same visual family while preserving unique operation
 
 Reason:
 
-The site should feel like one Qevaryn ecosystem, not six unrelated stock-style images.
+The site should feel like one KAVTRIS ecosystem, not six unrelated stock-style images.
 
 Practical consequence:
 
@@ -126,7 +126,7 @@ Hardware may appear only when it clarifies a practical workflow and must remain 
 
 Reason:
 
-The site must not imply Qevaryn manufactures devices or funds physical infrastructure.
+The site must not imply KAVTRIS manufactures devices or funds physical infrastructure.
 
 Practical consequence:
 
@@ -180,11 +180,11 @@ The product family should feel branded through design language, not large repeat
 
 Reason:
 
-Cards and pages already show Qevaryn names in HTML. Over-branding inside images can crowd the visual and reduce reuse.
+Cards and pages already show KAVTRIS names in HTML. Over-branding inside images can crowd the visual and reduce reuse.
 
 Practical consequence:
 
-Use subtle Qevaryn cues inside interface chrome when useful, such as a small wordmark or symbol in the sidebar/header.
+Use subtle KAVTRIS cues inside interface chrome when useful, such as a small wordmark or symbol in the sidebar/header.
 
 Prohibited example:
 
@@ -264,7 +264,7 @@ Limits:
 Default:
 
 - Product names remain in HTML, not inside the asset.
-- Complete Qevaryn wordmark is optional and should be subtle if used in interface chrome.
+- Complete KAVTRIS wordmark is optional and should be subtle if used in interface chrome.
 - A small symbol or abbreviated brand cue may appear in a dashboard sidebar or header.
 - Use navy for interface shell and background.
 - Use gold for selected states, important metrics and workflow highlights.

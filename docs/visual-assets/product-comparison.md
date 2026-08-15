@@ -5,6 +5,8 @@ Audience: Product, design, frontend and QA
 
 This document compares the six current product visuals. It does not define final replacement prompts or create new visual concepts.
 
+Note: this is a historical comparison. Product names, filenames and findings reflect the pre-migration visual audit; current runtime products and assets may now use KAVTRIS naming.
+
 ## Product Asset Table
 
 | Product | Asset | Dimensions | Ratio | Devices shown | Optional hardware shown | Replacement priority |

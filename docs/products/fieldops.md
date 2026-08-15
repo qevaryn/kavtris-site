@@ -1,4 +1,4 @@
-# Qevaryn FieldOps implementation guide
+# KAVTRIS FieldOps implementation guide
 
 Status: Current
 Audience: Frontend, QA and Product

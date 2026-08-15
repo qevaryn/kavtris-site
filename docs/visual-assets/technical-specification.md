@@ -58,7 +58,7 @@ Text inside image:
 Logo inside image:
 
 - Default: no external logo overlay.
-- Allowed: small Qevaryn wordmark or symbol inside interface chrome.
+- Allowed: small KAVTRIS wordmark or symbol inside interface chrome.
 - Avoid repeating branding already present in card/page HTML.
 
 ## Product-Page Hero Specification
@@ -165,7 +165,7 @@ Avoid:
 
 Language exceptions:
 
-- The Qevaryn wordmark remains as brand text.
+- The KAVTRIS wordmark remains as brand text.
 - Very small neutral UI chrome can use language-neutral placeholders if text rendering is unreliable.
 
 ## Hardware Representation
@@ -173,7 +173,7 @@ Language exceptions:
 Principle:
 
 ```text
-The product is Qevaryn software operating with compatible equipment.
+The product is KAVTRIS software operating with compatible equipment.
 ```
 
 Allowed hardware by product:
@@ -184,7 +184,7 @@ Allowed hardware by product:
 | Stock & Orders | barcode scanner, barcode label, standard printer, tablet |
 | Hotel Operations | tablet, phone, room/status device only as generic existing equipment |
 | KitchenSync | tablet, kitchen display, standard printer, phone |
-| Qevaryn Ops | laptop, desktop, phone/tablet for alerts only |
+| KAVTRIS Ops | laptop, desktop, phone/tablet for alerts only |
 | Customer Portal | laptop, phone/tablet |
 
 Rules:
@@ -236,7 +236,7 @@ Valid product slugs:
 - `stock-orders`
 - `hotel-operations`
 - `kitchen-sync`
-- `qevaryn-ops`
+- `KAVTRIS-ops`
 - `customer-portal`
 
 Valid contexts:
@@ -251,7 +251,7 @@ Examples:
 ```text
 fieldops-catalog-v1.webp
 fieldops-hero-v1.webp
-qevaryn-ops-catalog-v1.webp
+KAVTRIS-ops-catalog-v1.webp
 customer-portal-catalog-v1.webp
 ```
 
@@ -277,7 +277,7 @@ public/images/
 │   ├── stock-orders/
 │   ├── hotel-operations/
 │   ├── kitchen-sync/
-│   ├── qevaryn-ops/
+│   ├── KAVTRIS-ops/
 │   └── customer-portal/
 ├── people/
 ├── email/

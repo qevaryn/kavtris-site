@@ -9,7 +9,7 @@ This document lists confirmed limitations and investigation items. It does not d
 
 ## Product And Visuals
 
-- The current Qevaryn FieldOps visual asset can be improved later without changing page architecture.
+- The current KAVTRIS FieldOps visual asset can be improved later without changing page architecture.
 - Product pages describe adaptable solution concepts, not completed production SaaS platforms.
 
 ## Backend
