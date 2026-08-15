@@ -63,4 +63,50 @@ test.describe('published production smoke is read-only', () => {
     expect(pageErrors, 'published smoke should not hit page errors').toEqual([]);
     expect(consoleErrors, 'published smoke should not hit console errors').toEqual([]);
   });
+
+  test('canonical production metadata uses the KAVTRIS public URL', async ({ page, baseURL }) => {
+    const origin = new URL(baseURL ?? 'https://kavtris.vercel.app').origin;
+    const isCanonicalProductionSmoke = origin === 'https://kavtris.vercel.app';
+
+    const metadataRoutes = ['/', '/sobre', '/produtos', '/produtos/kavtris-ops'] as const;
+
+    for (const route of metadataRoutes) {
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
+
+      const metadataValues = await page.evaluate(() => {
+        const values: string[] = [];
+
+        document
+          .querySelectorAll<HTMLLinkElement>('link[rel="canonical"]')
+          .forEach((element) => values.push(element.href));
+
+        document
+          .querySelectorAll<HTMLMetaElement>(
+            'meta[property="og:url"], meta[property="og:image"], meta[name="twitter:image"]'
+          )
+          .forEach((element) => {
+            if (element.content) {
+              values.push(element.content);
+            }
+          });
+
+        document
+          .querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]')
+          .forEach((element) => {
+            if (element.textContent) {
+              values.push(element.textContent);
+            }
+          });
+
+        return values;
+      });
+
+      const joinedMetadata = metadataValues.join('\n');
+      expect(joinedMetadata, `${route} should not expose legacy production URLs`).not.toMatch(/qevaryn-site\.vercel\.app/i);
+
+      if (isCanonicalProductionSmoke) {
+        expect(joinedMetadata, `${route} should use KAVTRIS public host for first-party absolute URLs`).toContain(origin);
+      }
+    }
+  });
 });

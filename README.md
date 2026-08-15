@@ -116,6 +116,17 @@ CONTACT_FORM_MOCK=true
 
 Production email delivery requires `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` and `NEXT_PUBLIC_SITE_URL`.
 
+Canonical metadata and sitemap URLs resolve in this order:
+
+```text
+NEXT_PUBLIC_SITE_URL
+VERCEL_PROJECT_PRODUCTION_URL
+VERCEL_URL
+http://localhost:3000
+```
+
+Production should resolve to the canonical public project URL rather than a generated deployment URL.
+
 `.env.local` is never versioned. Do not commit real secrets. See [docs/development/setup.md](docs/development/setup.md) and [docs/architecture/contact-flow.md](docs/architecture/contact-flow.md).
 
 ## Development Commands

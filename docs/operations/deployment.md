@@ -47,6 +47,8 @@ CONTACT_FORM_MOCK=false
 
 Do not commit secret values.
 
+`NEXT_PUBLIC_SITE_URL` is the explicit public canonical URL used for metadata and sitemap. If it is absent, the application falls back to `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL`, then `http://localhost:3000`. Production should use the canonical public project URL, not a generated deployment URL.
+
 ## CI Before Deployment
 
 The repository CI runs:
@@ -67,7 +69,7 @@ The `smoke` job in `.github/workflows/ci.yml` is manual (triggered via `workflow
 base_url
 ```
 
-It runs `npm run test:e2e` against the provided deployed URL through `BASE_URL`.
+It runs `npm run test:smoke:production` against the provided deployed URL through `BASE_URL`.
 
 ## Rollback Guidance
 
