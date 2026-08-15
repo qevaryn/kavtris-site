@@ -51,7 +51,7 @@ Configuration source: external deployment platform.
 
 Email behavior: Resend configured with production variables and `CONTACT_FORM_MOCK=false`.
 
-URL source: `NEXT_PUBLIC_SITE_URL` and deployment domain.
+URL source: `NEXT_PUBLIC_SITE_URL`, then `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL`. Production canonical metadata should resolve to the public project URL, not to a generated deployment URL.
 
 Future owner: DevOps + Technical Lead.
 

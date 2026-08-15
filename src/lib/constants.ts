@@ -1,5 +1,24 @@
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+const normalizeSiteUrl = (value: string | undefined) => {
+  if (!value) {
+    return undefined;
+  }
+
+  const trimmedValue = value.trim().replace(/\/+$/, '');
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  return /^https?:\/\//i.test(trimmedValue) ? trimmedValue : `https://${trimmedValue}`;
+};
+
+export const resolveSiteUrl = (environment: Partial<NodeJS.ProcessEnv> = process.env) =>
+  normalizeSiteUrl(environment.NEXT_PUBLIC_SITE_URL)
+  || normalizeSiteUrl(environment.VERCEL_PROJECT_PRODUCTION_URL)
+  || normalizeSiteUrl(environment.VERCEL_URL)
+  || 'http://localhost:3000';
+
+export const siteUrl = resolveSiteUrl();
 
 export const isDemoUrl = siteUrl.includes('localhost') || siteUrl.includes('.vercel.app');
 export const isPreLaunch = true;
