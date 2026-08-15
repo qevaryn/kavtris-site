@@ -1,6 +1,6 @@
-# Qevaryn Systems website
+# KAVTRIS website
 
-Public website for Qevaryn Systems.
+Public website for KAVTRIS.
 
 The repository contains one responsive Next.js web application. Desktop web and mobile web are not separate applications, and both use the same shared contact API boundary.
 
@@ -11,7 +11,7 @@ Implemented:
 - public marketing website;
 - product catalog;
 - adaptable product concepts;
-- detailed Qevaryn FieldOps concept page;
+- detailed KAVTRIS FieldOps concept page;
 - enterprise capability page;
 - contact form and `POST /api/contact`;
 - email notification through Resend;
@@ -71,6 +71,8 @@ git clone <repository-url>
 cd qevaryn-site
 npm install
 ```
+
+The local directory and external repository name remain unchanged until the external identity migration phase.
 
 Create a local environment file from `.env.example`.
 
@@ -263,7 +265,9 @@ Start here:
 
 - [docs/README.md](docs/README.md)
 
-Documentação transversal de produto e governança (Qevaryn Docs): [qevaryn/qevaryn-docs](https://github.com/qevaryn/qevaryn-docs).
+Documentação transversal de produto e governança: [qevaryn/qevaryn-docs](https://github.com/qevaryn/qevaryn-docs).
+
+This external repository reference is intentionally preserved until the external identity migration phase.
 
 Key guides:
 

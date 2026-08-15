@@ -18,9 +18,9 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
     image.currentSrc.includes('fieldops-catalog-v1.webp')
   ))).toBe(true);
 
-  const opsCard = page.getByTestId('product-card').filter({ has: page.getByRole('heading', { name: 'Ops', exact: true }) });
+  const opsCard = page.getByTestId('product-card').filter({ has: page.getByRole('heading', { name: 'KAVTRIS Ops', exact: true }) });
   await opsCard.scrollIntoViewIfNeeded();
-  await expect(opsCard.getByRole('img', { name: /Interface do Ops num portátil/i })).toBeVisible();
+  await expect(opsCard.getByRole('img', { name: /Interface do KAVTRIS Ops num portátil/i })).toBeVisible();
   const visualBox = await opsCard.getByTestId('product-card-visual').boundingBox();
   expect(visualBox).not.toBeNull();
   expect(Math.round((visualBox!.width / visualBox!.height) * 10) / 10).toBe(1.6);

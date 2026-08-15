@@ -38,9 +38,9 @@ test('filtros funcionais atualizam cartões visíveis', async ({ page }) => {
 
   const filterExpectations = [
     { filter: 'Operações', visible: 'FieldOps', hidden: 'Stock & Orders' },
-    { filter: 'Gestão', visible: 'Ops', hidden: 'KitchenSync' },
+    { filter: 'Gestão', visible: 'KAVTRIS Ops', hidden: 'KitchenSync' },
     { filter: 'Stock e pedidos', visible: 'Stock & Orders', hidden: 'FieldOps' },
-    { filter: 'Equipas', visible: 'FieldOps', hidden: 'Ops' },
+    { filter: 'Equipas', visible: 'FieldOps', hidden: 'KAVTRIS Ops' },
     { filter: 'Clientes', visible: 'Customer Portal', hidden: 'FieldOps' }
   ];
 
@@ -78,14 +78,14 @@ test('cards do catálogo são vitrines curtas e não duplicam detalhes técnicos
 
   await expect(firstCard.getByText(/Problema que resolve|perfis e permissões|upload seguro|histórico de auditoria|Este é um exemplo de solução/i)).toHaveCount(0);
 
-  const opsCard = cards.filter({ has: page.getByRole('heading', { name: 'Ops' }) });
-  const opsImage = opsCard.getByRole('img', { name: /Interface do Ops num portátil/i });
+  const opsCard = cards.filter({ has: page.getByRole('heading', { name: 'KAVTRIS Ops' }) });
+  const opsImage = opsCard.getByRole('img', { name: /Interface do KAVTRIS Ops num portátil/i });
   // O card Ops fica abaixo da dobra e usa lazy loading; no CI o pedido pode ficar
   // pendente no otimizador _next/image sob carga paralela (sem resposta em 60s),
   // tornando a espera pelo fim do carregamento em rede não determinística. O que o
   // requisito exige aqui é a ligação do card à sua imagem; o carregamento completo
   // já é validado na imagem do primeiro card (fieldops-catalog-v1.webp).
-  await expect(opsImage).toHaveAttribute('src', /qevaryn-ops-catalog-v1\.webp/);
+  await expect(opsImage).toHaveAttribute('src', /kavtris-ops-catalog-v1\.webp/);
 });
 
 test('card de consultor do catálogo aponta para o contacto', async ({ page }) => {
@@ -118,6 +118,14 @@ test('rotas de produto carregam com detalhes técnicos progressivos', async ({ p
     await technicalDetails.locator('summary').click();
     await expect(page.locator('details[open]').filter({ hasText: /API|permissões|dashboard|autenticação|notificações/i })).toBeVisible();
   }
+});
+
+test('rota legada do KAVTRIS Ops redireciona para o slug canónico', async ({ page }) => {
+  await page.goto('/produtos/qevaryn-ops');
+
+  await expect(page).toHaveURL(/\/produtos\/kavtris-ops$/);
+  await expect(page.getByRole('heading', { name: 'KAVTRIS Ops', exact: true })).toBeVisible();
+  await expect(page.locator('main').getByText('Qevaryn Ops')).toHaveCount(0);
 });
 
 test('pedido de adaptação leva ao contacto com produto selecionado', async ({ page }) => {

@@ -66,7 +66,7 @@ Cada ponto é marcado como:
 - DECIDIDO: produto existente do catálogo, oferecido por assinatura.
 - DECIDIDO: o cliente escolhe um produto, um plano (Essencial/Crescimento/Empresarial) e adicionais conforme necessidade.
 - RECOMENDADO: ciclo: configuração inicial → ativação → uso → manutenção/atualizações → suporte → evolução.
-- RECOMENDADO: configuração inicial feita pela Qevaryn como parte da ativação (não auto-service completo nesta fase).
+- RECOMENDADO: configuração inicial feita pela KAVTRIS como parte da ativação (não auto-service completo nesta fase).
 - DECIDIDO: manutenção, correções e atualizações de segurança incluídas em todos os planos.
 - RECOMENDADO: suporte diferenciado por plano, mas sem SLA fixo publicado.
 - RECOMENDADO: adicionais (módulos, integrações, formação) contratados sobre qualquer plano.

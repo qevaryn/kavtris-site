@@ -10,7 +10,7 @@ export const conceptProducts = [
     tags: ['Pedidos', 'Cozinha', 'Entregas', 'Setores']
   },
   {
-    name: 'Qevaryn Ops',
+    name: 'KAVTRIS Ops',
     description: 'Plataforma para tarefas, aprovações, documentos, pedidos, indicadores e automações.',
     tags: ['Tarefas', 'Aprovações', 'Documentos', 'Automações']
   },

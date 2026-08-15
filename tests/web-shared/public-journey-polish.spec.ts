@@ -138,7 +138,7 @@ test.describe('WEB.1F.6', () => {
       { slug: 'stock-orders', flow: 'Produto registado', experience: false },
       { slug: 'hotel-operations', flow: 'Quarto atribuído', experience: false },
       { slug: 'kitchen-sync', flow: 'Pedido recebido', experience: false },
-      { slug: 'qevaryn-ops', flow: 'Pedido criado', experience: false },
+      { slug: 'kavtris-ops', flow: 'Pedido criado', experience: false },
       { slug: 'customer-portal', flow: 'Login do cliente', experience: false }
     ];
 

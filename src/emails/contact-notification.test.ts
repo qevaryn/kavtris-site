@@ -29,7 +29,7 @@ describe('contact notification email template', () => {
       origin: 'https://example.com/contacto'
     });
 
-    expect(email.html).toContain('src="cid:qevaryn-systems-logo"');
+    expect(email.html).toContain('src="cid:kavtris-logo"');
     expect(email.html).toContain('Novo pedido comercial');
     expect(email.html).toContain('Integrante da Rede Qualidade é Vida');
     expect(email.html).not.toContain('github.com/gabrielsouza80');

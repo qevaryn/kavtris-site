@@ -54,6 +54,13 @@ export default defineConfig({
     {
       name: 'api',
       testMatch: ['**/api/**/*.spec.ts']
+    },
+    {
+      name: 'published-smoke',
+      testMatch: ['**/published-smoke/**/*.spec.ts'],
+      timeout: 120000,
+      retries: 0,
+      use: { ...devices['Desktop Chrome'] }
     }
   ]
 });

@@ -40,12 +40,12 @@ Each future asset must satisfy these criteria before replacement.
 
 - The product purpose is understandable at catalog-card size.
 - The image communicates at least one product-specific workflow cue.
-- The image does not look interchangeable with another Qevaryn product.
+- The image does not look interchangeable with another KAVTRIS product.
 - The visual matches the current `products.ts` description, features and optional equipment.
 
 ### Visual System
 
-- The asset belongs to the same Qevaryn product family.
+- The asset belongs to the same KAVTRIS product family.
 - Navy, gold and white are used consistently and with restraint.
 - Software interface is the main subject.
 - Optional context supports the product without becoming the subject.

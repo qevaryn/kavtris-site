@@ -78,7 +78,7 @@ export function buildContactNotificationEmail(input: ContactNotificationInput) {
           <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;">
             <tr>
               <td style="background:#031426;padding:28px 32px 22px 32px;border-radius:18px 18px 0 0;">
-                <img src="cid:qevaryn-systems-logo" width="280" alt="KAVTRIS" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
+                <img src="cid:kavtris-logo" width="280" alt="KAVTRIS" style="display:block;width:280px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
                 <div style="height:2px;width:96px;background:#065AFD;margin:20px 0 14px 0;"></div>
                 <p style="margin:0;color:#3D7BFF;font-size:12px;line-height:18px;letter-spacing:1.8px;text-transform:uppercase;font-weight:700;">Novo contacto através do site</p>
               </td>

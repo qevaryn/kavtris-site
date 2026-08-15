@@ -5,7 +5,7 @@ Audience: Product, design, frontend, QA and technical lead
 
 These briefs define what future images should communicate. They do not generate prompts or assets.
 
-## Qevaryn FieldOps
+## KAVTRIS FieldOps
 
 | Field | Brief |
 | --- | --- |
@@ -36,7 +36,7 @@ FieldOps strategy:
 - Correct current limitations: improve hero-grade composition and reduce dependence on tiny mockup text.
 - Use separate `fieldops-catalog-v1.webp` and `fieldops-hero-v1.webp` in the production phase if review confirms measurable value.
 
-## Qevaryn Stock & Orders
+## KAVTRIS Stock & Orders
 
 | Field | Brief |
 | --- | --- |
@@ -54,7 +54,7 @@ FieldOps strategy:
 | Unique product cue | Barcode/label plus low-stock and supplier-order flow. |
 | Shared family elements | Navy sidebar/header, white dashboard panels, gold alert accents. |
 | What must not be shown | Large automated warehouse machines, proprietary terminals, full ERP screens. |
-| Potential misleading implications | Guaranteed stock accuracy, complete ERP replacement, Qevaryn hardware supply. |
+| Potential misleading implications | Guaranteed stock accuracy, complete ERP replacement, KAVTRIS hardware supply. |
 | Catalog composition | Dashboard and scanner/label cue in 16:10 safe area. |
 | Hero composition | Not required until a detailed product page exists. |
 | Mobile-safe focal point | Low-stock card and quantity indicators in center; scanner not critical at edge. |
@@ -65,7 +65,7 @@ Clarification:
 - The current description is sufficient to create an honest visual.
 - Preserve low-stock, supplier and barcode cues from the current asset.
 
-## Qevaryn Hotel Operations
+## KAVTRIS Hotel Operations
 
 | Field | Brief |
 | --- | --- |
@@ -94,7 +94,7 @@ Clarification:
 - Focus on staff operations, not a guest booking flow.
 - Avoid looking like FieldOps with hotel labels by making the room grid/status board the dominant cue.
 
-## Qevaryn KitchenSync
+## KAVTRIS KitchenSync
 
 | Field | Brief |
 | --- | --- |
@@ -112,7 +112,7 @@ Clarification:
 | Unique product cue | Order-state transitions across service and kitchen. |
 | Shared family elements | Navy/gold UI shell, white order cards, warm lighting. |
 | What must not be shown | Kitchen machines as product, proprietary ordering terminal, guaranteed real-time infrastructure. |
-| Potential misleading implications | Qevaryn-made kitchen hardware, fixed POS integration, production-ready real-time system. |
+| Potential misleading implications | KAVTRIS-made kitchen hardware, fixed POS integration, production-ready real-time system. |
 | Catalog composition | Large order board or tablet with clear status columns; minimal physical clutter. |
 | Hero composition | Not required until a detailed product page exists. |
 | Mobile-safe focal point | Order queue/status columns centered; printer/hardware not central. |
@@ -123,7 +123,7 @@ Clarification:
 - The product description supports order states, kitchen display, internal notes, delays and delivery status.
 - Hardware is appropriate only as ordinary compatible screens/printers.
 
-## Qevaryn Ops
+## KAVTRIS Ops
 
 | Field | Brief |
 | --- | --- |
@@ -161,7 +161,7 @@ Differentiation:
 - Different from Stock & Orders: tasks/documents/approvals, not quantities/suppliers/products.
 - Different from Customer Portal: internal team workflow, not customer-facing request visibility.
 
-## Qevaryn Customer Portal
+## KAVTRIS Customer Portal
 
 | Field | Brief |
 | --- | --- |
@@ -194,12 +194,12 @@ Clarification:
 
 Recommended controlled order:
 
-1. Qevaryn Ops
-2. Qevaryn FieldOps
-3. Qevaryn KitchenSync
-4. Qevaryn Customer Portal
-5. Qevaryn Hotel Operations
-6. Qevaryn Stock & Orders
+1. KAVTRIS Ops
+2. KAVTRIS FieldOps
+3. KAVTRIS KitchenSync
+4. KAVTRIS Customer Portal
+5. KAVTRIS Hotel Operations
+6. KAVTRIS Stock & Orders
 
 Reason:
 

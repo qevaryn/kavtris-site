@@ -3,6 +3,8 @@
 Status: Snapshot from Product Visual Assets Phase 1
 Audience: Product, design, frontend, QA and technical lead
 
+Note: this is a historical inventory. It preserves exact filenames, hashes and usage labels observed during the original audit, before later KAVTRIS identity normalization. Old Qevaryn paths here are audit evidence, not current source-of-truth references.
+
 ## Asset Metadata
 
 | Asset | Extension | Dimensions | Ratio | Size | Alpha | Category | SHA-256 |

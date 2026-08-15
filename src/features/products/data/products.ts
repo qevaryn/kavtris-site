@@ -26,7 +26,7 @@ export const productFunctionMap: Record<string, ProductFunctionId[]> = {
   'stock-orders': ['stock'],
   'hotel-operations': ['operations', 'teams'],
   'kitchen-sync': ['operations'],
-  'qevaryn-ops': ['management'],
+  'kavtris-ops': ['management'],
   'customer-portal': ['customers']
 };
 
@@ -48,12 +48,12 @@ export const products: ProductConcept[] = [
     problem: 'Equipas trabalham fora do escritório e a gestão perde visibilidade sobre visitas, tarefas, evidências e estados.',
     description: 'Organize funcionários, serviços, horários, visitas, fotografias, checklists e relatórios num único lugar.',
     shortDescription: 'Organize equipas, serviços, visitas, checklists e relatórios num único sistema.',
-    image: '/images/products/qevaryn-fieldops.webp',
+    image: '/images/products/kavtris-fieldops.webp',
     imageAlt: 'Mockup visual do FieldOps com agenda mobile, check-in e estado de serviços externos',
     catalogImage: '/images/products/fieldops/fieldops-catalog-v1.webp',
     catalogImageAlt:
       'Interface do FieldOps com agenda de serviços, profissionais, locais e estados num computador, acompanhada por check-in, checklist e evidências num telemóvel.',
-    heroImage: '/images/products/qevaryn-fieldops.webp',
+    heroImage: '/images/products/kavtris-fieldops.webp',
     heroImageAlt: 'Mockup visual do FieldOps com agenda mobile, check-in e estado de serviços externos',
     benefits: ['Serviços acompanhados', 'Evidências centralizadas', 'Menos chamadas', 'Relatórios por cliente'],
     features: [
@@ -164,7 +164,7 @@ export const products: ProductConcept[] = [
     problem: 'Stock, fornecedores e encomendas ainda são controlados em papel, mensagens ou folhas de cálculo.',
     description: 'Controle produtos, fornecedores, encomendas, quantidades e alertas de reposição num só sistema.',
     shortDescription: 'Controle produtos, fornecedores, encomendas e alertas de stock num só lugar.',
-    image: '/images/products/qevaryn-stock-orders.webp',
+    image: '/images/products/kavtris-stock-orders.webp',
     imageAlt: 'Mockup visual do Stock & Orders com produtos, alertas de stock e pedido a fornecedor',
     benefits: ['Stock visível', 'Reposição mais organizada', 'Histórico de preços', 'Menos ruturas'],
     features: [
@@ -268,7 +268,7 @@ export const products: ProductConcept[] = [
     problem: 'Receção, limpeza e manutenção têm dificuldade em partilhar estado de quartos e pedidos internos.',
     description: 'Organize quartos, limpeza, manutenção, pedidos de hóspedes e tarefas da equipa num único sistema.',
     shortDescription: 'Ligue receção, limpeza e manutenção através de uma operação organizada.',
-    image: '/images/products/qevaryn-hotel-operations.webp',
+    image: '/images/products/kavtris-hotel-operations.webp',
     imageAlt: 'Mockup visual do Hotel Operations com estado de quartos, limpeza e manutenção',
     benefits: ['Estado dos quartos claro', 'Pedidos internos acompanhados', 'Prioridades visíveis', 'Histórico operacional'],
     features: [
@@ -371,7 +371,7 @@ export const products: ProductConcept[] = [
     problem: 'Pedidos e informações perdem-se entre atendimento, cozinha, preparação e entrega.',
     description: 'Ligue atendimento, cozinha e preparação para que todos acompanhem o estado de cada pedido.',
     shortDescription: 'Acompanhe pedidos entre atendimento, cozinha, preparação e entrega.',
-    image: '/images/products/qevaryn-kitchen-sync.webp',
+    image: '/images/products/kavtris-kitchen-sync.webp',
     imageAlt: 'Mockup visual do KitchenSync com fila de pedidos e estados de preparação',
     benefits: ['Fila de pedidos visível', 'Menos informação perdida', 'Prioridades claras', 'Atrasos identificados'],
     features: [
@@ -466,8 +466,8 @@ export const products: ProductConcept[] = [
     ]
   },
   {
-    slug: 'qevaryn-ops',
-    name: 'Ops',
+    slug: 'kavtris-ops',
+    name: 'KAVTRIS Ops',
     categoryLabel: 'Gestão empresarial',
     label: 'Solução adaptável',
     sectors: ['business', 'services', 'field'],
@@ -475,9 +475,9 @@ export const products: ProductConcept[] = [
     problem: 'Tarefas, aprovações, documentos e pedidos internos estão espalhados por emails, mensagens e folhas.',
     description: 'Organize tarefas, aprovações, documentos, pedidos e indicadores numa plataforma interna.',
     shortDescription: 'Organize tarefas, aprovações, documentos e processos internos.',
-    image: '/images/products/qevaryn-ops/qevaryn-ops-catalog-v1.webp',
+    image: '/images/products/kavtris-ops/kavtris-ops-catalog-v1.webp',
     imageAlt:
-      'Interface do Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
+      'Interface do KAVTRIS Ops num portátil, com aprovações pendentes, responsáveis, prazos, documentos recentes e fluxo de aprovação.',
     benefits: ['Responsáveis definidos', 'Aprovações acompanhadas', 'Documentos organizados', 'Indicadores visíveis'],
     features: [
       'tarefas',
@@ -567,7 +567,7 @@ export const products: ProductConcept[] = [
     problem: 'Clientes ligam ou enviam mensagens repetidas para saber pedidos, serviços, documentos ou pagamentos.',
     description: 'Dê aos clientes uma área protegida para acompanhar pedidos, documentos, pagamentos, mensagens e estado de serviços.',
     shortDescription: 'Dê aos clientes uma área simples para acompanhar pedidos, documentos e mensagens.',
-    image: '/images/products/qevaryn-customer-portal.webp',
+    image: '/images/products/kavtris-customer-portal.webp',
     imageAlt: 'Mockup visual do Customer Portal com pedidos, documentos e mensagens para clientes',
     benefits: ['Menos contactos repetidos', 'Cliente informado', 'Documentos acessíveis', 'Histórico centralizado'],
     features: [
@@ -648,7 +648,7 @@ export const products: ProductConcept[] = [
   }
 ];
 
-export const featuredProductSlugs = ['fieldops', 'hotel-operations', 'stock-orders', 'qevaryn-ops'] as const;
+export const featuredProductSlugs = ['fieldops', 'hotel-operations', 'stock-orders', 'kavtris-ops'] as const;
 
 export function getProductBySlug(slug: string) {
   return products.find((product) => product.slug === slug);

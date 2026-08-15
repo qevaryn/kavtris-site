@@ -20,11 +20,11 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
     problem: 'Pedidos chegam por mensagens, folhas ou chamadas e acabam por se perder.',
     recommendationTitle: 'Sistema de gestão de pedidos',
     recommendationDescription: 'Centralize pedidos, responsáveis, prazos, estados e histórico para que a equipa saiba o que fazer a seguir.',
-    productSlug: 'qevaryn-ops',
+    productSlug: 'kavtris-ops',
     primaryCtaLabel: 'Ver como funciona',
-    primaryCtaHref: '/produtos/qevaryn-ops',
+    primaryCtaHref: '/produtos/kavtris-ops',
     secondaryCtaLabel: 'Falar sobre esta solução',
-    secondaryCtaHref: '/?produto=qevaryn-ops#contacto'
+    secondaryCtaHref: '/?produto=kavtris-ops#contacto'
   },
   {
     id: 'manual-work',
@@ -32,11 +32,11 @@ export const solutionFinderOptions: SolutionFinderOption[] = [
     problem: 'A operação está espalhada por mensagens, folhas e tarefas soltas.',
     recommendationTitle: 'Plataforma para centralizar operações',
     recommendationDescription: 'Junte tarefas, estados e informação num único ponto para reduzir dispersão e acelerar a equipa.',
-    productSlug: 'qevaryn-ops',
+    productSlug: 'kavtris-ops',
     primaryCtaLabel: 'Ver como funciona',
-    primaryCtaHref: '/produtos/qevaryn-ops',
+    primaryCtaHref: '/produtos/kavtris-ops',
     secondaryCtaLabel: 'Falar sobre esta solução',
-    secondaryCtaHref: '/?produto=qevaryn-ops#contacto'
+    secondaryCtaHref: '/?produto=kavtris-ops#contacto'
   },
   {
     id: 'customers',

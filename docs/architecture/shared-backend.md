@@ -37,7 +37,7 @@ Future Native Mobile
 Future Internal Tools
         |
         v
-Shared Qevaryn API
+Shared KAVTRIS API
         |
         |-- Contact
         |-- Authentication
@@ -46,7 +46,7 @@ Shared Qevaryn API
         `-- Integrations
 ```
 
-Extraction to a future `qevaryn-api` repository is only justified when there are multiple active clients or backend operational needs such as independent deployment, persistence, authentication, monitoring or integrations.
+Extraction to a future `KAVTRIS-api` repository is only justified when there are multiple active clients or backend operational needs such as independent deployment, persistence, authentication, monitoring or integrations.
 
 ## Current limitations
 

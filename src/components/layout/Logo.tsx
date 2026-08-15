@@ -4,18 +4,18 @@ import { cn } from '@/components/shared/cn';
 type LogoProps = {
   className?: string;
   priority?: boolean;
-  variant?: 'qevaryn' | 'qevarynWhite' | 'network' | 'seal';
+  variant?: 'kavtris' | 'kavtrisWhite' | 'network' | 'seal';
 };
 
 const logos = {
-  // Variant names remain technical ('qevaryn'/'qevarynWhite') to minimize
+  // Variant names remain technical ('kavtris'/'kavtrisWhite') to minimize
   // churn. Both current usages sit on dark backgrounds; per the compact
   // layout rule the header/rede surfaces use the landscape KAVTRIS wordmark
   // (silver + blue accent). The full dark lockup
   // (kavtris-logo-dark-divider-transparent.png) remains available for
   // surfaces with vertical space; the light lockup lives in the
   // source-of-truth for future light backgrounds.
-  qevaryn: {
+  kavtris: {
     src: '/brand/kavtris/kavtris-wordmark-dark.png',
     alt: 'KAVTRIS',
     width: 760,
@@ -23,7 +23,7 @@ const logos = {
     sizes: '(max-width: 430px) 145px, (max-width: 640px) 170px, (max-width: 1024px) 220px, 260px',
     className: 'h-auto w-[145px] shrink-0 object-contain min-[430px]:w-[170px] sm:w-[220px] xl:w-[260px]'
   },
-  qevarynWhite: {
+  kavtrisWhite: {
     src: '/brand/kavtris/kavtris-wordmark-dark.png',
     alt: 'KAVTRIS',
     width: 760,
@@ -49,7 +49,7 @@ const logos = {
   }
 };
 
-export function Logo({ className, priority = false, variant = 'qevaryn' }: LogoProps) {
+export function Logo({ className, priority = false, variant = 'kavtris' }: LogoProps) {
   const logo = logos[variant];
 
   return (

@@ -13,7 +13,7 @@ This repository is currently the single source of truth.
 - homepage;
 - product catalog;
 - generic product routes;
-- Qevaryn FieldOps presentation;
+- KAVTRIS FieldOps presentation;
 - enterprise presentation;
 - Rede Qualidade e Vida page;
 - privacy and cookies pages;
