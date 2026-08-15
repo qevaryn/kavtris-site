@@ -15,7 +15,7 @@ The repository does not currently define `.nvmrc` or `package.json#engines`. Use
 
 ```bash
 git clone <repository-url>
-cd qevaryn-site
+cd kavtris-site
 npm install
 ```
 
