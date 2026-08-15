@@ -68,11 +68,9 @@ The repository does not currently pin a Node.js version in a `.nvmrc` or `engine
 
 ```bash
 git clone <repository-url>
-cd qevaryn-site
+cd kavtris-site
 npm install
 ```
-
-The local directory and external repository name remain unchanged until the external identity migration phase.
 
 Create a local environment file from `.env.example`.
 
