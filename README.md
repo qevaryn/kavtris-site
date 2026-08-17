@@ -274,9 +274,7 @@ Start here:
 
 - [docs/README.md](docs/README.md)
 
-Documentação transversal de produto e governança: [qevaryn/qevaryn-docs](https://github.com/qevaryn/qevaryn-docs).
-
-This external repository reference is intentionally preserved until the external identity migration phase.
+Documentação transversal de produto e governança: [qevaryn/kavtris-docs](https://github.com/qevaryn/kavtris-docs).
 
 Key guides:
 
