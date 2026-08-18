@@ -125,25 +125,21 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 ## Institutional, Company And Product Baseline
 
-> A documentação transversal (governança, empresa, produto, Qevaryn Platform, sistemas, planos e subscrições) foi transferida para o repositório oficial `qevaryn/qevaryn-docs`. Este repositório mantém apenas ponteiros (stubs) para compatibilidade com links e referências históricas.
+> A documentação transversal (governança, empresa, produto, ecossistema KAVTRIS, sistemas, planos e subscrições) foi transferida para o repositório oficial `qevaryn/kavtris-docs`. Este repositório mantém apenas ponteiros (stubs) para compatibilidade com links e referências históricas.
 
 ## Autoridade documental
 
-### Qevaryn Docs
+### KAVTRIS Docs
 
-Governança, produto, Platform, sistemas, planos e subscrições:
+Governança, produto, ecossistema, sistemas, planos e subscrições:
 
-`qevaryn/qevaryn-docs` — https://github.com/qevaryn/qevaryn-docs
+`qevaryn/kavtris-docs` — https://github.com/qevaryn/kavtris-docs
 
-Status: external identity pending PRE-PLATFORM-TRANSITION.2B.
-
-### Qevaryn Site
+### KAVTRIS Site
 
 Arquitetura técnica, desenvolvimento, QA, deploy e operação do site:
 
 este repositório.
-
-Status: external repository name pending PRE-PLATFORM-TRANSITION.2B.
 
 ## Visual Assets
 
