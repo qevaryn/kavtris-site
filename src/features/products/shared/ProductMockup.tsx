@@ -53,7 +53,7 @@ export function ProductMockup({ product, compact = false }: ProductMockupProps) 
   return (
     <div
       aria-hidden="true"
-      className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-navy-950 p-4 text-white shadow-card"
+      className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-navy-950 p-3 text-white shadow-card"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(6,90,253,0.22),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_45%)]" />
       <div className="relative">
@@ -72,19 +72,19 @@ export function ProductMockup({ product, compact = false }: ProductMockupProps) 
           </span>
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="mt-4 flex items-center justify-between gap-3">
           <div>
             <p className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">Exemplo de interface</p>
             <p className="mt-1 text-sm font-semibold text-white">{product.name}</p>
           </div>
         </div>
 
-        <div className={`mt-5 grid gap-3 ${compact ? '' : 'sm:grid-cols-[0.8fr_1fr]'}`}>
-          <div className="rounded-2xl border border-white/10 bg-white/8 p-3">
-            <div className="mb-3 h-2 w-20 rounded-full bg-kavtris-blue/70" />
+        <div className={`mt-4 grid gap-2.5 ${compact ? '' : 'sm:grid-cols-[0.8fr_1fr]'}`}>
+          <div className="rounded-2xl border border-white/10 bg-white/8 p-2.5">
+            <div className="mb-2.5 h-2 w-20 rounded-full bg-kavtris-blue/70" />
             <div className="space-y-2">
               {rows.map((row) => (
-                <div key={row.label} className="rounded-xl border border-white/10 bg-navy-900/80 p-3">
+                <div key={row.label} className="rounded-xl border border-white/10 bg-navy-900/80 p-2.5">
                   <div className="flex items-start gap-3">
                     <span className={`mt-1 h-2.5 w-2.5 rounded-full ${row.tone}`} />
                     <div>
@@ -97,28 +97,28 @@ export function ProductMockup({ product, compact = false }: ProductMockupProps) 
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white p-3 text-navy-900">
+          <div className="rounded-2xl border border-white/10 bg-white p-2.5 text-navy-900">
             <div className="flex items-center justify-between">
               <div className="h-2 w-24 rounded-full bg-navy-200" />
               <div className="h-7 w-7 rounded-full bg-kavtris-blue/20" />
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               {product.features.slice(0, 4).map((feature, index) => {
                 const Icon = icons[index % icons.length];
                 return (
-                  <div key={feature} className="rounded-xl border border-slate-200 bg-paper p-3">
+                  <div key={feature} className="rounded-xl border border-slate-200 bg-paper p-2.5">
                     <Icon className="h-4 w-4 text-kavtris-blue" aria-hidden="true" />
                     <p className="mt-2 text-[0.7rem] font-semibold leading-4 text-navy-900">{feature}</p>
                   </div>
                 );
               })}
             </div>
-            <div className="mt-4 h-16 rounded-xl bg-gradient-to-r from-kavtris-blue/20 via-navy-100 to-kavtris-blue/10" />
+            <div className="mt-3 h-14 rounded-xl bg-gradient-to-r from-kavtris-blue/20 via-navy-100 to-kavtris-blue/10" />
           </div>
         </div>
 
         {/* Live status strip — reinforces that the mockup depicts an operating state. */}
-        <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-navy-900/80 px-4 py-3">
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-navy-900/80 px-4 py-2.5">
           <div className="flex min-w-0 items-center gap-2">
             <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${rows[0]?.tone ?? 'bg-kavtris-blue'}`} />
             <p className="truncate text-xs font-semibold text-white">{rows[0]?.label}</p>

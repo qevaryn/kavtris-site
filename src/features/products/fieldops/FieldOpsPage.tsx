@@ -63,14 +63,14 @@ export function FieldOpsPage() {
         </div>
 
         {/* 1 — Product hero: visual first, level-aware CTAs. */}
-        <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
-          <div className="container-section grid gap-9 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
+        <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-16">
+          <div className="container-section grid gap-8 lg:grid-cols-[0.5fr_0.5fr] lg:items-center">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.22em] text-kavtris-blueLight">FieldOps</p>
               <p className="mt-3 inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 Conceito de solução adaptável
               </p>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-[2.875rem]">
                 Organize equipas externas, serviços e visitas num único sistema.
               </h1>
               <p className="mt-5 text-lg leading-8 text-white/78">
@@ -82,7 +82,7 @@ export function FieldOpsPage() {
               <p className="mt-4 rounded-2xl border border-kavtris-blue/20 bg-white/5 p-4 text-sm leading-7 text-white/70">
                 Esta apresentação mostra uma possível configuração. As funcionalidades finais dependem do levantamento e das necessidades de cada empresa.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
                   href={`/?produto=${fieldOpsProduct.slug}#contacto`}
                   data-testid="hero-adapt-cta"
@@ -192,7 +192,7 @@ function HeroVisual({ image, imageAlt }: { image: string; imageAlt: string }) {
     <div className="relative min-w-0">
       <div className="absolute inset-8 rounded-full bg-kavtris-blue/14 blur-3xl" aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-4 shadow-2xl">
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-navy-900">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-[1.25rem] bg-navy-900">
           <Image
             src={image}
             alt={imageAlt}
@@ -203,13 +203,13 @@ function HeroVisual({ image, imageAlt }: { image: string; imageAlt: string }) {
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-navy-950/35 via-transparent to-kavtris-blue/10" aria-hidden="true" />
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
           {[
             ['Agenda', 'serviços do dia'],
             ['Check-in', 'presença no local'],
             ['Relatório', 'histórico organizado']
           ].map(([label, text]) => (
-            <div key={label} className="rounded-2xl bg-navy-950/80 p-4">
+            <div key={label} className="rounded-2xl bg-navy-950/80 p-3">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-kavtris-blueLight">{label}</p>
               <p className="mt-1 text-sm text-white/72">{text}</p>
             </div>

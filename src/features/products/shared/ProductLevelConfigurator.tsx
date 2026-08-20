@@ -64,7 +64,7 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
   };
 
   return (
-    <section data-testid="product-level-configurator" className="bg-mist py-14 sm:py-16 lg:py-20">
+    <section data-testid="product-level-configurator" className="bg-mist py-14 sm:py-16 lg:py-16">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">
@@ -73,13 +73,13 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
             Configure o ponto de partida mais próximo.
           </h2>
-          <p className="mt-4 text-base leading-8 text-slate-600">
+          <p className="mt-3 text-base leading-8 text-slate-600">
             O {product.name} não é um pacote fechado. Escolha um nível para ver como a composição pode crescer — o
             resultado final é sempre adaptado à sua operação.
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
           {/* Selected-level visual — re-keyed so the level switch is visible. */}
           <div
             key={level.id}
@@ -92,13 +92,13 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
           {/* Level selector panel */}
           <aside
             aria-label={`Níveis de configuração do ${product.name}`}
-            className="min-w-0 rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8"
+            className="min-w-0 rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6"
           >
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">Nível da solução</p>
             <div
               role="radiogroup"
               aria-label="Nível da solução"
-              className="mt-4 grid gap-3"
+              className="mt-3 grid gap-2"
               onKeyDown={moveSelection}
             >
               {product.levels.map((item) => {
@@ -113,7 +113,7 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
                     data-testid={`product-level-option-${item.id}`}
                     onClick={() => onLevelChange(item.id)}
                     className={cn(
-                      'flex flex-col items-start gap-1 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
+                      'flex flex-col items-start gap-0.5 rounded-2xl border p-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kavtris-blue focus-visible:ring-offset-2',
                       isSelected
                         ? 'border-kavtris-blue bg-[#F0F6FF] ring-2 ring-kavtris-blue/40'
                         : 'border-borderline bg-white hover:border-kavtris-blue/50'
@@ -126,30 +126,30 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
                         aria-hidden="true"
                       />
                     </span>
-                    <span className="text-sm leading-6 text-slate-600">{item.tagline}</span>
+                    <span className="text-sm leading-5 text-slate-600">{item.tagline}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="mt-6 border-t border-borderline pt-6">
+            <div className="mt-4 border-t border-borderline pt-4">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">
                 {level.name} selecionado
               </p>
-              <ul className="mt-4 grid gap-2.5">
+              <ul className="mt-3 grid gap-1.5">
                 {level.highlights.map((highlight) => (
-                  <li key={highlight} className="flex gap-2 text-sm leading-6 text-navy-800">
+                  <li key={highlight} className="flex gap-2 text-sm leading-5 text-navy-800">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
                     {highlight}
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 rounded-2xl bg-paper p-4 text-sm leading-6 text-slate-600">
+              <p className="mt-4 rounded-2xl bg-paper p-3 text-sm leading-6 text-slate-600">
                 A composição final é definida de acordo com a sua operação.
               </p>
               <Button
                 href={`/?produto=${product.slug}#contacto`}
-                className="mt-6 w-full text-navy-950"
+                className="mt-4 w-full text-navy-950"
                 data-testid="product-level-cta"
               >
                 Adaptar o {level.name} à minha empresa
@@ -162,7 +162,7 @@ export function ProductLevelConfigurator({ product, levelId, onLevelChange }: Pr
         {/* Selected-level summary — easy to scan, no giant comparison table. */}
         <div
           data-testid="product-level-summary"
-          className="mt-6 rounded-[1.35rem] border border-kavtris-blue/30 bg-[#EAF1FC] px-5 py-5 text-navy-950 shadow-sm sm:px-6"
+          className="mt-5 rounded-[1.35rem] border border-kavtris-blue/30 bg-[#EAF1FC] px-5 py-4 text-navy-950 shadow-sm sm:px-6"
         >
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="text-base font-semibold">{level.name} selecionado</span>
