@@ -200,10 +200,10 @@ export function ProductInAction({ product, levelId }: { product: ProductConcept;
     <div
       data-testid="product-in-action"
       aria-hidden="true"
-      className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8"
+      className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6"
     >
       <div data-testid="product-workflow-visual">
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
+        <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
         {/* Main device — the operational context that dominates this product. */}
         <div className="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-paper">
           <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-4 py-2.5">
@@ -214,9 +214,9 @@ export function ProductInAction({ product, levelId }: { product: ProductConcept;
             </span>
             <p className="ml-1 truncate text-xs font-semibold text-navy-800">{config.mainTitle}</p>
           </div>
-          <div className="grid gap-2.5 p-4 sm:grid-cols-2">
+          <div className="grid gap-2.5 p-3.5 sm:grid-cols-2">
             {config.mainRows.map((row) => (
-              <div key={row.label} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3.5">
+              <div key={row.label} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3">
                 <row.icon className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-navy-900">{row.label}</p>
@@ -229,7 +229,7 @@ export function ProductInAction({ product, levelId }: { product: ProductConcept;
 
         {/* Companion device — the mobile/customer-facing side of the same story. */}
         <div className="mx-auto flex w-full max-w-[300px] flex-col lg:max-w-none">
-          <div className="flex-1 overflow-hidden rounded-[1.4rem] border border-slate-200 bg-navy-950 p-3.5 text-white shadow-card">
+          <div className="flex-1 overflow-hidden rounded-[1.4rem] border border-slate-200 bg-navy-950 p-3 text-white shadow-card">
             <div className="flex items-center justify-between px-1 pt-1">
               <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-kavtris-blueLight">
                 {config.phoneTitle}
@@ -238,9 +238,9 @@ export function ProductInAction({ product, levelId }: { product: ProductConcept;
                 {level ? `Nível ${level.name}` : 'Mobile'}
               </span>
             </div>
-            <div className="mt-4 space-y-2.5">
+            <div className="mt-3 space-y-2">
               {phoneRows.map((row) => (
-                <div key={row.label} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-3">
+                <div key={row.label} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5">
                   <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${phoneTone[row.tone]}`} />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-white">{row.label}</p>
@@ -255,7 +255,7 @@ export function ProductInAction({ product, levelId }: { product: ProductConcept;
 
 
       {/* Possible-use sequence — the numbered flow (kept for continuity). */}
-      <ol className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+      <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
         {config.scenes.map((scene, index) => (
           <li key={scene.caption} className="relative flex gap-3 lg:flex-col lg:gap-0">
             {index < config.scenes.length - 1 ? (

@@ -119,7 +119,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
         <ProductAdaptation product={product} levelId={levelId} />
 
         {/* 5 — Visual demonstration (reacts to the selected level). */}
-        <section id="demonstracao" className="bg-white py-14 sm:py-16 lg:py-20">
+        <section id="demonstracao" className="bg-white py-14 sm:py-16 lg:py-16">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div className="max-w-3xl">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Demonstração visual</p>
@@ -131,7 +131,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 levantamento e da forma como a sua empresa opera.
               </p>
             </div>
-            <div className="mt-8">
+            <div className="mt-6">
               <ProductInAction product={product} levelId={levelId} />
             </div>
           </div>
