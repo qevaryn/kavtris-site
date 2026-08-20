@@ -293,13 +293,13 @@ export function BusinessDiscovery() {
                       : 'border-borderline hover:-translate-y-0.5 hover:border-kavtris-blue/50 hover:shadow-card motion-reduce:translate-y-0 motion-reduce:hover:translate-y-0'
                   )}
                 >
-                  <span className="relative block aspect-[16/10] overflow-hidden bg-navy-950">
+                  <span className="relative block aspect-[16/9] overflow-hidden bg-navy-950">
                     <BusinessVisual businessId={category.id} />
                   </span>
                   <span className="flex flex-1 flex-col p-5">
                     <span className="text-lg font-semibold text-navy-950">{category.label}</span>
                     <span className="mt-2 text-sm leading-6 text-slate-600">{category.short}</span>
-                    <span className="mt-3 flex flex-wrap gap-2">
+                    <span className="mt-2 flex flex-wrap gap-2">
                       {category.needs.map((need) => (
                         <span
                           key={need}
@@ -311,7 +311,7 @@ export function BusinessDiscovery() {
                     </span>
                     <span
                       className={cn(
-                        'mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold',
+                        'mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold',
                         isSelected
                           ? 'text-kavtris-blue'
                           : 'text-kavtris-blue group-hover:text-kavtris-blueLight'
