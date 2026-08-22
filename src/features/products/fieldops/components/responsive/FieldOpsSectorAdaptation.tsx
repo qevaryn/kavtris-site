@@ -56,7 +56,7 @@ export function FieldOpsSectorAdaptation({ levelId, sectorId, onSectorChange }: 
   };
 
   return (
-    <section data-testid="fieldops-adaptation" className="bg-mist py-16 sm:py-20">
+    <section data-testid="fieldops-adaptation" className="bg-mist py-14 sm:py-16">
       <div className="container-section">
         <div className="max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Adaptação por setor</p>
@@ -71,7 +71,7 @@ export function FieldOpsSectorAdaptation({ levelId, sectorId, onSectorChange }: 
         <div
           role="tablist"
           aria-label="Setores FieldOps"
-          className="mt-8 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap"
+          className="mt-6 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap"
           onKeyDown={onTabKey}
         >
           {fieldOpsSectors.map((item) => (
@@ -95,14 +95,14 @@ export function FieldOpsSectorAdaptation({ levelId, sectorId, onSectorChange }: 
           ))}
         </div>
 
-        <div id={`sector-panel-${sector.id}`} role="tabpanel" aria-labelledby={`sector-tab-${sector.id}`} className="mt-8 grid gap-6 lg:grid-cols-[0.42fr_0.58fr]">
-          <article className="rounded-[1.35rem] border border-borderline bg-white p-6">
+        <div id={`sector-panel-${sector.id}`} role="tabpanel" aria-labelledby={`sector-tab-${sector.id}`} className="mt-6 grid gap-5 lg:grid-cols-[0.42fr_0.58fr]">
+          <article className="rounded-[1.35rem] border border-borderline bg-white p-5">
             <h3 className="text-2xl font-semibold text-navy-950">{sector.name}</h3>
-            <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Problema operacional</p>
+            <p className="mt-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Problema operacional</p>
             <p className="mt-2 text-base leading-7 text-slate-700">{sector.problem}</p>
-            <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Resultado prático</p>
+            <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Resultado prático</p>
             <p className="mt-2 text-base leading-7 text-slate-700">{sector.outcome}</p>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               {sector.modules.map((module) => (
                 <span key={module} className="rounded-full bg-paper px-3 py-1 text-sm font-semibold text-navy-800">
                   {module}
@@ -112,7 +112,7 @@ export function FieldOpsSectorAdaptation({ levelId, sectorId, onSectorChange }: 
             {/* WEB.1F.8 — the adaptation section also knows the page level. */}
             <div
               data-testid="fieldops-adaptation-level"
-              className="mt-5 rounded-2xl border border-kavtris-blue/25 bg-[#EAF1FC] p-4 text-sm leading-6 text-navy-900"
+              className="mt-4 rounded-2xl border border-kavtris-blue/25 bg-[#EAF1FC] p-3 text-sm leading-6 text-navy-900"
             >
               <span className="font-semibold text-kavtris-blue">Configuração {configuration.name}:</span>{' '}
               {configuration.outcome}

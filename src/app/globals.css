@@ -68,11 +68,11 @@ section[id] {
 
 @layer utilities {
   .container-wide {
-    @apply mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-16 2xl:px-20;
+    @apply mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-16 2xl:px-20;
   }
 
   .container-section {
-    @apply mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-16 2xl:px-20;
+    @apply mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16 2xl:px-20;
   }
 
   .snap-row {
@@ -143,8 +143,8 @@ section[id] {
 
 @media (min-width: 1024px) {
   .hero-ring {
-    width: min(54vw, 30rem);
-    height: min(54vw, 30rem);
+    width: min(54vw, 27rem);
+    height: min(54vw, 27rem);
   }
 }
 

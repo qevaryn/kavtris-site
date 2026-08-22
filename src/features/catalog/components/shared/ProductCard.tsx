@@ -19,7 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <figure
         data-testid="product-card-visual"
-        className="relative aspect-[16/10] overflow-hidden bg-navy-950"
+        className="relative aspect-[16/9] overflow-hidden bg-navy-950"
       >
         <Image
           src={image}
@@ -35,12 +35,12 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </figure>
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blue">{product.categoryLabel}</p>
-        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-navy-950">{product.name}</h3>
-        <p className="mt-3 text-sm leading-6 text-slate-600">{product.shortDescription}</p>
+        <h3 className="mt-2 text-xl font-semibold tracking-tight text-navy-950">{product.name}</h3>
+        <p className="mt-2 text-sm leading-6 text-slate-600">{product.shortDescription}</p>
 
-        <div className="mt-auto grid gap-3 pt-5 sm:grid-cols-[auto_1fr]">
+        <div className="mt-auto grid gap-3 pt-4 sm:grid-cols-[auto_1fr]">
           <Button href={`/produtos/${product.slug}`} className="w-full sm:w-auto">
             Ver produto
           </Button>

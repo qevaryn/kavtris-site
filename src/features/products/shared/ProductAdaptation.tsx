@@ -22,7 +22,7 @@ export function ProductAdaptation({ product, levelId }: ProductAdaptationProps) 
   );
 
   return (
-    <section data-testid="product-adaptation" className="bg-mist py-14 sm:py-16 lg:py-20">
+    <section data-testid="product-adaptation" className="bg-mist py-14 sm:py-16 lg:py-16">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
         <div className="max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Adaptação à operação</p>
@@ -35,11 +35,11 @@ export function ProductAdaptation({ product, levelId }: ProductAdaptationProps) 
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-8">
+        <div className="mt-6 grid gap-5 lg:grid-cols-2">
+          <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-600">Contextos de utilização</p>
             <h3 className="mt-3 text-xl font-semibold text-navy-950">Quem pode beneficiar.</h3>
-            <ul className="mt-5 flex flex-wrap gap-2">
+            <ul className="mt-4 flex flex-wrap gap-2">
               {product.audience.map((item) => (
                 <li
                   key={item}
@@ -53,13 +53,13 @@ export function ProductAdaptation({ product, levelId }: ProductAdaptationProps) 
 
           <article
             data-testid="product-adaptation-level"
-            className="rounded-[1.35rem] border border-kavtris-blue/30 bg-white p-6 shadow-sm sm:p-8"
+            className="rounded-[1.35rem] border border-kavtris-blue/30 bg-white p-5 shadow-sm sm:p-6"
           >
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">
               No nível {level.name}
             </p>
             <h3 className="mt-3 text-xl font-semibold text-navy-950">A composição pode incluir.</h3>
-            <ul className="mt-5 grid gap-2.5">
+            <ul className="mt-4 grid gap-2.5">
               {level.highlights.map((highlight) => (
                 <li key={highlight} className="flex gap-2 text-sm leading-6 text-navy-800">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
@@ -67,7 +67,7 @@ export function ProductAdaptation({ product, levelId }: ProductAdaptationProps) 
                 </li>
               ))}
             </ul>
-            <p className="mt-5 rounded-2xl bg-paper p-4 text-sm leading-6 text-slate-600">
+            <p className="mt-4 rounded-2xl bg-paper p-3 text-sm leading-6 text-slate-600">
               A composição final é sempre definida de acordo com a sua operação.
             </p>
           </article>
