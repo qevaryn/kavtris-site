@@ -67,7 +67,7 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
   };
 
   return (
-    <section id="fieldops-experience" data-testid="fieldops-demonstration" className="bg-paper py-16 sm:py-20">
+    <section id="fieldops-experience" data-testid="fieldops-demonstration" className="bg-paper py-14 sm:py-16">
       <div className="container-section">
         <div className="max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-kavtris-blue">Demonstração visual</p>
@@ -82,7 +82,7 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
         <div
           role="tablist"
           aria-label="Experiência FieldOps"
-          className="mt-8 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap"
+          className="mt-6 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap"
           onKeyDown={onTabKey}
         >
           {fieldOpsExperienceViews.map((item) => (
@@ -106,11 +106,11 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
           ))}
         </div>
 
-        <div id={`experience-panel-${experience.id}`} role="tabpanel" aria-labelledby={`experience-tab-${experience.id}`} className="mt-8">
-          <div className="grid gap-8 lg:grid-cols-[0.38fr_0.62fr] lg:items-start">
-            <div className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm">
+        <div id={`experience-panel-${experience.id}`} role="tabpanel" aria-labelledby={`experience-tab-${experience.id}`} className="mt-6">
+          <div className="grid gap-6 lg:grid-cols-[0.38fr_0.62fr] lg:items-start">
+            <div className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm">
               <h3 className="text-2xl font-semibold text-navy-950">{experience.title}</h3>
-              <p className="mt-4 text-base leading-8 text-slate-600">{experience.description}</p>
+              <p className="mt-3 text-base leading-8 text-slate-600">{experience.description}</p>
             </div>
             {experience.id === 'management' && <FieldOpsManagementDashboard sectorName={sector.name} dashboardState={sector.dashboardState} />}
             {experience.id === 'team' && <FieldOpsEmployeeMobileView sectorName={sector.name} />}
@@ -121,7 +121,7 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
         {/* Level-aware configuration panel inside the demo (WEB.1F.8). */}
         <div
           data-testid="fieldops-demo-config"
-          className="mt-8 rounded-[1.35rem] border border-kavtris-blue/30 bg-white p-6 shadow-sm"
+          className="mt-6 rounded-[1.35rem] border border-kavtris-blue/30 bg-white p-5 shadow-sm"
         >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-bold uppercase tracking-[0.14em] text-kavtris-blue">
@@ -131,8 +131,8 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
               {configuration.audience.length} perfis · {configuration.modules.length} módulos
             </span>
           </div>
-          <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Adequado para</p>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+          <p className="mt-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Adequado para</p>
+          <ul className="mt-2 grid gap-2 sm:grid-cols-2">
             {configuration.audience.map((item) => (
               <li key={item} className="flex gap-2 text-sm leading-6 text-slate-700">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-kavtris-blue" aria-hidden="true" />
@@ -140,15 +140,15 @@ export function FieldOpsDemonstration({ levelId, sectorId }: FieldOpsDemonstrati
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Módulos possíveis</p>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-slate-600">Módulos possíveis</p>
+          <div className="mt-2 flex flex-wrap gap-2">
             {configuration.modules.map((module) => (
               <span key={module} className="rounded-full bg-paper px-3 py-1 text-sm font-semibold text-navy-800">
                 {module}
               </span>
             ))}
           </div>
-          <p className="mt-5 rounded-2xl bg-[#EAF1FC] p-4 text-sm font-semibold leading-6 text-navy-900">
+          <p className="mt-4 rounded-2xl bg-[#EAF1FC] p-3 text-sm font-semibold leading-6 text-navy-900">
             {configuration.outcome}
           </p>
         </div>

@@ -196,14 +196,14 @@ export function BusinessDiscovery() {
   return (
     <>
       {/* Business mode hero — business-first, no technical language. */}
-      <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-24">
+      <section className="overflow-hidden bg-navy-950 py-16 text-white sm:py-20 lg:py-16">
         <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <p className="text-sm font-bold uppercase tracking-[0.24em] text-kavtris-blueLight">
                 Produtos e soluções
               </p>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-[2.875rem]">
                 Descubra sistemas a partir do contexto da sua empresa.
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-8 text-white/72">
@@ -293,13 +293,13 @@ export function BusinessDiscovery() {
                       : 'border-borderline hover:-translate-y-0.5 hover:border-kavtris-blue/50 hover:shadow-card motion-reduce:translate-y-0 motion-reduce:hover:translate-y-0'
                   )}
                 >
-                  <span className="relative block aspect-[16/10] overflow-hidden bg-navy-950">
+                  <span className="relative block aspect-[16/9] overflow-hidden bg-navy-950">
                     <BusinessVisual businessId={category.id} />
                   </span>
                   <span className="flex flex-1 flex-col p-5">
                     <span className="text-lg font-semibold text-navy-950">{category.label}</span>
                     <span className="mt-2 text-sm leading-6 text-slate-600">{category.short}</span>
-                    <span className="mt-3 flex flex-wrap gap-2">
+                    <span className="mt-2 flex flex-wrap gap-2">
                       {category.needs.map((need) => (
                         <span
                           key={need}
@@ -311,7 +311,7 @@ export function BusinessDiscovery() {
                     </span>
                     <span
                       className={cn(
-                        'mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold',
+                        'mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold',
                         isSelected
                           ? 'text-kavtris-blue'
                           : 'text-kavtris-blue group-hover:text-kavtris-blueLight'

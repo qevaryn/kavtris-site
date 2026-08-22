@@ -23,7 +23,7 @@ test('mobile catalog has no horizontal overflow', async ({ page }) => {
   await expect(opsCard.getByRole('img', { name: /Interface do KAVTRIS Ops num portátil/i })).toBeVisible();
   const visualBox = await opsCard.getByTestId('product-card-visual').boundingBox();
   expect(visualBox).not.toBeNull();
-  expect(Math.round((visualBox!.width / visualBox!.height) * 10) / 10).toBe(1.6);
+  expect(visualBox!.width / visualBox!.height).toBeCloseTo(16 / 9, 1);
   await expectNoHorizontalOverflow(page);
 });
 

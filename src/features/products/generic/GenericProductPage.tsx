@@ -71,8 +71,8 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
         </div>
 
         {/* 1 — Product hero: strong visual, short copy, level-aware CTAs. */}
-        <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-20">
-          <div className="mx-auto grid max-w-[1200px] gap-10 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
+        <section className="bg-navy-950 py-12 text-white sm:py-16 lg:py-16">
+          <div className="mx-auto grid max-w-[1200px] gap-8 px-5 sm:px-8 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:px-16">
             <div className="min-w-0">
               <p className="inline-flex rounded-full bg-kavtris-blue/12 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-kavtris-blueLight">
                 {product.label}
@@ -82,7 +82,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
               <p className="mt-4 text-sm leading-7 text-white/62">
                 Este é um exemplo de solução que pode ser adaptado ao funcionamento da sua empresa.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
                   href={`/?produto=${product.slug}#contacto`}
                   data-testid="hero-adapt-cta"
@@ -119,7 +119,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
         <ProductAdaptation product={product} levelId={levelId} />
 
         {/* 5 — Visual demonstration (reacts to the selected level). */}
-        <section id="demonstracao" className="bg-white py-14 sm:py-16 lg:py-20">
+        <section id="demonstracao" className="bg-white py-14 sm:py-16 lg:py-16">
           <div className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16">
             <div className="max-w-3xl">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-kavtris-blue">Demonstração visual</p>
@@ -131,7 +131,7 @@ export function GenericProductPage({ product }: GenericProductPageProps) {
                 levantamento e da forma como a sua empresa opera.
               </p>
             </div>
-            <div className="mt-8">
+            <div className="mt-6">
               <ProductInAction product={product} levelId={levelId} />
             </div>
           </div>

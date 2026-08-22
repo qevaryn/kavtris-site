@@ -53,28 +53,28 @@ export function AboutPageView() {
             <ContextBackForwardControls fallbackHref="/" />
           </div>
         </div>
-        <section id="historia" className="bg-navy-950 py-16 text-white sm:py-20">
+        <section id="historia" className="bg-navy-950 py-12 text-white sm:py-16">
           <div className="container-section">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-kavtris-blueLight">A nossa história</p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-6xl">
+            <h1 className="mt-4 max-w-4xl font-display text-4xl leading-tight md:text-[2.875rem]">
               Construída com propósito, qualidade e vontade de servir.
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-white/78 md:text-lg">
+            <p className="mt-5 max-w-3xl text-base leading-8 text-white/78 md:text-lg">
               A história que deu origem à KAVTRIS começou com uma ideia simples: a tecnologia deve facilitar o trabalho das pessoas, reduzir dificuldades e ajudar
               empresas a crescer com mais organização e confiança.
             </p>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
+            <p className="mt-3 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
               Antes de existir uma estrutura, um produto ou uma marca definida, existiam experiências profissionais, conversas, anotações e o
               desejo de construir algo que realmente tivesse utilidade.
             </p>
           </div>
         </section>
 
-        <section className="bg-white py-14 sm:py-16 lg:py-18">
-          <div className="container-section grid gap-5 sm:gap-6">
-            <article className="rounded-[1.35rem] border border-borderline bg-paper p-5 shadow-sm sm:p-7">
+        <section className="bg-white py-12 sm:py-14 lg:py-16">
+          <div className="container-section grid gap-4">
+            <article className="rounded-[1.35rem] border border-borderline bg-paper p-5 shadow-sm sm:p-6">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Onde tudo começou</h2>
-              <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
                 O início deste projeto não aconteceu com todas as respostas prontas. Começou enquanto Gabriel Dias de Souza trabalhava como QA Engineer
                 e descobria que qualidade de software significava muito mais do que encontrar erros.
               </p>
@@ -87,9 +87,9 @@ export function AboutPageView() {
               </p>
             </article>
 
-            <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Uma ideia construída também através da escuta</h2>
-              <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
                 Nos primeiros passos, a ideia foi sendo partilhada com amigos e familiares. Os conselhos dos pais, as conversas com amigos e as
                 diferentes opiniões recebidas ajudaram Gabriel a observar o projeto com mais maturidade.
               </p>
@@ -103,9 +103,9 @@ export function AboutPageView() {
               </p>
             </article>
 
-            <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Da qualidade de software nasceu uma visão maior</h2>
-              <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">A experiência em Quality Assurance foi o ponto de partida.</p>
+              <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">A experiência em Quality Assurance foi o ponto de partida.</p>
               <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
                 No início, o trabalho parecia estar concentrado principalmente em testes e validação. Com o tempo, Gabriel percebeu que a qualidade
                 começa muito antes de um teste e continua muito depois do lançamento de um sistema.
@@ -120,9 +120,9 @@ export function AboutPageView() {
               </p>
             </article>
 
-            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-5 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-5 shadow-sm sm:p-6">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Valores que orientam a forma de trabalhar</h2>
-              <p className="mt-4 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 max-w-[68ch] text-sm leading-7 text-muted sm:text-base">
                 A fé cristã faz parte da história do fundador e inspira valores como serviço, honestidade, responsabilidade, cuidado e respeito
                 pelas pessoas.
               </p>
@@ -138,9 +138,9 @@ export function AboutPageView() {
           </div>
         </section>
 
-        <section className="bg-paper py-14 sm:py-16">
-          <div className="container-section grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-            <article className="rounded-[1.35rem] border border-borderline bg-white p-6 shadow-sm sm:p-7" data-testid="about-founder-card">
+        <section className="bg-paper py-12 sm:py-14">
+          <div className="container-section grid gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <article className="rounded-[1.35rem] border border-borderline bg-white p-5 shadow-sm sm:p-6" data-testid="about-founder-card">
               <div className="flex items-start gap-4">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-borderline bg-navy-950">
                   <Image
@@ -156,15 +156,15 @@ export function AboutPageView() {
                   <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-kavtris-blue">Fundador e QA Engineer</p>
                 </div>
               </div>
-              <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                 Casado e músico, Gabriel encontrou na tecnologia e na qualidade de software uma forma de unir criatividade, responsabilidade e
                 serviço às pessoas.
               </p>
-              <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                 A sua experiência envolve testes, automação, análise de requisitos e participação em projetos de software, aplicando essa visão na
                 construção e evolução do projeto que hoje é a KAVTRIS.
               </p>
-              <div className="mt-5">
+              <div className="mt-4">
                 <Button
                   href={founderLinkedIn}
                   target="_blank"
@@ -177,23 +177,23 @@ export function AboutPageView() {
               </div>
             </article>
 
-            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-6 shadow-sm sm:p-7">
+            <article className="rounded-[1.35rem] border border-kavtris-blue/20 bg-white p-5 shadow-sm sm:p-6">
               <h2 className="text-2xl font-semibold text-navy-900">Não construímos sozinhos.</h2>
-              <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                 A KAVTRIS faz parte da Rede Qualidade e Vida, uma iniciativa formada por pessoas e projetos que procuram servir com
                 responsabilidade em diferentes áreas.
               </p>
-              <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                 A tecnologia é um dos caminhos dessa visão. Outros segmentos podem contribuir através de cuidados, mobilidade, serviços e novas
                 iniciativas que venham a ser construídas.
               </p>
-              <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                 Não afirmamos ser perfeitos. Procuramos aprender, melhorar e entregar o melhor possível em cada responsabilidade assumida.
               </p>
               <div className="mt-4">
                 <Logo variant="network" className="max-w-[210px]" />
               </div>
-              <div className="mt-5">
+              <div className="mt-4">
                 <Button href="/rede-qualidade-e-vida" className="w-full sm:w-auto">
                   Conhecer a Rede Qualidade e Vida
                 </Button>
@@ -202,15 +202,15 @@ export function AboutPageView() {
           </div>
         </section>
 
-        <section className="bg-white py-14 sm:py-16">
+        <section className="bg-white py-12 sm:py-14">
           <div className="container-section">
-            <div className="rounded-[1.35rem] border border-borderline bg-paper p-6 shadow-sm sm:p-7">
+            <div className="rounded-[1.35rem] border border-borderline bg-paper p-5 shadow-sm sm:p-5">
               <h2 className="font-display text-3xl leading-tight text-navy-900">Linha do tempo em construção</h2>
               <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
                 Esta linha ajuda a organizar futuros registos visuais reais. Quando existirem novas fotografias próprias, os blocos abaixo serão
                 atualizados sem alterar o contexto histórico.
               </p>
-              <ul className="mt-6 grid gap-3 md:grid-cols-2">
+              <ul className="mt-5 grid gap-3 md:grid-cols-2">
                 {timelineSteps.map((step) => (
                   <li key={step} className="rounded-2xl border border-borderline bg-white px-4 py-3 text-sm font-medium text-navy-900">
                     <CheckCircle2 className="mr-2 inline-block h-4 w-4 text-kavtris-blue" aria-hidden="true" />
@@ -222,17 +222,17 @@ export function AboutPageView() {
           </div>
         </section>
 
-        <section className="bg-navy-950 py-16 text-white sm:py-20">
-          <div className="container-section rounded-[1.5rem] border border-white/10 bg-white/5 p-6 shadow-2xl sm:p-8">
+        <section className="bg-navy-950 py-14 text-white sm:py-16">
+          <div className="container-section rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-2xl sm:p-6">
             <h2 className="max-w-3xl font-display text-3xl leading-tight">A nossa história ainda está no começo.</h2>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-white/74 sm:text-base">
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/74 sm:text-base">
               Estamos a construir com cuidado, a ouvir pessoas, a aprender com cada etapa e a transformar experiência em soluções que possam ajudar
               empresas reais.
             </p>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-white/74 sm:text-base">
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/74 sm:text-base">
               Mais do que criar software, queremos construir relações de confiança e sistemas que tenham valor na vida de quem os utiliza.
             </p>
-            <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
+            <div className="mt-5 grid gap-3 sm:flex sm:flex-wrap">
               {/* WEB.1F.5 — the public homepage label is now "Como funciona"; the
                   About final CTA follows the same terminology. */}
               <Button href="/#como-funciona" className="text-navy-950">
