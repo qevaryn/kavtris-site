@@ -54,6 +54,16 @@ test('real localhost POST succeeds in contact mock mode', async ({ request }) =>
   await expect(await response.json()).toMatchObject({ ok: true });
 });
 
+test('unsupported contact method does not execute the contact POST handler', async ({ request }) => {
+  const response = await request.fetch('/api/contact', {
+    method: 'PUT',
+    data: validContactPayload,
+    headers: { 'x-forwarded-for': testIp(88) }
+  });
+
+  expect(response.status()).toBe(405);
+});
+
 test('real localhost POST is rejected for malformed JSON without touching the provider', async ({ request }) => {
   // Buffer keeps the payload raw; a plain string would be JSON-serialized by
   // the client and arrive as a valid JSON string rejected by validation (400).
