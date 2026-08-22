@@ -2,6 +2,8 @@ export const contactResponseMessages = {
   rateLimited: 'Foram enviados demasiados pedidos. Tente novamente mais tarde.',
   validationInvalid: 'Validação inválida.',
   invalidRequest: 'Pedido inválido.',
+  unsupportedMediaType: 'Tipo de conteúdo não suportado.',
+  payloadTooLarge: 'Pedido demasiado grande.',
   emailNotConfigured: 'O formulário não está configurado para envio neste ambiente.',
   processingFailed: 'Não foi possível processar o pedido.'
 } as const;

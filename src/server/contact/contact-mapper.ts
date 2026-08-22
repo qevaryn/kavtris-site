@@ -38,6 +38,20 @@ export function contactInvalidRequestResponse(): ContactHttpResult {
   };
 }
 
+export function contactPayloadTooLargeResponse(): ContactHttpResult {
+  return {
+    status: 413,
+    body: { ok: false, message: contactResponseMessages.payloadTooLarge }
+  };
+}
+
+export function contactUnsupportedMediaTypeResponse(): ContactHttpResult {
+  return {
+    status: 415,
+    body: { ok: false, message: contactResponseMessages.unsupportedMediaType }
+  };
+}
+
 export function contactErrorResponse(error: unknown): ContactHttpResult {
   if (error instanceof Error && error.message === 'CONTACT_EMAIL_NOT_CONFIGURED') {
     return contactEmailNotConfiguredResponse();

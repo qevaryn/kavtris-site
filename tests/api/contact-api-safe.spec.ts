@@ -65,12 +65,145 @@ test('real localhost POST is rejected for malformed JSON without touching the pr
     }
   });
 
-  // Observed current behavior: request.json() throws before validation,
-  // so the controller catch returns 500. Documented as 5J-F005 (A_VALIDAR).
-  expect(response.status()).toBe(500);
+  expect(response.status()).toBe(400);
   await expect(response).not.toBeOK();
-  await expect(await response.json()).toMatchObject({ ok: false });
+  await expect(await response.json()).toMatchObject({
+    ok: false,
+    message: 'Pedido inválido.'
+  });
 });
+
+test('real localhost POST rejects missing content type', async ({ request }) => {
+  const response = await request.post('/api/contact', {
+    data: Buffer.from(JSON.stringify(validContactPayload)),
+    headers: { 'x-forwarded-for': testIp(99) }
+  });
+
+  expect(response.status()).toBe(415);
+  await expect(response).not.toBeOK();
+  await expect(await response.json()).toMatchObject({
+    ok: false,
+    message: 'Tipo de conteúdo não suportado.'
+  });
+});
+
+test('real localhost POST rejects text/plain content type', async ({ request }) => {
+  const response = await request.post('/api/contact', {
+    data: Buffer.from(JSON.stringify(validContactPayload)),
+    headers: {
+      'content-type': 'text/plain',
+      'x-forwarded-for': testIp(100)
+    }
+  });
+
+  expect(response.status()).toBe(415);
+  await expect(response).not.toBeOK();
+  await expect(await response.json()).toMatchObject({
+    ok: false,
+    message: 'Tipo de conteúdo não suportado.'
+  });
+});
+
+test('real localhost POST accepts application/json with charset', async ({ request }) => {
+  const response = await request.post('/api/contact', {
+    data: Buffer.from(JSON.stringify(validContactPayload)),
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'x-forwarded-for': testIp(101)
+    }
+  });
+
+  expect(response.status()).not.toBe(415);
+});
+
+test('real localhost POST rejects oversized JSON before provider delivery', async ({ request }) => {
+  const response = await request.post('/api/contact', {
+    data: Buffer.from(JSON.stringify({
+      ...validContactPayload,
+      message: 'A'.repeat(17_000)
+    })),
+    headers: {
+      'content-type': 'application/json',
+      'x-forwarded-for': testIp(102)
+    }
+  });
+
+  expect(response.status()).toBe(413);
+  await expect(response).not.toBeOK();
+  await expect(await response.json()).toMatchObject({
+    ok: false,
+    message: 'Pedido demasiado grande.'
+  });
+});
+
+test('real localhost POST enforces the body limit using UTF-8 bytes', async ({ request }) => {
+  const response = await request.post('/api/contact', {
+    data: Buffer.from(JSON.stringify({
+      ...validContactPayload,
+      message: 'é'.repeat(8_300)
+    }), 'utf8'),
+    headers: {
+      'content-type': 'application/json',
+      'x-forwarded-for': testIp(103)
+    }
+  });
+
+  expect(response.status()).toBe(413);
+  await expect(response).not.toBeOK();
+});
+
+for (const [label, data] of [
+  ['null', null],
+  ['array', []],
+  ['string', 'contact'],
+  ['number', 123],
+  ['boolean', false]
+] as const) {
+  test(`real localhost POST rejects ${label} JSON as validation error`, async ({ request }) => {
+    const response = await request.post('/api/contact', {
+      data: Buffer.from(JSON.stringify(data)),
+      headers: {
+        'content-type': 'application/json',
+        'x-forwarded-for': testIp(110)
+      }
+    });
+
+    expect(response.status()).toBe(400);
+    await expect(response).not.toBeOK();
+    await expect(await response.json()).toMatchObject({
+      ok: false,
+      message: 'Validação inválida.'
+    });
+  });
+}
+
+for (const [label, privacyConsent] of [
+  ['missing', undefined],
+  ['false', false],
+  ['wrong type', 'true']
+] as const) {
+  test(`real localhost POST rejects privacyConsent ${label}`, async ({ request }) => {
+    const payload: Record<string, unknown> = { ...validContactPayload };
+
+    if (privacyConsent === undefined) {
+      delete payload.privacyConsent;
+    } else {
+      payload.privacyConsent = privacyConsent;
+    }
+
+    const response = await request.post('/api/contact', {
+      data: payload,
+      headers: { 'x-forwarded-for': testIp(120) }
+    });
+
+    expect(response.status()).toBe(400);
+    await expect(response).not.toBeOK();
+    await expect(await response.json()).toMatchObject({
+      ok: false,
+      message: 'Validação inválida.'
+    });
+  });
+}
 
 test('rate limiter rejects the 4th request for the same client', async ({ request }) => {
   const headers = { 'x-forwarded-for': testIp(93) };
