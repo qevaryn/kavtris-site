@@ -29,6 +29,12 @@ export const contactSchema = z.object({
 
 export type ContactFormInput = z.input<typeof contactSchema>;
 export type ContactFormValues = z.output<typeof contactSchema>;
+export type ContactFieldName = keyof ContactFormValues;
+
+export type ContactValidationIssues = {
+  formErrors: string[];
+  fieldErrors: Partial<Record<ContactFieldName, string[]>>;
+};
 
 /**
  * Public JSON contract returned by POST /api/contact.
@@ -39,5 +45,5 @@ export type ContactApiResponse =
   | {
       ok: false;
       message: string;
-      issues?: unknown;
+      issues?: ContactValidationIssues;
     };

@@ -15,3 +15,17 @@ export type ContactErrorCode =
   | 'EMAIL_CONFIGURATION_ERROR'
   | 'EMAIL_PROVIDER_ERROR'
   | 'INTERNAL_ERROR';
+
+export class ContactProcessingError extends Error {
+  constructor(
+    public readonly code: Extract<ContactErrorCode, 'EMAIL_CONFIGURATION_ERROR' | 'EMAIL_PROVIDER_ERROR'>,
+    options?: ErrorOptions
+  ) {
+    super(code, options);
+    this.name = 'ContactProcessingError';
+  }
+}
+
+export function isContactProcessingError(error: unknown): error is ContactProcessingError {
+  return error instanceof ContactProcessingError;
+}

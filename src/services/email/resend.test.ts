@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { sendContactEmail } from '@/services/email/resend';
 import type { ContactFormValues } from '@/domain/contact';
+import { ContactProcessingError } from '@/domain/contact/contact-errors';
 
 const sendMock = vi.fn();
 
@@ -89,23 +90,40 @@ describe('sendContactEmail', () => {
     expect(sendMock).not.toHaveBeenCalled();
   });
 
-  it('produção sem configuração retorna erro', async () => {
+  it('produção sem configuração retorna erro tipado', async () => {
     vi.stubEnv('NODE_ENV', 'production');
     delete process.env.RESEND_API_KEY;
 
-    await expect(sendContactEmail(validValues)).rejects.toThrow('CONTACT_EMAIL_NOT_CONFIGURED');
+    await expect(sendContactEmail(validValues)).rejects.toMatchObject({
+      code: 'EMAIL_CONFIGURATION_ERROR'
+    });
+    await expect(sendContactEmail(validValues)).rejects.toBeInstanceOf(ContactProcessingError);
     expect(sendMock).not.toHaveBeenCalled();
     vi.unstubAllEnvs();
   });
 
-  it('imagem inexistente gera erro e não falso sucesso', async () => {
+  it('imagem inexistente gera erro tipado e não falso sucesso', async () => {
     const cwdSpy = vi.spyOn(process, 'cwd').mockReturnValue('C:\\caminho-inexistente-para-email-logo');
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-    await expect(sendContactEmail(validValues)).rejects.toThrow('CONTACT_EMAIL_ASSET_NOT_CONFIGURED');
+    await expect(sendContactEmail(validValues)).rejects.toMatchObject({
+      code: 'EMAIL_CONFIGURATION_ERROR'
+    });
     expect(sendMock).not.toHaveBeenCalled();
 
     cwdSpy.mockRestore();
     consoleSpy.mockRestore();
+  });
+
+  it('erro do provider Resend vira erro tipado sem depender da mensagem bruta', async () => {
+    sendMock.mockResolvedValue({
+      data: null,
+      error: { message: 'provider raw detail' }
+    });
+
+    await expect(sendContactEmail(validValues)).rejects.toMatchObject({
+      code: 'EMAIL_PROVIDER_ERROR'
+    });
+    expect(sendMock).toHaveBeenCalledTimes(1);
   });
 });

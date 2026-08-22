@@ -1,5 +1,5 @@
-import type { ContactApiResponse } from '@/domain/contact';
-import { contactResponseMessages } from '@/domain/contact';
+import { contactResponseMessages, isContactProcessingError } from '@/domain/contact/contact-errors';
+import type { ContactApiResponse, ContactValidationIssues } from '@/domain/contact/contracts';
 
 export type ContactHttpResult = {
   status: number;
@@ -22,7 +22,7 @@ export function contactRateLimitedResponse(retryAfterSeconds = 1): ContactHttpRe
   };
 }
 
-export function contactValidationErrorResponse(issues: unknown): ContactHttpResult {
+export function contactValidationErrorResponse(issues: ContactValidationIssues): ContactHttpResult {
   return {
     status: 400,
     body: {
@@ -55,11 +55,7 @@ export function contactUnsupportedMediaTypeResponse(): ContactHttpResult {
 }
 
 export function contactErrorResponse(error: unknown): ContactHttpResult {
-  if (error instanceof Error && error.message === 'CONTACT_EMAIL_NOT_CONFIGURED') {
-    return contactEmailNotConfiguredResponse();
-  }
-
-  if (error instanceof Error && error.message === 'CONTACT_EMAIL_ASSET_NOT_CONFIGURED') {
+  if (isContactProcessingError(error) && error.code === 'EMAIL_CONFIGURATION_ERROR') {
     return contactEmailNotConfiguredResponse();
   }
 
