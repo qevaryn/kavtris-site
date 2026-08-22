@@ -1,4 +1,4 @@
-import { isContactRateLimited } from '@/server/contact/contact-rate-limit';
+import { checkContactRateLimit } from '@/server/contact/contact-rate-limit';
 import { readContactJsonBody } from '@/server/contact/contact-request';
 import { processContactRequest } from '@/server/contact/contact.service';
 import { validateContactRequest } from '@/server/contact/contact-validation';
@@ -15,8 +15,10 @@ import {
 
 export async function handleContactPost(request: Request): Promise<ContactHttpResult> {
   try {
-    if (isContactRateLimited(request)) {
-      return contactRateLimitedResponse();
+    const rateLimit = checkContactRateLimit(request);
+
+    if (rateLimit.limited) {
+      return contactRateLimitedResponse(rateLimit.retryAfterSeconds);
     }
 
     const requestBody = await readContactJsonBody(request);

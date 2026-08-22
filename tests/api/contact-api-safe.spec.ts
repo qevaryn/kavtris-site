@@ -224,6 +224,7 @@ test('rate limiter rejects the 4th request for the same client', async ({ reques
   });
 
   expect(fourth.status()).toBe(429);
+  expect(fourth.headers()['retry-after']).toMatch(/^[1-9]\d*$/);
   await expect(await fourth.json()).toMatchObject({
     ok: false,
     message: 'Foram enviados demasiados pedidos. Tente novamente mais tarde.'

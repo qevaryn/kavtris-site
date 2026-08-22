@@ -4,6 +4,7 @@ import { contactResponseMessages } from '@/domain/contact';
 export type ContactHttpResult = {
   status: number;
   body: ContactApiResponse;
+  headers?: HeadersInit;
 };
 
 export function contactSuccessResponse(): ContactHttpResult {
@@ -13,9 +14,10 @@ export function contactSuccessResponse(): ContactHttpResult {
   };
 }
 
-export function contactRateLimitedResponse(): ContactHttpResult {
+export function contactRateLimitedResponse(retryAfterSeconds = 1): ContactHttpResult {
   return {
     status: 429,
+    headers: { 'Retry-After': String(retryAfterSeconds) },
     body: { ok: false, message: contactResponseMessages.rateLimited }
   };
 }
