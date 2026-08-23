@@ -94,13 +94,13 @@ describe('contact notification email template', () => {
       name: '<img src=x onerror=alert(1)>',
       company: '<script>alert(1)</script>',
       currentProcess: '<b>processo</b>',
-      message: '<script>alert("xss")</script><b>texto</b>'
+      message: '<script>alert("xss")</script><b>texto</b> & \'conteúdo\''
     });
 
     expect(email.html).toContain('&lt;img src=x onerror=alert(1)&gt;');
     expect(email.html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
     expect(email.html).toContain('&lt;b&gt;processo&lt;/b&gt;');
-    expect(email.html).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;&lt;b&gt;texto&lt;/b&gt;');
+    expect(email.html).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;&lt;b&gt;texto&lt;/b&gt; &amp; &#39;conteúdo&#39;');
     expect(email.html).not.toContain('<script>alert');
   });
 
@@ -122,5 +122,31 @@ describe('contact notification email template', () => {
 
   it('gera assunto com nome quando empresa está vazia', () => {
     expect(buildContactEmailSubject({ ...baseValues, company: '' })).toBe('[Novo contacto] Automação de processos — Ana Silva');
+  });
+
+  it('normaliza quebras de linha no assunto sem perder Unicode benigno', () => {
+    const subject = buildContactEmailSubject({
+      ...baseValues,
+      service: 'Automação\r\nBcc: atacante@example.com',
+      company: 'Organização\nGestão'
+    });
+
+    expect(subject).toBe('[Novo contacto] Automação Bcc: atacante@example.com — Organização Gestão');
+    expect(subject).not.toContain('\r');
+    expect(subject).not.toContain('\n');
+    expect(subject).toContain('Automação');
+    expect(subject).toContain('Organização Gestão');
+  });
+
+  it('normaliza controlos ASCII no assunto e usa nome quando empresa está vazia', () => {
+    const subject = buildContactEmailSubject({
+      ...baseValues,
+      service: 'Processos\u0007 críticos',
+      company: '',
+      name: 'Ana\u0000 Silva'
+    });
+
+    expect(subject).toBe('[Novo contacto] Processos críticos — Ana Silva');
+    expect(subject).not.toMatch(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/);
   });
 });
