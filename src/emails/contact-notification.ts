@@ -22,6 +22,14 @@ function formatDisplayValue(value: string | undefined) {
   return normalized ? normalized : 'Não informada';
 }
 
+function normalizeEmailHeaderText(value: string | undefined) {
+  return formatDisplayValue(value)
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]+/g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+}
+
 function formatSubmittedAt(date = new Date()) {
   return new Intl.DateTimeFormat('pt-PT', {
     day: 'numeric',
@@ -39,8 +47,9 @@ function buildMailto(email: string) {
 }
 
 export function buildContactEmailSubject(values: Pick<ContactFormValues, 'service' | 'company' | 'name'>) {
-  const recipientLabel = formatDisplayValue(values.company) === 'Não informada' ? values.name : values.company;
-  return `[Novo contacto] ${values.service} — ${recipientLabel}`;
+  const company = normalizeEmailHeaderText(values.company);
+  const recipientLabel = company === 'Não informada' ? normalizeEmailHeaderText(values.name) : company;
+  return `[Novo contacto] ${normalizeEmailHeaderText(values.service)} — ${recipientLabel}`;
 }
 
 export function buildContactNotificationEmail(input: ContactNotificationInput) {

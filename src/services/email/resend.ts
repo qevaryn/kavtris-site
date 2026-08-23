@@ -3,6 +3,7 @@ import path from 'node:path';
 import { Resend, type Attachment } from 'resend';
 import { buildContactNotificationEmail } from '@/emails/contact-notification';
 import { getContactEmailEnv } from '@/config/server-env';
+import { ContactProcessingError } from '@/domain/contact/contact-errors';
 import type { ContactFormValues } from '@/domain/contact';
 import type { ContactEmailProvider } from '@/services/email/email-provider';
 
@@ -23,7 +24,7 @@ async function readEmailLogo() {
     console.error('Contact email logo is missing or unreadable.', {
       code: error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : 'UNKNOWN'
     });
-    throw new Error('CONTACT_EMAIL_ASSET_NOT_CONFIGURED');
+    throw new ContactProcessingError('EMAIL_CONFIGURATION_ERROR', { cause: error });
   }
 }
 
@@ -38,7 +39,7 @@ export async function sendContactEmail(values: ContactFormValues) {
   }
 
   if (emailEnv.missingKeys.length > 0) {
-    throw new Error('CONTACT_EMAIL_NOT_CONFIGURED');
+    throw new ContactProcessingError('EMAIL_CONFIGURATION_ERROR');
   }
 
   const logoContent = await readEmailLogo();
@@ -67,7 +68,7 @@ export async function sendContactEmail(values: ContactFormValues) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new ContactProcessingError('EMAIL_PROVIDER_ERROR', { cause: error });
   }
 
   return data;

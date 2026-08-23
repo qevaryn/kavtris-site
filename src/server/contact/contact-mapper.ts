@@ -1,9 +1,10 @@
-import type { ContactApiResponse } from '@/domain/contact';
-import { contactResponseMessages } from '@/domain/contact';
+import { contactResponseMessages, isContactProcessingError } from '@/domain/contact/contact-errors';
+import type { ContactApiResponse, ContactValidationIssues } from '@/domain/contact/contracts';
 
 export type ContactHttpResult = {
   status: number;
   body: ContactApiResponse;
+  headers?: HeadersInit;
 };
 
 export function contactSuccessResponse(): ContactHttpResult {
@@ -13,14 +14,15 @@ export function contactSuccessResponse(): ContactHttpResult {
   };
 }
 
-export function contactRateLimitedResponse(): ContactHttpResult {
+export function contactRateLimitedResponse(retryAfterSeconds = 1): ContactHttpResult {
   return {
     status: 429,
+    headers: { 'Retry-After': String(retryAfterSeconds) },
     body: { ok: false, message: contactResponseMessages.rateLimited }
   };
 }
 
-export function contactValidationErrorResponse(issues: unknown): ContactHttpResult {
+export function contactValidationErrorResponse(issues: ContactValidationIssues): ContactHttpResult {
   return {
     status: 400,
     body: {
@@ -38,12 +40,22 @@ export function contactInvalidRequestResponse(): ContactHttpResult {
   };
 }
 
-export function contactErrorResponse(error: unknown): ContactHttpResult {
-  if (error instanceof Error && error.message === 'CONTACT_EMAIL_NOT_CONFIGURED') {
-    return contactEmailNotConfiguredResponse();
-  }
+export function contactPayloadTooLargeResponse(): ContactHttpResult {
+  return {
+    status: 413,
+    body: { ok: false, message: contactResponseMessages.payloadTooLarge }
+  };
+}
 
-  if (error instanceof Error && error.message === 'CONTACT_EMAIL_ASSET_NOT_CONFIGURED') {
+export function contactUnsupportedMediaTypeResponse(): ContactHttpResult {
+  return {
+    status: 415,
+    body: { ok: false, message: contactResponseMessages.unsupportedMediaType }
+  };
+}
+
+export function contactErrorResponse(error: unknown): ContactHttpResult {
+  if (isContactProcessingError(error) && error.code === 'EMAIL_CONFIGURATION_ERROR') {
     return contactEmailNotConfiguredResponse();
   }
 
