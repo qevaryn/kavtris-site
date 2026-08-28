@@ -34,6 +34,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Architecture check
+        run: npm run check:architecture
+
+      - name: Production smoke governance check
+        run: npm run check:production-smoke-governance
+
       - name: Typecheck
         run: npm run typecheck
 
