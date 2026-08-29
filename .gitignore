@@ -80,6 +80,9 @@ web_modules/
 .next
 out
 
+# Local architecture analysis artifacts
+graphify-out/
+
 # Nuxt.js build / generate output
 .nuxt
 dist
