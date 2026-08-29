@@ -2,6 +2,7 @@ import 'server-only';
 
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { betterAuth } from 'better-auth';
+import { nextCookies } from 'better-auth/next-js';
 import { v7 as uuidv7 } from 'uuid';
 import { getIdentityEnv } from '@/config/identity-env';
 import { getDatabase } from '@/services/database/client';
@@ -28,6 +29,7 @@ function createAuth() {
       minPasswordLength: 12,
       maxPasswordLength: 128,
       requireEmailVerification: false,
+      autoSignIn: false,
       revokeSessionsOnPasswordReset: true
     },
     user: {
@@ -55,6 +57,7 @@ function createAuth() {
       storeIdentifier: 'hashed'
     },
     trustedOrigins: [new URL(env.authUrl).origin],
+    plugins: [nextCookies()],
     advanced: {
       useSecureCookies: env.isProduction,
       defaultCookieAttributes: {

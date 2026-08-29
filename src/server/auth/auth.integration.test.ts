@@ -49,7 +49,8 @@ describe('Better Auth identity integration', () => {
         emailAndPassword: {
           enabled: true,
           minPasswordLength: 12,
-          requireEmailVerification: false
+          requireEmailVerification: false,
+          autoSignIn: false
         },
         user: { modelName: 'accounts' },
         session: {
@@ -80,6 +81,19 @@ describe('Better Auth identity integration', () => {
         })
       );
       expect(signUp.status).toBe(200);
+      expect((await signUp.json()).token).toBeNull();
+      expect(signUp.headers.get('set-cookie')).toBeNull();
+
+      const duplicateSignUp = await auth.handler(
+        jsonRequest('/sign-up/email', {
+          email: 'foundation-auth@example.test',
+          name: 'Foundation Auth',
+          password
+        })
+      );
+      expect(duplicateSignUp.status).toBe(signUp.status);
+      expect(await duplicateSignUp.json()).toMatchObject({ token: null });
+      expect(duplicateSignUp.headers.get('set-cookie')).toBeNull();
 
       const accountRows = await database.select().from(schema.accounts);
       expect(accountRows).toHaveLength(1);
@@ -115,7 +129,7 @@ describe('Better Auth identity integration', () => {
         .select()
         .from(schema.sessions)
         .where(eq(schema.sessions.userId, accountRows[0].id));
-      expect(sessionRows.length).toBeGreaterThanOrEqual(2);
+      expect(sessionRows).toHaveLength(1);
       expect(sessionRows.some((session) => cookie.includes(session.token))).toBe(true);
 
       const authenticated = await auth.handler(
