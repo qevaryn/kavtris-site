@@ -51,6 +51,20 @@ describe('company bootstrap controller', () => {
     expect(result.body.ok).toBe(false);
   });
 
+  it('rejects an unsupported media type with 415', async () => {
+    getSessionMock.mockResolvedValue({ user: { id: 'account-id' } });
+
+    const request = new Request('http://localhost/api/account/company', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: '{}'
+    });
+
+    const result = await handleCompanyBootstrap(request);
+    expect(result.status).toBe(415);
+    expect(result.body.ok).toBe(false);
+  });
+
   it('rejects unknown writable fields with 400', async () => {
     getSessionMock.mockResolvedValue({ user: { id: 'account-id' } });
 

@@ -16,7 +16,12 @@ export async function handleCompanyBootstrap(request: Request) {
   const bodyResult = await readIdentityJsonBody(request);
 
   if (!bodyResult.ok) {
-    const status = bodyResult.reason === 'payload-too-large' ? 413 : 400;
+    const status =
+      bodyResult.reason === 'payload-too-large'
+        ? 413
+        : bodyResult.reason === 'unsupported-media-type'
+          ? 415
+          : 400;
     return response(status, 'INVALID_REQUEST', 'O pedido não é válido.');
   }
 
