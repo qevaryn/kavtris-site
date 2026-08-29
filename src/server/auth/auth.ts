@@ -3,7 +3,7 @@ import 'server-only';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
-import { v7 as uuidv7 } from 'uuid';
+import { v4 as uuidv4, v7 as uuidv7 } from 'uuid';
 import { getIdentityEnv } from '@/config/identity-env';
 import { getDatabase } from '@/services/database/client';
 import { authSchema } from '@/services/database/schema';
@@ -67,7 +67,7 @@ function createAuth() {
         path: '/'
       },
       database: {
-        generateId: () => uuidv7(),
+        generateId: ({ model }) => (model === 'user' ? uuidv7() : uuidv4()),
         joins: false
       }
     }

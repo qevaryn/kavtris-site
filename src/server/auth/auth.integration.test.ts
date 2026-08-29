@@ -5,7 +5,7 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { betterAuth } from 'better-auth';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/pglite';
-import { v7 as uuidv7, version as uuidVersion } from 'uuid';
+import { v4 as uuidv4, v7 as uuidv7, version as uuidVersion } from 'uuid';
 import { describe, expect, it } from 'vitest';
 import * as schema from '@/services/database/schema';
 
@@ -67,7 +67,7 @@ describe('Better Auth identity integration', () => {
             path: '/'
           },
           database: {
-            generateId: () => uuidv7(),
+            generateId: ({ model }) => (model === 'user' ? uuidv7() : uuidv4()),
             joins: false
           }
         }
@@ -113,6 +113,7 @@ describe('Better Auth identity integration', () => {
         providerId: 'credential',
         userId: accountRows[0].id
       });
+      expect(uuidVersion(credentialRows[0].id)).toBe(4);
       expect(credentialRows[0].issuer).toBeTruthy();
       expect(credentialRows[0].password).not.toBe(password);
 
@@ -130,6 +131,7 @@ describe('Better Auth identity integration', () => {
         .from(schema.sessions)
         .where(eq(schema.sessions.userId, accountRows[0].id));
       expect(sessionRows).toHaveLength(1);
+      expect(uuidVersion(sessionRows[0].id)).toBe(4);
       expect(sessionRows.some((session) => cookie.includes(session.token))).toBe(true);
 
       const authenticated = await auth.handler(
