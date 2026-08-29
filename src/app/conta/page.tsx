@@ -7,6 +7,8 @@ import { resolveTenantContext } from '@/server/identity/tenant-service';
 import { CompanyBootstrapForm } from '@/features/account/CompanyBootstrapForm';
 import { SignOutButton } from '@/features/account/SignOutButton';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Conta',
   description: 'Área do utilizador KAVTRIS.',

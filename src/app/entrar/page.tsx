@@ -5,6 +5,8 @@ import { Logo } from '@/components/layout/Logo';
 import { getServerSession } from '@/server/auth/session';
 import { AuthForm } from '@/features/account/AuthForm';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Entrar',
   description: 'Aceda à sua conta KAVTRIS.',
