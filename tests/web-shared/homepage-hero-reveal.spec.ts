@@ -1,22 +1,18 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * WEB.1F.1 — Hero simplification & logo reveal validation.
+ * Product Theatre T1 — Product-proof-first Hero validation.
  *
- *  - redundant KAVTRIS / TECHNOLOGY & CONSULTING eyebrow removed from the Hero
- *    (scoped to #inicio — the brand identifiers still exist in Header/Footer)
- *  - current white KAVTRIS symbol preserved (same approved asset + alt text)
- *  - old symbolic sequence (draw / nodes / cross / light-point) fully removed
- *  - new reveal: fast fade + subtle side fog, primary duration <= 1500ms
- *  - hero text/CTA immediately available (never wait for the logo)
- *  - reduced-motion: final static state immediately
- *  - mobile 320/390/430: no overflow, logo inside viewport
- *  - no console/hydration errors
+ * The previous logo-only hero reveal is intentionally superseded by one
+ * governed FieldOps operational proof. The proof is static, readable without
+ * client-side animation, responsive down to 320 CSS px, and equivalent under
+ * reduced motion.
  */
 
 const HERO = '[data-testid="hero-brand-visual"]';
+const PROOF = '[data-testid="hero-product-proof"]';
 
-test('hero: copy e CTAs imediatamente visíveis; eyebrow redundante removido', async ({ page }) => {
+test('hero: copy, CTAs e prova FieldOps ficam disponíveis na experiência inicial', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
@@ -24,77 +20,43 @@ test('hero: copy e CTAs imediatamente visíveis; eyebrow redundante removido', a
   await expect(page.locator('#inicio').getByRole('link', { name: 'Ver como funciona' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toBeVisible();
 
-  // Scoped to the Hero: the redundant brand eyebrow must be gone.
-  const hero = page.locator('#inicio');
-  await expect(hero.getByText('KAVTRIS', { exact: true })).toHaveCount(0);
-  await expect(hero.getByText(/TECHNOLOGY\s*&\s*CONSULTING/i)).toHaveCount(0);
-
-  // Brand identifiers still exist elsewhere (Header/Footer): the web lockup PNG
-  // carries KAVTRIS + TECHNOLOGY & CONSULTING; the link label is the accessible name.
-  await expect(page.locator('header img[src*="kavtris-technology-consulting-lockup"]')).toBeVisible();
-  await expect(page.getByRole('banner').getByLabel(/KAVTRIS — Technology & Consulting/i)).toBeVisible();
-
-  // The current white symbol is still present in the Hero.
-  await expect(page.locator(HERO).getByAltText('Símbolo KAVTRIS')).toBeVisible();
+  const proof = page.locator(PROOF);
+  await expect(proof).toBeVisible();
+  await expect(proof.getByText('Produto em ação')).toBeVisible();
+  await expect(proof.getByText('FieldOps', { exact: true })).toBeVisible();
+  await expect(proof.getByText('Agenda de serviços')).toBeVisible();
+  await expect(proof.getByText('Check-in feito')).toBeVisible();
+  await expect(proof.getByText('12/14 pontos')).toBeVisible();
+  await expect(proof.getByText('Com fotografia')).toBeVisible();
 });
 
-test('hero: novo reveal rápido — fade + fog, duração <= 1500ms, estático depois', async ({ page }) => {
+test('hero: Product proof é estático e não introduz media pesada ou animação perpétua', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
-  const logo = page.locator(`${HERO} .hero-logo`);
-  await expect(logo).toHaveCount(1);
+  const hero = page.locator(HERO);
+  await expect(hero.locator('video, canvas')).toHaveCount(0);
+  await expect(hero.locator('.hero-logo, .hero-fog, .hero-ring')).toHaveCount(0);
+  await expect(hero.getByAltText('Símbolo KAVTRIS')).toHaveCount(0);
 
-  // Computed animation: single fade-in, finished well inside the hard cap.
-  const timing = await logo.evaluate((node) => {
-    const style = getComputedStyle(node);
-    const durations = style.animationDuration.split(',').map((v) => Number.parseFloat(v) * 1000);
-    const delays = style.animationDelay.split(',').map((v) => Number.parseFloat(v) * 1000);
-    return {
-      name: style.animationName,
-      durationMs: Math.max(...durations),
-      delayMs: Math.max(...delays),
-      iterationCount: style.animationIterationCount
-    };
-  });
-
-  expect(timing.name).toBe('hero-logo-in');
-  expect(timing.durationMs).toBeGreaterThanOrEqual(300);
-  expect(timing.durationMs + timing.delayMs).toBeLessThanOrEqual(1500);
-  expect(timing.iterationCount).toBe('1');
-
-  // WEB.1F.2 — exact owner-requested value: 750ms primary fade, no delay.
-  expect(timing.durationMs).toBe(750);
-  expect(timing.delayMs).toBe(0);
-
-  // Primary reveal resolves quickly, then stays static.
-  await expect.poll(() => logo.evaluate((node) => getComputedStyle(node).opacity), { timeout: 4000 }).toBe('1');
-
-  // Subtle side fog: CSS-only, decorative, aria-hidden.
-  const fog = page.locator(`${HERO} .hero-fog`);
-  await expect(fog).toHaveCount(2);
-  for (let i = 0; i < (await fog.count()); i += 1) {
-    await expect(fog.nth(i)).toHaveAttribute('aria-hidden', 'true');
-    const bg = await fog.nth(i).evaluate((node) => getComputedStyle(node).backgroundImage);
-    expect(bg).toContain('radial-gradient');
-  }
-
-  // No old sequence traces remain.
-  await expect(page.locator(`${HERO} .hero-draw`)).toHaveCount(0);
+  const animations = await page.locator(PROOF).evaluate((node) =>
+    node.getAnimations({ subtree: true }).filter((animation) => animation.playState !== 'finished').length
+  );
+  expect(animations).toBe(0);
 });
 
-test('reduced motion: logo estático final imediato, sem animação', async ({ page }) => {
+test('reduced motion: mesma prova operacional fica imediatamente disponível', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
-  const logo = page.locator(`${HERO} .hero-logo`);
-  await expect(logo).toHaveCSS('opacity', '1');
-  const animationName = await logo.evaluate((node) => getComputedStyle(node).animationName);
-  expect(animationName).toBe('none');
+  const proof = page.locator(PROOF);
+  await expect(proof).toBeVisible();
+  await expect(proof.getByText('FieldOps', { exact: true })).toBeVisible();
+  await expect(proof.getByText('Estado atualizado')).toBeVisible();
 });
 
-test('mobile 320/390/430: sem overflow, logo dentro do viewport', async ({ page }) => {
+test('mobile 320/390/430: sem overflow e Product proof continua legível', async ({ page }) => {
   for (const width of [320, 390, 430]) {
     await page.setViewportSize({ width, height: 780 });
     await page.goto('/');
@@ -108,10 +70,13 @@ test('mobile 320/390/430: sem overflow, logo dentro do viewport', async ({ page 
       expect(box.x).toBeGreaterThanOrEqual(0);
       expect(box.x + box.width).toBeLessThanOrEqual(width + 1);
     }
+
+    await expect(page.locator(PROOF).getByText('FieldOps', { exact: true })).toBeVisible();
+    await expect(page.locator(PROOF).getByText('Check-in feito')).toBeVisible();
   }
 });
 
-test('hero: sequência simbólica antiga removida do DOM e sem erros', async ({ page }) => {
+test('hero Product Theatre não gera erros de consola ou hidratação', async ({ page }) => {
   const errors: string[] = [];
   page.on('console', (message) => {
     if (message.type() === 'error') {
@@ -122,13 +87,7 @@ test('hero: sequência simbólica antiga removida do DOM e sem erros', async ({ 
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-
-  for (const selector of ['.hero-draw', '.hero-cross-v', '.hero-cross-h', '.hero-light-point', '.hero-node', '.hero-origin', '.hero-k-symbol']) {
-    await expect(page.locator(selector)).toHaveCount(0);
-  }
-
-  // No long 4-6s sequence: the reveal finishes within the short window.
-  await expect.poll(() => page.locator(`${HERO} .hero-logo`).evaluate((node) => getComputedStyle(node).opacity), { timeout: 4000 }).toBe('1');
+  await expect(page.locator(PROOF)).toBeVisible();
   await page.waitForTimeout(400);
 
   expect(errors).toEqual([]);

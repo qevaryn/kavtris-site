@@ -1,32 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
-const symbolSourcePattern = /kavtris-symbol-dark/;
 const founderAlt = 'Gabriel Dias de Souza, Fundador e QA Engineer da KAVTRIS';
-
-async function readRenderedImageMetrics(imageLocator: import('@playwright/test').Locator) {
-  await expect.poll(async () => imageLocator.evaluate((image) => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
-
-  return imageLocator.evaluate((image) => {
-    const img = image as HTMLImageElement;
-    const rect = img.getBoundingClientRect();
-
-    return {
-      naturalWidth: img.naturalWidth,
-      naturalHeight: img.naturalHeight,
-      renderedWidth: rect.width,
-      renderedHeight: rect.height,
-      naturalRatio: img.naturalWidth / img.naturalHeight,
-      renderedRatio: rect.width / rect.height,
-      left: rect.left,
-      right: rect.right,
-      top: rect.top,
-      bottom: rect.bottom,
-      objectFit: getComputedStyle(img).objectFit,
-      source: img.currentSrc || img.src
-    };
-  });
-}
 
 type BoxEdges = { right: number; bottom: number; left: number; top: number };
 
@@ -123,33 +98,27 @@ test('logomarca KAVTRIS aparece no header e no footer sem caixa clara ou quadrad
   await expect(page.getByRole('contentinfo').getByAltText('Rede Qualidade é Vida')).toBeVisible();
 });
 
-test('hero usa símbolo KAVTRIS em destaque e não mostra dashboard operacional', async ({ page, request }) => {
+test('hero Product Theatre mostra prova FieldOps sem repetir o símbolo isolado', async ({ page }) => {
   await page.goto('/');
 
-  const symbolFile = readFileSync('public/brand/kavtris/kavtris-symbol-dark.png');
-  const symbolFileSize = readPngSize(symbolFile);
-  const symbolResponse = await request.get('/brand/kavtris/kavtris-symbol-dark.png');
   const heroVisual = page.getByTestId('hero-brand-visual');
-  const symbol = heroVisual.getByAltText('Símbolo KAVTRIS');
+  const proof = page.getByTestId('hero-product-proof');
 
-  expect(symbolFile.subarray(1, 4).toString()).toBe('PNG');
-  expect(symbolFileSize.width).toBe(760);
-  expect(symbolFileSize.height).toBe(760);
-  expect(symbolResponse.status()).toBe(200);
-  await expect(page.locator('#inicio').getByText('Painel Operacional')).toHaveCount(0);
-  await expect(page.locator('#inicio').getByText('MVP', { exact: true })).toHaveCount(0);
-  await expect(page.locator('#inicio').getByText('Fluxos', { exact: true })).toHaveCount(0);
-  await expect(heroVisual.getByText('Pedido recebido')).toHaveCount(0);
-  await expect(heroVisual.getByText('Relatório atualizado')).toHaveCount(0);
-  await expect(symbol).toBeVisible();
-  await expect(symbol).toHaveAttribute('src', symbolSourcePattern);
+  await expect(heroVisual).toBeVisible();
+  await expect(proof).toBeVisible();
+  await expect(proof.getByText('FieldOps', { exact: true })).toBeVisible();
+  await expect(proof.getByText('Agenda de serviços')).toBeVisible();
+  await expect(proof.getByText('Check-in feito')).toBeVisible();
+  await expect(proof.getByText('Com fotografia')).toBeVisible();
+  await expect(heroVisual.getByAltText('Símbolo KAVTRIS')).toHaveCount(0);
 
-  const metrics = await readRenderedImageMetrics(symbol);
-  const minSymbolWidth = (page.viewportSize()?.width ?? 0) < 768 ? 180 : 340;
-  expect(metrics.renderedWidth).toBeGreaterThanOrEqual(minSymbolWidth);
-  expect(metrics.renderedWidth).toBeLessThanOrEqual(560);
-  expect(Math.abs(metrics.naturalRatio - metrics.renderedRatio)).toBeLessThan(0.03);
-  expect(metrics.objectFit).toBe('contain');
+  const proofBox = await proof.boundingBox();
+  const viewport = page.viewportSize();
+  expect(proofBox).not.toBeNull();
+  if (proofBox && viewport) {
+    expect(proofBox.x).toBeGreaterThanOrEqual(0);
+    expect(proofBox.x + proofBox.width).toBeLessThanOrEqual(viewport.width + 1);
+  }
 });
 
 test('fotografia aprovada do fundador aparece em /sobre sem fallback e mantém cartão compacto', async ({ page }) => {

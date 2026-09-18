@@ -1,5 +1,13 @@
 import { Button } from '@/components/shared/Button';
 import { HeroVisual } from '@/features/home/components/HeroVisual';
+import { products } from '@/features/products/data/products';
+
+const fieldOpsProduct = products.find((product) => product.slug === 'fieldops');
+const fieldOpsEssential = fieldOpsProduct?.levels.find((level) => level.id === 'essential');
+
+if (!fieldOpsProduct || !fieldOpsEssential) {
+  throw new Error('FieldOps Product truth is required for the Product Theatre T1 hero proof.');
+}
 
 export function Hero() {
   return (
@@ -12,8 +20,6 @@ export function Hero() {
       <div className="absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,rgba(1,6,25,0.98),rgba(1,6,25,0))]" aria-hidden="true" />
 
       <div className="relative mx-auto grid max-w-[1280px] items-start gap-8 px-5 py-10 sm:px-8 sm:py-12 lg:grid-cols-[0.52fr_0.48fr] lg:items-center lg:gap-10 lg:py-12 xl:gap-14">
-        {/* WEB.1F.1 - redundant brand eyebrow removed: the Hero now starts with
-            the main value proposition (brand identifiers live in the Header). */}
         <div className="max-w-[42rem]">
           <h1 className="font-sans text-[clamp(1.85rem,6.6vw,2.95rem)] font-extrabold leading-[1.06] tracking-tight text-white sm:text-[clamp(2.1rem,5vw,2.875rem)]">
             Tecnologia que
@@ -28,8 +34,6 @@ export function Hero() {
           </p>
 
           <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-            {/* WEB.1F.5 — the Hero primary CTA opens the simplified customer-path
-                selector (HERO_PRIMARY_DESTINATION = /#como-funciona). */}
             <Button href="#como-funciona" className="min-h-11 w-full bg-kavtris-blue px-6 text-white shadow-[0_14px_30px_rgba(6,90,253,0.28)] hover:bg-[#0B5EFF] sm:w-auto">
               Ver como funciona
             </Button>
@@ -40,7 +44,14 @@ export function Hero() {
         </div>
 
         <div className="relative">
-          <HeroVisual />
+          <HeroVisual
+            productName={fieldOpsProduct.name}
+            categoryLabel={fieldOpsProduct.categoryLabel}
+            summary={fieldOpsProduct.shortDescription}
+            focusLabel={fieldOpsEssential.visual.focusLabel}
+            rows={fieldOpsEssential.visual.rows}
+            statusLabel={fieldOpsEssential.visual.statusLabel}
+          />
         </div>
       </div>
     </section>

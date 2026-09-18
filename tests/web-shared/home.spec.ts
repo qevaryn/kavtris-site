@@ -8,8 +8,11 @@ test('carrega a homepage', async ({ page }) => {
   await expect(page.getByText(/A KAVTRIS combina consultoria, engenharia e tecnologia/i)).toBeVisible();
   await expect(page.locator('#inicio').getByRole('link', { name: 'Ver como funciona' })).toHaveAttribute('href', '#como-funciona');
   await expect(page.getByRole('link', { name: 'Falar com a KAVTRIS' })).toHaveAttribute('href', '#contacto');
-  await expect(page.getByText('Painel Operacional')).toHaveCount(0);
-  await expect(page.getByTestId('hero-brand-visual').getByAltText('Símbolo KAVTRIS')).toBeVisible();
+  const heroProof = page.getByTestId('hero-product-proof');
+  await expect(heroProof.getByText('FieldOps', { exact: true })).toBeVisible();
+  await expect(heroProof.getByText('Agenda de serviços')).toBeVisible();
+  await expect(heroProof.getByText('Check-in feito')).toBeVisible();
+  await expect(heroProof.getByText('Com fotografia')).toBeVisible();
   await expect(page.getByTestId('services-ticker').getByText('Reduzir tarefas manuais').first()).toBeVisible();
   await expect(page.getByTestId('services-ticker').getByText('Automação inteligente').first()).toBeVisible();
   await expect(page).toHaveTitle(/KAVTRIS \| Sistemas Web, Automação e Qualidade de Software/);
