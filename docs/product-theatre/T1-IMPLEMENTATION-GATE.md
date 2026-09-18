@@ -1,6 +1,6 @@
 # T1 Implementation Gate — Product Theatre Foundation and Homepage Product Proof
 
-Status: `AUTHORIZED_BUT_CODE_MUTATION_BLOCKED_PENDING_PERFORMANCE_BASELINE`
+Status: `AUTHORIZED_CODE_MUTATION_ALLOWED_WITHIN_FROZEN_SCOPE`
 
 This file records the execution envelope for the owner-authorized Tranche 1 only. It does not authorize Tranche 2+, production release, PLATFORM.1, KAVTRIS-AI.1, CONTROL, billing, checkout, portal, authenticated Product functions, or broader Product-template migration.
 
@@ -128,12 +128,67 @@ Header, Footer, navigation-history foundations and existing reduced-motion utili
 
 ## 4. Performance precondition
 
-No material Product Theatre UI expansion may begin until the current homepage performance baseline is captured using the project's existing approved measurement methods and a T1 delta budget is recorded.
+The current homepage performance baseline was captured before application/source mutation and is now frozen for T1.
 
-Frozen contract guardrails:
+Canonical evidence package:
+
+- file: `KAVTRIS-T1-PERFORMANCE-BASELINE-R1-20260918T114558662Z.zip`
+- package SHA-256: `7A772FE4C82E61765726F4A40BFDF15A69D6B1FAE37C9B4754DAAC027F1510C8`
+- schema: `KAVTRIS_T1_PERFORMANCE_BASELINE_EVIDENCE_V1`
+- collector revision: `R1`
+- source baseline: `3c31a7d19f948a32e1ff4ce51284c19e830063c7`
+- measurement head: `a578cf756fcfef90d61b5b4f25cebf3de92bcd8c`
+- branch: `feature/product-theatre-t1`
+- production build: PASS
+- temporary `next start` server: READY then cleanly STOPPED before evidence hashing
+- measured worktree: clean before and after
+- measured application/performance-sensitive source was unchanged from the source baseline
+
+Evidence integrity:
+
+- all eight payload hashes recorded in `MANIFEST.txt` matched the uploaded evidence files;
+- JSON SHA-256: `AD600A646BF50D947BA8D9AAE012D8EA768423D729C3BA8E3DBD41A0783D70E4`
+- Markdown SHA-256: `68D2641DEF56156182D5EBBA03E6394FEE654D19AF57450E2D929D2CA44338A1`
+- build/server/measure stderr logs were empty;
+- raw run statistics and derived p75/budget calculations were independently rechecked and matched the evidence JSON.
+
+Measurement method:
+
+- production build served through `next start` on localhost;
+- Playwright bundled Chromium;
+- mobile viewport `390x844`, touch/mobile emulation;
+- mobile network profile: 150 ms latency, 1600 Kbps down, 750 Kbps up;
+- mobile CPU slowdown: 4x;
+- browser cache disabled for measured runs;
+- 7 measured mobile runs;
+- 3 measured desktop runs;
+- 1 discarded warm-up run;
+- evidence is laboratory data, not field/RUM data;
+- INP is not claimed;
+- the long-task blocking proxy is informational only and is not treated as field INP or Lighthouse TBT.
+
+Frozen mobile p75 baseline:
+
+- LCP: `1838 ms`
+- CLS: `0`
+- homepage initial encoded body: `424198 bytes`
+- first-load JavaScript encoded body: `261310 bytes`
+- long-task blocking proxy: `1146.5 ms` — informational only
+
+Frozen T1 performance budget:
+
+- LCP absolute target: `<= 2500 ms`
+- LCP regression ceiling against this lab baseline: `<= 2022 ms`
+- CLS absolute ceiling: `<= 0.10`
+- homepage initial encoded body ceiling: `<= 466618 bytes` — maximum +10%
+- first-load JavaScript encoded body ceiling: `<= 281790 bytes` — maximum +20 KiB
+- no field INP claim may be derived from this baseline;
+- post-T1 performance evidence must use the same method/environment for direct comparison.
+
+Frozen contract guardrails remain in force:
 
 - affected-route compressed first-load JavaScript increase: maximum `20 KB` without separate owner-approved evidence; preferred change is neutral or lower;
-- homepage initial transfer: after baseline capture, no T1 increase above `10%` without explicit approval;
+- homepage initial transfer/encoded-body comparison: no T1 increase above `10%` without explicit approval;
 - one primary responsive hero asset request at initial load by default;
 - no autoplay video hero;
 - no canvas hero;
@@ -219,7 +274,10 @@ Rollback rules:
 - `ACCEPTANCE_EVIDENCE = DEFINED`
 - `STOP_GATE = DEFINED`
 - `ROLLBACK_BOUNDARY = DEFINED`
-- `PERFORMANCE_BASELINE = PENDING`
-- `T1_CODE_MUTATION = BLOCKED_UNTIL_PERFORMANCE_BASELINE`
+- `PERFORMANCE_BASELINE = PASS_FROZEN`
+- `PERFORMANCE_DELTA_BUDGET = FROZEN`
+- `T1_CODE_MUTATION = AUTHORIZED_WITHIN_BOUNDED_CHANGE_SCOPE`
 - `PRODUCTION_RELEASE_AUTHORIZED = NO`
 - `NEXT_TRANCHE_AUTHORIZED = NO`
+
+The first implementation mutation after this gate update must remain inside the frozen T1 allowlist and must preserve the rollback anchor and performance comparison method.
