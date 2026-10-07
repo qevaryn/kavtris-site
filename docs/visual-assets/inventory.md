@@ -5,6 +5,13 @@ Audience: Product, design, frontend, QA and technical lead
 
 Note: this is a historical inventory. It preserves exact filenames, hashes and usage labels observed during the original audit, before later KAVTRIS identity normalization. Old Qevaryn paths here are audit evidence, not current source-of-truth references.
 
+Current KAVTRIS metadata assets have identical bytes at some `src/app/` and
+`public/brand/kavtris/` paths. Next.js serves the `src/app/` icon, Apple icon,
+Open Graph and Twitter routes; public brand paths remain separately addressable.
+The four identical-content groups are intentional route aliases, not competing
+source-of-truth documents. Do not delete a public path without checking external
+consumers and redirects, or change one copy without reviewing its served counterpart.
+
 ## Asset Metadata
 
 | Asset | Extension | Dimensions | Ratio | Size | Alpha | Category | SHA-256 |

@@ -5,7 +5,9 @@ Audience: Technical Lead, Frontend, Backend, QA and DevOps
 
 See [../README.md](../README.md).
 
-This repository is currently the single source of truth.
+This repository owns the site implementation and its implementation-specific
+documentation. Cross-product governance and product decisions are canonical in
+[`qevaryn/kavtris-docs`](https://github.com/qevaryn/kavtris-docs).
 
 ## Owns Today
 
@@ -18,6 +20,8 @@ This repository is currently the single source of truth.
 - Rede Qualidade e Vida page;
 - privacy and cookies pages;
 - shared contact API at `POST /api/contact`;
+- account and authentication route foundations;
+- identity/tenancy schema, migration and local database tests;
 - Resend email integration;
 - local domain contracts;
 - desktop web QA;
@@ -30,9 +34,7 @@ This repository is currently the single source of truth.
 ## Does Not Own Today
 
 - native mobile application;
-- authentication;
-- database;
-- persistent backend;
+- certified production identity and database deployment;
 - dedicated infrastructure repository;
 - published shared packages;
 - independently deployed API;
@@ -42,4 +44,5 @@ This repository is currently the single source of truth.
 
 ## Current Principle
 
-One responsive web frontend, one shared backend/API boundary, one product source and one active source repository.
+One responsive web frontend and one shared backend/API boundary. Product and
+cross-repository decisions live in `kavtris-docs`; site implementation lives here.

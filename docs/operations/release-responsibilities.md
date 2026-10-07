@@ -11,22 +11,22 @@ CI runs on:
 
 ```text
 push to main
-push to master
 pull_request
+workflow_dispatch (manual published smoke with base_url)
 ```
 
-The repository also has local branches such as `develop`, but the CI workflow does not currently define a special deployment behavior for `develop`.
+`main` is the only local and remote branch. See
+[branching](../development/branching.md) for the source workflow.
 
 ## Lightweight Release Flow
 
 Recommended current flow:
 
 ```text
-feature branch
--> pull request
--> automated validation
--> review
--> merge into integration or production branch
+small change on main
+-> local diff review and relevant checks
+-> commit and push main
+-> automated CI validation
 -> deployment through external platform
 -> smoke validation when needed
 ```

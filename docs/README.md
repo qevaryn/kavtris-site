@@ -78,7 +78,7 @@ This directory documents the architecture that currently exists. Future ideas ar
 
 - [development/branching.md](development/branching.md)
   Audience: all contributors
-  Purpose: current branch evidence and recommended branch naming.
+  Purpose: current main-only branch policy and history-preserving cleanup.
   Status: current.
 
 - [development/setup.md](development/setup.md)
@@ -320,11 +320,6 @@ este repositório.
   Audience: technical lead and reviewers
   Purpose: final organization-readiness summary.
   Status: snapshot.
-
-- [governance/merge-strategy.md](governance/merge-strategy.md)
-  Audience: maintainers
-  Purpose: final branch merge recommendation.
-  Status: current recommendation.
 
 ## Legacy
 
