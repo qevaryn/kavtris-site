@@ -11,9 +11,17 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -57,6 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
+          retention-days: 7
           path: playwright-report/
           if-no-files-found: ignore
 
@@ -65,11 +74,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
+          retention-days: 7
           path: test-results/
           if-no-files-found: ignore
 
   safe-contact-mock:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -116,6 +127,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: safe-contact-playwright-report
+          retention-days: 7
           path: playwright-report/
           if-no-files-found: ignore
 
@@ -124,6 +136,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: safe-contact-test-results
+          retention-days: 7
           path: test-results/
           if-no-files-found: ignore
 
@@ -158,6 +171,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: smoke-playwright-report
+          retention-days: 7
           path: playwright-report/
           if-no-files-found: ignore
 
@@ -166,6 +180,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: smoke-test-results
+          retention-days: 7
           path: test-results/
           if-no-files-found: ignore
 

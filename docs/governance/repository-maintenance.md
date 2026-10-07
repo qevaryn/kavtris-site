@@ -5,6 +5,36 @@ Audience: Technical lead, DevOps, QA and maintainers
 
 This guide defines lightweight recurring repository maintenance. It is not an automated schedule.
 
+## Common local gate and accountability
+
+Accountable owner: Gabriel Dias de Souza. Frontend/Backend execute maintenance;
+QA reviews test quality; DevOps owns deployment/backup readiness. These are roles,
+not an assertion of current staffing. Until explicit delegation, the owner is
+responsible for each role.
+
+```console
+npm run validate:maintenance
+```
+
+Runs lint, architecture, production-smoke **governance** checks and unit tests.
+It does not run published smoke, E2E, Next type generation or a build. The build
+uses external fonts and can load local environment configuration; keep it out of
+the cross-repository offline gate. This bounded PASS does not replace the existing
+`verify` / `verify:full` release gates below. Unit tests use `envDir: false`.
+
+The canonical [maintenance, backup and retention policy](https://github.com/qevaryn/kavtris-docs/blob/main/docs/governance/maintenance-and-validation.md)
+defines the opt-in local orchestrator, monthly backup review and quarterly isolated
+restore checks. Same-disk archives/GitHub sync are not complete backups. Preserve
+unique work and verify hashes before destructive operations; never copy credentials
+or profiles in generic maintenance. Local synthetic logs become review candidates
+after 30 days, not automatic deletions; historical/incident evidence has no automatic
+expiry. New CI diagnostic uploads expire after 7 days; preserve required sanitized
+release/failure evidence before expiry. No paid service or new CI job is enabled.
+
+Work only on `main`; review the diff, record exact validation commands/results,
+run `git diff --check` and a redacted staged secret scan before commit/push.
+No automatic update branches or deployment is authorized by maintenance.
+
 ## Before Major Release
 
 - Run `npm run verify:full`.
