@@ -15,8 +15,8 @@ This document lists confirmed limitations and investigation items. It does not d
 ## Backend
 
 - The contact rate limiter is process-local and in-memory.
-- There is no database.
-- There is no authentication.
+- PostgreSQL schema/migration and Better Auth identity/tenancy foundations exist.
+  Production database deployment and identity certification remain separate gates.
 - There is no queue.
 - There is no external backend repository.
 - There is no separate desktop or mobile backend.

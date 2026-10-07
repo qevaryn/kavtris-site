@@ -2,14 +2,14 @@ import { Button } from '@/components/shared/Button';
 import { HeroVisual } from '@/features/home/components/HeroVisual';
 import { products } from '@/features/products/data/products';
 
-const fieldOpsProduct = products.find((product) => product.slug === 'fieldops');
-const fieldOpsEssential = fieldOpsProduct?.levels.find((level) => level.id === 'essential');
-
-if (!fieldOpsProduct || !fieldOpsEssential) {
-  throw new Error('FieldOps Product truth is required for the Product Theatre T1 hero proof.');
-}
-
 export function Hero() {
+  const fieldOpsProduct = products.find((product) => product.slug === 'fieldops');
+  const fieldOpsEssential = fieldOpsProduct?.levels.find((level) => level.id === 'essential');
+
+  if (!fieldOpsProduct || !fieldOpsEssential) {
+    throw new Error('FieldOps Product truth is required for the Product Theatre T1 hero proof.');
+  }
+
   return (
     <section id="inicio" className="kavtris-ambient relative overflow-hidden bg-kavtris-dark text-white">
       <div className="absolute inset-0 bg-hero-grid bg-[size:72px_72px] opacity-[0.07]" aria-hidden="true" />

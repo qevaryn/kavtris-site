@@ -2,6 +2,8 @@ import { defineConfig } from 'vitest/config';
 import path from 'node:path';
 
 export default defineConfig({
+  // Tests declare synthetic settings explicitly; never load the developer's .env files.
+  envDir: false,
   test: {
     environment: 'node',
     globals: true,

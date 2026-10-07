@@ -17,14 +17,17 @@ import type { Database } from '@/services/database/client';
 const migrationPath = path.join(process.cwd(), 'drizzle', '0000_happy_bullseye.sql');
 
 let database: Database;
+let pglite: PGlite | undefined;
 
 beforeEach(async () => {
-  const pglite = new PGlite();
+  pglite = new PGlite();
   await pglite.exec(await readFile(migrationPath, 'utf8'));
   database = drizzle(pglite, { schema }) as unknown as Database;
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await pglite?.close();
+  pglite = undefined;
   database = undefined as unknown as Database;
 });
 

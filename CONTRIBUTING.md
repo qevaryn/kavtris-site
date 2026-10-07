@@ -15,7 +15,10 @@ Use this file as the entry point. Detailed rules live in `docs/`.
 - QA strategy: [docs/qa/strategy.md](docs/qa/strategy.md)
 - Known limitations: [docs/known-limitations.md](docs/known-limitations.md)
 
-## Before Opening A PR
+## Before Committing And Pushing Main
+
+Use only `main`; the owner-approved flow is local diff review, validation, commit
+and push. Preserve historical commits before deleting any old branch reference.
 
 For most code changes:
 

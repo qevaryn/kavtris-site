@@ -5,16 +5,12 @@ Audience: All contributors
 
 See [../README.md](../README.md).
 
-## Branch Naming
+## Current Delivery Flow
 
-Use descriptive branch names:
-
-```text
-feat/<short-topic>
-fix/<short-topic>
-refactor/<short-topic>
-docs/<short-topic>
-```
+The owner requires `main` only. Review the diff and validation evidence locally,
+then commit and push directly to `main`; do not create a branch to open a PR.
+The review checklist below also applies to direct commits.
+See [branching.md](branching.md).
 
 ## PR Description
 

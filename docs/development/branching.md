@@ -1,48 +1,18 @@
 # Branching
 
-Status: Current evidence and recommended convention
+Status: Current, owner-authorized on 2026-10-07
 Audience: All contributors
 
-See [../README.md](../README.md).
+`main` is the only local and remote development branch. Do not create `develop`,
+feature branches, release branches or automated dependency-update branches.
 
-## Current Observed Behavior
+Keep changes small, review the full diff and run the relevant checks before
+committing and pushing directly to `main`. Never force-push or discard unique
+history. Existing branches may be deleted only after their commits are preserved
+on the validated remote `main`.
 
-Repository workflows show:
+The canonical cross-repository policy is
+`qevaryn/kavtris-docs/docs/governance/git-branching-policy.md`.
 
-```text
-push to main
-push to master
-pull_request
-```
-
-Local branches observed during the organization work include:
-
-```text
-develop
-main
-docs/*
-refactor/*
-```
-
-Do not document a full GitFlow model as current fact. The workflow does not currently assign special CI behavior to `develop`.
-
-## Recommended Future Convention
-
-Use focused branch names:
-
-```text
-feat/<short-topic>
-fix/<short-topic>
-refactor/<short-topic>
-test/<short-topic>
-docs/<short-topic>
-chore/<short-topic>
-```
-
-Keep phase/integration branches only when a larger planned initiative needs reviewable steps.
-
-## Merge Guidance
-
-When a final integration branch already contains previous phase history, merge that final branch instead of merging older phase branches separately.
-
-Avoid duplicating commits or reintroducing older file versions.
+Dependency updates are reviewed manually. Main-only Git organization does not
+certify production deployment or expand product/runtime authorization.

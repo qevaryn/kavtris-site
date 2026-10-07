@@ -15,14 +15,14 @@ Implemented:
 - enterprise capability page;
 - contact form and `POST /api/contact`;
 - email notification through Resend;
+- identity and tenancy foundation: account sign-up/sign-in, database-backed sessions,
+  company bootstrap and tenant authorization (requires explicit runtime configuration);
 - unit, desktop web, mobile web, API, accessibility and visual audit tests.
 
 Not implemented:
 
-- authentication;
 - payments or checkout;
-- database;
-- real SaaS accounts;
+- a certified production identity/database deployment;
 - production FieldOps platform;
 - native mobile application;
 - external backend repository;
@@ -224,7 +224,9 @@ See [docs/architecture/responsive-web.md](docs/architecture/responsive-web.md) a
 
 ## Contribution Workflow
 
-Use focused branches and small commits.
+Use `main` only and small, reviewable commits. Review the diff and run the relevant
+checks before pushing. Do not create `develop`, feature branches or bot branches.
+The canonical policy is in `qevaryn/kavtris-docs`, `docs/governance/git-branching-policy.md`.
 
 Typical commit prefixes:
 
@@ -237,7 +239,7 @@ docs:
 chore:
 ```
 
-Before opening a PR, run the commands relevant to the change. For broad changes, run:
+Before pushing, run the commands relevant to the change. For broad changes, run:
 
 ```bash
 npm run lint
@@ -259,8 +261,7 @@ Important current limitations are tracked in [docs/known-limitations.md](docs/kn
 
 Confirmed examples:
 
-- no database;
-- no authentication;
+- identity/database foundation exists, but production deployment is not certified here;
 - no native app;
 - process-local contact rate limiter;
 - no certified WCAG audit;
